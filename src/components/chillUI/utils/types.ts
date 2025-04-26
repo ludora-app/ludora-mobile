@@ -1,4 +1,13 @@
-import { TIcons } from "@/constants/ICONS";
+import { TIcons } from '@/constants/ICONS';
+import { TextProps } from 'react-native-svg';
+import { VariantProps } from 'tailwind-variants';
+import { Edge } from 'react-native-safe-area-context';
+import { AnimatedProps } from 'react-native-reanimated';
+import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
+import { StyleProp, TextStyle, TouchableOpacityProps } from 'react-native';
+
+import { btnVariant, heightVr, positionVr } from '../button/utils/styleVariants';
+import { textColorVr, textPositionVr, textSizeVr, textTypeVr } from '../string/utils/styleVariants';
 
 export type IconProps = {
   onPress?: () => void;
@@ -7,3 +16,53 @@ export type IconProps = {
   variant: keyof TIcons;
   className?: string;
 };
+
+export interface BtnProps extends TouchableOpacityProps {
+  title?: string;
+  loading?: boolean;
+  disabled?: boolean;
+  onPress?: () => void;
+  btnClassName?: string;
+  textClassName?: string;
+  leftIcon?: keyof TIcons;
+  textLeftIcon?: React.ReactNode;
+  size?: VariantProps<typeof heightVr>['size'];
+  textSize?: VariantProps<typeof textSizeVr>['size'];
+  variant?: VariantProps<typeof btnVariant>['variant'];
+  textWeight?: VariantProps<typeof textTypeVr>['weight'];
+  position?: VariantProps<typeof positionVr>['position'];
+}
+
+export type AnimatedViewProps = AnimatedProps<ViewProps>;
+
+export interface StringProps extends TextProps {
+  className?: string;
+  onPress?: () => void;
+  useFastText?: boolean;
+  numberOfLines?: number;
+  style?: StyleProp<TextStyle>;
+  children?: string | React.ReactNode;
+  size?: VariantProps<typeof textSizeVr>['size'];
+  type?: VariantProps<typeof textTypeVr>['type'];
+  weight?: VariantProps<typeof textTypeVr>['weight'];
+  variant?: VariantProps<typeof textColorVr>['variant'];
+  position?: VariantProps<typeof textPositionVr>['position'];
+}
+
+export interface WrapperProps {
+  px?: boolean;
+  py?: boolean;
+  my?: boolean;
+  className?: string;
+  scrollView?: boolean;
+  itemsCenter?: boolean;
+  safeAreaView?: boolean;
+  justifyBetween?: boolean;
+  children: React.ReactNode;
+  edges?: Edge[] | undefined;
+  nestedScrollEnabled?: boolean;
+  height?: 'h-full' | 'h-screen';
+  keyboardAvoidingView?: boolean;
+  keyboardAwareScrollView?: boolean;
+  pt?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+}

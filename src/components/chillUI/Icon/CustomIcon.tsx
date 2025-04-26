@@ -1,6 +1,6 @@
-import { cssInterop } from "nativewind";
-import { ICONS, TIcons } from "@/constants/ICONS";
-import Svg, { Path, SvgProps } from "react-native-svg";
+import { cssInterop } from 'nativewind';
+import { ICONS, TIcons } from '@/constants/ICONS';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
 export type IconProps = {
   name: keyof TIcons;
@@ -9,27 +9,16 @@ export type IconProps = {
 
 cssInterop(Svg, {
   className: {
-    target: "style",
+    target: 'style',
   },
 });
 
-export default function CustomIcon({
-  className,
-  name,
-  color = "#fff",
-}: IconProps) {
+export default function CustomIcon({ className, color = '#fff', name }: IconProps) {
   const viewBox = ICONS[name]?.viewBox;
 
   return (
-    <Svg
-      className={className || ""}
-      focusable={false}
-      viewBox={viewBox}
-      color={color}
-    >
-      {ICONS[name]?.path.map((d, index) => (
-        <Path key={index} d={d} fill={color} />
-      ))}
+    <Svg className={className || ''} focusable={false} viewBox={viewBox} color={color}>
+      {ICONS[name]?.path.map((d: string, index: number) => <Path key={index} d={d} fill={color} />)}
     </Svg>
   );
 }

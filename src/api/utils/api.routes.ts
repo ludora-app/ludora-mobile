@@ -1,4 +1,6 @@
-export const API_ROUTES = {
-  POST_SAMPLE_ROUTE: "/api/post",
-  GET_SAMPLE_ROUTE: "/api/get",
+const API_ROUTES = {
+  GET_SAMPLE_ROUTE: '/api/get',
+  POST_SAMPLE_ROUTE: '/api/post',
 };
+
+export default API_ROUTES;

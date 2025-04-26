@@ -1,14 +1,26 @@
-import Icon from "@/components/chillUI/Icon";
-import { Tabs } from "expo-router";
+import { Icon } from '@chillUI';
+import { Tabs } from 'expo-router';
+
+function HomeIcon({ focused }: { focused: boolean }) {
+  return <Icon variant="home-solid" color={focused ? 'blue' : 'gray'} />;
+}
+
+function WelcomeIcon({ focused }: { focused: boolean }) {
+  return <Icon variant="bank-solid" color={focused ? 'blue' : 'gray'} />;
+}
+
+function OtherIcon({ focused }: { focused: boolean }) {
+  return <Icon variant="star-solid" color={focused ? 'blue' : 'gray'} />;
+}
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "blue",
         headerShown: false,
+        tabBarActiveTintColor: 'blue',
         tabBarStyle: {
-          backgroundColor: "pink",
+          backgroundColor: 'pink',
           height: 60,
         },
       }}
@@ -16,28 +28,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <Icon variant="home-solid" color={focused ? "blue" : "gray"} />
-          ),
+          tabBarIcon: HomeIcon,
+          title: 'Home',
         }}
       />
       <Tabs.Screen
         name="welcome"
         options={{
-          title: "Bienvenue",
-          tabBarIcon: ({ focused }) => (
-            <Icon variant="bank-solid" color={focused ? "blue" : "gray"} />
-          ),
+          tabBarIcon: WelcomeIcon,
+          title: 'Bienvenue',
         }}
       />
       <Tabs.Screen
         name="other"
         options={{
-          title: "Autre",
-          tabBarIcon: ({ focused }) => (
-            <Icon variant="star-solid" color={focused ? "blue" : "gray"} />
-          ),
+          tabBarIcon: OtherIcon,
+          title: 'Autre',
         }}
       />
     </Tabs>

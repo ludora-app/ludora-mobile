@@ -1,10 +1,10 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { Button } from '@chillUI';
+import { View } from 'react-native';
 
-export default function welcomeComponent() {
+export default function WelcomeComponent() {
   return (
     <View>
-      <Text>WelcomeComponent</Text>
+      <Button title="Click me" onPress={() => null} />
     </View>
   );
 }

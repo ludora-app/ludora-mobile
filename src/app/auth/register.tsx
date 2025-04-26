@@ -1,2 +1,3 @@
-import RegisterScreen from "@/features/register/screens/register.screen";
+import RegisterScreen from '@/features/register/screens/register.screen';
+
 export default RegisterScreen;

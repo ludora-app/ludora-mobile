@@ -1,17 +1,21 @@
 {
   "expo": {
     "scheme": "acme",
+    "newArchEnabled": true,
     "userInterfaceStyle": "automatic",
     "orientation": "default",
     "web": {
       "output": "static"
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "expo-font"],
     "name": "ludora",
     "slug": "ludora",
-    "icon": "./assets/images/chill.png",
+    "icon": "./assets/logos/app-icon.png",
     "android": {
       "package": "com.amir398.ludora"
+    },
+    "ios": {
+      "bundleIdentifier": "com.amir398.ludora"
     }
   }
 }

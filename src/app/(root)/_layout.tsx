@@ -1,6 +1,7 @@
-import { Stack } from "expo-router";
+import { Redirect, Stack } from 'expo-router';
 
 export default function AppLayout() {
+  const isLoggedIn = false;
   // const [isFirstLaunch, isConsentDataLandingSeen] = useGlobalPersistedStore(state => [
   //   state.isFirstLaunch,
   //   state.isConsentDataLandingSeen,
@@ -22,14 +23,18 @@ export default function AppLayout() {
   //   return <Redirect href="/auth" />;
   // }
 
+  if (!isLoggedIn) {
+    return <Redirect href="/auth" />;
+  }
+
   // This layout can be deferred because it's not the root layout.
   return (
     <Stack
       initialRouteName="(tabs)"
       screenOptions={{
-        contentStyle: { backgroundColor: "#fff" },
+        contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
-    ></Stack>
+    />
   );
 }

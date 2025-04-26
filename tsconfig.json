@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@chillUI": ["./src/components/chillUI"],
+      "@features/*": ["./src/features/*"]
     }
   },
   "extends": "expo/tsconfig.base",

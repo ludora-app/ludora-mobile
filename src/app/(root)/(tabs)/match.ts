@@ -1,3 +1,3 @@
-import WelcomeScreen from '@/features/welcome/screens/welcome.screen';
+import MatchScreen from '@/features/match/screens/match.screen';
 
-export default WelcomeScreen;
+export default MatchScreen;

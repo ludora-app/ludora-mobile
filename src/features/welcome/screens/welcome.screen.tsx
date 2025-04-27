@@ -1,12 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
+import { useRouter } from 'expo-router';
+import ROUTES from '@/constants/ROUTES';
+import { StyleSheet } from 'react-native';
 import { ImageBackground } from 'expo-image';
 import { Button, Image, String, Wrapper, Box } from '@chillUI';
 import { welcomeScreenImageBackground2, bigLogo } from 'assets';
 
 export default function WelcomeComponent() {
+  const router = useRouter();
   return (
-    <ImageBackground source={welcomeScreenImageBackground2} style={{ flex: 1 }}>
-      <StatusBar hidden />
+    <ImageBackground source={welcomeScreenImageBackground2} style={StyleSheet.absoluteFillObject}>
       <Wrapper>
         <Box className="flex-1 items-center justify-center">
           <Image source={bigLogo} contentFit="contain" className="h-56 w-5/6" />
@@ -27,8 +29,8 @@ export default function WelcomeComponent() {
             </String>
           </Box>
           <Box className="gap-4">
-            <Button title="Se connecter" onPress={() => null} />
-            <Button variant="light" title="Créer un compte" onPress={() => null} />
+            <Button title="Se connecter" onPress={() => router.push('/auth/login')} />
+            <Button variant="light" title="Créer un compte" redirect={ROUTES.AUTH.REGISTER_STEP_1} />
           </Box>
         </Box>
       </Wrapper>

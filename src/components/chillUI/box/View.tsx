@@ -1,9 +1,10 @@
 import { cssInterop } from 'nativewind';
 import Animated from 'react-native-reanimated';
 import { ViewProps as NativeViewProps } from 'react-native';
-import NativeView from 'react-native/Libraries/Components/View/ViewNativeComponent';
 
 import { AnimatedViewProps } from '../utils/types';
+// eslint-disable-next-line global-require
+export const NativeView = require('react-native/Libraries/Components/View/ViewNativeComponent').default;
 
 const AnimatedNativeView = Animated.createAnimatedComponent(NativeView);
 

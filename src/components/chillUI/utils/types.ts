@@ -20,6 +20,7 @@ export type IconProps = {
 export interface BtnProps extends TouchableOpacityProps {
   title?: string;
   loading?: boolean;
+  redirect?: string;
   disabled?: boolean;
   onPress?: () => void;
   btnClassName?: string;

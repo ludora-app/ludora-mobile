@@ -1,3 +1,5 @@
+import { Link } from 'expo-router';
+import COLORS from '@/constants/COLORS';
 import { twMerge } from 'tailwind-merge';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 
@@ -31,6 +33,7 @@ export default function Button({
   loading,
   onPress,
   position = 'center',
+  redirect,
   size = 'md',
   textClassName,
   textLeftIcon,
@@ -52,7 +55,8 @@ export default function Button({
         return 'white';
     }
   };
-  return (
+
+  const button = (
     <TouchableOpacity
       onPress={onPress}
       className={twMerge(
@@ -80,7 +84,7 @@ export default function Button({
         >
           {leftIcon && (
             <Box className="absolute left-4">
-              <Icon variant={leftIcon} color={stringVariant() === 'primary' ? '#fff' : '#000'} />
+              <Icon variant={leftIcon} color={variant === 'light' ? COLORS.primary : '#fff'} />
             </Box>
           )}
           {textLeftIcon && textLeftIcon}
@@ -98,5 +102,12 @@ export default function Button({
         </Box>
       )}
     </TouchableOpacity>
+  );
+  return redirect ? (
+    <Link href={redirect} asChild>
+      {button}
+    </Link>
+  ) : (
+    button
   );
 }

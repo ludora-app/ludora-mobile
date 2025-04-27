@@ -8,7 +8,6 @@ function RootLayoutNav() {
   return (
     <Stack
       screenOptions={{
-        animation: 'fade',
         contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}

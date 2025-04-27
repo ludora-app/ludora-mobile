@@ -1,8 +1,8 @@
 import { Href } from 'expo-router';
 
-export type TabRouteNames = 'index' | 'welcome' | 'other';
+export type TabRouteNames = 'index' | 'favoris' | 'match' | 'messages' | 'profil';
 
-interface TabRoutes {
+export interface TabRoutes {
   href: Href;
   text: string;
   iconName: string;
@@ -14,26 +14,42 @@ interface TabRoutes {
 export const TAB_ROUTES: TabRoutes[] = [
   {
     href: '/(root)/(tabs)',
-    iconName: 'tab-bar-home',
-    iconNameActive: 'tab-bar-home-active',
+    iconName: 'loupe',
+    iconNameActive: 'loupe',
     iconSize: 24,
     name: 'index',
-    text: 'Home',
+    text: 'explorer',
   },
   {
     href: '/(root)/(tabs)/welcome',
-    iconName: 'tab-bar-welcome',
-    iconNameActive: 'tab-bar-welcome-active',
+    iconName: 'heart-regular',
+    iconNameActive: 'heart-solid',
     iconSize: 22,
-    name: 'welcome',
-    text: 'welcome',
+    name: 'favoris',
+    text: 'Favoris',
   },
   {
-    href: '/(root)/(tabs)/other',
-    iconName: 'tab-bar-other',
-    iconNameActive: 'tab-bar-other-active',
+    href: '/(root)/(tabs)/match',
+    iconName: 'basketball-regular',
+    iconNameActive: 'basketball-solid',
     iconSize: 24,
-    name: 'other',
-    text: 'other',
+    name: 'match',
+    text: 'Match',
+  },
+  {
+    href: '/(root)/(tabs)/messages',
+    iconName: 'message-regular',
+    iconNameActive: 'message-solid',
+    iconSize: 24,
+    name: 'messages',
+    text: 'Messages',
+  },
+  {
+    href: '/(root)/(tabs)/profil',
+    iconName: 'user-regular',
+    iconNameActive: 'user-solid',
+    iconSize: 24,
+    name: 'profil',
+    text: 'Profil',
   },
 ];

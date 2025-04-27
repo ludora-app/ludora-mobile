@@ -1,28 +1,7 @@
 import { Redirect, Stack } from 'expo-router';
 
+const isLoggedIn = true;
 export default function AppLayout() {
-  const isLoggedIn = false;
-  // const [isFirstLaunch, isConsentDataLandingSeen] = useGlobalPersistedStore(state => [
-  //   state.isFirstLaunch,
-  //   state.isConsentDataLandingSeen,
-  // ]);
-
-  // if (isFirstLaunch) {
-  //   return <Redirect href="/onboarding" />;
-  // }
-
-  // if (!isConsentDataLandingSeen) {
-  //   return <Redirect href="/consent-data" />;
-  // }
-
-  // // Only require authentication within the (root) group's layout as users
-  // // need to be able to access the auth group and sign in again.
-  // if (!token) {
-  //   // On web, static rendering will stop here as the user is not authenticated
-  //   // in the headless Node process that the pages are rendered in.
-  //   return <Redirect href="/auth" />;
-  // }
-
   if (!isLoggedIn) {
     return <Redirect href="/auth" />;
   }

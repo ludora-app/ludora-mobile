@@ -12,6 +12,7 @@ const COLORS = {
   purpleTertiary: '#3C215A',
   bluePrimary: '#97CDCC',
   blueSecondary: '#6AAFAD',
+  black: '#000',
 };
 
 export default COLORS;

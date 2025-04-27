@@ -2,7 +2,7 @@ import { SportsEnum } from '@/constants/SPORTS';
 
 const fieldImage = require('@/../assets/images/welcome-screen-image-background.jpg');
 // todo: delete the folder when the API is ready
-export const fieldMock = [
+export const fieldsMock = [
   {
     id: 1,
     name: 'Field 1',

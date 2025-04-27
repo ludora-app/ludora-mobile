@@ -31,11 +31,11 @@ export default function FieldCard({
   sports,
 }: FieldCardProps) {
   return (
-    <View className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200">
+    <View className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white">
       <View className="flex-1 overflow-hidden rounded-l-2xl">
         <Image source={image} className="flex-1" contentFit="cover" />
       </View>
-      <View className="flex w-3/4 flex-col px-2">
+      <View className="flex w-2/3 flex-col p-2">
         <View className="my-2 flex flex-row flex-wrap gap-1">
           {sports.map(sport => (
             <SportTag key={sport} sport={sport} />
@@ -46,7 +46,7 @@ export default function FieldCard({
         </String>
         <View className="flex flex-row items-center">
           <Icon variant="location-solid" color={COLORS.ring} />
-          <String variant="dark" weight="semiBold" size="xs">
+          <String variant="dark" weight="semiBold" size="2xs">
             {location}
           </String>
         </View>
@@ -55,7 +55,7 @@ export default function FieldCard({
           <String variant="dark" weight="semiBold" size="sm">
             {rating}
           </String>
-          <String variant="dark" weight="semiBold" size="sm">
+          <String variant="dark" weight="semiBold" size="xs">
             - {reviews} Commentaires
           </String>
         </View>

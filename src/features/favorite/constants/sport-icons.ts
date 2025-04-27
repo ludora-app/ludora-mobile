@@ -1,6 +1,9 @@
 import { ICONS, TIcons } from '@/constants/ICONS';
 import { SportsEnum } from '@/constants/SPORTS';
 
+/**
+ * @description Maps the sport icons used in the favoriteScreen's filter menu
+ */
 export const sportIcons = [
   {
     key: 'basketball-regular' as keyof TIcons,
@@ -27,38 +30,6 @@ export const sportIcons = [
     name: SportsEnum.PADDLE,
     ...ICONS['paddle-regular'],
   },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-  {
-    key: 'paddle-regular' as keyof TIcons,
-    name: SportsEnum.PADDLE,
-    ...ICONS['paddle-regular'],
-  },
-
-  // Add more sport icons as needed
 ];
 
 export default sportIcons;

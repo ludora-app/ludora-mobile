@@ -31,7 +31,7 @@ export default function FieldCard({
   sports,
 }: FieldCardProps) {
   return (
-    <View className="border-1 m-2 flex w-fit flex-row rounded-2xl border border-gray-200">
+    <View className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200">
       <View className="flex-1 overflow-hidden rounded-l-2xl">
         <Image source={image} className="flex-1" contentFit="cover" />
       </View>

@@ -1,3 +1,3 @@
-import WelcomeScreen from '@/features/welcome/screens/welcome.screen';
+import FavoriteScreen from '@/features/favorite/screens/favorite.screen';
 
-export default WelcomeScreen;
+export default FavoriteScreen;

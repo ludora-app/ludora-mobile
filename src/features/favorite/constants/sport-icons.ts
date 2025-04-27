@@ -1,0 +1,64 @@
+import { ICONS, TIcons } from '@/constants/ICONS';
+import { SportsEnum } from '@/constants/SPORTS';
+
+export const sportIcons = [
+  {
+    key: 'basketball-regular' as keyof TIcons,
+    name: SportsEnum.BASKETBALL,
+    ...ICONS['basketball-regular'],
+  },
+  {
+    key: 'football-solid' as keyof TIcons,
+    name: SportsEnum.FOOTBALL,
+    ...ICONS['football-solid'],
+  },
+  {
+    key: 'tennis-ball-regular' as keyof TIcons,
+    name: SportsEnum.TENNIS,
+    ...ICONS['tennis-ball-regular'],
+  },
+  {
+    key: 'volleyball-regular' as keyof TIcons,
+    name: SportsEnum.VOLLEYBALL,
+    ...ICONS['volleyball-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+  {
+    key: 'paddle-regular' as keyof TIcons,
+    name: SportsEnum.PADDLE,
+    ...ICONS['paddle-regular'],
+  },
+
+  // Add more sport icons as needed
+];
+
+export default sportIcons;

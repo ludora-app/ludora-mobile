@@ -7,6 +7,11 @@ const COLORS = {
   primaryHover: '#F14500',
   ring: '#9e9e9e',
   secondary: '#FCBD1D',
+  purplePrimary: '#864C9E',
+  purpleSecondary: '#652F8F',
+  purpleTertiary: '#3C215A',
+  bluePrimary: '#97CDCC',
+  blueSecondary: '#6AAFAD',
 };
 
 export default COLORS;

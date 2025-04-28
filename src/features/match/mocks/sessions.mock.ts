@@ -62,7 +62,7 @@ const pastSessionsMock = [
     maxParticipants: 20,
     participants: 10,
     sport: SportsEnum.VOLLEYBALL,
-    startDate: new Date('2025-04-28T10:00:00.000Z').toISOString(),
+    startDate: new Date('2024-11-18T10:00:00.000Z').toISOString(),
   },
 ];
 

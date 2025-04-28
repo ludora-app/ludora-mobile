@@ -1,17 +1,17 @@
 import COLORS from '@/constants/COLORS';
-import { Box, Icon, String } from '@/components/chillUI';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import { Box, Icon, String } from '@chillUI';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
+import fieldsMock from '../mocks/fields.mock';
 import { sportIcons } from '../constants/sport-icons';
 import FieldCard from '../components/field-card.component';
-import { fieldsMock } from '../mocks/fields.mock';
 
 export default function FavoriteScreen() {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   return (
-    <View className="mx-auto w-11/12">
+    <Box className="mx-auto w-11/12">
       <ScrollView horizontal className="mb-4">
         {sportIcons.map(icon => (
           <Box key={icon.key} className="mx-4 my-2 flex-col items-center gap-2">
@@ -31,11 +31,8 @@ export default function FavoriteScreen() {
       <String variant="dark" weight="bold" size="lg">
         Terrains favoris
       </String>
-      <ScrollView>
-        {fieldsMock.map(field => (
-          <FieldCard key={field.id} {...field} />
-        ))}
-      </ScrollView>
-    </View>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <FlatList data={fieldsMock} renderItem={({ item }) => <FieldCard key={item.id} {...item} />} />
+    </Box>
   );
 }

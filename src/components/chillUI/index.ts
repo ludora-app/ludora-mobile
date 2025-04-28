@@ -5,3 +5,4 @@ export { default as String } from './string/components/String';
 export { default as Wrapper } from './wrapper/Wrapper';
 export * from './box';
 export { default as cn } from './cn/cn';
+export { default as Badge } from './badge/components/badge.component';

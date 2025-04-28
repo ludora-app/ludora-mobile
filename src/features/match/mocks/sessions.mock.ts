@@ -1,31 +1,33 @@
-import { SportsEnum } from '@/constants/SPORTS';
+import SportsEnum from '@/constants/SPORTS';
 
-export const sessionsMock = [
+const sessionsMock = [
   {
-    id: 1,
+    date: new Date().toISOString(),
     fieldName: 'Square Duchêne',
     fieldPrice: 10,
-    date: new Date().toISOString(),
-    participants: 10,
+    id: 1,
     maxParticipants: 20,
+    participants: 10,
     sport: SportsEnum.FOOTBALL,
   },
   {
-    id: 2,
+    date: new Date().toISOString(),
     fieldName: 'Square Duchêne',
     fieldPrice: 10,
-    date: new Date().toISOString(),
-    participants: 10,
+    id: 2,
     maxParticipants: 20,
+    participants: 10,
     sport: SportsEnum.BASKETBALL,
   },
   {
-    id: 3,
+    date: new Date().toISOString(),
     fieldName: 'Square Duchêne',
     fieldPrice: 10,
-    date: new Date().toISOString(),
-    participants: 20,
+    id: 3,
     maxParticipants: 20,
+    participants: 20,
     sport: SportsEnum.VOLLEYBALL,
   },
 ];
+
+export default sessionsMock;

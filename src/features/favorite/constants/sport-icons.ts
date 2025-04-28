@@ -1,5 +1,5 @@
+import SportsEnum from '@/constants/SPORTS';
 import { ICONS, TIcons } from '@/constants/ICONS';
-import { SportsEnum } from '@/constants/SPORTS';
 
 /**
  * @description Maps the sport icons used in the favoriteScreen's filter menu

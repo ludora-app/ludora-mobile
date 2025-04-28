@@ -1,17 +1,16 @@
-import { View } from '@/components/chillUI/box/View';
-import { cn, Icon, Image, String } from '@/components/chillUI';
 import COLORS from '@/constants/COLORS';
-import { SportsEnum } from '@/constants/SPORTS';
-import SportTag from '@/components/chillUI/sport-tags/components/sport-tags.component';
+import SportsEnum from '@/constants/SPORTS';
+import { View } from '@/components/chillUI/box/View';
+import { Badge, cn, Icon, Image, String } from '@/components/chillUI';
 
 export interface FieldCardProps {
   id: number;
   image: any;
   name: string;
   price: number;
-  location: string;
   rating: number;
   reviews: number;
+  location: string;
   isFavorite: boolean;
   sports: SportsEnum[];
 }
@@ -22,12 +21,12 @@ export interface FieldCardProps {
 export default function FieldCard({
   id,
   image,
+  isFavorite,
+  location,
   name,
   price,
-  location,
   rating,
   reviews,
-  isFavorite,
   sports,
 }: FieldCardProps) {
   return (
@@ -38,7 +37,7 @@ export default function FieldCard({
       <View className="flex w-2/3 flex-col p-2">
         <View className="my-2 flex flex-row flex-wrap gap-1">
           {sports.map(sport => (
-            <SportTag key={sport} sport={sport} />
+            <Badge key={sport} title={sport} />
           ))}
         </View>
         <String variant="dark" weight="bold" size="xl">

@@ -5,9 +5,9 @@
 
   "eslint.options": {
     "extensions": [".ts", ".js"]
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+    // "source.organizeImports": "explicit"
   }
-  // "editor.codeActionsOnSave": {
-  //   "source.fixAll": "explicit",
-  //   "source.organizeImports": "explicit"
-  // }
 }

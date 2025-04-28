@@ -1,7 +1,8 @@
-import { View } from '@/components/chillUI/box/View';
-import { sessionsMock } from '../mocks/sessions.mock';
-import SessionCard from '../components/session-card.component';
 import { String } from '@/components/chillUI';
+import { View } from '@/components/chillUI/box/View';
+
+import sessionsMock from '../mocks/sessions.mock';
+import SessionCard from '../components/session-card.component';
 
 export default function MatchScreen() {
   return (
@@ -10,6 +11,7 @@ export default function MatchScreen() {
         Sessions à venir
       </String>
       {sessionsMock.map(session => (
+        // eslint-disable-next-line react/jsx-props-no-spreading
         <SessionCard key={session.id} {...session} />
       ))}
     </View>

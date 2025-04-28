@@ -106,3 +106,14 @@ export interface BadgeProps {
   size?: VariantProps<typeof String>['size'];
   variant?: VariantProps<typeof backgroundVariants>['variant'];
 }
+
+export interface TabSwitchProps {
+  leftScreenTitle: string;
+  rightScreenTitle: string;
+  leftRender: React.ReactNode;
+  rightRender: React.ReactNode;
+  cardDisplay?: {
+    leftScreenIcon?: keyof TIcons;
+    rightScreenIcon?: keyof TIcons;
+  };
+}

@@ -1,10 +1,12 @@
 import COLORS from '@/constants/COLORS';
 import SportsEnum from '@/constants/SPORTS';
+import { formatDate, formatHour } from '@/utils/date.utils';
 import { Badge, cn, Icon, String, Box } from '@/components/chillUI';
 
 export interface SessionCardProps {
   id: number;
-  date: string;
+  endDate: string;
+  startDate: string;
   fieldName: string;
   sport: SportsEnum;
   fieldPrice: number;
@@ -13,16 +15,17 @@ export interface SessionCardProps {
 }
 
 export default function SessionCard({
-  date,
+  endDate,
   fieldName,
   fieldPrice,
   id,
   maxParticipants,
   participants,
   sport,
+  startDate,
 }: SessionCardProps) {
   return (
-    <Box className="my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white p-4">
+    <Box className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray-200 bg-white p-4">
       <Box className="w-2/3">
         <Box className="flex flex-row justify-between">
           <String variant="dark" weight="bold" size="xl" numberOfLines={1}>
@@ -32,13 +35,13 @@ export default function SessionCard({
         <Box className="flex flex-row items-center gap-1 py-2">
           <Icon variant="schedule" className={cn('h-4 w-4')} color={COLORS.ring} />
           <String variant="tertiary" weight="semiBold" size="xs">
-            {date}
+            {formatDate(startDate)}
           </String>
         </Box>
         <Box className="flex flex-row items-center gap-1 py-2">
           <Icon variant="clock-regular" className={cn('h-4 w-4')} color={COLORS.ring} />
           <String variant="tertiary" weight="semiBold" size="xs">
-            {date}
+            {formatHour(startDate)} - {formatHour(endDate)}
           </String>
         </Box>
         <Box className="flex flex-row items-center gap-1 py-2">

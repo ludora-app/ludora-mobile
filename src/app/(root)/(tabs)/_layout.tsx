@@ -4,6 +4,7 @@ import COLORS from '@/constants/COLORS';
 import { TIcons } from '@/constants/ICONS';
 import Header from '@/components/ui/Header/Header';
 import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function TabBarIcon({
   focused,
@@ -34,15 +35,17 @@ function RenderTabIcon(route: (typeof TAB_ROUTES)[number]) {
 const header = () => <Header />;
 
 export default function TabLayout() {
+  const { bottom } = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
-        header: () => header(),
+        header,
         headerShown: true,
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: '#7C7C7C',
         tabBarStyle: {
           height: 60,
+          marginBottom: bottom,
           paddingBottom: 10,
         },
       }}

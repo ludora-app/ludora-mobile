@@ -13,11 +13,11 @@ cssInterop(Svg, {
   },
 });
 
-export default function CustomIcon({ className, color = '#fff', name }: IconProps) {
+export default function CustomIcon({ className, color = '#000', name }: IconProps) {
   const viewBox = ICONS[name]?.viewBox;
 
   return (
-    <Svg className={className || ''} focusable={false} viewBox={viewBox} color={color}>
+    <Svg className={className || ''} focusable={false} viewBox={viewBox}>
       {ICONS[name]?.path.map((d: string, index: number) => <Path key={index} d={d} fill={color} />)}
     </Svg>
   );

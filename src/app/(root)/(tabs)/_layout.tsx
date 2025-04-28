@@ -2,6 +2,7 @@ import { Icon } from '@chillUI';
 import { Tabs } from 'expo-router';
 import COLORS from '@/constants/COLORS';
 import { TIcons } from '@/constants/ICONS';
+import Header from '@/components/ui/Header/Header';
 import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
 
 function TabBarIcon({
@@ -30,11 +31,14 @@ function RenderTabIcon(route: (typeof TAB_ROUTES)[number]) {
   return TabIcon;
 }
 
+const header = () => <Header />;
+
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        header: () => header(),
+        headerShown: true,
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: '#7C7C7C',
         tabBarStyle: {

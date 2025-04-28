@@ -21,7 +21,9 @@ export const btnVariant = tv({
   base: 'bg-primary',
   variants: {
     variant: {
+      icon: 'rounded-lg bg-white',
       light: 'bg-white',
+      lightBorder: 'bg-white border border-ring',
       primary: 'bg-primary',
       secondary: 'bg-secondary',
     },

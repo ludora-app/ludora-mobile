@@ -28,6 +28,7 @@ const loadingIconSize = (size: string) => {
 
 export default function Button({
   btnClassName,
+  children,
   disabled,
   leftIcon,
   loading,
@@ -60,17 +61,18 @@ export default function Button({
     <TouchableOpacity
       onPress={onPress}
       className={twMerge(
+        'w-full items-center justify-center rounded-full',
         heightVr({ size }),
         btnVariant({ variant }),
         positionVr({ position }),
         opacityVariant({ disabled, loading }),
-        'w-full items-center justify-center rounded-full',
         btnClassName,
       )}
       disabled={disabled || loading}
       /* eslint-disable-next-line react/jsx-props-no-spreading */
       {...props}
     >
+      {children}
       {loading ? (
         <ActivityIndicator color="#fff" size={loadingIconSize(size)} />
       ) : (

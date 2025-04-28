@@ -109,10 +109,12 @@ export const textColorVr = tv({
     variant: {
       danger: 'text-red-500',
       dark: 'text-black',
+      destructive: 'text-destructive',
       error: 'text-error',
       info: 'text-blue-300',
       light: 'text-gray-300',
       primary: 'text-primary',
+      ring: 'text-ring',
       secondary: 'text-secondary',
       success: 'text-green-500',
       tertiary: 'text-gray-400',

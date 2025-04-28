@@ -40,7 +40,7 @@ const IconSizeVr = tv({
 
 type IconProps = props & VariantProps<typeof IconSizeVr> & VariantProps<typeof paddingVr>;
 
-export default function Icon({ className, color = '#fff', onPress, size = 'md', variant, wrapper }: IconProps) {
+export default function Icon({ className, color = '#000', onPress, size = 'md', variant, wrapper }: IconProps) {
   const [isPressded, setIsPressded] = useState(false);
 
   if (!onPress) {

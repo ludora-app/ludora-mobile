@@ -2,7 +2,7 @@ import { String } from '@/components/chillUI';
 import { View } from '@/components/chillUI/box/View';
 
 import sessionsMock from '../mocks/sessions.mock';
-import SessionCard from '../components/session-card.component';
+import SessionCard from '../../../components/ui/session-card.component';
 
 export default function MatchScreen() {
   return (

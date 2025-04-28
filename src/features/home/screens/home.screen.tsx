@@ -1,6 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Box } from '@/components/chillUI';
 
 export default function HomeScreen() {
-  return <View className="h-screen w-screen items-center justify-center" />;
+  return <Box className="flex-1" />;
 }

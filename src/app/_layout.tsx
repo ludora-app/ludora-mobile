@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
 import MainProvider from '@/providers/main.provider';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import '../styles/global.css';
 
@@ -21,9 +20,7 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <MainProvider>
-      <SafeAreaView className="flex-1">
-        <RootLayoutNav />
-      </SafeAreaView>
+      <RootLayoutNav />
     </MainProvider>
   );
 }

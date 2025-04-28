@@ -13,6 +13,7 @@ export default {
       colors: {
         accent: '#CE3728',
         border: '#e4e4e4',
+        darkLight: '#0000001A',
         destructive: '#A52523',
         input: '#e4e4e4',
         primary: '#F15924',

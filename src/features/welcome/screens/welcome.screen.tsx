@@ -28,7 +28,7 @@ export default function WelcomeComponent() {
               Rejoignez des milliers de sportifs passionnés.
             </String>
           </Box>
-          <Box className="gap-4">
+          <Box className="mb-10 gap-4">
             <Button title="Se connecter" onPress={() => router.push('/auth/login')} />
             <Button variant="light" title="Créer un compte" redirect={ROUTES.AUTH.REGISTER_STEP_1} />
           </Box>

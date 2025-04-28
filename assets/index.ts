@@ -2,3 +2,5 @@ export { default as welcomeScreenImageBackground } from './images/welcome-screen
 export { default as welcomeScreenImageBackground2 } from './images/welcome-screen-image-background2.jpg';
 export { default as bigLogo } from './logos/big-logo.png';
 export { default as registerImage } from './images/register-img.png';
+export { default as loginImage } from './images/login-img.png';
+export { default as headerImage } from './images/header-img.png';

@@ -3,8 +3,9 @@ import { TextProps } from 'react-native-svg';
 import { VariantProps } from 'tailwind-variants';
 import { Edge } from 'react-native-safe-area-context';
 import { AnimatedProps } from 'react-native-reanimated';
+import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
-import { StyleProp, TextStyle, TouchableOpacityProps } from 'react-native';
+import { StyleProp, TextInputProps, TextStyle, TouchableOpacityProps } from 'react-native';
 
 import { btnVariant, heightVr, positionVr } from '../button/utils/styleVariants';
 import { textColorVr, textPositionVr, textSizeVr, textTypeVr } from '../string/utils/styleVariants';
@@ -67,3 +68,15 @@ export interface WrapperProps {
   keyboardAwareScrollView?: boolean;
   pt?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
+
+export type FormInputProps = Omit<UseControllerProps<FieldValues>, 'defaultValue'> &
+  Omit<TextInputProps, 'defaultValue'> & {
+    label?: string;
+    required?: boolean;
+    className?: string;
+  };
+
+export type SeparatorProps = {
+  title?: string;
+  className?: string;
+};

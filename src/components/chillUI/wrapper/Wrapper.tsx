@@ -106,7 +106,7 @@ const IsScrollComponent = (props: WrapperProps, children: React.ReactNode) => {
 const safeAreaViewComponents = (props: WrapperProps, children: React.ReactNode) => {
   const { edges } = props;
   return (
-    <SafeAreaView className="z-50 flex-1" edges={edges as Edge[]}>
+    <SafeAreaView mode="padding" className="flex-1" edges={edges as Edge[]}>
       {IsScrollComponent(props, children)}
     </SafeAreaView>
   );

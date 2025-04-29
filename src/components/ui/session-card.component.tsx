@@ -1,4 +1,5 @@
 import COLORS from '@/constants/COLORS';
+import { useRouter } from 'expo-router';
 import SportsEnum from '@/constants/SPORTS';
 import { formatDate, formatHour } from '@/utils/date.utils';
 import { Badge, cn, Icon, String, Box } from '@/components/chillUI';
@@ -24,6 +25,8 @@ export default function SessionCard({
   sport,
   startDate,
 }: SessionCardProps) {
+  const router = useRouter();
+
   return (
     <Box className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray-200 bg-white p-4">
       <Box className="w-2/3">

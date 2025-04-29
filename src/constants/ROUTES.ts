@@ -4,6 +4,10 @@ const ROUTES = {
     REGISTER_STEP_1: '/auth/register/step-1',
     REGISTER_STEP_2: '/auth/register/step-2',
   },
+  SESSION: {
+    DETAILS: '/session',
+    TEAM: '/team',
+  },
 };
 
 export default ROUTES;

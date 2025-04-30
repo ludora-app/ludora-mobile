@@ -17,7 +17,7 @@ export default function String(props: StringProps) {
 
   return (
     /* eslint-disable-next-line react/jsx-props-no-spreading */
-    <NativeText {...props} className={dynamicClasses}>
+    <NativeText {...props} className={dynamicClasses} ellipsizeMode="tail">
       {children}
     </NativeText>
   );

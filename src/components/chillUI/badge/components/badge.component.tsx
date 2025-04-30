@@ -1,5 +1,5 @@
-import { tv } from 'tailwind-variants';
 import SportsEnum from '@/constants/SPORTS';
+import { tv, VariantProps } from 'tailwind-variants';
 
 import cn from '../../cn/cn';
 import { Box } from '../../box';
@@ -8,6 +8,7 @@ import String from '../../string/components/String';
 interface BadgeProps {
   title: SportsEnum;
   className?: string;
+  size?: VariantProps<typeof String>['size'];
 }
 
 /**
@@ -32,10 +33,10 @@ const backgroundVariants = tv({
   },
 });
 
-export default function Badge({ className, title }: BadgeProps) {
+export default function Badge({ className, size = 'md', title }: BadgeProps) {
   return (
     <Box className={cn('rounded-full px-2 py-1', className, backgroundVariants({ backgroundColor: title }))}>
-      <String variant="white" weight="semiBold" size="xs">
+      <String variant="white" weight="semiBold" size={size}>
         {title}
       </String>
     </Box>

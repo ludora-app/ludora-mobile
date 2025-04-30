@@ -17,7 +17,10 @@ export default function SportFilters() {
       <ScrollView horizontal className="mb-4">
         {sportIcons.map(icon => (
           <Box key={icon.key} className="mx-4 my-2 flex-col items-center gap-2">
-            <TouchableOpacity className="flex-col items-center gap-2" onPress={() => setSelectedIcon(icon.key)}>
+            <TouchableOpacity
+              className="flex-col items-center gap-2"
+              onPress={() => setSelectedIcon(prevSelectedIcon => (prevSelectedIcon === icon.key ? null : icon.key))}
+            >
               <Icon
                 key={icon.key}
                 variant={icon.key}

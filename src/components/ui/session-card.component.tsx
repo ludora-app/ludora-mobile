@@ -25,7 +25,7 @@ export default function SessionCard({
     <Box className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white p-4">
       <Box className="w-2/3">
         <Box className="flex flex-row justify-between">
-          <String variant="dark" weight="bold" size="xl">
+          <String variant="dark" weight="bold" size="xl" numberOfLines={1}>
             {fieldName}
           </String>
         </Box>
@@ -49,7 +49,7 @@ export default function SessionCard({
         </Box>
       </Box>
       <Box className="flex-1 items-end justify-between px-2">
-        <Badge title={sport} />
+        <Badge title={sport} size="xs" />
         <String variant="dark" weight="semiBold" size="md">
           {fieldPrice} €
         </String>

@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { welcomeScreenImageBackground } from 'assets';
 import GoBackHeader from '@/components/ui/GoBackHeader';
 
 const header = () => <GoBackHeader />;
@@ -11,7 +12,10 @@ export default function TeamLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="team" options={{ header: () => header(), headerShown: true, title: 'Team' }} />
+      <Stack.Screen
+        name="[id]/index"
+        options={{ header: () => header(), headerBackground: () => welcomeScreenImageBackground, headerShown: true }}
+      />
     </Stack>
   );
 }

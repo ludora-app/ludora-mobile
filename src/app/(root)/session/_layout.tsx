@@ -1,8 +1,16 @@
 import { Stack } from 'expo-router';
-import { Wrapper } from '@/components/chillUI';
-import GoBackHeader from '@/components/ui/GoBackHeader';
+import sessionDetailsMock from '@/features/session/mocks/session-details.mock';
+import HeaderSession, { HeaderSessionProps } from '@/components/ui/Header/Header.session';
 
-const header = () => <GoBackHeader />;
+const header = (props: HeaderSessionProps) => <HeaderSession gameMode={props.gameMode} sport={props.sport} />;
+
+function findSession(id: string) {
+  return sessionDetailsMock.find(session => session.id === Number(id));
+}
+
+type SessionRouteParams = {
+  id: string;
+};
 
 export default function SessionLayout() {
   return (
@@ -12,9 +20,18 @@ export default function SessionLayout() {
         headerShown: false,
       }}
     >
-      <Wrapper>
-        <Stack.Screen name="session" options={{ header: () => header(), headerShown: true, title: 'Session' }} />
-      </Wrapper>
+      <Stack.Screen
+        name="[id]/index"
+        options={({ route }) => {
+          const { id } = route.params as SessionRouteParams;
+
+          const session = findSession(id);
+          return {
+            header: () => header({ gameMode: session.gameMode, sport: session.sport }),
+            headerShown: true,
+          };
+        }}
+      />
     </Stack>
   );
 }

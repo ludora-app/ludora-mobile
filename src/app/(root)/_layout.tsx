@@ -1,4 +1,5 @@
 import { Redirect, Stack } from 'expo-router';
+import UserLocationProvider from '@/providers/user-location-provider';
 
 const isLoggedIn = true;
 export default function AppLayout() {
@@ -6,14 +7,15 @@ export default function AppLayout() {
     return <Redirect href="/auth" />;
   }
 
-  // This layout can be deferred because it's not the root layout.
   return (
-    <Stack
-      initialRouteName="(tabs)"
-      screenOptions={{
-        contentStyle: { backgroundColor: '#fff' },
-        headerShown: false,
-      }}
-    />
+    <UserLocationProvider>
+      <Stack
+        initialRouteName="(tabs)"
+        screenOptions={{
+          contentStyle: { backgroundColor: '#fff' },
+          headerShown: false,
+        }}
+      />
+    </UserLocationProvider>
   );
 }

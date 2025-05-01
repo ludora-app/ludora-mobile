@@ -1,6 +1,12 @@
-import React from 'react';
-import { Box } from '@/components/chillUI';
+import { Wrapper } from '@chillUI';
+
+import sessionsMocks from '../mocks/sessions-mocks';
+import SessionCardList from '../components/home-session-card-list.component';
 
 export default function HomeScreen() {
-  return <Box className="flex-1" />;
+  return (
+    <Wrapper safeAreaView={false} className="mt-5">
+      <SessionCardList sessions={sessionsMocks} />
+    </Wrapper>
+  );
 }

@@ -4,3 +4,7 @@ export { default as bigLogo } from './logos/big-logo.png';
 export { default as registerImage } from './images/register-img.png';
 export { default as loginImage } from './images/login-img.png';
 export { default as headerImg } from './images/header-img.png';
+export { default as basketballStadium } from './images/basket-stadium.jpg';
+export { default as footballStadium } from './images/football.jpg';
+export { default as tennisStadium } from './images/tennis.jpg';
+export { default as padelStadium } from './images/padel.jpg';

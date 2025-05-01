@@ -17,6 +17,7 @@ export default {
         border: '#e4e4e4',
         darkLight: '#0000001A',
         destructive: '#A52523',
+        gray: '#7C7C7C',
         input: '#e4e4e4',
         primary: '#F15924',
         primaryHover: '#F14500',
@@ -41,6 +42,9 @@ export default {
         nunitoRegularItalic: ['NunitoSans400RegularItalic', 'sans-serif'],
         nunitoSemiBold: ['NunitoSans600SemiBold', 'sans-serif'],
         nunitoSemiBoldItalic: ['NunitoSans600SemiBoldItalic', 'sans-serif'],
+      },
+      text: {
+        title: 'text-xl font-nunitoSemiBold text-dark',
       },
     },
   },

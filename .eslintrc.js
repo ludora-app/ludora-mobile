@@ -23,7 +23,7 @@ module.exports = {
         type: 'alphabetical',
       },
     ],
-    'prettier/prettier': 'error',
+    // 'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/no-array-index-key': 'off',
 

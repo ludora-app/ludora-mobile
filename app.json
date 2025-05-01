@@ -7,7 +7,16 @@
     "web": {
       "output": "static"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Autoriser $(PRODUCT_NAME) à accéder à votre position."
+        }
+      ]
+    ],
     "name": "ludora",
     "slug": "ludora",
     "icon": "./assets/logos/app-icon.png",

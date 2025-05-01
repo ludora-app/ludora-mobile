@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
+import { Wrapper } from '@/components/chillUI';
 
 export default function teamScreen() {
   return (
-    <View>
+    <Wrapper>
       <Text>teamScreen</Text>
-    </View>
+      {/* TODO: add team details */}
+    </Wrapper>
   );
 }

@@ -1,6 +1,8 @@
 import COLORS from '@/constants/COLORS';
 import { useRouter } from 'expo-router';
-import SportsEnum from '@/constants/SPORTS';
+import ROUTES from '@/constants/ROUTES';
+import { SportsEnum } from '@/constants/SPORTS';
+import { TouchableOpacity } from 'react-native';
 import { formatDate, formatHour } from '@/utils/date.utils';
 import { Badge, cn, Icon, String, Box } from '@/components/chillUI';
 
@@ -28,38 +30,43 @@ export default function SessionCard({
   const router = useRouter();
 
   return (
-    <Box className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray-200 bg-white p-4">
-      <Box className="w-2/3">
-        <Box className="flex flex-row justify-between">
-          <String variant="dark" weight="bold" size="xl" numberOfLines={1}>
-            {fieldName}
+    <Box>
+      <TouchableOpacity
+        className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray-200 bg-white p-4"
+        onPress={() => router.push(`${ROUTES.SESSION.DETAILS}/${id}`)}
+      >
+        <Box className="w-2/3">
+          <Box className="flex flex-row justify-between">
+            <String variant="dark" weight="bold" size="xl" numberOfLines={1}>
+              {fieldName}
+            </String>
+          </Box>
+          <Box className="flex flex-row items-center gap-1 py-2">
+            <Icon variant="schedule" className={cn('h-4 w-4')} color={COLORS.ring} />
+            <String variant="tertiary" weight="semiBold" size="xs">
+              {formatDate(startDate)}
+            </String>
+          </Box>
+          <Box className="flex flex-row items-center gap-1 py-2">
+            <Icon variant="clock-regular" className={cn('h-4 w-4')} color={COLORS.ring} />
+            <String variant="tertiary" weight="semiBold" size="xs">
+              {formatHour(startDate)} - {formatHour(endDate)}
+            </String>
+          </Box>
+          <Box className="flex flex-row items-center gap-1 py-2">
+            <Icon variant="user-regular" className={cn('h-4 w-4')} color={COLORS.ring} />
+            <String variant="tertiary" weight="semiBold" size="xs">
+              {participants} / {maxParticipants}
+            </String>
+          </Box>
+        </Box>
+        <Box className="flex-1 items-end justify-between px-2">
+          <Badge title={sport} />
+          <String variant="dark" weight="semiBold" size="md">
+            {fieldPrice} €
           </String>
         </Box>
-        <Box className="flex flex-row items-center gap-1 py-2">
-          <Icon variant="schedule" className={cn('h-4 w-4')} color={COLORS.ring} />
-          <String variant="tertiary" weight="semiBold" size="xs">
-            {formatDate(startDate)}
-          </String>
-        </Box>
-        <Box className="flex flex-row items-center gap-1 py-2">
-          <Icon variant="clock-regular" className={cn('h-4 w-4')} color={COLORS.ring} />
-          <String variant="tertiary" weight="semiBold" size="xs">
-            {formatHour(startDate)} - {formatHour(endDate)}
-          </String>
-        </Box>
-        <Box className="flex flex-row items-center gap-1 py-2">
-          <Icon variant="user-regular" className={cn('h-4 w-4')} color={COLORS.ring} />
-          <String variant="tertiary" weight="semiBold" size="xs">
-            {participants} / {maxParticipants}
-          </String>
-        </Box>
-      </Box>
-      <Box className="flex-1 items-end justify-between px-2">
-        <Badge title={sport} size="xs" />
-        <String variant="dark" weight="semiBold" size="md">
-          {fieldPrice} €
-        </String>
-      </Box>
+      </TouchableOpacity>
     </Box>
   );
 }

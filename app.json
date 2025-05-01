@@ -21,10 +21,20 @@
     "slug": "ludora",
     "icon": "./assets/logos/app-icon.png",
     "android": {
-      "package": "com.amir398.ludora"
+      "package": "com.amir398.ludora",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
+        }
+      }
     },
     "ios": {
-      "bundleIdentifier": "com.amir398.ludora"
+      "bundleIdentifier": "com.amir398.ludora",
+      "config": {
+        "googleMaps": {
+          "googleMapsApiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
+        }
+      }
     }
   }
 }

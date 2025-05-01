@@ -1,9 +1,9 @@
-import SportsEnum from '@/constants/SPORTS';
+import { SportsEnum } from '@/constants/SPORTS';
 
 const upcommingSessionsMock = [
   {
     endDate: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Square Duchêne',
+    fieldName: 'Terrain de football du TEP Émile Lepeu',
     fieldPrice: 10,
     id: 1,
     maxParticipants: 20,
@@ -13,21 +13,21 @@ const upcommingSessionsMock = [
   },
   {
     endDate: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Square Duchêne',
+    fieldName: 'Terrain de basket-ball du Centre Sportif Philippe Auguste',
     fieldPrice: 10,
     id: 2,
-    maxParticipants: 20,
-    participants: 10,
+    maxParticipants: 10,
+    participants: 6,
     sport: SportsEnum.BASKETBALL,
     startDate: new Date().toISOString(),
   },
   {
     endDate: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Square Duchêne',
+    fieldName: 'Gymnase des Vignoles',
     fieldPrice: 10,
     id: 3,
-    maxParticipants: 20,
-    participants: 20,
+    maxParticipants: 12,
+    participants: 6,
     sport: SportsEnum.VOLLEYBALL,
     startDate: new Date().toISOString(),
   },
@@ -36,7 +36,7 @@ const upcommingSessionsMock = [
 const pastSessionsMock = [
   {
     endDate: new Date(new Date('2025-04-28T10:00:00.000Z').getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Square Duchêne',
+    fieldName: 'Terrain de football du TEP Émile Lepeu',
     fieldPrice: 10,
     id: 4,
     maxParticipants: 20,
@@ -46,17 +46,17 @@ const pastSessionsMock = [
   },
   {
     endDate: new Date(new Date('2025-04-02T10:00:00.000Z').getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Rolland Garros',
+    fieldName: 'Stade Déjerine',
     fieldPrice: 10,
     id: 5,
-    maxParticipants: 20,
-    participants: 10,
+    maxParticipants: 4,
+    participants: 3,
     sport: SportsEnum.TENNIS,
     startDate: new Date('2025-04-02T10:00:00.000Z').toISOString(),
   },
   {
-    endDate: new Date(new Date('2025-04-28T10:00:00.000Z').getTime() + 60 * 60 * 1000).toISOString(),
-    fieldName: 'Terrain de la Duchêne',
+    endDate: new Date('2024-11-18T11:30:00.000Z').toISOString(),
+    fieldName: 'Gymnase des Vignoles',
     fieldPrice: 10,
     id: 6,
     maxParticipants: 20,

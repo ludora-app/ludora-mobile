@@ -1,4 +1,4 @@
-import SportsEnum from '@/constants/SPORTS';
+import { SportsEnum } from '@/constants/SPORTS';
 import { welcomeScreenImageBackground } from 'assets';
 
 // todo: delete the folder when the API is ready

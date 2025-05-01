@@ -1,5 +1,5 @@
 import COLORS from '@/constants/COLORS';
-import SportsEnum from '@/constants/SPORTS';
+import { SportsEnum } from '@/constants/SPORTS';
 import { Badge, Box, cn, Icon, Image, String } from '@/components/chillUI';
 
 export interface FieldCardProps {

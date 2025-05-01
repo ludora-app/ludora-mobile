@@ -80,3 +80,10 @@ export type SeparatorProps = {
   title?: string;
   className?: string;
 };
+
+export interface LoadingIndicatorsProps extends ViewProps {
+  size?: number;
+  color?: string;
+  animating?: boolean;
+  hidesWhenStopped?: boolean;
+}

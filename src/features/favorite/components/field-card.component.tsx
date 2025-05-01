@@ -3,33 +3,23 @@ import SportsEnum from '@/constants/SPORTS';
 import { Badge, Box, cn, Icon, Image, String } from '@/components/chillUI';
 
 export interface FieldCardProps {
-  id: number;
+  // id: number;
   image: any;
   name: string;
-  price: number;
+  // price: number;
   rating: number;
   reviews: number;
   location: string;
-  isFavorite: boolean;
+  // isFavorite: boolean;
   sports: SportsEnum[];
 }
 
 /**
  * @description Component displaying a field card, used in the favorite screen
  */
-export default function FieldCard({
-  id,
-  image,
-  isFavorite,
-  location,
-  name,
-  price,
-  rating,
-  reviews,
-  sports,
-}: FieldCardProps) {
+export default function FieldCard({ image, location, name, rating, reviews, sports }: FieldCardProps) {
   return (
-    <Box className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white">
+    <Box className="my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white">
       <Box className="flex-1 overflow-hidden rounded-l-2xl">
         <Image source={image} className="flex-1" contentFit="cover" />
       </Box>

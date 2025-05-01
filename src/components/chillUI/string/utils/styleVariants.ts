@@ -111,6 +111,7 @@ export const textColorVr = tv({
       dark: 'text-black',
       destructive: 'text-destructive',
       error: 'text-error',
+      gray: 'text-gray',
       info: 'text-blue-300',
       light: 'text-gray-300',
       primary: 'text-primary',

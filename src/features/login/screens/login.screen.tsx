@@ -8,7 +8,7 @@ import LoginSocialNetworks from '../components/login-social-networks/login-socia
 
 export default function LoginScreen() {
   return (
-    <Wrapper keyboardAwareScrollView edges={['left', 'right']}>
+    <Wrapper keyboardAwareScrollView>
       <Box className="items-end justify-end gap-4 pt-10">
         <Image source={loginImage} contentFit="contain" className="size-16" />
       </Box>

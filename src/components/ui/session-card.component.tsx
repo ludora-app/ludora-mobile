@@ -22,7 +22,7 @@ export default function SessionCard({
   sport,
 }: SessionCardProps) {
   return (
-    <Box className="border-1 my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white p-4">
+    <Box className="my-2 flex w-fit flex-row rounded-2xl border border-gray-200 bg-white p-4">
       <Box className="w-2/3">
         <Box className="flex flex-row justify-between">
           <String variant="dark" weight="bold" size="xl" numberOfLines={1}>

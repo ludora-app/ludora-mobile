@@ -8,6 +8,6 @@ export { default as cn } from './cn/cn';
 export { default as Input } from './input/Input';
 export { default as Separator } from './separator/Separator';
 export { default as FormInput } from './input/FormInput';
-export { default as Badge } from './badge/components/badge.component';
+// export { default as Badge } from './badge/components/badge.component';
 export { default as FlashList } from './flashList/FlashList';
 export * from './loadingIndicatorsKit';

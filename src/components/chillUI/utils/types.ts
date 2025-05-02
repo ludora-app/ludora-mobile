@@ -1,4 +1,5 @@
 import { TIcons } from '@/constants/ICONS';
+import SportsEnum from '@/constants/SPORTS';
 import { TextProps } from 'react-native-svg';
 import { VariantProps } from 'tailwind-variants';
 import { Edge } from 'react-native-safe-area-context';
@@ -7,6 +8,7 @@ import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 import { StyleProp, TextInputProps, TextStyle, TouchableOpacityProps } from 'react-native';
 
+import backgroundVariants from '../badge/utils/styleVariants';
 import { btnVariant, heightVr, positionVr } from '../button/utils/styleVariants';
 import { textColorVr, textPositionVr, textSizeVr, textTypeVr } from '../string/utils/styleVariants';
 
@@ -86,4 +88,11 @@ export interface LoadingIndicatorsProps extends ViewProps {
   color?: string;
   animating?: boolean;
   hidesWhenStopped?: boolean;
+}
+
+export interface BadgeProps {
+  className?: string;
+  title: SportsEnum | string;
+  size?: VariantProps<typeof String>['size'];
+  variant?: VariantProps<typeof backgroundVariants>['variant'];
 }

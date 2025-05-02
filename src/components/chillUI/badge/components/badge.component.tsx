@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import SportsEnum from '@/constants/SPORTS';
 import { tv, VariantProps } from 'tailwind-variants';
 
@@ -7,8 +6,8 @@ import { Box } from '../../box';
 import String from '../../string/components/String';
 
 interface BadgeProps {
+  title: SportsEnum;
   className?: string;
-  title: SportsEnum | string;
   size?: VariantProps<typeof String>['size'];
 }
 
@@ -19,10 +18,9 @@ interface BadgeProps {
  */
 
 const backgroundVariants = tv({
-  base: 'bg-white',
   variants: {
     backgroundColor: {
-      default: 'bg-red-500',
+      default: 'bg-ring',
       [SportsEnum.BASKETBALL]: 'bg-primary',
       [SportsEnum.FOOTBALL]: 'bg-purplePrimary',
       [SportsEnum.PADDLE]: 'bg-secondary',
@@ -36,32 +34,9 @@ const backgroundVariants = tv({
 });
 
 export default function Badge({ className, size = 'md', title }: BadgeProps) {
-  const stringVariants = useMemo(() => {
-    switch (title) {
-      case SportsEnum.BASKETBALL:
-        return 'white';
-      case SportsEnum.FOOTBALL:
-        return 'white';
-      case SportsEnum.PADDLE:
-        return 'white';
-      case SportsEnum.TENNIS:
-        return 'white';
-      case SportsEnum.VOLLEYBALL:
-        return 'white';
-      default:
-        return 'dark';
-    }
-  }, [title]);
-
   return (
-    <Box
-      className={cn(
-        'rounded-full px-3 py-1',
-        className,
-        backgroundVariants({ backgroundColor: title as SportsEnum | 'default' }),
-      )}
-    >
-      <String variant={stringVariants} weight="semiBold" size={size}>
+    <Box className={cn('rounded-full px-2 py-1', className, backgroundVariants({ backgroundColor: title }))}>
+      <String variant="white" weight="semiBold" size={size}>
         {title}
       </String>
     </Box>

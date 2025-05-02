@@ -6,8 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import { ImageBackground } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import HeaderHome from './Header.home';
-import HeaderTitle from './Header.title';
+import HeaderHome from './Header-home.component';
+import HeaderTitle from './Header.title.component';
+import HeaderProfil from './header-profil.component';
 
 export default function Header() {
   const { top } = useSafeAreaInsets();
@@ -25,7 +26,7 @@ export default function Header() {
       case '/match':
         return <HeaderTitle title="Mes matchs" />;
       case '/profil':
-        return <HeaderTitle title="Mon profile" />;
+        return <HeaderProfil />;
       default:
         return <HeaderTitle title={pathname.split('/').pop() || ''} />;
     }

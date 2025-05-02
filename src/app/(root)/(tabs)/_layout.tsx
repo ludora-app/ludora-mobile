@@ -2,8 +2,8 @@ import { Icon } from '@chillUI';
 import { Tabs } from 'expo-router';
 import COLORS from '@/constants/COLORS';
 import { TIcons } from '@/constants/ICONS';
-import Header from '@/components/ui/Header/Header';
 import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
+import Header from '@/components/ui/Header/Header.component';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function TabBarIcon({

@@ -12,6 +12,7 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts",
-    "src/features/home/components/home-session-card.componenttsx"
+    "src/features/home/components/home-session-card.componenttsx",
+    "src/components/ui/Header/Header-home.component.tsx"
   ]
 }

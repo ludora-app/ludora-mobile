@@ -1,6 +1,6 @@
 import { TIcons } from '@/constants/ICONS';
-import SportsEnum from '@/constants/SPORTS';
 import { TextProps } from 'react-native-svg';
+import { SportsEnum } from '@/constants/SPORTS';
 import { VariantProps } from 'tailwind-variants';
 import { Edge } from 'react-native-safe-area-context';
 import { AnimatedProps } from 'react-native-reanimated';
@@ -83,13 +83,6 @@ export type SeparatorProps = {
   className?: string;
 };
 
-export interface LoadingIndicatorsProps extends ViewProps {
-  size?: number;
-  color?: string;
-  animating?: boolean;
-  hidesWhenStopped?: boolean;
-}
-
 export interface AvatarProps {
   className?: string;
   onPress?: () => void;
@@ -116,4 +109,11 @@ export interface TabSwitchProps {
     leftScreenIcon?: keyof TIcons;
     rightScreenIcon?: keyof TIcons;
   };
+}
+
+export interface LoadingIndicatorsProps extends ViewProps {
+  size?: number;
+  color?: string;
+  animating?: boolean;
+  hidesWhenStopped?: boolean;
 }

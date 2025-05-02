@@ -1,7 +1,10 @@
 import COLORS from '@/constants/COLORS';
+import { ImageBackground } from 'expo-image';
 import { SportsEnum } from '@/constants/SPORTS';
 import { useLocalSearchParams } from 'expo-router';
 import { Platform, ScrollView } from 'react-native';
+import { welcomeScreenImageBackground } from 'assets';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { formatHour, getDayOfWeek, getEstimatedTime } from '@/utils/date.utils';
 import { Box, Button, Icon, Separator, String, Wrapper } from '@/components/chillUI';
@@ -23,11 +26,26 @@ export interface SessionScreenProps {
 export default function SessionScreen() {
   const params = useLocalSearchParams();
   const sessionDetails = sessionUtils.getSessionDetails(params.id as string);
-
+  const { top } = useSafeAreaInsets();
   return (
     <Box className="flex-1">
-      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
-        <Wrapper safeAreaView={false} className="flex-1 rounded-t-3xl">
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        <Box className="h-72">
+          <ImageBackground source={welcomeScreenImageBackground} className="h-72">
+            <Box style={{ paddingTop: top }} className="flex w-full flex-row items-end justify-between px-4">
+              <Icon variant="arrow-left-solid" size="md" wrapper />
+              <Box className="flex-row items-center gap-1">
+                <Icon variant="heart-solid" size="md" wrapper />
+              </Box>
+            </Box>
+          </ImageBackground>
+        </Box>
+        <Wrapper safeAreaView={false} className="relative z-50 -m-2 rounded-t-3xl bg-white">
           <Box className="flex justify-around">
             <Box className="flex items-center gap-2 px-5 pt-5">
               <Box className="flex flex-row items-center">

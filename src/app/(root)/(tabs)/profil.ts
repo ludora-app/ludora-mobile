@@ -1,3 +1,3 @@
-import WelcomeScreen from '@/features/welcome/screens/welcome.screen';
+import ProfilScreen from '@/features/profil/screens/profil.screen';
 
-export default WelcomeScreen;
+export default ProfilScreen;

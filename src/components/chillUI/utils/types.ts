@@ -90,6 +90,16 @@ export interface LoadingIndicatorsProps extends ViewProps {
   hidesWhenStopped?: boolean;
 }
 
+export interface AvatarProps {
+  className?: string;
+  onPress?: () => void;
+  userData: {
+    firstname: string;
+    lastname?: string;
+    image_url: string;
+  };
+}
+
 export interface BadgeProps {
   className?: string;
   title: SportsEnum | string;

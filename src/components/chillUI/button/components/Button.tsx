@@ -52,6 +52,8 @@ export default function Button({
         return 'primary';
       case 'light':
         return 'primary';
+      case 'lightBorder':
+        return 'dark';
       default:
         return 'white';
     }

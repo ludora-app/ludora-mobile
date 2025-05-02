@@ -31,7 +31,7 @@ export default function Badge({ className, size = 'md', title, variant = 'defaul
   }, [variant]);
 
   return (
-    <Box className={cn('rounded-full px-2 py-1', className, backgroundVariants({ variant }))}>
+    <Box className={cn('rounded-full px-3 py-1', className, backgroundVariants({ variant }))}>
       <String variant={stringVariants} weight="semiBold" size={size}>
         {title}
       </String>

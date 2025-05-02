@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import GoBackHeader from '@/components/ui/GoBackHeader';
+import GoBackHeader from '@/components/ui/go-back-header.compoent';
 
 const header = () => <GoBackHeader />;
 

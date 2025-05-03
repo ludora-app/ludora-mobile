@@ -1,3 +1,6 @@
+import { VariantProps } from 'tailwind-variants';
+import backgroundVariants from '@/components/chillUI/badge/utils/styleVariants';
+
 /**
  * @description Enum for uniformizing the name of sports, for use in components
  */
@@ -8,6 +11,14 @@ enum SportsEnum {
   TENNIS = 'Tennis',
   PADDLE = 'Paddle',
 }
+
+const sportsColors: Map<SportsEnum, VariantProps<typeof backgroundVariants>['variant']> = new Map([
+  [SportsEnum.BASKETBALL, 'primary'],
+  [SportsEnum.FOOTBALL, 'secondary'],
+  [SportsEnum.PADDLE, 'bluePrimary'],
+  [SportsEnum.TENNIS, 'destructive'],
+  [SportsEnum.VOLLEYBALL, 'purplePrimary'],
+]);
 
 enum GameModesEnum {
   FIVE_VS_FIVE = '5v5',
@@ -21,4 +32,4 @@ enum GameModesEnum {
   ELEVEN_VS_ELEVEN = '11v11',
 }
 
-export { GameModesEnum, SportsEnum };
+export { GameModesEnum, SportsEnum, sportsColors };

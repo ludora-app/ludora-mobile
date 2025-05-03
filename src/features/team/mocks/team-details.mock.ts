@@ -1,6 +1,157 @@
-const teamDetailsMock = {
-  id: 1,
-  name: 'A',
-};
+import { blueGuy, blackAndWhiteGuy, whiteLady, whiteTGuy, runningGuy, hoodieGuy, nailLady, stairsGuy } from 'assets';
+
+const teamDetailsMock = [
+  {
+    id: 1,
+    maxPlayerCount: 11,
+    name: 'A',
+    players: [
+      { firstName: 'John', id: 100, lastName: 'Doe', profilePic: blueGuy },
+      { firstName: 'Jane', id: 101, lastName: 'Doe', profilePic: whiteLady },
+      { firstName: 'Charles', id: 102, lastName: 'Xavier', profilePic: blackAndWhiteGuy },
+      { firstName: 'Martian', id: 103, lastName: 'Manhunter', profilePic: whiteTGuy },
+      { firstName: 'Bruce', id: 104, lastName: 'Wayne', profilePic: runningGuy },
+    ],
+    playersCount: 5,
+    sessionId: 1,
+  },
+  {
+    id: 2,
+    maxPlayerCount: 11,
+    name: 'B',
+    players: [
+      { firstName: 'Mr', id: 200, lastName: 'Anderson', profilePic: blueGuy },
+      { firstName: 'Agent', id: 201, lastName: 'Smith', profilePic: whiteLady },
+      { firstName: 'Yuji', id: 202, lastName: 'Itadori', profilePic: blackAndWhiteGuy },
+      { firstName: 'Ryomen', id: 203, lastName: 'Sukuna', profilePic: hoodieGuy },
+      { firstName: 'Satoru', id: 204, lastName: 'Gojo', profilePic: stairsGuy },
+    ],
+    playersCount: 5,
+    sessionId: 1,
+  },
+  {
+    id: 3,
+    maxPlayerCount: 5,
+    name: 'A',
+    players: [
+      { firstName: 'Peter', id: 300, lastName: 'Parker', profilePic: blueGuy },
+      { firstName: 'Kraven', id: 301, lastName: '', profilePic: whiteLady },
+      { firstName: 'Miles', id: 302, lastName: 'Morales', profilePic: blackAndWhiteGuy },
+    ],
+    playersCount: 3,
+    sessionId: 2,
+  },
+  {
+    id: 4,
+    maxPlayerCount: 5,
+    name: 'B',
+    players: [
+      { firstName: 'Curt', id: 400, lastName: 'Connors', profilePic: blueGuy },
+      { firstName: 'Norman', id: 401, lastName: 'Osborn', profilePic: whiteLady },
+      { firstName: 'Gwen', id: 402, lastName: 'Stacy', profilePic: blackAndWhiteGuy },
+    ],
+    playersCount: 3,
+    sessionId: 2,
+  },
+  {
+    id: 5,
+    maxPlayerCount: 6,
+    name: 'A',
+    players: [
+      { firstName: 'Bruce', id: 500, lastName: 'Wayne', profilePic: blueGuy },
+      { firstName: 'Dick', id: 501, lastName: 'Grayson', profilePic: whiteLady },
+      { firstName: 'Jason', id: 502, lastName: 'Todd', profilePic: blackAndWhiteGuy },
+    ],
+    playersCount: 3,
+    sessionId: 3,
+  },
+  {
+    id: 6,
+    maxPlayerCount: 6,
+    name: 'B',
+    players: [
+      { firstName: 'Hugo', id: 600, lastName: 'Strange', profilePic: blueGuy },
+      { firstName: 'Bane', id: 601, lastName: '', profilePic: whiteLady },
+      { firstName: 'Harley', id: 602, lastName: 'Quinn', profilePic: blackAndWhiteGuy },
+    ],
+    playersCount: 3,
+    sessionId: 3,
+  },
+  {
+    id: 7,
+    maxPlayerCount: 11,
+    name: 'A',
+    players: [
+      { firstName: 'Barry', id: 700, lastName: 'Allen', profilePic: blueGuy },
+      { firstName: 'Wally', id: 701, lastName: 'West', profilePic: whiteLady },
+      { firstName: 'Bart', id: 702, lastName: 'Allen', profilePic: blackAndWhiteGuy },
+      { firstName: 'Iris', id: 703, lastName: 'West', profilePic: nailLady },
+      { firstName: 'Jay', id: 703, lastName: 'Garrick', profilePic: runningGuy },
+    ],
+    playersCount: 5,
+    sessionId: 4,
+  },
+  {
+    id: 8,
+    maxPlayerCount: 11,
+    name: 'B',
+    players: [
+      { firstName: 'Gorilla', id: 800, lastName: 'Grodd', profilePic: stairsGuy },
+      { firstName: 'Reverse', id: 801, lastName: 'Flash', profilePic: whiteLady },
+      { firstName: 'Captain', id: 802, lastName: 'Cold', profilePic: whiteTGuy },
+      { firstName: 'Kid', id: 803, lastName: 'Flash', profilePic: blueGuy },
+      { firstName: 'Savitar', id: 804, lastName: '', profilePic: blackAndWhiteGuy },
+    ],
+    playersCount: 5,
+    sessionId: 4,
+  },
+  {
+    id: 9,
+    maxPlayerCount: 2,
+    name: 'A',
+    players: [{ firstName: 'Levi', id: 900, lastName: 'Ackerman', profilePic: blueGuy }],
+    playersCount: 1,
+    sessionId: 5,
+  },
+  {
+    id: 10,
+    maxPlayerCount: 2,
+    name: 'B',
+    players: [
+      { firstName: 'Eren', id: 1000, lastName: 'Yeager', profilePic: blueGuy },
+      { firstName: 'Mikasa', id: 1001, lastName: 'Ackerman', profilePic: whiteLady },
+    ],
+    playersCount: 2,
+    sessionId: 5,
+  },
+  {
+    id: 11,
+    maxPlayerCount: 6,
+    name: 'A',
+    players: [
+      { firstName: 'Trinity', id: 1100, lastName: '', profilePic: blueGuy },
+      { firstName: 'Morpheus', id: 1101, lastName: '', profilePic: stairsGuy },
+      { firstName: 'Jack', id: 1102, lastName: 'Sparrow', profilePic: blackAndWhiteGuy },
+      { firstName: 'Will', id: 1103, lastName: 'Turner', profilePic: runningGuy },
+      { firstName: 'Elizabeth', id: 1104, lastName: 'Swann', profilePic: whiteLady },
+      { firstName: 'Davy', id: 1105, lastName: 'Jones', profilePic: hoodieGuy },
+    ],
+    playersCount: 6,
+    sessionId: 6,
+  },
+  {
+    id: 12,
+    maxPlayerCount: 6,
+    name: 'B',
+    players: [
+      { firstName: 'Agent', id: 1200, lastName: 'Smith', profilePic: blueGuy },
+      { firstName: 'Neo', id: 1201, lastName: '', profilePic: whiteLady },
+      { firstName: 'Ghengis', id: 1202, lastName: 'Khan', profilePic: blackAndWhiteGuy },
+      { firstName: 'Napoleon', id: 1203, lastName: 'Bonaparte', profilePic: stairsGuy },
+    ],
+    playersCount: 4,
+    sessionId: 6,
+  },
+];
 
 export default teamDetailsMock;

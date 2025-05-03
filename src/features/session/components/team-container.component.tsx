@@ -1,15 +1,18 @@
-import { Box } from '@/components/chillUI';
+import { Box, cn } from '@/components/chillUI';
 
 import TeamCardComponent from './team-card.component';
 
 interface Team {
   id: number;
   name: string;
+  sessionId: number;
   playersCount: number;
   maxPlayerCount: number;
   players: {
     id: number;
-    name: string;
+    firstName: string;
+    lastName: string;
+    profilePic: string;
   }[];
 }
 
@@ -22,7 +25,7 @@ export default function TeamContainer({ teams }: TeamContainerProps) {
     <Box className="my-3 flex gap-4">
       {teams.map((team, index) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <TeamCardComponent key={team.id} {...team} className={index === 0 ? 'bg-primary' : 'bg-purplePrimary'} />
+        <TeamCardComponent key={team.id} {...team} className={cn(index === 0 ? 'bg-primary' : 'bg-purplePrimary')} />
       ))}
     </Box>
   );

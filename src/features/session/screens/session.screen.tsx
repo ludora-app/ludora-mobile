@@ -1,13 +1,13 @@
 import COLORS from '@/constants/COLORS';
 import { ImageBackground } from 'expo-image';
-import { SportsEnum } from '@/constants/SPORTS';
-import { useLocalSearchParams } from 'expo-router';
-import { Platform, ScrollView } from 'react-native';
 import { welcomeScreenImageBackground } from 'assets';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { sportsColors, SportsEnum } from '@/constants/SPORTS';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { formatHour, getDayOfWeek, getEstimatedTime } from '@/utils/date.utils';
-import { Box, Button, Icon, Separator, String, Wrapper } from '@/components/chillUI';
+import { Badge, Box, Button, Icon, Separator, String, Wrapper } from '@/components/chillUI';
 
 import sessionUtils from '../utils/session.utils';
 import TeamContainer from '../components/team-container.component';
@@ -24,6 +24,8 @@ export interface SessionScreenProps {
 }
 
 export default function SessionScreen() {
+  const router = useRouter();
+
   const params = useLocalSearchParams();
   const sessionDetails = sessionUtils.getSessionDetails(params.id as string);
   const { top } = useSafeAreaInsets();
@@ -36,11 +38,27 @@ export default function SessionScreen() {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <Box className="h-72">
-          <ImageBackground source={welcomeScreenImageBackground} className="h-72">
-            <Box style={{ paddingTop: top }} className="flex w-full flex-row items-end justify-between px-4">
-              <Icon variant="arrow-left-solid" size="md" wrapper />
-              <Box className="flex-row items-center gap-1">
-                <Icon variant="heart-solid" size="md" wrapper />
+          <ImageBackground source={welcomeScreenImageBackground} className="flex h-72">
+            <Box className="flex h-full justify-between pb-4">
+              <Box style={{ paddingTop: top }} className="flex w-full flex-row items-end justify-between px-4">
+                <TouchableOpacity
+                  className="flex-row items-center gap-1 rounded-full bg-white p-2"
+                  onPress={() => router.back()}
+                >
+                  <Icon variant="arrow-left-solid" size="md" />
+                </TouchableOpacity>
+                <Box className="flex flex-row gap-2">
+                  <TouchableOpacity className="flex-row items-center gap-1 rounded-full bg-white p-2">
+                    <Icon variant="heart-solid" size="md" />
+                  </TouchableOpacity>
+                  <TouchableOpacity className="flex-row items-center gap-1 rounded-full bg-white p-2">
+                    <Icon variant="share-nodes-regular" size="md" />
+                  </TouchableOpacity>
+                </Box>
+              </Box>
+              <Box className="ml-3 flex flex-row gap-2">
+                <Badge title={sessionDetails.sport} variant={sportsColors.get(sessionDetails.sport as SportsEnum)} />
+                <Badge title={sessionDetails.gameMode} variant="black" />
               </Box>
             </Box>
           </ImageBackground>
@@ -66,7 +84,7 @@ export default function SessionScreen() {
                   {sessionDetails.participants} / {sessionDetails.maxParticipants}
                 </String>
               </Box>
-              <Box className="flex flex-row gap-1 text-gray-400" />
+              <Box className="text-gray-400 flex flex-row gap-1" />
             </Box>
             <Box className="m-3 gap-2 rounded-lg">
               <Separator />
@@ -77,6 +95,7 @@ export default function SessionScreen() {
                 <String variant="tertiary">{sessionDetails?.fieldLocation.address}</String>
               </Box>
               <MapView
+                focusable={false}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
                 region={{
                   latitude: sessionDetails?.fieldLocation.latitude,
@@ -104,7 +123,7 @@ export default function SessionScreen() {
       </ScrollView>
       <Box
         style={{ bottom: 0, left: 0, position: 'absolute', right: 0 }}
-        className="flex flex-row border-t border-gray-200 bg-white px-8 pb-8 pt-5"
+        className="border-gray-200 flex flex-row border-t bg-white px-8 pb-8 pt-5"
       >
         <Box className="flex-1">
           <String variant="dark" size="lg">

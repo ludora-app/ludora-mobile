@@ -1,9 +1,9 @@
 import COLORS from '@/constants/COLORS';
 import { useRouter } from 'expo-router';
 import ROUTES from '@/constants/ROUTES';
-import { SportsEnum } from '@/constants/SPORTS';
 import { TouchableOpacity } from 'react-native';
 import { formatDate, formatHour } from '@/utils/date.utils';
+import { sportsColors, SportsEnum } from '@/constants/SPORTS';
 import { Badge, cn, Icon, String, Box } from '@/components/chillUI';
 
 export interface SessionCardProps {
@@ -32,7 +32,7 @@ export default function SessionCard({
   return (
     <Box>
       <TouchableOpacity
-        className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray-200 bg-white p-4"
+        className="border-1 my-2 flex w-full flex-row rounded-2xl border border-gray bg-white p-4"
         onPress={() => router.push(`${ROUTES.SESSION.DETAILS}/${id}`)}
       >
         <Box className="w-2/3">
@@ -61,7 +61,7 @@ export default function SessionCard({
           </Box>
         </Box>
         <Box className="flex-1 items-end justify-between px-2">
-          <Badge title={sport} />
+          <Badge title={sport} variant={sportsColors.get(sport)} />
           <String variant="dark" weight="semiBold" size="md">
             {fieldPrice} €
           </String>

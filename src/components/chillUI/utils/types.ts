@@ -117,3 +117,13 @@ export interface LoadingIndicatorsProps extends ViewProps {
   animating?: boolean;
   hidesWhenStopped?: boolean;
 }
+
+export interface AvatarProps {
+  className?: string;
+  onPress?: () => void;
+  userData: {
+    firstname: string;
+    lastname?: string;
+    image_url: string;
+  };
+}

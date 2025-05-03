@@ -10,6 +10,8 @@ export interface TeamDetailsProps {
     firstName: string;
     lastName: string;
     profilePic: string;
+    rating: number;
+    address: string;
   }[];
 }
 
@@ -42,12 +44,17 @@ export default function TeamDetails({ maxPlayerCount, name, players, playersCoun
                   {player.firstName} {player.lastName}
                 </String>
                 <Box className="flex flex-row items-center gap-2">
+                  <Box>
+                    <String className="mt-1 text-center" variant="gray">
+                      {player.address.length > 20 ? `${player.address.substring(0, 25)}...` : player.address}
+                    </String>
+                  </Box>
+                  <Box>
+                    <Icon variant="star-regular" color="#FFCC00" />
+                  </Box>
+
                   <String className="mt-1 text-center" variant="gray">
-                    Melun, Ile-de-France
-                  </String>
-                  <Icon variant="star-regular" color="#FFCC00" />
-                  <String className="mt-1 text-center" variant="gray">
-                    3.9
+                    {player.rating}
                   </String>
                 </Box>
               </Box>

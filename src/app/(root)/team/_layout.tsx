@@ -3,16 +3,15 @@ import GoBackHeader from '@/components/ui/go-back-header.compoent';
 
 const header = () => <GoBackHeader />;
 
-export default function AuthLayout() {
+export default function TeamLayout() {
   return (
     <Stack
       screenOptions={{
-        animation: 'slide_from_bottom',
         contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
     >
-      <Stack.Screen name="login" options={{ header: () => header(), headerShown: true }} />
+      <Stack.Screen name="[id]/index" options={{ header: () => header(), headerShown: true }} />
     </Stack>
   );
 }

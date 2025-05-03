@@ -1,4 +1,3 @@
-import { padelStadium } from 'assets';
 import { Pressable } from 'react-native';
 import getUserInitials from '@/utils/user';
 import { tv, VariantProps } from 'tailwind-variants';
@@ -54,7 +53,7 @@ export default function Avatar({ className, onPress, size = 'sm', userData, vari
         <String size={size} weight="semiBold" variant="white">
           {initials}
         </String>
-        <Image className="absolute h-full w-full" source={padelStadium} />
+        <Image className="absolute h-full w-full" source={image ?? ''} />
       </Box>
     );
   }

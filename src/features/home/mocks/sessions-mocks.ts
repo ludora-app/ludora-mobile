@@ -1,4 +1,4 @@
-import SportsEnum from '@/constants/SPORTS';
+import { SportsEnum } from '@/constants/SPORTS';
 import { basketballStadium, footballStadium, padelStadium, tennisStadium } from 'assets';
 
 const sessionsMocks = [

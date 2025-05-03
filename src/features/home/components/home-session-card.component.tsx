@@ -4,6 +4,7 @@ import { ImageBackground } from 'expo-image';
 import { TouchableOpacity } from 'react-native';
 import { Badge, Box, Icon, String } from '@chillUI';
 import { formatDateLabel, formatToHour } from '@/utils/time';
+import { sportsColors, SportsEnum } from '@/constants/SPORTS';
 
 import useCalculateDistance from '../hooks/useCalculateDistance';
 
@@ -28,12 +29,12 @@ function HomeSessionCard({ session }: { session: Session }) {
     <TouchableOpacity className="mb-5" onPress={() => {}}>
       <Box className="h-60 w-full overflow-hidden rounded-xl bg-transparent">
         <ImageBackground source={session.image} style={{ height: '100%', padding: 10, width: '100%' }}>
-          <Badge title={session.title} size="sm" className="self-start" />
+          <Badge title={session.title} size="sm" variant="white" className="self-start" />
         </ImageBackground>
       </Box>
       <Box className="flex items-start px-2">
         <Box className="mb-1 mt-3 flex w-full flex-row items-center justify-between">
-          <Badge title={session.sport} />
+          <Badge title={session.sport} variant={sportsColors.get(session.sport as SportsEnum)} />
           <Box className="flex flex-row items-center gap-1">
             <Icon variant="star-regular" color={COLORS.secondary} />
             <String size="lg" weight="semiBold" variant="gray">

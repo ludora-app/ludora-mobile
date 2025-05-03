@@ -1,11 +1,11 @@
-import SportsEnum from '@/constants/SPORTS';
-import { welcomeScreenImageBackground } from 'assets';
+import { SportsEnum } from '@/constants/SPORTS';
+import { basketballStadium, footballStadium, volleyballField } from 'assets';
 
 // todo: delete the folder when the API is ready
 const fieldsMock = [
   {
     id: 1,
-    image: welcomeScreenImageBackground,
+    image: footballStadium,
     isFavorite: true,
     location: 'Paris, 11ème arrondissement, Ile-de-France',
     name: 'Field 1',
@@ -16,7 +16,7 @@ const fieldsMock = [
   },
   {
     id: 2,
-    image: welcomeScreenImageBackground,
+    image: volleyballField,
     isFavorite: true,
     location: 'Paris, 11ème arrondissement, Ile-de-France',
     name: 'Field 2',
@@ -27,7 +27,7 @@ const fieldsMock = [
   },
   {
     id: 3,
-    image: welcomeScreenImageBackground,
+    image: basketballStadium,
     isFavorite: true,
     location: 'Paris, 11ème arrondissement, Ile-de-France',
     name: 'Field 3',
@@ -38,7 +38,7 @@ const fieldsMock = [
   },
   {
     id: 4,
-    image: welcomeScreenImageBackground,
+    image: footballStadium,
     isFavorite: true,
     location: 'Paris, 11ème arrondissement, Ile-de-France',
     name: 'Field 4',

@@ -1,6 +1,6 @@
 import { TIcons } from '@/constants/ICONS';
-import SportsEnum from '@/constants/SPORTS';
 import { TextProps } from 'react-native-svg';
+import { SportsEnum } from '@/constants/SPORTS';
 import { VariantProps } from 'tailwind-variants';
 import { Edge } from 'react-native-safe-area-context';
 import { AnimatedProps } from 'react-native-reanimated';
@@ -83,6 +83,24 @@ export type SeparatorProps = {
   className?: string;
 };
 
+export interface BadgeProps {
+  className?: string;
+  title: SportsEnum | string;
+  size?: VariantProps<typeof String>['size'];
+  variant?: VariantProps<typeof backgroundVariants>['variant'];
+}
+
+export interface TabSwitchProps {
+  leftScreenTitle: string;
+  rightScreenTitle: string;
+  leftRender: React.ReactNode;
+  rightRender: React.ReactNode;
+  cardDisplay?: {
+    leftScreenIcon?: keyof TIcons;
+    rightScreenIcon?: keyof TIcons;
+  };
+}
+
 export interface LoadingIndicatorsProps extends ViewProps {
   size?: number;
   color?: string;
@@ -98,11 +116,4 @@ export interface AvatarProps {
     lastname?: string;
     image_url: string;
   };
-}
-
-export interface BadgeProps {
-  className?: string;
-  title: SportsEnum | string;
-  size?: VariantProps<typeof String>['size'];
-  variant?: VariantProps<typeof backgroundVariants>['variant'];
 }

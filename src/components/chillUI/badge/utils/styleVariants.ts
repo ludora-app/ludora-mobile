@@ -6,6 +6,7 @@ const backgroundVariants = tv({
       backgroundColor: 'default',
     },
     variant: {
+      black: 'bg-black',
       bluePrimary: 'bg-bluePrimary',
       default: 'bg-ring',
       destructive: 'bg-destructive',

@@ -1,18 +1,23 @@
-import { String, Wrapper } from '@/components/chillUI';
+import { Box, TabSwitch } from '@/components/chillUI';
 
-import sessionsMock from '../mocks/sessions.mock';
-import SessionCard from '../../../components/ui/session-card.component';
+import MatchPastSessions from '../components/match-past-sessions.component';
+import MatchUpcomingSessions from '../components/match-upcomming-sessions.component';
 
 export default function MatchScreen() {
   return (
-    <Wrapper safeAreaView={false} py>
-      <String variant="dark" weight="bold" size="lg">
-        Sessions à venir
-      </String>
-      {sessionsMock.map(session => (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        <SessionCard key={session.id} {...session} />
-      ))}
-    </Wrapper>
+    // <Wrapper safeAreaView={false} py>
+    <Box className="flex-1">
+      <TabSwitch
+        cardDisplay={{
+          leftScreenIcon: 'play-regular',
+          rightScreenIcon: 'rectangle-history-regular',
+        }}
+        leftScreenTitle="Sessions à venir"
+        rightScreenTitle="Sessions passées"
+        leftRender={<MatchUpcomingSessions />}
+        rightRender={<MatchPastSessions />}
+      />
+    </Box>
+    // </Wrapper>
   );
 }

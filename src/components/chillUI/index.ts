@@ -13,3 +13,4 @@ export { default as FlashList } from './flashList/FlashList';
 export * from './loadingIndicatorsKit';
 export { default as Avatar } from './avatar/Avatar';
 export * from './card/Card';
+export { default as TabSwitch } from './tabSwitch/TabSwitch';

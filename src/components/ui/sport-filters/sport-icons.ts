@@ -1,4 +1,4 @@
-import SportsEnum from '@/constants/SPORTS';
+import { SportsEnum } from '@/constants/SPORTS';
 import { ICONS, TIcons } from '@/constants/ICONS';
 
 /**

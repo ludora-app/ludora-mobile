@@ -27,7 +27,7 @@ export default function SessionScreen() {
   const router = useRouter();
 
   const params = useLocalSearchParams();
-  const sessionDetails = sessionUtils.getSessionDetails(params.id as string);
+  const sessionDetails = sessionUtils.getSessionDetails((params.id as string) ?? '1');
   const { top } = useSafeAreaInsets();
   return (
     <Box className="flex-1">

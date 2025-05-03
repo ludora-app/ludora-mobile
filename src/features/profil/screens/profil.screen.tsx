@@ -46,31 +46,31 @@ export default function ProfilScreen() {
         <Badge title="Ponctuel" variant="primary" />
       </Box>
       <Box className="flex-row gap-2 py-5">
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Sessions jouées</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary" size="lg" weight="semiBold">
               35
             </String>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Sessions jouées</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary" size="lg" weight="semiBold">
               14
             </String>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Sessions jouées</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary" size="lg" weight="semiBold">
               29
             </String>
@@ -83,27 +83,27 @@ export default function ProfilScreen() {
         </String>
       </Box>
       <Box className="flex-row gap-2">
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Football</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary">Intrmédiaire</String>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Tennis</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary">Débutant</String>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex-1 p-2">
           <CardHeader>
             <CardTitle size="sm">Basketball</CardTitle>
           </CardHeader>
-          <CardContent className="mt-2">
+          <CardContent className="mt-2 self-center">
             <String variant="primary">Avancé</String>
           </CardContent>
         </Card>

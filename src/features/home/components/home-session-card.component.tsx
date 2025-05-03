@@ -1,10 +1,11 @@
 import { memo } from 'react';
 import COLORS from '@/constants/COLORS';
-import { ImageBackground } from 'expo-image';
-import { TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+import ROUTES from '@/constants/ROUTES';
 import { Badge, Box, Icon, String } from '@chillUI';
 import { formatDateLabel, formatToHour } from '@/utils/time';
 import { sportsColors, SportsEnum } from '@/constants/SPORTS';
+import { ImageBackground, ImageSourcePropType, TouchableOpacity } from 'react-native';
 
 import useCalculateDistance from '../hooks/useCalculateDistance';
 
@@ -13,23 +14,24 @@ interface Session {
   title: string;
   notes: number;
   sport: string;
-  image: string;
   endTime: string;
   latitude: number;
   startTime: string;
   longitude: number;
   currentPlayers: number;
   maximumPlayers: number;
+  image: ImageSourcePropType;
 }
 
 function HomeSessionCard({ session }: { session: Session }) {
+  const router = useRouter();
   const distance = useCalculateDistance({ latitude: session.latitude, longitude: session.longitude });
 
   return (
-    <TouchableOpacity className="mb-5" onPress={() => {}}>
+    <TouchableOpacity className="mb-5" onPress={() => router.push(`${ROUTES.SESSION.DETAILS}/${session.id}`)}>
       <Box className="h-60 w-full overflow-hidden rounded-xl bg-transparent">
-        <ImageBackground source={session.image} style={{ height: '100%', padding: 10, width: '100%' }}>
-          <Badge title={session.title} size="sm" variant="white" className="self-start" />
+        <ImageBackground source={session.image} style={{ height: '100%', width: '100%' }}>
+          <Badge title={session.title} size="sm" variant="white" className="m-2 self-start" />
         </ImageBackground>
       </Box>
       <Box className="flex items-start px-2">
@@ -42,7 +44,7 @@ function HomeSessionCard({ session }: { session: Session }) {
             </String>
           </Box>
         </Box>
-        <Box className="mb-1 flex flex-row items-center gap-2 pl-0.5">
+        <Box className="mb-1 flex flex-1 flex-row items-center gap-2">
           <Icon variant="calendar-regular" color={COLORS.gray} size="sm" />
           <String weight="semiBold" variant="gray">
             {formatDateLabel(session.startTime)}
@@ -61,7 +63,7 @@ function HomeSessionCard({ session }: { session: Session }) {
               {session.currentPlayers}/{session.maximumPlayers}
             </String>
           </Box>
-          <Box className="flex flex-row items-center gap-1">
+          <Box className="flex flex-1 flex-row items-center gap-1">
             <Icon variant="clock-regular" color={COLORS.ring} size="sm" />
             <String weight="semiBold" variant="gray">
               {formatToHour(session.startTime)} - {formatToHour(session.endTime)}

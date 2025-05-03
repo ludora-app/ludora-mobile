@@ -31,9 +31,7 @@
     "ios": {
       "bundleIdentifier": "com.amir398.ludora",
       "config": {
-        "googleMaps": {
-          "googleMapsApiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
-        }
+        "googleMapsApiKey": "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
       }
     }
   }

@@ -1,15 +1,32 @@
 import * as React from 'react';
+import { TouchableOpacity } from 'react-native';
 
 import cn from '../cn/cn';
 import { Box } from '../box';
 import { StringProps } from '../utils/types';
 import String from '../string/components/String';
 
-function Card({ className, ...props }: React.ComponentProps<typeof Box>) {
+type CardProps = {
+  onPress?: () => void;
+} & React.ComponentProps<typeof Box>;
+
+function Card({ className, onPress, ...props }: CardProps) {
+  if (onPress) {
+    return (
+      <Box
+        data-slot="card"
+        className={cn('rounded-xl bg-white shadow-sm', className)}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...props}
+      >
+        <TouchableOpacity onPress={onPress}>{props.children}</TouchableOpacity>
+      </Box>
+    );
+  }
   return (
     <Box
       data-slot="card"
-      className={cn('flex flex-1 flex-col rounded-xl bg-white py-2 shadow-sm', className)}
+      className={cn('rounded-xl bg-white shadow-sm', className)}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     />
@@ -71,7 +88,7 @@ function CardAction({ className, ...props }: React.ComponentProps<typeof Box>) {
 
 function CardContent({ className, ...props }: React.ComponentProps<typeof Box>) {
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Box className={cn('items-center', className)} {...props} />;
+  return <Box className={cn(className)} {...props} />;
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<typeof Box>) {

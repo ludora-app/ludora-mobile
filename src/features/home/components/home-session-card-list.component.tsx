@@ -1,5 +1,6 @@
 import COLORS from '@/constants/COLORS';
 import { FlashList } from '@shopify/flash-list';
+import { ImageSourcePropType } from 'react-native';
 import { String, Flow, Box, Button, Icon } from '@chillUI';
 import Animated, {
   useSharedValue,
@@ -15,13 +16,13 @@ interface Session {
   title: string;
   notes: number;
   sport: string;
-  image: string;
   endTime: string;
   latitude: number;
   startTime: string;
   longitude: number;
   currentPlayers: number;
   maximumPlayers: number;
+  image: ImageSourcePropType;
 }
 
 const AnimatedFlashList = Animated.createAnimatedComponent<React.ComponentProps<typeof FlashList<Session>>>(FlashList);

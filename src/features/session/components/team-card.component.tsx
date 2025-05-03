@@ -48,6 +48,7 @@ export default function TeamCardComponent({
       <Box className="flex flex-row">
         {players.map((player, index) => (
           <Avatar
+            key={index}
             userData={{ firstname: player.firstName, image_url: player.profilePic, lastname: player.lastName }}
             className={cn(`z-${index}`, index !== 0 && '-ml-3')}
           />

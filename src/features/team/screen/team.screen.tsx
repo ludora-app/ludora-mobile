@@ -27,7 +27,7 @@ export default function TeamScreen() {
   const teamsDetails = getTeamsDetailsBySessionId(sessionIdNumber);
 
   return (
-    <Wrapper scrollView className="p-4">
+    <Wrapper scrollView className="p-4" safeAreaView={false}>
       <String weight="black" className="mb-6 text-center text-xl">
         DÉTAILS ÉQUIPES
       </String>

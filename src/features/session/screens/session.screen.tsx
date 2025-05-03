@@ -121,10 +121,7 @@ export default function SessionScreen() {
           </Box>
         </Wrapper>
       </ScrollView>
-      <Box
-        style={{ bottom: 0, left: 0, position: 'absolute', right: 0 }}
-        className="border-gray-200 flex flex-row border-t bg-white px-8 pb-8 pt-5"
-      >
+      <Box className="border-gray-200 absolute bottom-0 left-0 right-0 flex flex-row border-t bg-white px-8 pb-8 pt-5">
         <Box className="flex-1">
           <String variant="dark" size="lg">
             <String weight="bold">{sessionDetails.fieldPrice}€ / heure</String>

@@ -7,11 +7,16 @@ export default function TeamLayout() {
   return (
     <Stack
       screenOptions={{
-        contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
     >
-      <Stack.Screen name="[id]/index" options={{ header: () => header(), headerShown: true }} />
+      <Stack.Screen
+        name="[id]/index"
+        options={{
+          header: () => header(),
+          headerShown: true,
+        }}
+      />
     </Stack>
   );
 }

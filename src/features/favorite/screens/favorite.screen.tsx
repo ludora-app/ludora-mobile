@@ -8,7 +8,7 @@ import FieldCard from '../components/field-card.component';
 
 export default function FavoriteScreen() {
   return (
-    <Wrapper safeAreaView={false} py>
+    <Wrapper py>
       <SportFilters />
       <String variant="dark" weight="bold" size="lg">
         Terrains favoris

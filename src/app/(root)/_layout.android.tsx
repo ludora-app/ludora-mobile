@@ -20,8 +20,7 @@ export default function AppLayout() {
           name="session-filter"
           options={{
             animation: 'slide_from_bottom',
-            contentStyle: { backgroundColor: 'transparent' },
-            presentation: 'modal',
+            presentation: 'transparentModal',
           }}
         />
       </Stack>

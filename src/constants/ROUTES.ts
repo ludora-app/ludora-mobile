@@ -6,7 +6,8 @@ const ROUTES = {
   },
   SESSION: {
     DETAILS: '/session',
-    TEAM: '/team',
+    FILTER: '/session-filter',
+    TEAM: '/session/team',
   },
 };
 

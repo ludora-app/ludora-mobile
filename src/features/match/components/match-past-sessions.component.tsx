@@ -5,7 +5,7 @@ import { pastSessionsMock } from '../mocks/sessions.mock';
 
 export default function MatchPastSessions() {
   return (
-    <Wrapper safeAreaView={false} py>
+    <Wrapper py>
       {pastSessionsMock.map(session => (
         // eslint-disable-next-line react/jsx-props-no-spreading
         <SessionCard key={session.id} {...session} />

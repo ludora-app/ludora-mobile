@@ -63,7 +63,7 @@ export default function SessionScreen() {
             </Box>
           </ImageBackground>
         </Box>
-        <Wrapper safeAreaView={false} className="relative z-50 -m-2 rounded-t-3xl bg-white">
+        <Wrapper className="relative z-50 -m-2 rounded-t-3xl bg-white">
           <Box className="flex justify-around">
             <Box className="flex items-center gap-2 px-5 pt-5">
               <Box className="flex flex-row items-center">
@@ -130,13 +130,7 @@ export default function SessionScreen() {
             Durée estimée: {getEstimatedTime(sessionDetails.startDate, sessionDetails.endDate)}
           </String>
         </Box>
-        <Box className="flex-1">
-          <Button>
-            <String variant="white" size="lg">
-              Réserver
-            </String>
-          </Button>
-        </Box>
+        <Button title="Réserver" />
       </Box>
     </Box>
   );

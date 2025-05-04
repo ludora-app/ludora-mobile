@@ -9,7 +9,7 @@ export default function WelcomeComponent() {
   const router = useRouter();
   return (
     <ImageBackground source={welcomeScreenImageBackground2} style={StyleSheet.absoluteFillObject}>
-      <Wrapper>
+      <Wrapper safeAreaView>
         <Box className="flex-1 items-center justify-center">
           <Image source={bigLogo} contentFit="contain" className="h-56 w-5/6" />
         </Box>

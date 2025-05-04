@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import ROUTES from '@/constants/ROUTES';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Icon, FormInput, String } from '@chillUI';
@@ -23,8 +24,8 @@ export default function HeaderHome() {
         <Box className="flex-1">
           <FormInput placeholder="Rechercher une session sportive" name="search" control={control} />
         </Box>
-        <Box>
-          <Button variant="icon" btnClassName="p-5 mt-1">
+        <Box className="size-14 pt-0.5">
+          <Button variant="icon" redirect={ROUTES.SESSION.FILTER}>
             <Icon variant="filter-regular" />
           </Button>
         </Box>

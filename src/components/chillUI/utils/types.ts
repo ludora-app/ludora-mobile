@@ -7,6 +7,7 @@ import { AnimatedProps } from 'react-native-reanimated';
 import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 import { StyleProp, TextInputProps, TextStyle, TouchableOpacityProps } from 'react-native';
+import BottomSheetNative, { BottomSheetProps as BottomSheetPropsNative } from '@gorhom/bottom-sheet';
 
 import backgroundVariants from '../badge/utils/styleVariants';
 import { btnVariant, heightVr, positionVr } from '../button/utils/styleVariants';
@@ -117,3 +118,15 @@ export interface AvatarProps {
     image_url: string;
   };
 }
+
+export type BottomSheetProps = BottomSheetPropsNative & {
+  title: string;
+  screen?: boolean;
+  closeable?: boolean;
+  showHeader?: boolean;
+  children: React.ReactNode;
+  sheetRef?: React.RefObject<BottomSheetNative>;
+  scrollView?: boolean;
+  footer?: React.ReactNode;
+  footerClassName?: string;
+};

@@ -5,7 +5,6 @@ import MatchUpcomingSessions from '../components/match-upcomming-sessions.compon
 
 export default function MatchScreen() {
   return (
-    // <Wrapper safeAreaView={false} py>
     <Box className="flex-1">
       <TabSwitch
         cardDisplay={{
@@ -18,6 +17,5 @@ export default function MatchScreen() {
         rightRender={<MatchPastSessions />}
       />
     </Box>
-    // </Wrapper>
   );
 }

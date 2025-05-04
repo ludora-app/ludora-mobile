@@ -1,8 +1,8 @@
 import { Link } from 'expo-router';
 import COLORS from '@/constants/COLORS';
-import { twMerge } from 'tailwind-merge';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 
+import cn from '../../cn/cn';
 import { Box } from '../../box';
 import { Icon } from '../../icon';
 import { BtnProps } from '../../utils/types';
@@ -62,8 +62,8 @@ export default function Button({
   const button = (
     <TouchableOpacity
       onPress={onPress}
-      className={twMerge(
-        'w-full items-center justify-center rounded-full',
+      className={cn(
+        'flex-1 items-center justify-center rounded-full',
         heightVr({ size }),
         btnVariant({ variant }),
         positionVr({ position }),
@@ -74,13 +74,12 @@ export default function Button({
       /* eslint-disable-next-line react/jsx-props-no-spreading */
       {...props}
     >
-      {children}
       {loading ? (
         <ActivityIndicator color="#fff" size={loadingIconSize(size)} />
       ) : (
         <Box
-          className={twMerge(
-            'w-full flex-row items-center justify-center',
+          className={cn(
+            'flex-1 flex-row items-center justify-center',
             textLeftIconPosition({
               textLeftIconPosition: !!textLeftIcon && !!title,
             }),
@@ -92,6 +91,7 @@ export default function Button({
             </Box>
           )}
           {textLeftIcon && textLeftIcon}
+          {children}
           {!!title && (
             <String
               className={textClassName ?? ''}

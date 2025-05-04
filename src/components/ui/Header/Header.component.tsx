@@ -16,6 +16,8 @@ export default function Header() {
   const pathname = usePathname();
 
   const headerComponent = useMemo(() => {
+    // if the pathname is not a tab router, return null
+
     switch (pathname) {
       case '/':
         return <HeaderHome />;
@@ -28,7 +30,7 @@ export default function Header() {
       case '/profil':
         return <HeaderProfil />;
       default:
-        return <HeaderTitle title={pathname.split('/').pop() || ''} />;
+        return <HeaderHome />;
     }
   }, [pathname]);
 

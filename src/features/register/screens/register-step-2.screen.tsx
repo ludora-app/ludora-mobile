@@ -41,7 +41,7 @@ export default function RegisterStep2Screen() {
   };
 
   return (
-    <Wrapper keyboardAwareScrollView className="justify-between gap-10" edges={['left', 'right']}>
+    <Wrapper keyboardAwareScrollView className="justify-between gap-10">
       <Box className="items-center justify-center gap-4">
         <Image source={registerImage} contentFit="contain" className="h-28 w-5/6" />
         <String size="3xl" weight="bold">

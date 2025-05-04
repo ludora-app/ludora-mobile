@@ -113,7 +113,7 @@ const safeAreaViewComponents = (props: WrapperProps, children: React.ReactNode) 
 };
 
 const IsSafeAreaViewComponent = (props: WrapperProps, children: React.ReactNode) => {
-  const { safeAreaView = true } = props;
+  const { safeAreaView } = props;
   return safeAreaView ? safeAreaViewComponents(props, children) : IsScrollComponent(props, children);
 };
 

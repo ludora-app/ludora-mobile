@@ -94,7 +94,12 @@ function CardContent({ className, ...props }: React.ComponentProps<typeof Box>) 
 function CardFooter({ className, ...props }: React.ComponentProps<typeof Box>) {
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Box data-slot="card-footer" className={cn('[.border-t]:pt-6 flex items-center px-6', className)} {...props} />
+    <Box
+      data-slot="card-footer"
+      className={cn('flex-row items-center', className)}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
   );
 }
 

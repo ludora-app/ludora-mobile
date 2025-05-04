@@ -110,14 +110,9 @@ export default function ProfilScreen() {
       </Box>
       <Separator className="my-5" />
       <Box className="flex-row gap-2">
-        <Button
-          title="Modifier le profil "
-          variant="light"
-          btnClassName="flex-1 rounded-xl"
-          textClassName="text-dark"
-        />
-        <Button title="Partager le profil" variant="light" btnClassName="flex-1 rounded-xl" textClassName="text-dark" />
-        <Button variant="light" btnClassName="size-12 rounded-xl" textClassName="text-dark">
+        <Button title="Modifier le profil " variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
+        <Button title="Partager le profil" variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
+        <Button variant="light" btnClassName="flex-none size-12 rounded-xl" textClassName="text-dark">
           <Icon variant="user-plus-regular" color={COLORS.primary} />
         </Button>
       </Box>

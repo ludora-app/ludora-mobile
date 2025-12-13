@@ -1,7 +1,7 @@
 import { Image } from 'react-native';
 import COLORS from '@/constants/COLORS';
 import { sportsColors, SportsEnum } from '@/constants/SPORTS';
-import { Badge, Box, Card, CardContent, cn, Icon, String } from '@/components/chillUI';
+import { Badge, Box, Card, CardContent, cn, Icon, String } from '@chillui/ui';
 
 export interface FieldCardProps {
   // id: number;

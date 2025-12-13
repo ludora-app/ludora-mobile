@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Box } from '@chillUI';
+import { Accordion, AccordionItem, Box } from '@chillui/ui';
 
 import SessionFilterAccodionSort from './session-filter-accodion-items/session-filter-accodion-sort.component';
 import SessionFilterAccodionDistance from './session-filter-accodion-items/session-filter-accodion-distance.component';

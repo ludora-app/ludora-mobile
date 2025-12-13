@@ -12,9 +12,68 @@ export default {
     extend: {
       colors: {
         accent: '#CE3728',
+        background: '#F2F4F8',
         bluePrimary: '#97CDCC',
         blueSecondary: '#6AAFAD',
         border: '#e4e4e4',
+        button: {
+          accent: {
+            background: '#CBD2D9',
+            content: '#FF0000',
+          },
+          danger: {
+            background: '#FF0000',
+            content: '#FFF',
+          },
+          dark: {
+            background: '#323F4B',
+            content: '#FFF',
+          },
+          disabled: {
+            background: '#CBD2D9',
+            content: '#666',
+          },
+          error: {
+            background: '#FF0000',
+            content: '#FFF',
+          },
+          info: {
+            background: '#6EE7B7',
+            content: '#000',
+          },
+          inverted: {
+            background: '#F5F7FA',
+            content: '#F15924',
+          },
+          light: {
+            background: '#F5F7FA',
+            content: '#000',
+          },
+          muted: {
+            background: '#CBD2D9',
+            content: '#666',
+          },
+          neutral: {
+            background: '#CBD2D9',
+            content: '#333',
+          },
+          primary: {
+            background: '#F15924',
+            content: '#FFF',
+          },
+          secondary: {
+            background: '#CBD2D9',
+            content: '#FCD34D',
+          },
+          warning: {
+            background: '#FCD34D',
+            content: '#000',
+          },
+          white: {
+            background: '#F5F7FA',
+            content: '#000',
+          },
+        },
         darkLight: '#0000001A',
         destructive: '#A52523',
         gray: '#7C7C7C',
@@ -27,21 +86,16 @@ export default {
         ring: '#9e9e9e',
         secondary: '#FCBD1D',
       },
+
       fontFamily: {
-        nunito: ['NunitoSans300Light', 'sans-serif'],
-        nunitoBlack: ['NunitoSans900Black', 'sans-serif'],
-        nunitoBlackItalic: ['NunitoSans900BlackItalic', 'sans-serif'],
-        nunitoBold: ['NunitoSans700Bold', 'sans-serif'],
-        nunitoBoldItalic: ['NunitoSans700BoldItalic', 'sans-serif'],
-        nunitoItalic: ['NunitoSans300LightItalic', 'sans-serif'],
-        nunitoLight: ['NunitoSans300Light', 'sans-serif'],
-        nunitoLightItalic: ['NunitoSans300LightItalic', 'sans-serif'],
-        nunitoMedium: ['NunitoSans600SemiBold', 'sans-serif'],
-        nunitoMediumItalic: ['NunitoSans600SemiBoldItalic', 'sans-serif'],
-        nunitoRegular: ['NunitoSans400Regular', 'sans-serif'],
-        nunitoRegularItalic: ['NunitoSans400RegularItalic', 'sans-serif'],
-        nunitoSemiBold: ['NunitoSans600SemiBold', 'sans-serif'],
-        nunitoSemiBoldItalic: ['NunitoSans600SemiBoldItalic', 'sans-serif'],
+        primary_bold: ['NunitoSans700Bold', 'sans-serif'],
+        primary_extra_bold: ['NunitoSans800ExtraBold', 'sans-serif'],
+        primary_italic: ['NunitoSans400RegularItalic', 'sans-serif'],
+        primary_light: ['NunitoSans300Light', 'sans-serif'],
+        primary_medium: ['NunitoSans600SemiBold', 'sans-serif'],
+        primary_medium_italic: ['NunitoSans600SemiBoldItalic', 'sans-serif'],
+        primary_regular: ['NunitoSans400Regular', 'sans-serif'],
+        primary_semi_bold: ['NunitoSans600SemiBold', 'sans-serif'],
       },
       text: {
         title: 'text-xl font-nunitoSemiBold text-dark',

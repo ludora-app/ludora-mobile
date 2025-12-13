@@ -11,6 +11,7 @@ import {
   NunitoSans_600SemiBold_Italic,
   NunitoSans_700Bold_Italic,
   NunitoSans_900Black_Italic,
+  NunitoSans_800ExtraBold,
 } from '@expo-google-fonts/nunito-sans';
 
 type FontProviderProps = {
@@ -27,6 +28,7 @@ export default function FontProvider({ children }: FontProviderProps) {
     NunitoSans600SemiBoldItalic: NunitoSans_600SemiBold_Italic,
     NunitoSans700Bold: NunitoSans_700Bold,
     NunitoSans700BoldItalic: NunitoSans_700Bold_Italic,
+    NunitoSans800ExtraBold: NunitoSans_800ExtraBold,
     NunitoSans900Black: NunitoSans_900Black,
     NunitoSans900BlackItalic: NunitoSans_900Black_Italic,
   });

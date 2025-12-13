@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Wrapper, String } from '@/components/chillUI';
+import { Wrapper, String } from '@chillui/ui';
 
 import teamDetailsMock from '../mocks/team-details.mock';
 import TeamDetails from '../component/team-details.component';

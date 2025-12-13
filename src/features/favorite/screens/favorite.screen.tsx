@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { String, Wrapper } from '@chillUI';
+import { String, Wrapper } from '@chillui/ui';
 import SportFilters from '@/components/ui/sport-filters/sport-filters.component';
 
 import fieldsMock from '../mocks/fields.mock';

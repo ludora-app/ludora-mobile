@@ -1,12 +1,16 @@
-import { Wrapper } from '@chillUI';
+import { ScreenLayout } from '@ludo/ui';
+import { useSharedValue } from 'react-native-reanimated';
 
-import sessionsMocks from '../mocks/sessions-mocks';
-import SessionCardList from '../components/home-session-card-list.component';
+import { HomeHeader } from '../components/home-header.component';
+import HomeSessionCardList from '../components/home-session-card/home-session-card-list/home-session-card-list.component';
 
-export default function HomeScreen() {
+export default function MatchScreen() {
+  const sharedScrollY = useSharedValue(0);
+
   return (
-    <Wrapper className="mt-5">
-      <SessionCardList sessions={sessionsMocks} />
-    </Wrapper>
+    <ScreenLayout>
+      <HomeHeader scrollY={sharedScrollY} />
+      <HomeSessionCardList scrollY={sharedScrollY} />
+    </ScreenLayout>
   );
 }

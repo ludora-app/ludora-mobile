@@ -1,30 +1,30 @@
-import { Redirect, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import UserLocationProvider from '@/providers/user-location-provider';
 
-const isLoggedIn = true;
-export default function AppLayout() {
-  if (!isLoggedIn) {
-    return <Redirect href="/auth" />;
-  }
+function AppLayoutNav() {
+  return (
+    <Stack
+      initialRouteName="(tabs)"
+      screenOptions={{
+        animation: 'ios_from_right',
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="(modals)"
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+        }}
+      />
+    </Stack>
+  );
+}
 
+export default function AppLayout() {
   return (
     <UserLocationProvider>
-      <Stack
-        initialRouteName="(tabs)"
-        screenOptions={{
-          animation: 'ios_from_right',
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          name="session-filter"
-          options={{
-            animation: 'slide_from_bottom',
-            contentStyle: { backgroundColor: 'transparent' },
-            presentation: 'modal',
-          }}
-        />
-      </Stack>
+      <AppLayoutNav />
     </UserLocationProvider>
   );
 }

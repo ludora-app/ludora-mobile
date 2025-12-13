@@ -1,8 +1,8 @@
-import ROUTES from '@/constants/ROUTES';
 import { useRouter } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
-import Avatar from '@/components/chillUI/avatar/Avatar';
-import { Box, cn, Icon, String } from '@/components/chillUI';
+import { Box, cn, Icon, String } from '@chillui/ui';
+
+import ROUTES from '@/constants/ROUTES';
 
 interface TeamCardComponentProps {
   id: number;
@@ -46,13 +46,13 @@ export default function TeamCardComponent({
         </Box>
       </Box>
       <Box className="flex flex-row">
-        {players.map((player, index) => (
+        {/* {players.map((player, index) => (
           <Avatar
             key={index}
             userData={{ firstname: player.firstName, image_url: player.profilePic, lastname: player.lastName }}
             className={cn(`z-${index}`, index !== 0 && '-ml-3')}
           />
-        ))}
+        ))} */}
       </Box>
     </TouchableOpacity>
   );

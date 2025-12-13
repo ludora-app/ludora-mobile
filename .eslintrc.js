@@ -15,6 +15,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/prefer-default-export': 'off',
     'perfectionist/sort-imports': ['error'],
     'perfectionist/sort-interfaces': ['error'],
     'perfectionist/sort-objects': [
@@ -25,8 +26,9 @@ module.exports = {
     ],
     // 'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    'react/no-array-index-key': 'off',
+    'react/jsx-props-no-spreading': 'off',
 
+    'react/no-array-index-key': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': [
       'error',

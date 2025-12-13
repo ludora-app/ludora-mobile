@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Box, Icon } from '../chillUI';
+import { Box, Icon } from '@chillui/ui';
 
 export default function GoBackHeader() {
   const router = useRouter();

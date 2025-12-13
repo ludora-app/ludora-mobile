@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Box, Button, Checkbox, String } from '@chillUI';
+import { Box, Button, Checkbox, String } from '@chillui/ui';
 
 export default function SessionFilterAccordionSchedules() {
   const [schedules, setSchedules] = useState([

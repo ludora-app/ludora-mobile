@@ -1,4 +1,4 @@
-import { BottomSheet, Button } from '@chillUI';
+import { BottomSheet, Button } from '@chillui/ui';
 
 import SessionFilterAccordionList from '../components/session-filter-accordion-list.component';
 

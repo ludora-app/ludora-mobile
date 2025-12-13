@@ -1,4 +1,4 @@
-import { Box, cn } from '@/components/chillUI';
+import { Box, cn } from '@chillui/ui';
 
 import TeamCardComponent from './team-card.component';
 

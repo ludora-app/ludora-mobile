@@ -17,3 +17,8 @@ export { default as runningGuy } from './avatar/running-guy.png';
 export { default as hoodieGuy } from './avatar/hoodie-guy.png';
 export { default as nailLady } from './avatar/nail-lady.png';
 export { default as stairsGuy } from './avatar/stairs-guy.png';
+export { default as ludo } from './logos/ludo.png';
+export { default as basketballBall } from './sports-balls/basketball-ball.png';
+export { default as tennisBall } from './sports-balls/tennis-ball.png';
+export { default as footballBall } from './sports-balls/football-ball.png';
+export { default as backgroundImg } from './images/background-img.png';

@@ -1,22 +1,23 @@
-import COLORS from '@/constants/COLORS';
 import { ImageBackground } from 'expo-image';
 import { welcomeScreenImageBackground } from 'assets';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { sportsColors, SportsEnum } from '@/constants/SPORTS';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { Badge, Box, Button, Icon, Separator, String, Wrapper } from '@chillui/ui';
+
+import COLORS from '@/constants/COLORS';
 import { formatHour, getDayOfWeek, getEstimatedTime } from '@/utils/date.utils';
-import { Badge, Box, Button, Icon, Separator, String, Wrapper } from '@/components/chillUI';
+// import { sportsColors, SportsEnum } from '@/constants/SPORTS';
 
 import sessionUtils from '../utils/session.utils';
 import TeamContainer from '../components/team-container.component';
 
 export interface SessionScreenProps {
   id: string;
+  sport: any;
   endDate: string;
   fieldName: string;
-  sport: SportsEnum;
   startDate: string;
   fieldPrice: number;
   participants: number;
@@ -57,7 +58,7 @@ export default function SessionScreen() {
                 </Box>
               </Box>
               <Box className="ml-3 flex flex-row gap-2">
-                <Badge title={sessionDetails.sport} variant={sportsColors.get(sessionDetails.sport as SportsEnum)} />
+                {/* <Badge title={sessionDetails.sport} variant={sportsColors.get(sessionDetails.sport as SportsEnum)} /> */}
                 <Badge title={sessionDetails.gameMode} variant="black" />
               </Box>
             </Box>
@@ -130,7 +131,9 @@ export default function SessionScreen() {
             Durée estimée: {getEstimatedTime(sessionDetails.startDate, sessionDetails.endDate)}
           </String>
         </Box>
-        <Button title="Réserver" />
+        <Box className="flex-1">
+          <Button title="Réserver" />
+        </Box>
       </Box>
     </Box>
   );

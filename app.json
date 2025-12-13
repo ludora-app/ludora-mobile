@@ -8,6 +8,12 @@
       "output": "static"
     },
     "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.1095759943103-dtv50sdakgk0dbf2s3rqd9rd4g3nh88j"
+        }
+      ],
       "expo-router",
       "expo-font",
       [
@@ -15,7 +21,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Autoriser $(PRODUCT_NAME) à accéder à votre position."
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "name": "ludora",
     "slug": "ludora",
@@ -26,12 +33,21 @@
         "googleMaps": {
           "apiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
         }
-      }
+      },
+      "permissions": ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"]
     },
     "ios": {
       "bundleIdentifier": "com.amir398.ludora",
       "config": {
         "googleMapsApiKey": "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
+      }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "91b4169f-5883-4899-8b2b-eade1e82b68b"
       }
     }
   }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import * as Location from 'expo-location';
+
 import useUserLocationStore from '@/stores/user-localtion.store';
 
 const useGetUserLocation = () => {

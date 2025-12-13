@@ -1,4 +1,4 @@
-import { Box, TabSwitch } from '@/components/chillUI';
+import { Box, TabSwitch } from '@chillui/ui';
 
 import MatchPastSessions from '../components/match-past-sessions.component';
 import MatchUpcomingSessions from '../components/match-upcomming-sessions.component';

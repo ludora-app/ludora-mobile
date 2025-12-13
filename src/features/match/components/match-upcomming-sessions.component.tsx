@@ -1,4 +1,4 @@
-import { Box, Wrapper } from '@/components/chillUI';
+import { Box, Wrapper } from '@chillui/ui';
 import SessionCard from '@/components/ui/session-card.component';
 
 import { upcommingSessionsMock } from '../mocks/sessions.mock';

@@ -1,12 +1,7 @@
-import { Redirect, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import UserLocationProvider from '@/providers/user-location-provider';
 
-const isLoggedIn = true;
 export default function AppLayout() {
-  if (!isLoggedIn) {
-    return <Redirect href="/auth" />;
-  }
-
   return (
     <UserLocationProvider>
       <Stack
@@ -17,9 +12,10 @@ export default function AppLayout() {
         }}
       >
         <Stack.Screen
-          name="session-filter"
+          name="(modals)"
           options={{
             animation: 'slide_from_bottom',
+            headerShown: false,
             presentation: 'transparentModal',
           }}
         />

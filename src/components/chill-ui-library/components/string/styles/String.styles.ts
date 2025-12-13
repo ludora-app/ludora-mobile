@@ -1,0 +1,118 @@
+import { tv } from 'tailwind-variants';
+
+const textSizes = {
+  '2xl': 'text-[24px] leading-[32px]',
+  '3xl': 'text-[30px] leading-[36px]',
+  '4xl': 'text-[36px] leading-[40px]',
+  '5xl': 'text-[48px] leading-[52px]',
+  '6xl': 'text-[60px] leading-[64px]',
+  '7xl': 'text-[72px] leading-[76px]',
+  '8xl': 'text-[96px] leading-[100px]',
+  '9xl': 'text-[128px] leading-[132px]',
+  lg: 'text-[18px] leading-[28px]',
+  md: 'text-[16px] leading-[24px]',
+  sm: 'text-[14px] leading-[20px]',
+  xl: 'text-[20px] leading-[28px]',
+  xs: 'text-[12px] leading-[16px]',
+};
+
+export const stringTv = tv({
+  base: 'flex-shrink font-primary_regular',
+  defaultVariants: {
+    position: 'left',
+    variant: 'body-1',
+  },
+  variants: {
+    colorVariant: {
+      black: 'text-black',
+      danger: 'text-danger',
+      dark: 'text-dark',
+      disabled: 'text-disabled',
+      error: 'text-error',
+      info: 'text-info',
+      inverted: 'text-inverted',
+      light: 'text-light',
+      muted: 'text-muted',
+      neutral: 'text-neutral',
+      primary: 'text-primary',
+      secondary: 'text-secondary',
+      success: 'text-success',
+      tertiary: 'text-tertiary',
+      warning: 'text-warning',
+      white: 'text-white',
+    },
+
+    position: {
+      center: 'text-center',
+      left: 'text-left',
+      right: 'text-right',
+    },
+
+    variant: {
+      'body-1': textSizes.md,
+      'body-2': textSizes.lg,
+      'body-3': textSizes.xl,
+      'body-sm': textSizes.sm,
+      'body-xs': textSizes.xs,
+      'title-1': `${textSizes['2xl']} font-primary_bold_font`,
+      'title-2': `${textSizes['3xl']} font-primary_bold_font`,
+      'title-3': `${textSizes['4xl']} font-primary_bold_font`,
+      'title-4': `${textSizes['5xl']} font-primary_bold_font`,
+      'title-5': `${textSizes['6xl']} font-primary_bold_font`,
+      'title-6': `${textSizes['7xl']} font-primary_bold_font`,
+      'title-7': `${textSizes['8xl']} font-primary_bold_font`,
+      'title-8': `${textSizes['9xl']} font-primary_bold_font`,
+    },
+    //
+    size: {
+      '2xl': textSizes['2xl'],
+      '3xl': textSizes['3xl'],
+      '4xl': textSizes['4xl'],
+      '5xl': textSizes['5xl'],
+      '6xl': textSizes['6xl'],
+      '7xl': textSizes['7xl'],
+      '8xl': textSizes['8xl'],
+      '9xl': textSizes['9xl'],
+      lg: textSizes.lg,
+      md: textSizes.md,
+      sm: textSizes.sm,
+      xl: textSizes.xl,
+      xs: textSizes.xs,
+    },
+    //
+    font: {
+      primaryBold: 'font-primary_bold',
+      primaryExtraBold: 'font-primary_extra_bold',
+      primaryExtraLight: 'font-primary_extra_light',
+      primaryItalic: 'font-primary_italic',
+      primaryLight: 'font-primary_light',
+      primaryMedium: 'font-primary_medium',
+      primaryRegular: 'font-primary_regular',
+      primarySemiBold: 'font-primary_semi_bold',
+      primaryThin: 'font-primary_thin',
+
+      secondaryBold: 'font-secondary_bold',
+      secondaryExtraBold: 'font-secondary_extra_bold',
+      secondaryExtraLight: 'font-secondary_extra_light',
+      secondaryItalic: 'font-secondary_italic',
+      secondaryLight: 'font-secondary_light',
+      secondaryMedium: 'font-secondary_medium',
+      secondaryRegular: 'font-secondary_regular',
+      secondarySemiBold: 'font-secondary_semi_bold',
+      secondaryThin: 'font-secondary_thin',
+      tertiaryBold: 'font-tertiary_bold',
+      tertiaryExtraBold: 'font-tertiary_extra_bold',
+      tertiaryExtraLight: 'font-tertiary_extra_light',
+      tertiaryItalic: 'font-tertiary_italic',
+      tertiaryLight: 'font-tertiary_light',
+      tertiaryMedium: 'font-tertiary_medium',
+      tertiaryRegular: 'font-tertiary_regular',
+      tertiarySemiBold: 'font-tertiary_semi_bold',
+      tertiaryThin: 'font-tertiary_thin',
+    },
+  },
+});
+
+export const twStyles = {
+  pointerEventsNone: 'pointer-events-none',
+};

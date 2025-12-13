@@ -7,10 +7,11 @@ export default function AuthLayout() {
   return (
     <Stack
       screenOptions={{
-        animation: 'slide_from_bottom',
+        animation: 'ios_from_right',
         contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
+      initialRouteName="index"
     >
       <Stack.Screen name="login" options={{ header: () => header(), headerShown: true }} />
     </Stack>

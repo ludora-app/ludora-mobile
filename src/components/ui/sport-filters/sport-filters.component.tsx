@@ -2,9 +2,8 @@ import { useState } from 'react';
 import COLORS from '@/constants/COLORS';
 import { ScrollView, TouchableOpacity } from 'react-native';
 
-import { Box } from '../../chillUI/box';
 import { sportIcons } from './sport-icons';
-import { Icon, String } from '../../chillUI';
+import { Icon, String, Box } from '@chillui/ui';
 
 /**
  * @description Component to display the sport filters

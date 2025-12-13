@@ -1,0 +1,7309 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "AppController_getHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get the health of the application",
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/emails/test": {
+      "get": {
+        "operationId": "EmailsController_testEmail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Emails"
+        ]
+      }
+    },
+    "/storage/upload": {
+      "post": {
+        "operationId": "StorageController_upload",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Storage"
+        ]
+      }
+    },
+    "/storage/get-signed-url": {
+      "get": {
+        "operationId": "StorageController_getSignedUrl",
+        "parameters": [
+          {
+            "name": "filename",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Storage"
+        ]
+      }
+    },
+    "/metrics": {
+      "get": {
+        "operationId": "MetricsController_index",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Metrics"
+        ]
+      }
+    },
+    "/auth-b2c/register": {
+      "post": {
+        "operationId": "AuthB2CController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterB2CWithFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a user account",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/google-login": {
+      "post": {
+        "operationId": "AuthB2CController_createOrConnectGoogleUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoogleUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created or connected successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrConnectGoogleResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during Google user creation or connection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Creates or connects a user with a Google account",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/login": {
+      "post": {
+        "operationId": "AuthB2CController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Allow the user to login",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify-mail": {
+      "post": {
+        "operationId": "AuthB2CController_verifyEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyMailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during email verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Allow to verify the email, unprotected route",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify": {
+      "get": {
+        "operationId": "AuthB2CController_verifyToken",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyTokenResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during token verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Verify the validity of the token & the user account",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify-email-code": {
+      "post": {
+        "operationId": "AuthB2CController_verifyEmailCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyEmailCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email code verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during email code verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Verify the email code",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/resend-verification-code": {
+      "post": {
+        "operationId": "AuthB2CController_resendVerificationCode",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Verification code resent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during verification code resend",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Resend the verification code",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/refresh-token": {
+      "post": {
+        "operationId": "AuthB2CController_refreshToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tokens refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during token refresh",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Refresh access token using refresh token",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/logout": {
+      "post": {
+        "operationId": "AuthB2CController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Logout user from current device",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/logout-all-devices": {
+      "post": {
+        "operationId": "AuthB2CController_logoutAllDevices",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logged out from all devices successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Logout user from all devices",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/google/callback": {
+      "get": {
+        "operationId": "AuthB2CController_googleCallback",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/generate-access-token-from-code": {
+      "post": {
+        "operationId": "AuthB2CController_generateAccessTokenFromCode",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Access token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during access token generation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Generate an access token from a verification code",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/users/list/collection": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of users to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFindAllUsersResponseDataDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Récupère tous les utilisateurs",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{uid}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindOneUserResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "get user by uid requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "operationId": "UsersController_findMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindMeUserResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "get user by token requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/email/{email}": {
+      "get": {
+        "operationId": "UsersController_findOneByEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Error fetching user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "get user by email",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/update": {
+      "patch": {
+        "operationId": "UsersController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Error updating user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "update user requires to be connected, does not update the password",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/update-password": {
+      "patch": {
+        "operationId": "UsersController_updatePassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Password updated successfully"
+          },
+          "400": {
+            "description": "Error updating password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "update password requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/deactivate": {
+      "patch": {
+        "operationId": "UsersController_deactivate",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "User deactivated successfully"
+          },
+          "400": {
+            "description": "Error deactivating user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "deactivate user requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/delete": {
+      "delete": {
+        "operationId": "UsersController_remove",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "Error deleting user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "delete user requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/password-reset-request": {
+      "post": {
+        "operationId": "UsersController_passwordResetRequest",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Password reset request sent successfully"
+          },
+          "400": {
+            "description": "Error initiating password reset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "This method is used to initiate the password reset process, sends a verification code to the user email",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/password-reset": {
+      "patch": {
+        "operationId": "UsersController_passwordReset",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgottenPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Password reset successfully"
+          },
+          "400": {
+            "description": "Error resetting password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Verification code not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "This method is used to reset the password of a user when he forgot his password",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/sessions": {
+      "post": {
+        "operationId": "SessionsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new session",
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/sessions/list/collection": {
+      "get": {
+        "operationId": "SessionsController_findAll",
+        "parameters": [
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports of the session",
+            "schema": {
+              "example": [
+                "BASKETBALL",
+                "FOOTBALL"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of sessions to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "minStart",
+            "required": false,
+            "in": "query",
+            "description": "Minimum start date",
+            "schema": {
+              "format": "date-time",
+              "example": "2022-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxStart",
+            "required": false,
+            "in": "query",
+            "description": "Maximum start date",
+            "schema": {
+              "format": "date-time",
+              "example": "2022-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "latitude",
+            "required": false,
+            "in": "query",
+            "description": "Latitude of the user",
+            "schema": {
+              "example": "48.8588443",
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": false,
+            "in": "query",
+            "description": "Longitude of the user",
+            "schema": {
+              "example": "2.2943506",
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance of the session search (in km)",
+            "schema": {
+              "minimum": 0,
+              "example": "10",
+              "type": "number"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "Filter sessions by whether they are past or upcoming, used to filter my sessions",
+            "schema": {
+              "example": "UPCOMING",
+              "type": "string",
+              "enum": [
+                "PAST",
+                "UPCOMING",
+                "ALL"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all sessions",
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/sessions/{uid}": {
+      "get": {
+        "operationId": "SessionsController_findOne",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a session by uid",
+        "tags": [
+          "Sessions"
+        ]
+      },
+      "patch": {
+        "operationId": "SessionsController_update",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSessionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Session updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a session by uid",
+        "tags": [
+          "Sessions"
+        ]
+      },
+      "delete": {
+        "operationId": "SessionsController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/session-teams/list-by-session/collection/{sessionUid}": {
+      "get": {
+        "operationId": "SessionTeamsController_findTeamsBySessionUid",
+        "parameters": [
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseSessionTeamResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all teams linked to a session by session uid",
+        "tags": [
+          "SessionTeams"
+        ]
+      }
+    },
+    "/session-teams/teams/{uid}": {
+      "get": {
+        "operationId": "SessionTeamsController_findOneTeamByUid",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a team by its uid",
+        "tags": [
+          "SessionTeams"
+        ]
+      }
+    },
+    "/session-invitations": {
+      "post": {
+        "operationId": "SessionInvitationsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionInvitationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new session invitation",
+        "tags": [
+          "SessionInvitations"
+        ]
+      }
+    },
+    "/session-invitations/list-by-user/collection/{userUid}": {
+      "get": {
+        "operationId": "SessionInvitationsController_findAllByUserId",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of session invitations to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor ID for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "filtre les sessions en fonction de s'ils sont passés ou à venir, sert pour filtrer mes sessions",
+            "schema": {
+              "example": "PENDING",
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED",
+                "CANCELED"
+              ]
+            }
+          },
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all session invitations by user ID",
+        "tags": [
+          "SessionInvitations"
+        ]
+      }
+    },
+    "/session-invitations/list-by-session/collection/{sessionUid}": {
+      "get": {
+        "operationId": "SessionInvitationsController_findAllBySessionId",
+        "parameters": [
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of session invitations to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor ID for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "filtre les sessions en fonction de s'ils sont passés ou à venir, sert pour filtrer mes sessions",
+            "schema": {
+              "example": "PENDING",
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED",
+                "CANCELED"
+              ]
+            }
+          },
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all session invitations by session ID",
+        "tags": [
+          "SessionInvitations"
+        ]
+      }
+    },
+    "/session-invitations/{sessionUid}/{receiverUid}": {
+      "get": {
+        "operationId": "SessionInvitationsController_findOne",
+        "parameters": [
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "receiverUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a session invitation by session ID and receiver ID",
+        "tags": [
+          "SessionInvitations"
+        ]
+      }
+    },
+    "/session-invitations/{sessionUid}": {
+      "patch": {
+        "operationId": "SessionInvitationsController_update",
+        "parameters": [
+          {
+            "name": "sessionUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Session invitation updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a session invitation by session UID",
+        "tags": [
+          "SessionInvitations"
+        ]
+      }
+    },
+    "/auth-b2b/register": {
+      "post": {
+        "operationId": "AuthB2BController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterB2BWithFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Partner and user created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Partner and user created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Partner or user already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a partner and user account",
+        "tags": [
+          "AuthB2B"
+        ]
+      }
+    },
+    "/auth-b2b/login": {
+      "post": {
+        "operationId": "AuthB2BController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Partner and user logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or partner not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Login a partner and user account",
+        "tags": [
+          "AuthB2B"
+        ]
+      }
+    },
+    "/partners": {
+      "post": {
+        "operationId": "PartnersController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePartnerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Partners"
+        ]
+      }
+    },
+    "/payment/connect": {
+      "get": {
+        "operationId": "PaymentController_getStripeConnectAccount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Stripe connect account retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StripeAccountResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving Stripe connect account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Récupère le compte Stripe connecté.",
+        "tags": [
+          "Payment"
+        ]
+      },
+      "post": {
+        "operationId": "PaymentController_createStripeConnectAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStripeAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Stripe connect account created successfully"
+          },
+          "400": {
+            "description": "Error creating Stripe connect account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a Stripe connect account.",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/payment-intent": {
+      "post": {
+        "operationId": "PaymentController_createPaymentIntent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentIntentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment intent created successfully"
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error creating payment intent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a payment intent with Stripe",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/payment-intent/confirm": {
+      "post": {
+        "operationId": "PaymentController_confirmPaymentIntent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPaymentIntentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment intent confirmed successfully"
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error confirming payment intent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Confirm a payment intent (for mobile wallets)",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/bank-accounts": {
+      "post": {
+        "operationId": "PaymentController_addBankAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BankDetailsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Bank account added successfully"
+          },
+          "400": {
+            "description": "Error adding bank account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "add bank account to connect account",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/list-bank-accounts": {
+      "get": {
+        "operationId": "PaymentController_getBankAccountsList",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Bank accounts retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseBankAccountListResponseDataDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving bank accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all bank accounts",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/bank-accounts/{bankAccountId}": {
+      "get": {
+        "operationId": "PaymentController_getBankAccount",
+        "parameters": [
+          {
+            "name": "bankAccountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bank account retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccountDataDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving bank account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a bank account",
+        "tags": [
+          "Payment"
+        ]
+      },
+      "put": {
+        "operationId": "PaymentController_updateBankAccount",
+        "parameters": [
+          {
+            "name": "bankAccountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBankDetailsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Bank account updated successfully"
+          },
+          "400": {
+            "description": "Error updating bank account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a bank account",
+        "tags": [
+          "Payment"
+        ]
+      },
+      "delete": {
+        "operationId": "PaymentController_deleteBankAccount",
+        "parameters": [
+          {
+            "name": "bankAccountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Bank account deleted successfully"
+          },
+          "400": {
+            "description": "Error deleting bank account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a bank account",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/payment-intent/test": {
+      "post": {
+        "operationId": "PaymentController_createPaymentIntentWithTestCard",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentIntentTestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment intent created successfully with test card"
+          },
+          "400": {
+            "description": "Error creating payment intent with test card",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a payment intent with a test card (for development only)",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/payment/payment-method/test": {
+      "post": {
+        "operationId": "PaymentController_createTestPaymentMethod",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Test payment method created successfully"
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error creating test payment method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a test payment method (for development only)",
+        "tags": [
+          "Payment"
+        ]
+      }
+    },
+    "/user-hour-preferences": {
+      "post": {
+        "operationId": "UserHourPreferencesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserHourPreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new user hour preference",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-hour-preferences/list-by-user/{userUid}": {
+      "get": {
+        "operationId": "UserHourPreferencesController_findAllByUserUid",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all user hour preferences by user ID",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-hour-preferences/{uid}": {
+      "delete": {
+        "operationId": "UserHourPreferencesController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User hour preference deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a user hour preference by uid",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences": {
+      "post": {
+        "operationId": "UserSportPreferencesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserSportPreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User sport preference created successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a user sport preference",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences/list-by-user/{userUid}": {
+      "get": {
+        "operationId": "UserSportPreferencesController_findAllByUserUid",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all user sport preferences by user ID",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences/{uid}": {
+      "delete": {
+        "operationId": "UserSportPreferencesController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User sport preference deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a user sport preference by uid",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/fields": {
+      "post": {
+        "operationId": "FieldsController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a public field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/list-verified/collection": {
+      "get": {
+        "operationId": "FieldsController_findAllVerified",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "The name of the field",
+            "schema": {
+              "example": "Field 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "required": false,
+            "in": "query",
+            "description": "The address of the field",
+            "schema": {
+              "example": "123 Main St, Anytown, USA",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports of the session",
+            "schema": {
+              "example": [
+                "BASKETBALL",
+                "FOOTBALL"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "gameModes",
+            "required": false,
+            "in": "query",
+            "description": "The game mode of the field",
+            "schema": {
+              "example": [
+                "THREE_V_THREE",
+                "FIVE_V_FIVE"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "TWO_V_TWO",
+                  "THREE_V_THREE",
+                  "FOUR_V_FOUR",
+                  "FIVE_V_FIVE",
+                  "SIX_V_SIX",
+                  "SEVEN_V_SEVEN",
+                  "EIGHT_V_EIGHT",
+                  "TEN_V_TEN",
+                  "ELEVEN_V_ELEVEN"
+                ]
+              }
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of fields to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "latitude",
+            "required": false,
+            "in": "query",
+            "description": "Latitude of the user",
+            "schema": {
+              "example": "48.8588443",
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": false,
+            "in": "query",
+            "description": "Longitude of the user",
+            "schema": {
+              "example": "2.2943506",
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance of the field search (in km)",
+            "schema": {
+              "minimum": 0,
+              "example": "10",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all verified fields",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/list-by-partner/collection": {
+      "get": {
+        "operationId": "FieldsController_findAllByPartnerUid",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "The name of the field",
+            "schema": {
+              "example": "Field 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "required": false,
+            "in": "query",
+            "description": "The address of the field",
+            "schema": {
+              "example": "123 Main St, Anytown, USA",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports of the session",
+            "schema": {
+              "example": [
+                "BASKETBALL",
+                "FOOTBALL"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "gameModes",
+            "required": false,
+            "in": "query",
+            "description": "The game mode of the field",
+            "schema": {
+              "example": [
+                "THREE_V_THREE",
+                "FIVE_V_FIVE"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "TWO_V_TWO",
+                  "THREE_V_THREE",
+                  "FOUR_V_FOUR",
+                  "FIVE_V_FIVE",
+                  "SIX_V_SIX",
+                  "SEVEN_V_SEVEN",
+                  "EIGHT_V_EIGHT",
+                  "TEN_V_TEN",
+                  "ELEVEN_V_ELEVEN"
+                ]
+              }
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of fields to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "latitude",
+            "required": false,
+            "in": "query",
+            "description": "Latitude of the user",
+            "schema": {
+              "example": "48.8588443",
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": false,
+            "in": "query",
+            "description": "Longitude of the user",
+            "schema": {
+              "example": "2.2943506",
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance of the field search (in km)",
+            "schema": {
+              "minimum": 0,
+              "example": "10",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all fields by partner uid",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/{uid}": {
+      "get": {
+        "operationId": "FieldsController_findOne",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a field by uid",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/update-public/{uid}": {
+      "patch": {
+        "operationId": "FieldsController_updatePublicField",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Field updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a public field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/update-private/{uid}": {
+      "patch": {
+        "operationId": "FieldsController_updatePartnerField",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePrivateFieldDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Field updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a partner field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Ludora API v1",
+    "description": "API for the Ludora app",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "App",
+      "description": "App operations"
+    },
+    {
+      "name": "Emails",
+      "description": "Emails operations"
+    },
+    {
+      "name": "Storage",
+      "description": "Storage operations"
+    },
+    {
+      "name": "Metrics",
+      "description": "Metrics operations"
+    },
+    {
+      "name": "AuthB2C",
+      "description": "AuthB2C operations"
+    },
+    {
+      "name": "Users",
+      "description": "Users operations"
+    },
+    {
+      "name": "Sessions",
+      "description": "Sessions operations"
+    },
+    {
+      "name": "SessionTeams",
+      "description": "SessionTeams operations"
+    },
+    {
+      "name": "SessionInvitations",
+      "description": "SessionInvitations operations"
+    },
+    {
+      "name": "AuthB2B",
+      "description": "AuthB2B operations"
+    },
+    {
+      "name": "Partners",
+      "description": "Partners operations"
+    },
+    {
+      "name": "Payment",
+      "description": "Payment operations"
+    },
+    {
+      "name": "UserHourPreferences",
+      "description": "UserHourPreferences operations"
+    },
+    {
+      "name": "UserSportPreferences",
+      "description": "UserSportPreferences operations"
+    },
+    {
+      "name": "Fields",
+      "description": "Fields operations"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter JWT token",
+        "in": "header",
+        "name": "Authorization",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterB2CWithFileDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "user type (USER or ADMIN)",
+            "enum": [
+              "USER",
+              "ADMIN",
+              "PARTNER"
+            ],
+            "example": "USER"
+          },
+          "deviceUid": {
+            "type": "string",
+            "description": "device uid, only for phones",
+            "example": "123456"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "email",
+            "example": "test@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "password",
+            "example": "Test!1234"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "firstname of user",
+            "example": "Doe"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "lastname of user",
+            "example": "Doe"
+          },
+          "phone": {
+            "type": "string",
+            "description": "phone number",
+            "example": "+33612345678"
+          },
+          "bio": {
+            "type": "string",
+            "description": "Bio",
+            "example": "I'm a user of the application."
+          },
+          "birthdate": {
+            "type": "string",
+            "description": "birthdate of user",
+            "example": "1990-01-01",
+            "format": "date"
+          },
+          "sex": {
+            "type": "string",
+            "description": "sex of user",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ],
+            "example": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ]
+          },
+          "file": {
+            "type": "string",
+            "description": "File image (avatar)",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "type",
+          "email",
+          "password"
+        ]
+      },
+      "RegisterResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RegisterResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RegisterResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BadRequestResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Bad Request"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "email must be an email"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "ConflictResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 409
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Conflict"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Resource already exists"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "CreateGoogleUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user",
+            "example": "test@gmail.com"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "The firstname of the user",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "The lastname of the user",
+            "example": "Doe"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "The image url of the user",
+            "example": "https://www.example.com/image.jpg"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The provider of the user",
+            "enum": [
+              "FACEBOOK",
+              "GOOGLE",
+              "LUDORA"
+            ],
+            "example": "GOOGLE"
+          }
+        },
+        "required": [
+          "email",
+          "firstname"
+        ]
+      },
+      "CreateOrConnectGoogleResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RegisterResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email",
+            "example": "test@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User Password.\n      Must contain at least:\n        - 8 characters\n        - 1 uppercase letter\n        - 1 special character",
+            "example": "Test!1234",
+            "pattern": "^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$"
+          },
+          "deviceUid": {
+            "type": "string",
+            "description": "Device identifier, only for phones",
+            "example": "123456"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LoginResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "VerifyMailDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user",
+            "example": "test@gmail.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "VerifyEmailResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "isAvailable"
+        ]
+      },
+      "VerifyEmailResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VerifyEmailResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "VerifyTokenResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "isValid"
+        ]
+      },
+      "VerifyTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VerifyTokenResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UnauthorizedResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 401
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Access denied"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "VerifyEmailCodeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 6
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "SuccessTypeDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 200
+          }
+        }
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token to get new access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "RefreshTokenResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RefreshTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefreshTokenResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LogoutResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Logout success message",
+            "example": "Logged out successfully"
+          },
+          "status": {
+            "type": "number",
+            "example": 200
+          }
+        }
+      },
+      "FindAllUsersResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Toto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Lolo",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": null,
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "nullable": true,
+            "readOnly": true
+          },
+          "userSports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sport": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sport"
+              ]
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "firstname",
+          "lastname"
+        ]
+      },
+      "PaginationDataFindAllUsersResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindAllUsersResponseDataDto"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseFindAllUsersResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataFindAllUsersResponseDataDto"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FindOneUserResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Toto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Lolo",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": null,
+            "nullable": true,
+            "readOnly": true
+          },
+          "bio": {
+            "type": "string",
+            "example": "I am a good person",
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "nullable": true,
+            "readOnly": true
+          },
+          "userSports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sport": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sport"
+              ]
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "firstname",
+          "lastname"
+        ]
+      },
+      "FindOneUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindOneUserResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "NotFoundResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 404
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Not Found"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Resource not found"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "FindMeUserResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Toto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Lolo",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": null,
+            "nullable": true,
+            "readOnly": true
+          },
+          "bio": {
+            "type": "string",
+            "example": "I am a good person",
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "nullable": true,
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "example": "toto@gmail.com",
+            "nullable": true,
+            "readOnly": true
+          },
+          "phone": {
+            "type": "string",
+            "example": "+33609032663",
+            "nullable": true,
+            "readOnly": true
+          },
+          "birthdate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "1998-01-31T00:00:00.000Z",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ],
+            "example": "MALE",
+            "nullable": true,
+            "readOnly": true
+          },
+          "active": {
+            "type": "boolean",
+            "example": true,
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN",
+              "PARTNER"
+            ],
+            "example": "USER",
+            "nullable": true,
+            "readOnly": true
+          },
+          "stripe_account_uid": {
+            "type": "string",
+            "example": null,
+            "nullable": true,
+            "readOnly": true
+          },
+          "userSports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sport": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sport"
+              ]
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "firstname",
+          "lastname",
+          "type"
+        ]
+      },
+      "FindMeUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindMeUserResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "The firstname of the user",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "The lastname of the user",
+            "example": "Doe"
+          },
+          "birthdate": {
+            "type": "string",
+            "description": "The birthdate of the user",
+            "example": "01/01/2000"
+          },
+          "sex": {
+            "type": "string",
+            "description": "The sex of the user",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ],
+            "example": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the user",
+            "example": "+33612345678"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "The image url of the user",
+            "example": "https://www.example.com/image.jpg"
+          },
+          "bio": {
+            "type": "string",
+            "description": "The biography of the user",
+            "example": "Je suis un bousilleur"
+          }
+        }
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "description": "Old password of the user",
+            "example": "password"
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "New password of the user",
+            "example": "password"
+          }
+        },
+        "required": [
+          "oldPassword",
+          "newPassword"
+        ]
+      },
+      "PasswordResetRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email",
+            "example": "test@gmail.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ForgottenPasswordDto": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "description": "New password of the user",
+            "example": "password"
+          }
+        },
+        "required": [
+          "newPassword"
+        ]
+      },
+      "CreateSessionDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the session",
+            "example": "Football session"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the session",
+            "example": "Football session"
+          },
+          "fieldUid": {
+            "type": "string",
+            "description": "The uid of the field",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The uid of the creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "The game mode of the session",
+            "enum": [
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
+            "example": "THREE_VS_THREE"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "The start date of the session",
+            "example": "2021-01-01T00:00:00.000Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "The end date of the session",
+            "example": "2021-01-01T00:00:00.000Z"
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "The maximum number of players per team",
+            "example": 5
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "The number of teams per game",
+            "example": 2
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "The minimum number of players per team",
+            "example": 3
+          }
+        },
+        "required": [
+          "fieldUid",
+          "userUid",
+          "gameMode",
+          "startDate",
+          "endDate",
+          "maxPlayersPerTeam",
+          "teamsPerGame",
+          "minPlayersPerTeam"
+        ]
+      },
+      "ResponseTypeDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "type": "object",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SessionResponse": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Session description",
+            "example": "Test session",
+            "readOnly": true
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "type": "string",
+            "description": "Sport played during the session",
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Session title",
+            "example": "Session 1",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "createdAt",
+          "description",
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "teamsPerGame",
+          "minPlayersPerTeam",
+          "sport",
+          "startDate",
+          "title",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataSessionResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseSessionResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataSessionResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateSessionDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the session",
+            "example": "Football session"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the session",
+            "example": "Football session"
+          },
+          "fieldUid": {
+            "type": "string",
+            "description": "The uid of the field",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The uid of the creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "The game mode of the session",
+            "enum": [
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
+            "example": "THREE_VS_THREE"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "The start date of the session",
+            "example": "2021-01-01T00:00:00.000Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "The end date of the session",
+            "example": "2021-01-01T00:00:00.000Z"
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "The maximum number of players per team",
+            "example": 5
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "The number of teams per game",
+            "example": 2
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "The minimum number of players per team",
+            "example": 3
+          }
+        },
+        "required": [
+          "gameMode",
+          "startDate",
+          "endDate",
+          "maxPlayersPerTeam",
+          "teamsPerGame",
+          "minPlayersPerTeam"
+        ]
+      },
+      "FlattenedSessionPlayer": {
+        "type": "object",
+        "properties": {
+          "userUid": {
+            "type": "string",
+            "example": "cmgoxfs3t002hob8arwdna80g",
+            "readOnly": true
+          },
+          "teamUid": {
+            "type": "string",
+            "example": "cmgoxfs47002zob8a42uq1u8z",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Seto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Kaiba",
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "1738433236109explore2.png",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "userUid",
+          "teamUid",
+          "firstname",
+          "lastname",
+          "imageUrl"
+        ]
+      },
+      "SessionTeamResponse": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "teamName": {
+            "type": "string",
+            "example": "Team A",
+            "readOnly": true
+          },
+          "teamLabel": {
+            "type": "string",
+            "example": "A",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "Session_players": {
+            "description": "Players in the team",
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlattenedSessionPlayer"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "teamName",
+          "teamLabel",
+          "updatedAt",
+          "createdAt",
+          "Session_players"
+        ]
+      },
+      "PaginationDataSessionTeamResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionTeamResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseSessionTeamResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataSessionTeamResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateSessionInvitationDto": {
+        "type": "object",
+        "properties": {
+          "sessionUid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "receiverUid": {
+            "type": "string",
+            "description": "User UID of the person who is being invited",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "sessionUid",
+          "receiverUid"
+        ]
+      },
+      "SessionInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "sessionUid": {
+            "type": "string",
+            "description": "Session invitation's session ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "receiverUid": {
+            "type": "string",
+            "description": "Session invitation's receiver ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "senderUid": {
+            "type": "string",
+            "description": "Session invitation's sender ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "status": {
+            "type": "string",
+            "description": "Session invitation's status",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED",
+              "CANCELED"
+            ],
+            "example": "PENDING",
+            "readOnly": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session invitation's creation date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session invitation's update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "sessionUid",
+          "receiverUid",
+          "senderUid",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataSessionInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionInvitationResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseSessionInvitationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataSessionInvitationResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RegisterB2BWithFileDto": {
+        "type": "object",
+        "properties": {
+          "userFirstname": {
+            "type": "string",
+            "description": "The firstname of the user",
+            "example": "John"
+          },
+          "userLastname": {
+            "type": "string",
+            "description": "The lastname of the user",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email shared by the user and the partner",
+            "example": "test@gmail.com"
+          },
+          "userPhone": {
+            "type": "string",
+            "description": "The phone number of the user",
+            "example": "+33612345678"
+          },
+          "userPassword": {
+            "type": "string",
+            "minLength": 8,
+            "description": "The password of the user",
+            "example": "Test!1234"
+          },
+          "partnerName": {
+            "type": "string",
+            "description": "The name of the organasation who owns the fields",
+            "example": "Partner Name"
+          },
+          "partnerImageUrl": {
+            "type": "string",
+            "description": "The url of the partner logo",
+            "example": "https://www.example.com/image.jpg"
+          },
+          "partnerAddress": {
+            "type": "string",
+            "description": "The address of the partner",
+            "example": "123 Main St, Anytown, USA"
+          },
+          "partnerPhone": {
+            "type": "string",
+            "description": "The phone number of the partner",
+            "example": "+1234567890"
+          },
+          "file": {
+            "type": "string",
+            "description": "File image (avatar)",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "userFirstname",
+          "userLastname",
+          "email",
+          "userPassword",
+          "partnerName",
+          "partnerAddress"
+        ]
+      },
+      "CreatePartnerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the organasation who owns the fields",
+            "example": "Partner Name"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The url of the partner logo",
+            "example": "https://www.example.com/image.jpg"
+          },
+          "address": {
+            "type": "string",
+            "description": "The address of the partner",
+            "example": "123 Main St, Anytown, USA"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the partner",
+            "example": "+1234567890"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the partner",
+            "example": "partner@example.com"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude of the user",
+            "example": "48.8588443"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude of the user",
+            "example": "2.2943506"
+          }
+        },
+        "required": [
+          "name",
+          "address"
+        ]
+      },
+      "BusinessProfileDto": {
+        "type": "object",
+        "properties": {
+          "annual_revenue": {
+            "type": "number"
+          },
+          "estimated_worker_count": {
+            "type": "number"
+          },
+          "mcc": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "product_description": {
+            "type": "string"
+          },
+          "support_address": {
+            "type": "string"
+          },
+          "support_email": {
+            "type": "string"
+          },
+          "support_phone": {
+            "type": "string"
+          },
+          "support_url": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mcc",
+          "product_description"
+        ]
+      },
+      "CapabilitiesDto": {
+        "type": "object",
+        "properties": {
+          "card_payments": {
+            "type": "string"
+          },
+          "transfers": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "card_payments",
+          "transfers"
+        ]
+      },
+      "AddressDto": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "line1": {
+            "type": "string"
+          },
+          "line2": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city",
+          "country",
+          "line1",
+          "postal_code"
+        ]
+      },
+      "VerificationDocumentDto": {
+        "type": "object",
+        "properties": {
+          "back": {
+            "type": "string"
+          },
+          "front": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "details_code": {
+            "type": "string"
+          }
+        }
+      },
+      "VerificationDto": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "$ref": "#/components/schemas/VerificationDocumentDto"
+          },
+          "additional_document": {
+            "$ref": "#/components/schemas/VerificationDocumentDto"
+          },
+          "details": {
+            "type": "string"
+          },
+          "details_code": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "document"
+        ]
+      },
+      "CompanyDto": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/AddressDto"
+          },
+          "directors_provided": {
+            "type": "boolean"
+          },
+          "executives_provided": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "owners_provided": {
+            "type": "boolean"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "taxId_provided": {
+            "type": "boolean"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/VerificationDto"
+          }
+        },
+        "required": [
+          "address",
+          "directors_provided",
+          "executives_provided",
+          "owners_provided",
+          "phone",
+          "taxId_provided",
+          "verification"
+        ]
+      },
+      "ControllerFeesDto": {
+        "type": "object",
+        "properties": {
+          "payer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "payer"
+        ]
+      },
+      "ControllerLossesDto": {
+        "type": "object",
+        "properties": {
+          "payments": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "payments"
+        ]
+      },
+      "StripeDashboardDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ControllerDto": {
+        "type": "object",
+        "properties": {
+          "fees": {
+            "$ref": "#/components/schemas/ControllerFeesDto"
+          },
+          "is_controller": {
+            "type": "boolean"
+          },
+          "losses": {
+            "$ref": "#/components/schemas/ControllerLossesDto"
+          },
+          "requirement_collection": {
+            "type": "string"
+          },
+          "stripe_dashboard": {
+            "$ref": "#/components/schemas/StripeDashboardDto"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fees",
+          "is_controller",
+          "losses",
+          "requirement_collection",
+          "stripe_dashboard",
+          "type"
+        ]
+      },
+      "ExternalAccountsDto": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "total_count": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more",
+          "total_count",
+          "url"
+        ]
+      },
+      "RequirementsDto": {
+        "type": "object",
+        "properties": {
+          "alternatives": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "current_deadline": {
+            "type": "number"
+          },
+          "currently_due": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "disabled_reason": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventually_due": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "past_due": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pending_verification": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "alternatives",
+          "currently_due",
+          "errors",
+          "eventually_due",
+          "past_due",
+          "pending_verification"
+        ]
+      },
+      "DateOfBirthDto": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "number"
+          },
+          "month": {
+            "type": "number"
+          },
+          "year": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "day",
+          "month",
+          "year"
+        ]
+      },
+      "RelationshipDto": {
+        "type": "object",
+        "properties": {
+          "authorizer": {
+            "type": "boolean"
+          },
+          "director": {
+            "type": "boolean"
+          },
+          "executive": {
+            "type": "boolean"
+          },
+          "legal_guardian": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "boolean"
+          },
+          "percent_ownership": {
+            "type": "number"
+          },
+          "representative": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorizer",
+          "director",
+          "executive",
+          "legal_guardian",
+          "owner",
+          "representative"
+        ]
+      },
+      "IndividualDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressDto"
+          },
+          "created": {
+            "type": "number"
+          },
+          "dob": {
+            "$ref": "#/components/schemas/DateOfBirthDto"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "future_requirements": {
+            "$ref": "#/components/schemas/RequirementsDto"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "relationship": {
+            "$ref": "#/components/schemas/RelationshipDto"
+          },
+          "requirements": {
+            "$ref": "#/components/schemas/RequirementsDto"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/VerificationDto"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "account",
+          "address",
+          "created",
+          "dob",
+          "email",
+          "first_name",
+          "last_name",
+          "future_requirements",
+          "metadata",
+          "phone",
+          "relationship",
+          "requirements",
+          "verification"
+        ]
+      },
+      "BacsDebitPaymentsDto": {
+        "type": "object",
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "service_user_number": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BrandingDto": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "primary_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "secondary_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CardIssuingTosAcceptanceDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "number",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CardIssuingDto": {
+        "type": "object",
+        "properties": {
+          "tos_acceptance": {
+            "$ref": "#/components/schemas/CardIssuingTosAcceptanceDto"
+          }
+        },
+        "required": [
+          "tos_acceptance"
+        ]
+      },
+      "DeclineOnDto": {
+        "type": "object",
+        "properties": {
+          "avs_failure": {
+            "type": "boolean"
+          },
+          "cvc_failure": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "avs_failure",
+          "cvc_failure"
+        ]
+      },
+      "CardPaymentsSettingsDto": {
+        "type": "object",
+        "properties": {
+          "decline_on": {
+            "$ref": "#/components/schemas/DeclineOnDto"
+          },
+          "statement_descriptor_prefix": {
+            "type": "string"
+          },
+          "statement_descriptor_prefix_kana": {
+            "type": "string",
+            "nullable": true
+          },
+          "statement_descriptor_prefix_kanji": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "decline_on",
+          "statement_descriptor_prefix"
+        ]
+      },
+      "DashboardSettingsDto": {
+        "type": "object",
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "timezone"
+        ]
+      },
+      "InvoicesSettingsDto": {
+        "type": "object",
+        "properties": {
+          "default_account_taxIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "hosted_payment_method_save": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "hosted_payment_method_save"
+        ]
+      },
+      "PaymentsSettingsDto": {
+        "type": "object",
+        "properties": {
+          "statement_descriptor": {
+            "type": "string"
+          },
+          "statement_descriptor_kana": {
+            "type": "string",
+            "nullable": true
+          },
+          "statement_descriptor_kanji": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "statement_descriptor"
+        ]
+      },
+      "PayoutsScheduleDto": {
+        "type": "object",
+        "properties": {
+          "delay_days": {
+            "type": "number"
+          },
+          "interval": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delay_days",
+          "interval"
+        ]
+      },
+      "PayoutsSettingsDto": {
+        "type": "object",
+        "properties": {
+          "debit_negative_balances": {
+            "type": "boolean"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/PayoutsScheduleDto"
+          },
+          "statement_descriptor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "debit_negative_balances",
+          "schedule"
+        ]
+      },
+      "SettingsDto": {
+        "type": "object",
+        "properties": {
+          "bacs_debit_payments": {
+            "$ref": "#/components/schemas/BacsDebitPaymentsDto"
+          },
+          "branding": {
+            "$ref": "#/components/schemas/BrandingDto"
+          },
+          "card_issuing": {
+            "$ref": "#/components/schemas/CardIssuingDto"
+          },
+          "card_payments": {
+            "$ref": "#/components/schemas/CardPaymentsSettingsDto"
+          },
+          "dashboard": {
+            "$ref": "#/components/schemas/DashboardSettingsDto"
+          },
+          "invoices": {
+            "$ref": "#/components/schemas/InvoicesSettingsDto"
+          },
+          "payments": {
+            "$ref": "#/components/schemas/PaymentsSettingsDto"
+          },
+          "payouts": {
+            "$ref": "#/components/schemas/PayoutsSettingsDto"
+          },
+          "sepa_debit_payments": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "bacs_debit_payments",
+          "branding",
+          "card_issuing",
+          "card_payments",
+          "dashboard",
+          "invoices",
+          "payments",
+          "payouts",
+          "sepa_debit_payments"
+        ]
+      },
+      "TosAcceptanceDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "number"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "user_agent": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "ip",
+          "user_agent"
+        ]
+      },
+      "StripeAccountResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "business_profile": {
+            "$ref": "#/components/schemas/BusinessProfileDto"
+          },
+          "business_type": {
+            "type": "string"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/CapabilitiesDto"
+          },
+          "charges_enabled": {
+            "type": "boolean"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyDto"
+          },
+          "controller": {
+            "$ref": "#/components/schemas/ControllerDto"
+          },
+          "country": {
+            "type": "string"
+          },
+          "created": {
+            "type": "number"
+          },
+          "default_currency": {
+            "type": "string"
+          },
+          "details_submitted": {
+            "type": "boolean"
+          },
+          "email": {
+            "type": "string"
+          },
+          "external_accounts": {
+            "$ref": "#/components/schemas/ExternalAccountsDto"
+          },
+          "future_requirements": {
+            "$ref": "#/components/schemas/RequirementsDto"
+          },
+          "individual": {
+            "$ref": "#/components/schemas/IndividualDto"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "payouts_enabled": {
+            "type": "boolean"
+          },
+          "requirements": {
+            "$ref": "#/components/schemas/RequirementsDto"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/SettingsDto"
+          },
+          "tos_acceptance": {
+            "$ref": "#/components/schemas/TosAcceptanceDto"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "business_profile",
+          "business_type",
+          "capabilities",
+          "charges_enabled",
+          "company",
+          "controller",
+          "country",
+          "created",
+          "default_currency",
+          "details_submitted",
+          "email",
+          "external_accounts",
+          "future_requirements",
+          "individual",
+          "metadata",
+          "payouts_enabled",
+          "requirements",
+          "settings",
+          "tos_acceptance",
+          "type"
+        ]
+      },
+      "StripeAccountResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StripeAccountResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateStripeAccountDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "Firstname of the account holder",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "Lastname of the account holder",
+            "example": "Doe"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string"
+              },
+              "line2": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "countryCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "line1",
+              "line2",
+              "postalCode",
+              "city",
+              "country",
+              "countryCode"
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the account",
+            "example": "eur"
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "address",
+          "currency"
+        ]
+      },
+      "PaymentIntentDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Amount of the payment",
+            "example": 100
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the payment",
+            "example": "eur"
+          },
+          "connectedAccountId": {
+            "type": "string",
+            "description": "Connected account ID",
+            "example": "acct_1234567890"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "description": "Payment method ID",
+            "example": "pm_1234567890"
+          }
+        },
+        "required": [
+          "amount",
+          "currency",
+          "connectedAccountId",
+          "paymentMethodId"
+        ]
+      },
+      "ConfirmPaymentIntentDto": {
+        "type": "object",
+        "properties": {
+          "paymentIntentId": {
+            "type": "string",
+            "description": "Payment Intent ID to confirm",
+            "example": "pi_1234567890"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "description": "Payment method ID (if not already attached)",
+            "example": "pm_1234567890"
+          }
+        },
+        "required": [
+          "paymentIntentId"
+        ]
+      },
+      "BankDetailsDto": {
+        "type": "object",
+        "properties": {
+          "holderName": {
+            "type": "string",
+            "description": "Name of the account holder",
+            "example": "John Doe"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "Account number",
+            "example": "1234567890"
+          },
+          "routingNumber": {
+            "type": "string",
+            "description": "Routing number (BIC)",
+            "example": "1234567890"
+          }
+        },
+        "required": [
+          "holderName",
+          "accountNumber",
+          "routingNumber"
+        ]
+      },
+      "FutureRequirementsErrorDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid_address_city_state_postal_code",
+              "invalid_address_highway_contract_box",
+              "invalid_address_private_mailbox",
+              "invalid_business_profile_name",
+              "invalid_business_profile_name_denylisted",
+              "invalid_company_name_denylisted",
+              "invalid_dob_age_over_maximum",
+              "invalid_dob_age_under_18",
+              "invalid_dob_age_under_minimum",
+              "invalid_product_description_length",
+              "invalid_product_description_url_match",
+              "invalid_representative_country",
+              "invalid_statement_descriptor_business_mismatch",
+              "invalid_statement_descriptor_denylisted",
+              "invalid_statement_descriptor_length",
+              "invalid_statement_descriptor_prefix_denylisted",
+              "invalid_statement_descriptor_prefix_mismatch",
+              "invalid_street_address",
+              "invalid_taxId",
+              "invalid_taxId_format",
+              "invalid_tos_acceptance",
+              "invalid_url_denylisted",
+              "invalid_url_format",
+              "invalid_url_length",
+              "invalid_url_web_presence_detected",
+              "invalid_url_website_business_information_mismatch",
+              "invalid_url_website_empty",
+              "invalid_url_website_inaccessible",
+              "invalid_url_website_inaccessible_geoblocked",
+              "invalid_url_website_inaccessible_password_protected",
+              "invalid_url_website_incomplete",
+              "invalid_url_website_incomplete_cancellation_policy",
+              "invalid_url_website_incomplete_customer_service_details",
+              "invalid_url_website_incomplete_legal_restrictions",
+              "invalid_url_website_incomplete_refund_policy",
+              "invalid_url_website_incomplete_return_policy",
+              "invalid_url_website_incomplete_terms_and_conditions",
+              "invalid_url_website_incomplete_under_construction",
+              "invalid_url_website_other",
+              "invalid_value_other",
+              "verification_directors_mismatch",
+              "verification_document_address_mismatch",
+              "verification_document_address_missing",
+              "verification_document_corrupt",
+              "verification_document_country_not_supported",
+              "verification_document_directors_mismatch",
+              "verification_document_dob_mismatch",
+              "verification_document_duplicate_type",
+              "verification_document_expired",
+              "verification_document_failed_copy",
+              "verification_document_failed_greyscale",
+              "verification_document_failed_other",
+              "verification_document_failed_test_mode",
+              "verification_document_fraudulent",
+              "verification_documentId_number_mismatch",
+              "verification_documentId_number_missing",
+              "verification_document_incomplete",
+              "verification_document_invalid",
+              "verification_document_issue_or_expiry_date_missing",
+              "verification_document_manipulated",
+              "verification_document_missing_back",
+              "verification_document_missing_front",
+              "verification_document_name_mismatch",
+              "verification_document_name_missing",
+              "verification_document_nationality_mismatch",
+              "verification_document_not_readable",
+              "verification_document_not_signed",
+              "verification_document_not_uploaded",
+              "verification_document_photo_mismatch",
+              "verification_document_too_large",
+              "verification_document_type_not_supported",
+              "verification_extraneous_directors",
+              "verification_failed_address_match",
+              "verification_failed_business_iec_number",
+              "verification_failed_document_match",
+              "verification_failedId_number_match",
+              "verification_failed_keyedIdentity",
+              "verification_failed_keyed_match",
+              "verification_failed_name_match",
+              "verification_failed_other",
+              "verification_failed_representative_authority",
+              "verification_failed_residential_address",
+              "verification_failed_taxId_match",
+              "verification_failed_taxId_not_issued",
+              "verification_missing_directors",
+              "verification_missing_executives",
+              "verification_missing_owners",
+              "verification_requires_additional_memorandum_of_associations",
+              "verification_requires_additional_proof_of_registration",
+              "verification_supportability"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "reason",
+          "requirement"
+        ]
+      },
+      "FutureRequirementsDto": {
+        "type": "object",
+        "properties": {
+          "currently_due": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "errors": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FutureRequirementsErrorDto"
+            }
+          },
+          "past_due": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pending_verification": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "currently_due",
+          "errors",
+          "past_due",
+          "pending_verification"
+        ]
+      },
+      "BankAccountListResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "holder_name": {
+            "type": "string"
+          },
+          "bank_name": {
+            "type": "string"
+          },
+          "last4": {
+            "type": "string"
+          },
+          "routing_number": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "default_for_currency": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "future_requirements": {
+            "$ref": "#/components/schemas/FutureRequirementsDto"
+          },
+          "requirements": {
+            "$ref": "#/components/schemas/RequirementsDto"
+          }
+        },
+        "required": [
+          "id",
+          "holder_name",
+          "bank_name",
+          "last4",
+          "routing_number",
+          "currency",
+          "country",
+          "default_for_currency",
+          "status",
+          "future_requirements",
+          "requirements"
+        ]
+      },
+      "PaginationDataBankAccountListResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BankAccountListResponseDataDto"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseBankAccountListResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataBankAccountListResponseDataDto"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BankAccountDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string",
+            "enum": [
+              "bank_account"
+            ]
+          },
+          "account": {
+            "type": "string",
+            "nullable": true
+          },
+          "account_holder_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "account_holder_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "account_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "available_payout_methods": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "instant",
+                "standard"
+              ]
+            }
+          },
+          "bank_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "customer": {
+            "type": "string",
+            "nullable": true
+          },
+          "default_for_currency": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "fingerprint": {
+            "type": "string",
+            "nullable": true
+          },
+          "future_requirements": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FutureRequirementsDto"
+              }
+            ]
+          },
+          "last4": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "nullable": true
+          },
+          "requirements": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RequirementsDto"
+              }
+            ]
+          },
+          "routing_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "country",
+          "currency",
+          "last4",
+          "status"
+        ]
+      },
+      "UpdateBankDetailsDto": {
+        "type": "object",
+        "properties": {
+          "defaultForCurrency": {
+            "type": "boolean",
+            "description": "Default Stripe connect account",
+            "example": true
+          }
+        },
+        "required": [
+          "defaultForCurrency"
+        ]
+      },
+      "PaymentIntentTestDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Amount of the payment",
+            "example": 1000
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the payment",
+            "example": "EUR"
+          },
+          "connectedAccountId": {
+            "type": "string",
+            "description": "Connected account ID",
+            "example": "acct_1234567890"
+          }
+        },
+        "required": [
+          "amount",
+          "currency",
+          "connectedAccountId"
+        ]
+      },
+      "CreateUserHourPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "dayOfWeek": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 6,
+            "description": "The day of the week, 0 is Sunday, 6 is Saturday",
+            "example": 0
+          },
+          "timePeriod": {
+            "type": "string",
+            "description": "The time period",
+            "enum": [
+              "MORNING",
+              "AFTERNOON",
+              "EVENING"
+            ],
+            "example": "MORNING"
+          },
+          "preferenceType": {
+            "type": "string",
+            "description": "The preference type, RECURRENT is a recurring preference, ONE_TIME is a one time preference",
+            "enum": [
+              "RECURRENT",
+              "ONE_TIME"
+            ],
+            "example": "RECURRENT"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date of the preference",
+            "example": "2025-05-10T22:30:32.525Z"
+          }
+        },
+        "required": [
+          "timePeriod",
+          "preferenceType"
+        ]
+      },
+      "UserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "RECURRENT",
+              "ONE_TIME"
+            ],
+            "example": "RECURRENT",
+            "readOnly": true
+          },
+          "timePeriod": {
+            "type": "string",
+            "enum": [
+              "MORNING",
+              "AFTERNOON",
+              "EVENING"
+            ],
+            "example": "MORNING",
+            "readOnly": true
+          },
+          "dayOfWeek": {
+            "type": "number",
+            "example": 0,
+            "readOnly": true
+          },
+          "userUid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "createdAt",
+          "uid",
+          "type",
+          "timePeriod",
+          "dayOfWeek",
+          "userUid",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataUserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserHourPreferenceResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseUserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataUserHourPreferenceResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateUserSportPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "sport": {
+            "type": "string",
+            "description": "The sport that the user wants to register as a preference",
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "example": "BASKETBALL"
+          }
+        },
+        "required": [
+          "sport"
+        ]
+      },
+      "UserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "The unique identifier of the user sport preference"
+          },
+          "sport": {
+            "type": "string",
+            "description": "The sport of the user sport preference"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The user ID of the user sport preference"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The creation date of the user sport preference"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The update date of the user sport preference"
+          }
+        },
+        "required": [
+          "uid",
+          "sport",
+          "userUid",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataUserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserSportPreferenceResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseUserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataUserSportPreferenceResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Field 1",
+            "readOnly": true
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Main St, Anytown, USA",
+            "readOnly": true
+          },
+          "latitude": {
+            "type": "number",
+            "example": 48.8588443,
+            "readOnly": true
+          },
+          "longitude": {
+            "type": "number",
+            "example": 2.2943506,
+            "readOnly": true
+          },
+          "fieldImages": {
+            "example": [
+              {
+                "order": 1,
+                "url": "https://example.com/image.jpg"
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gameMode": {
+            "type": "string",
+            "example": "THREE_V_THREE",
+            "readOnly": true
+          },
+          "entryFee": {
+            "type": "number",
+            "example": 10,
+            "readOnly": true
+          },
+          "isVerified": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          },
+          "sport": {
+            "type": "string",
+            "example": "BASKETBALL",
+            "readOnly": true
+          },
+          "partnerUid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "uid",
+          "name",
+          "address",
+          "latitude",
+          "longitude",
+          "fieldImages",
+          "gameMode",
+          "entryFee",
+          "isVerified",
+          "sport",
+          "partnerUid"
+        ]
+      },
+      "PaginationDataFieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldResponseDto"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseFieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataFieldResponseDto"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateFieldDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Field 1",
+            "readOnly": true
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Main St, Anytown, USA",
+            "readOnly": true
+          },
+          "isVerified": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          }
+        }
+      },
+      "UpdatePrivateFieldDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Field 1",
+            "readOnly": true
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Main St, Anytown, USA",
+            "readOnly": true
+          },
+          "isVerified": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          },
+          "entryFee": {
+            "type": "number",
+            "example": 10,
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "object",
+            "example": "THREE_V_THREE",
+            "readOnly": true
+          }
+        }
+      }
+    }
+  }
+}

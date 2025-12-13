@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button, Card, CardContent, CardFooter, CardHeader, CardTitle, String } from '@chillUI';
+import { Avatar, Button, Card, CardContent, CardFooter, CardHeader, CardTitle, String } from '@chillui/ui';
 
 interface User {
   id: number;

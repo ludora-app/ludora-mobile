@@ -1,4 +1,4 @@
-import { Box, Button } from '@chillUI';
+import { Box, Button } from '@chillui/ui';
 import React, { useState } from 'react';
 
 export default function SessionFilterAccodionAvailability() {

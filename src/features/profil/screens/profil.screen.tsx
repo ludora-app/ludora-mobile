@@ -1,4 +1,3 @@
-import COLORS from '@/constants/COLORS';
 import {
   Avatar,
   Wrapper,
@@ -12,7 +11,9 @@ import {
   CardContent,
   Separator,
   Button,
-} from '@chillUI';
+} from '@chillui/ui';
+
+import COLORS from '@/constants/COLORS';
 
 import ContactUserCardList from '../components/contact.user.-card-list.component';
 
@@ -110,9 +111,14 @@ export default function ProfilScreen() {
       </Box>
       <Separator className="my-5" />
       <Box className="flex-row gap-2">
-        <Button title="Modifier le profil " variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
-        <Button title="Partager le profil" variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
-        <Button variant="light" btnClassName="flex-none size-12 rounded-xl" textClassName="text-dark">
+        <Box className="flex-1">
+          <Button title="Modifier le profil " variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
+        </Box>
+        <Box className="flex-1">
+          <Button title="Partager le profil" variant="light" btnClassName="rounded-xl" textClassName="text-dark" />
+        </Box>
+
+        <Button variant="light" btnClassName="w-14 rounded-xl" textClassName="text-dark">
           <Icon variant="user-plus-regular" color={COLORS.primary} />
         </Button>
       </Box>

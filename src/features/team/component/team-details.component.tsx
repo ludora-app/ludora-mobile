@@ -1,5 +1,5 @@
-import Avatar from '@/components/chillUI/avatar/Avatar';
-import { Box, cn, Icon, String } from '@/components/chillUI';
+// import Avatar from '@chillui/ui/avatar/Avatar';
+import { Box, cn, Icon, String } from '@chillui/ui';
 
 export interface TeamDetailsProps {
   name: string;
@@ -31,14 +31,14 @@ export default function TeamDetails({ maxPlayerCount, name, players, playersCoun
         {players.map((player, index) => (
           <Box key={player.id} className={cn('w-full border-b border-gray px-4 py-2', { 'border-t': index === 0 })}>
             <Box className="flex flex-row items-center gap-2">
-              <Avatar
+              {/* <Avatar
                 userData={{
                   firstname: player.firstName,
                   image_url: player.profilePic,
                   lastname: player.lastName,
                 }}
                 size="md"
-              />
+              /> */}
               <Box className="flex justify-start">
                 <String className="mt-1" weight="medium">
                   {player.firstName} {player.lastName}

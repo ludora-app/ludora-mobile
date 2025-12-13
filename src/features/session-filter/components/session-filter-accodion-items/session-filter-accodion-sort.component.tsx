@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Checkbox, String } from '@chillUI';
+import { Box, Checkbox, String } from '@chillui/ui';
 
 export default function SessionFilterAccodionSort() {
   const [items, setItems] = useState([

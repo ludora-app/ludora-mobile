@@ -1,13 +1,13 @@
 {
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "eslint.validate": ["typescript", "javascript"],
+  "eslint.validate": ["typescript", "javascript", "typescriptreact", "javascriptreact"],
 
   "eslint.options": {
-    "extensions": [".ts", ".js"]
+    "extensions": [".ts", ".js", ".tsx", ".jsx"]
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+    // "source.organizeImports": "explicit"
   }
-  // "editor.codeActionsOnSave": {
-  //   "source.fixAll": "explicit",
-  //   "source.organizeImports": "explicit"
-  // }
 }

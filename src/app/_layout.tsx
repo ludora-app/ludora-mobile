@@ -1,19 +1,24 @@
 import { Stack } from 'expo-router';
 import MainProvider from '@/providers/main.provider';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import '../styles/global.css';
+import { useAuthStore } from '@/stores/auth.store';
+import LoadingScreen from '@/features/splash/screens/splash.screen';
 
 function RootLayoutNav() {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   return (
     <Stack
       screenOptions={{
-        contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
-      initialRouteName="(root)"
     >
-      <Stack.Screen name="(root)" />
+      <Stack.Protected guard={!!isAuthenticated}>
+        <Stack.Screen name="(root)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Screen name="auth" />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -21,9 +26,8 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <MainProvider>
-      <SafeAreaView className="flex-1">
-        <RootLayoutNav />
-      </SafeAreaView>
+      <LoadingScreen />
+      <RootLayoutNav />
     </MainProvider>
   );
 }

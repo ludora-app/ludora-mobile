@@ -3,8 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@chillUI": ["./src/components/chillUI"],
-      "@features/*": ["./src/features/*"]
+      "@ludo/ui": ["./src/components/ludo-ui"],
+      "@chillui/ui": ["./src/components/chill-ui-library"],
+      "@features/*": ["./src/features/*"],
+      "@api/*": ["./src/api/*"],
+      "@generatedApi/*": ["./src/api/generated/api/*"]
     }
   },
   "extends": "expo/tsconfig.base",

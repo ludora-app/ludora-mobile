@@ -1,11 +1,7 @@
 import ky from 'ky';
 import * as SecureStore from 'expo-secure-store';
 
-const api = ky.create({
-  prefixUrl: `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_BACKEND_PORT}`,
-});
-
-const authApi = ky.create({
+const kyApi = ky.create({
   hooks: {
     beforeRequest: [
       async request => {
@@ -16,7 +12,7 @@ const authApi = ky.create({
       },
     ],
   },
-  prefixUrl: `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_BACKEND_PORT}`,
+  prefixUrl: process.env.EXPO_PUBLIC_DEV_API_URL,
 });
 
-export { api, authApi };
+export { kyApi };

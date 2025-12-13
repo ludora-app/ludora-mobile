@@ -1,12 +1,10 @@
-import { useRouter } from 'expo-router';
-import ROUTES from '@/constants/ROUTES';
 import { StyleSheet } from 'react-native';
 import { ImageBackground } from 'expo-image';
-import { Button, Image, String, Wrapper, Box } from '@chillUI';
+import { Wrapper, Box, Icon } from '@chillui/ui';
+import { Button, String, Image } from '@ludo/ui';
 import { welcomeScreenImageBackground2, bigLogo } from 'assets';
 
 export default function WelcomeComponent() {
-  const router = useRouter();
   return (
     <ImageBackground source={welcomeScreenImageBackground2} style={StyleSheet.absoluteFillObject}>
       <Wrapper>
@@ -15,22 +13,28 @@ export default function WelcomeComponent() {
         </Box>
         <Box className="flex-1 justify-end gap-16">
           <Box className="gap-3">
+            <Icon name="ludo" />
             <String
-              variant="white"
-              weight="bold"
               size="4xl"
               style={{ textShadowColor: 'black', textShadowOffset: { height: 2, width: 2 }, textShadowRadius: 10 }}
               className="text-center"
             >
               Rejoins le jeu.
             </String>
-            <String variant="white" weight="semiBold" size="lg" className="text-center">
+            <String size="lg" className="text-center">
               Rejoignez des milliers de sportifs passionnés.
             </String>
           </Box>
-          <Box className="gap-4">
-            <Button title="Se connecter" onPress={() => router.push('/auth/login')} />
-            <Button variant="light" title="Créer un compte" redirect={ROUTES.AUTH.REGISTER_STEP_1} />
+          <Box className="mb-10 gap-4">
+            <Button title="Commencer le jeu" size="xl" redirect="/auth/login" className="w-full" />
+            <Button
+              title="Rejoindre le jeu"
+              variant="outlined"
+              colorVariant="white"
+              redirect="/auth/register/step-1"
+              className="w-full"
+              size="xl"
+            />
           </Box>
         </Box>
       </Wrapper>

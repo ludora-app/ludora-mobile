@@ -1,4 +1,7 @@
 import { Stack } from 'expo-router';
+import GoBackHeader from '@/components/ui/go-back-header.compoent';
+
+const header = () => <GoBackHeader />;
 
 export default function AuthLayout() {
   return (
@@ -8,6 +11,9 @@ export default function AuthLayout() {
         contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
-    />
+      initialRouteName="index"
+    >
+      <Stack.Screen name="login" options={{ header: () => header(), headerShown: true }} />
+    </Stack>
   );
 }

@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useController, FieldValues } from 'react-hook-form';
 import type { FocusEvent } from 'react-native';
 
+import { useCallback } from 'react';
 import { Input } from '@chillui/ui';
+import { useController, FieldValues } from 'react-hook-form';
 
 import { FormInputProps } from '../../types/form-input.types';
 

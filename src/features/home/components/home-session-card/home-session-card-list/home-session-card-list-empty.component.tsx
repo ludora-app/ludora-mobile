@@ -1,10 +1,5 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import { String } from '@ludo/ui';
 
 export default function HomeSessionCardListEmpty() {
-  return (
-    <View>
-      <Text>home-session-card-list-empty.component</Text>
-    </View>
-  );
+  return <String>Aucune session trouvée</String>;
 }

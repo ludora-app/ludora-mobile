@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Dayjs } from 'dayjs';
 import { Input } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { String, Wrapper, Box } from '@ludo/ui';
@@ -12,31 +13,30 @@ import HeaderSessionCardListRefreshControl from './header-session-card-list-refr
 
 interface HomeSessionCardListHeaderProps {
   isFetching?: boolean;
-
   scrollY?: SharedValue<number>;
 }
 
 function HomeSessionCardListHeader({ isFetching, scrollY }: HomeSessionCardListHeaderProps) {
   const { t } = useTranslate();
   const setSessionFilter = useSessionsFilterStore(state => state.setSessionFilter);
-
-  console.log('HomeSessionCardListHeader-rerender');
-
+  const handleDateSelect = (date: Dayjs) => {
+    requestAnimationFrame(() => {
+      setSessionFilter({
+        startDate: date.startOf('day').toISOString(),
+      });
+    });
+    if (scrollY) {
+      const scrollYRef = scrollY;
+      scrollYRef.value = 0;
+    }
+  };
   return (
     <Box className="pt-6">
       {IS_IOS && <HeaderSessionCardListRefreshControl scrollY={scrollY} isFetching={isFetching} />}
       <Wrapper>
         <Input placeholder="rechercher" />
       </Wrapper>
-      <DaysCarousel
-        className="my-5"
-        contentContainerClassName="px-4"
-        onSelect={date =>
-          setSessionFilter({
-            startDate: date.startOf('day').toISOString(),
-          })
-        }
-      />
+      <DaysCarousel className="my-5" contentContainerClassName="px-4" onSelect={handleDateSelect} />
       <Wrapper className="mb-5">
         <String font="primaryBold" variant="body-sm">
           {t('home.session_card_header_list_title')}

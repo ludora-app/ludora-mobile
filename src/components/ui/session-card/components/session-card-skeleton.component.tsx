@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { cn } from '@chillui/ui';
 import { StyleSheet } from 'react-native';
 import { Skeleton, Box, BoxGrow, BoxRow } from '@ludo/ui';
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SessionCardSkeleton() {
+function SessionCardSkeleton() {
   const hasImage = true;
 
   return (
@@ -61,3 +62,5 @@ export default function SessionCardSkeleton() {
     </Box>
   );
 }
+
+export default memo(SessionCardSkeleton);

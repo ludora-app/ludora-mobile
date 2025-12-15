@@ -4,7 +4,7 @@ import { useSharedValue } from 'react-native-reanimated';
 import { HomeHeader } from '../components/home-header.component';
 import HomeSessionCardList from '../components/home-session-card/home-session-card-list/home-session-card-list.component';
 
-export default function MatchScreen() {
+export default function HomeScreen() {
   const sharedScrollY = useSharedValue(0);
 
   return (

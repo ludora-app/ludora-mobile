@@ -1,11 +1,9 @@
-import { View, Text } from 'react-native';
-import React from 'react';
-import { useTranslate } from '@tolgee/react';
 import { useForm } from 'react-hook-form';
+import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { WrapperSafeAreaView, FormInput, Button, String } from '@ludo/ui';
+
 import { formSchema, ResetPasswordFormData } from '../schemas/reset-password.schema';
-import { WrapperSafeAreaView } from '@chillui/ui';
-import { FormInput, Button } from '@ludo/ui';
 
 export default function ResetPasswordScreen() {
   const { t } = useTranslate();
@@ -19,9 +17,13 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <WrapperSafeAreaView className="gap-2">
-      <FormInput control={control} label="Email" name="email" placeholder="Email" />
-      <Button title="Envoyer" onPress={handleSubmit(onSubmit)} />
+    <WrapperSafeAreaView>
+      <String variant="title-2" font="primaryExtraBold" className="mb-3">
+        Mot de passe oublié ?
+      </String>
+      <String>Pas de problème, ça arrive ! {'\n'}Saisit l’adresse e-mail associée à ton profil.</String>
+      <FormInput control={control} label="Email" name="email" placeholder="Email" containerClassName="my-5" />
+      <Button title="Envoyer" onPress={handleSubmit(onSubmit)} className="w-full" size="lg" />
     </WrapperSafeAreaView>
   );
 }

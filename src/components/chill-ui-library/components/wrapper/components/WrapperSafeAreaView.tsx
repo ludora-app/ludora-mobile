@@ -1,23 +1,11 @@
 import type { PropsWithChildren } from 'react';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import type { WrapperSafeAreaViewProps } from '../../../types';
 
-import { Box } from '../../box';
-import { cn, customConsole } from '../../../utils';
+import { cn } from '../../../utils';
 import { wrapperTv } from '../styles/Wrapper.styles';
-
-let SafeAreaView: any;
-
-try {
-  const safeAreaContext = require('react-native-safe-area-context');
-  if (safeAreaContext) {
-    SafeAreaView = safeAreaContext.SafeAreaView;
-  }
-} catch {
-  customConsole.error(
-    'react-native-safe-area-context is not installed. To use WrapperSafeAreaView, please install it: npm install react-native-safe-area-context',
-  );
-}
 
 /**
  * SafeAreaView wrapper component for handling safe areas.
@@ -39,13 +27,6 @@ try {
 export function WrapperSafeAreaView(props: PropsWithChildren<WrapperSafeAreaViewProps>) {
   const { children, className, fill, grow, px, ...rest } = props;
 
-  if (!SafeAreaView) {
-    return (
-      <Box className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
-        {children}
-      </Box>
-    );
-  }
   return (
     <SafeAreaView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
       {children}

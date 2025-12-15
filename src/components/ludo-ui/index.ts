@@ -1,7 +1,5 @@
-export { default as Wrapper } from './wrapper/Wrapper';
 export { default as Separator } from './separator/Separator';
 export { default as Badge } from './badge/components/badge.component';
-export { default as Avatar } from './avatar/Avatar';
 export * from './card/Card';
 export { default as TabSwitch } from './tabSwitch/TabSwitch';
 export { Accordion, AccordionItem } from './accordion';

@@ -1,6 +1,6 @@
 import { list } from 'radash';
-import { useCallback } from 'react';
-import { FlashList } from '@shopify/flash-list';
+import { useCallback, useMemo } from 'react';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, StyleSheet } from 'react-native';
 
@@ -20,6 +20,7 @@ import { useGetAllSessionsByFilter } from '../../../queries/useGetAllSessionsByF
 interface HomeSessionCardListProps {
   scrollY?: SharedValue<number>;
 }
+
 const styles = StyleSheet.create({
   listShadow: {
     elevation: 10,
@@ -29,8 +30,20 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
 });
-const AnimatedFlashList =
-  Animated.createAnimatedComponent<React.ComponentProps<typeof FlashList<SessionCollectionSuggestionItem>>>(FlashList);
+
+// TYPES
+type SkeletonItem = { type: 'skeleton'; uid: string };
+type ListItem = SessionCollectionSuggestionItem | SkeletonItem;
+
+// COMPOSANT ANIMÉ TYPÉ
+const AnimatedFlashList = Animated.createAnimatedComponent<FlashListProps<ListItem>>(FlashList);
+
+// OPTIMISATION 1 : Constante sortie du composant (plus besoin de useMemo)
+const SKELETON_COUNT = 3;
+const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
+  type: 'skeleton',
+  uid: `skel-${i}`,
+}));
 
 export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProps) {
   const {
@@ -43,13 +56,11 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
     refetch,
   } = useGetAllSessionsByFilter();
 
-  const { top } = useSafeArea();
-
+  const { bottomTab, top } = useSafeArea();
   const listPaddingTop = top + HEADER_HEIGHT;
-
   const isLoadingSessions = isLoading || isRefetching;
-
-  const isShowingRefreshControl = IS_IOS && isLoadingSessions;
+  const isShowingRefreshControl = IS_IOS && isLoading && !isRefetching;
+  const showSkeletons = isLoading;
 
   const scrollHandler = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -75,24 +86,38 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
       }
     : undefined;
 
+  const renderItem = useCallback(({ item }) => {
+    if ('type' in item && item.type === 'skeleton') {
+      return <HomeSessionCardSkeleton />;
+    }
+    return <HomeSessionCard session={item as SessionCollectionSuggestionItem} />;
+  }, []);
+
+  const getItemType = useCallback(
+    (item: ListItem) => ('type' in item && item.type === 'skeleton' ? 'skeleton' : 'row'),
+    [],
+  );
+
+  const dataToRender = useMemo(() => (showSkeletons ? SKELETON_DATA : sessions), [showSkeletons, sessions]);
+
   return (
     <AnimatedFlashList
-      keyExtractor={(session, index) => (isLoadingSessions ? `skeleton-${index}` : session?.uid?.toString())}
-      data={isLoadingSessions ? list(5) : sessions}
-      renderItem={({ item: session }) =>
-        isLoadingSessions ? <HomeSessionCardSkeleton /> : <HomeSessionCard session={session} />
-      }
+      data={dataToRender}
+      renderItem={renderItem}
+      getItemType={getItemType}
+      keyExtractor={item => item?.uid?.toString()}
       ListEmptyComponent={<HomeSessionCardListEmpty />}
+      contentContainerStyle={{ marginTop: listPaddingTop, paddingBottom: bottomTab + listPaddingTop }}
+      contentContainerClassName="bg-background rounded-t-2xl"
+      style={styles.listShadow}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={<HomeSessionCardListHeader scrollY={scrollY} isFetching={isShowingRefreshControl} />}
+      ListFooterComponent={<HomeSessionCardListFooter isFetchingNextPage={isFetchingNextPage} />}
       onScroll={scrollHandler}
       scrollEventThrottle={16}
-      contentContainerStyle={{ marginTop: listPaddingTop }}
-      contentContainerClassName="bg-background rounded-t-2xl flex-grow"
-      ListHeaderComponent={<HomeSessionCardListHeader scrollY={scrollY} isFetching={isShowingRefreshControl} />}
       onScrollEndDrag={onScrollEndDrag}
-      showsVerticalScrollIndicator={false}
-      style={styles.listShadow}
-      ListFooterComponent={<HomeSessionCardListFooter isFetchingNextPage={isFetchingNextPage} />}
       onEndReached={onEndReached}
+      onEndReachedThreshold={0.7}
       refreshControl={
         IS_ANDROID && (
           <RefreshControl
@@ -103,7 +128,6 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
           />
         )
       }
-      onEndReachedThreshold={0.5}
     />
   );
 }

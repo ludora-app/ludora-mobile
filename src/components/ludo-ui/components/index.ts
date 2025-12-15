@@ -8,3 +8,4 @@ export * from './screen-layout';
 export * from './box';
 export * from './flashList';
 export * from './skeleton';
+export * from './wrapper';

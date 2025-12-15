@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
+import { useLayoutState } from '@shopify/flash-list';
 // import 'dayjs/locale/fr'; // TODO: put in index or app ??
-import { useState, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 
 const DAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
@@ -18,12 +19,12 @@ type UseDateCarouselProps = {
 };
 
 export function useDateCarousel({ initialDate, numberOfDays = 14, startDate }: UseDateCarouselProps = {}) {
-  const [defaultStart] = useState(() => dayjs());
+  const [defaultStart] = useLayoutState(() => dayjs());
 
   const effectiveStartDate = startDate || defaultStart;
   const effectiveInitialDate = initialDate || defaultStart;
 
-  const [selected, setSelected] = useState<Dayjs>(effectiveInitialDate);
+  const [selected, setSelected] = useLayoutState<Dayjs>(effectiveInitialDate);
 
   const startTimestamp = effectiveStartDate.valueOf();
 
@@ -41,8 +42,7 @@ export function useDateCarousel({ initialDate, numberOfDays = 14, startDate }: U
         isoDate: date.toISOString(),
       };
     });
-  }, [numberOfDays, startTimestamp]); // Dépendances primitives = stabilité garantie
-
+  }, [numberOfDays, startTimestamp]);
   const isSelected = useCallback((date: Dayjs) => date.isSame(selected, 'day'), [selected]);
 
   return {

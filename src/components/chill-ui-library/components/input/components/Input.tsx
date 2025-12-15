@@ -1,13 +1,13 @@
-import { InputProps } from '../../../types';
-import { Box } from '../../box';
-import { Icon } from '../../icon';
-import { String } from '../../string';
-import { cn, getStringLength, isString } from '../../../utils';
-import { AnimatedBox } from '../../animatedBox';
 import { Animated, Pressable, TextInput } from 'react-native';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
+import { Box } from '../../box';
+import { Icon } from '../../icon';
+import { String } from '../../string';
+import { InputProps } from '../../../types';
+import { AnimatedBox } from '../../animatedBox';
 import { inputDefaultProps } from '../utils/defaultProps';
+import { cn, getStringLength, isString } from '../../../utils';
 import { inputContainerTv, inputFieldTv, twStyles } from '../styles/Input.styles';
 
 /**

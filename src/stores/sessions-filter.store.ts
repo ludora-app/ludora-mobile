@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
-import { SessionsFindAllParams } from '@/api/generated/model';
+import { SessionsFindAllSuggestionsParams } from '@/api/generated/model';
 
 interface EventFilterState {
   clearEventFilter: () => void;
   numberOfActiveFilter: number;
-  eventFilter: SessionsFindAllParams | null;
-  setEventFilter: (user: Partial<SessionsFindAllParams>) => void;
+  sessionFilter: SessionsFindAllSuggestionsParams | null;
+  setSessionFilter: (user: Partial<SessionsFindAllSuggestionsParams>) => void;
 }
 
-const countActiveFilters = (filter: Partial<SessionsFindAllParams>): number => {
+const countActiveFilters = (filter: Partial<SessionsFindAllSuggestionsParams>): number => {
   const count = 0;
 
   // if (filter?.date?.startDate || filter?.date?.endDate) count += 1;
@@ -21,15 +21,15 @@ const countActiveFilters = (filter: Partial<SessionsFindAllParams>): number => {
 };
 
 export const useSessionsFilterStore = create<EventFilterState>((set, get) => ({
-  clearEventFilter: () => set({ eventFilter: null, numberOfActiveFilter: 0 }),
-  eventFilter: null,
+  clearEventFilter: () => set({ numberOfActiveFilter: 0, sessionFilter: null }),
   numberOfActiveFilter: 0,
-  setEventFilter: data =>
+  sessionFilter: null,
+  setSessionFilter: data =>
     set({
-      eventFilter: {
-        ...get().eventFilter,
+      numberOfActiveFilter: countActiveFilters(data),
+      sessionFilter: {
+        ...get().sessionFilter,
         ...data,
       },
-      numberOfActiveFilter: countActiveFilters(data),
     }),
 }));

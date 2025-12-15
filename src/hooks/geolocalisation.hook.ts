@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import * as Location from 'expo-location';
 
-import useUserLocationStore from '@/stores/user-localtion.store';
+import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
 const useGetUserLocation = () => {
   const setLocation = useUserLocationStore(state => state.setLocation);
@@ -14,7 +14,10 @@ const useGetUserLocation = () => {
       }
 
       const userLocation = await Location.getCurrentPositionAsync({});
-      setLocation(userLocation);
+      setLocation({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+      });
     }
     getCurrentLocation();
   }, [setLocation]);

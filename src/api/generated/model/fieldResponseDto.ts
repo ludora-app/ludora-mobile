@@ -15,7 +15,9 @@ export interface FieldResponseDto {
   readonly latitude: number;
   readonly longitude: number;
   readonly name: string;
+  readonly openingHours: readonly string[];
   readonly partnerUid: string;
+  readonly shortAddress: string;
   readonly sport: string;
   readonly uid: string;
 }

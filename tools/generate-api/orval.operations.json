@@ -5,6 +5,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "SessionsController_findAllSuggestions": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "SessionsController_findAll": {
     "query": {
       "useInfinite": true,
@@ -12,6 +18,12 @@
     }
   },
   "SessionTeamsController_findTeamsBySessionUid": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "ConversationsController_findAllByUserUid": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

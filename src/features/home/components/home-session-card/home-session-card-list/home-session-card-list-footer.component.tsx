@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { list } from 'radash';
 import { Box } from '@ludo/ui';
 
@@ -9,12 +10,15 @@ type HomeSessionCardListFooterProps = {
   isFetchingNextPage: boolean;
 };
 
-export default function HomeSessionCardListFooter(props: HomeSessionCardListFooterProps) {
+function HomeSessionCardListFooter(props: HomeSessionCardListFooterProps) {
   const { isFetchingNextPage } = props;
   const { bottomTab } = useSafeArea();
+
   return (
     <Box className="bg-background" style={{ paddingBottom: bottomTab }}>
-      {isFetchingNextPage && list(5).map((_, index) => <HomeSessionCardSkeleton key={index} />)}
+      {isFetchingNextPage && list(4).map((_, index) => <HomeSessionCardSkeleton key={index} />)}
     </Box>
   );
 }
+
+export default memo(HomeSessionCardListFooter);

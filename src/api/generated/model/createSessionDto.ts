@@ -26,6 +26,4 @@ export interface CreateSessionDto {
   teamsPerGame: number;
   /** The title of the session */
   title?: string;
-  /** The uid of the creator */
-  userUid: string;
 }

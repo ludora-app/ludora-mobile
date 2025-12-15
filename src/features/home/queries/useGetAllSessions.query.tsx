@@ -1,10 +1,10 @@
-import { useSessionsFindAllInfinite } from '@generatedApi/sessions/sessions.api';
+import { useSessionsFindAllSuggestionsInfinite } from '@generatedApi/sessions/sessions.api';
 
-import { SessionsFindAllParams } from '@/api/generated/model';
+import { SessionsFindAllSuggestionsParams } from '@/api/generated/model';
 
-export const useGetAllSessions = (filter: SessionsFindAllParams) =>
-  useSessionsFindAllInfinite(filter, {
+export const useGetAllSessions = (filter: SessionsFindAllSuggestionsParams) =>
+  useSessionsFindAllSuggestionsInfinite(filter, {
     query: {
-      getNextPageParam: lastPage => lastPage.data.nextCursor,
+      getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
   });

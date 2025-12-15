@@ -1,8 +1,9 @@
 import { Stack } from 'expo-router';
-import MainProvider from '@/providers/main.provider';
+
+import { useAuthStore } from '@/stores/auth.store';
 
 import '../styles/global.css';
-import { useAuthStore } from '@/stores/auth.store';
+import MainProvider from '@/providers/main.provider';
 import LoadingScreen from '@/features/splash/screens/splash.screen';
 
 function RootLayoutNav() {

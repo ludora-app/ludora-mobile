@@ -59,9 +59,9 @@ export default function HeaderSessionCardListRefreshControl({
       cancelAnimation(rotation);
       rotation.value = 0;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching]);
 
-  // Style du Conteneur (Opacité + Scale)
   const rSpinnerStyle = useAnimatedStyle(() => {
     if (isFetching) {
       return { opacity: 1, transform: [{ scale: 1 }, { translateY: 0 }] };

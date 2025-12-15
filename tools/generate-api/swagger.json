@@ -136,6 +136,90 @@
         ]
       }
     },
+    "/geolocalisation/details": {
+      "post": {
+        "operationId": "GeolocalisationController_getDetailedAddressFromCoordinates",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/address": {
+      "post": {
+        "operationId": "GeolocalisationController_getAddressFromCoordinates",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/coordinates": {
+      "post": {
+        "operationId": "GeolocalisationController_getCoordinatesFromAddress",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/coordinates-and-short-address": {
+      "post": {
+        "operationId": "GeolocalisationController_getCoordinatesAndShortAddressFromAddress",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
     "/auth-b2c/register": {
       "post": {
         "operationId": "AuthB2CController_register",
@@ -1295,6 +1379,158 @@
         ]
       }
     },
+    "/sessions/list/suggestions/collection": {
+      "get": {
+        "operationId": "SessionsController_findAllSuggestions",
+        "parameters": [
+          {
+            "name": "userLat",
+            "required": false,
+            "in": "query",
+            "description": "User latitude for location-based filtering",
+            "schema": {
+              "example": 48.8566,
+              "type": "number"
+            }
+          },
+          {
+            "name": "userLon",
+            "required": false,
+            "in": "query",
+            "description": "User longitude for location-based filtering",
+            "schema": {
+              "example": 2.3522,
+              "type": "number"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "description": "Start date for filtering sessions",
+            "schema": {
+              "format": "date-time",
+              "example": "2024-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "description": "End date for filtering sessions",
+            "schema": {
+              "format": "date-time",
+              "example": "2024-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports to filter by",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance for location-based filtering",
+            "schema": {
+              "example": 1000,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "abc123",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "urgent",
+            "required": false,
+            "in": "query",
+            "description": "Filter for urgent sessions only",
+            "schema": {
+              "example": true,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionSuggestionItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Find matching sessions based on user preferences and filters",
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
     "/sessions/list/collection": {
       "get": {
         "operationId": "SessionsController_findAll",
@@ -1420,7 +1656,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionResponse"
+                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionItem"
                 }
               }
             }
@@ -1752,6 +1988,564 @@
         "summary": "Get a team by its uid",
         "tags": [
           "SessionTeams"
+        ]
+      }
+    },
+    "/user-hour-preferences": {
+      "post": {
+        "operationId": "UserHourPreferencesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserHourPreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new user hour preference",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-hour-preferences/list-by-user/{userUid}": {
+      "get": {
+        "operationId": "UserHourPreferencesController_findAllByUserUid",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all user hour preferences by user ID",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-hour-preferences/{uid}": {
+      "delete": {
+        "operationId": "UserHourPreferencesController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User hour preference deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a user hour preference by uid",
+        "tags": [
+          "UserHourPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences": {
+      "post": {
+        "operationId": "UserSportPreferencesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserSportPreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User sport preference created successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a user sport preference",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences/list-by-user/{userUid}": {
+      "get": {
+        "operationId": "UserSportPreferencesController_findAllByUserUid",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all user sport preferences by user ID",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/user-sport-preferences/{uid}": {
+      "delete": {
+        "operationId": "UserSportPreferencesController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User sport preference deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a user sport preference by uid",
+        "tags": [
+          "UserSportPreferences"
+        ]
+      }
+    },
+    "/conversations/list/collection": {
+      "get": {
+        "operationId": "ConversationsController_findAllByUserUid",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of conversations to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Type of conversation, used to filter my conversations",
+            "schema": {
+              "$ref": "#/components/schemas/ConversationType"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Name of the conversation",
+            "schema": {
+              "example": "Group 1",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseConversationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all conversations",
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/conversations/{uid}": {
+      "get": {
+        "operationId": "ConversationsController_findOne",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a conversation by uid",
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/conversations/mock": {
+      "post": {
+        "operationId": "ConversationsController_createMockConversation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "DEV ONLY:Create mock conversations",
+        "tags": [
+          "Conversations"
         ]
       }
     },
@@ -2878,353 +3672,6 @@
         ]
       }
     },
-    "/user-hour-preferences": {
-      "post": {
-        "operationId": "UserHourPreferencesController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserHourPreferenceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create a new user hour preference",
-        "tags": [
-          "UserHourPreferences"
-        ]
-      }
-    },
-    "/user-hour-preferences/list-by-user/{userUid}": {
-      "get": {
-        "operationId": "UserHourPreferencesController_findAllByUserUid",
-        "parameters": [
-          {
-            "name": "userUid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get all user hour preferences by user ID",
-        "tags": [
-          "UserHourPreferences"
-        ]
-      }
-    },
-    "/user-hour-preferences/{uid}": {
-      "delete": {
-        "operationId": "UserHourPreferencesController_remove",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "User hour preference deleted successfully"
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Delete a user hour preference by uid",
-        "tags": [
-          "UserHourPreferences"
-        ]
-      }
-    },
-    "/user-sport-preferences": {
-      "post": {
-        "operationId": "UserSportPreferencesController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserSportPreferenceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User sport preference created successfully"
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create a user sport preference",
-        "tags": [
-          "UserSportPreferences"
-        ]
-      }
-    },
-    "/user-sport-preferences/list-by-user/{userUid}": {
-      "get": {
-        "operationId": "UserSportPreferencesController_findAllByUserUid",
-        "parameters": [
-          {
-            "name": "userUid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get all user sport preferences by user ID",
-        "tags": [
-          "UserSportPreferences"
-        ]
-      }
-    },
-    "/user-sport-preferences/{uid}": {
-      "delete": {
-        "operationId": "UserSportPreferencesController_remove",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "User sport preference deleted successfully"
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Delete a user sport preference by uid",
-        "tags": [
-          "UserSportPreferences"
-        ]
-      }
-    },
     "/fields": {
       "post": {
         "operationId": "FieldsController_create",
@@ -3855,6 +4302,10 @@
       "description": "Metrics operations"
     },
     {
+      "name": "Geolocalisation",
+      "description": "Geolocalisation operations"
+    },
+    {
       "name": "AuthB2C",
       "description": "AuthB2C operations"
     },
@@ -3871,6 +4322,18 @@
       "description": "SessionTeams operations"
     },
     {
+      "name": "UserHourPreferences",
+      "description": "UserHourPreferences operations"
+    },
+    {
+      "name": "UserSportPreferences",
+      "description": "UserSportPreferences operations"
+    },
+    {
+      "name": "Conversations",
+      "description": "Conversations operations"
+    },
+    {
       "name": "SessionInvitations",
       "description": "SessionInvitations operations"
     },
@@ -3885,14 +4348,6 @@
     {
       "name": "Payment",
       "description": "Payment operations"
-    },
-    {
-      "name": "UserHourPreferences",
-      "description": "UserHourPreferences operations"
-    },
-    {
-      "name": "UserSportPreferences",
-      "description": "UserSportPreferences operations"
     },
     {
       "name": "Fields",
@@ -4875,11 +5330,6 @@
             "description": "The uid of the field",
             "example": "cmajhjkjf000bq77q4b5ugn8b"
           },
-          "userUid": {
-            "type": "string",
-            "description": "The uid of the creator",
-            "example": "cmajhjkjf000bq77q4b5ugn8b"
-          },
           "gameMode": {
             "type": "string",
             "description": "The game mode of the session",
@@ -4894,7 +5344,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE"
+            "example": "THREE_V_THREE"
           },
           "startDate": {
             "type": "string",
@@ -4924,7 +5374,6 @@
         },
         "required": [
           "fieldUid",
-          "userUid",
           "gameMode",
           "startDate",
           "endDate",
@@ -4949,7 +5398,204 @@
           "data"
         ]
       },
-      "SessionResponse": {
+      "TeamFromSessionCollectionItem": {
+        "type": "object",
+        "properties": {
+          "teamName": {
+            "type": "string",
+            "description": "Team name",
+            "example": "Team A"
+          },
+          "numberOfPlayers": {
+            "type": "number",
+            "description": "Number of players in the team",
+            "example": 3
+          }
+        },
+        "required": [
+          "teamName",
+          "numberOfPlayers"
+        ]
+      },
+      "SessionCollectionSuggestionItem": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Session unique identifier",
+            "example": "cmj5pw29d003g75lsyurh9bpp",
+            "readOnly": true
+          },
+          "fieldImage": {
+            "type": "string",
+            "description": "Session field image",
+            "example": "https://example.com/image.jpg",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Creator UID",
+            "example": "abc123",
+            "readOnly": true
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "End date of the session",
+            "example": "2023-10-15T14:30:00Z",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Start date of the session",
+            "example": "2023-10-15T10:00:00Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "Game mode",
+            "enum": [
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
+            "example": "FIVE_V_FIVE",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "sport": {
+            "type": "string",
+            "description": "Sport type",
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "fieldShortAddress": {
+            "type": "string",
+            "description": "Session field short address",
+            "example": "38 Rue du Ballon, Noisy-le-Grand",
+            "readOnly": true
+          },
+          "sessionTeams": {
+            "description": "Session teams",
+            "example": [
+              {
+                "numberOfPlayers": 2,
+                "teamName": "Team A"
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeamFromSessionCollectionItem"
+            }
+          },
+          "fieldLatitude": {
+            "type": "number",
+            "description": "Field latitude",
+            "example": 48.8566,
+            "readOnly": true
+          },
+          "fieldLongitude": {
+            "type": "number",
+            "description": "Field longitude",
+            "example": 2.3522,
+            "readOnly": true
+          },
+          "userDistance": {
+            "type": "number",
+            "description": "Distance to the session in meters",
+            "example": 1200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "uid",
+          "creatorUid",
+          "endDate",
+          "startDate",
+          "gameMode",
+          "maxPlayersPerTeam",
+          "sport",
+          "fieldShortAddress",
+          "sessionTeams",
+          "fieldLatitude",
+          "fieldLongitude",
+          "userDistance"
+        ]
+      },
+      "PaginationDataSessionCollectionSuggestionItem": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionCollectionSuggestionItem"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseSessionCollectionSuggestionItem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataSessionCollectionSuggestionItem"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SessionCollectionItem": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -5030,30 +5676,81 @@
             "description": "Session update date",
             "example": "2025-05-10T22:30:32.525Z",
             "readOnly": true
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "Session game mode",
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "fieldImage": {
+            "type": "string",
+            "description": "Session field image",
+            "example": "https://example.com/image.jpg",
+            "readOnly": true
+          },
+          "fieldShortAddress": {
+            "type": "string",
+            "description": "Session field short address",
+            "example": "38 Rue du Ballon, Noisy-le-Grand",
+            "readOnly": true
+          },
+          "fieldLatitude": {
+            "type": "number",
+            "description": "Session field latitude",
+            "example": 48.8588443,
+            "readOnly": true
+          },
+          "fieldLongitude": {
+            "type": "number",
+            "description": "Session field longitude",
+            "example": 2.2943506,
+            "readOnly": true
+          },
+          "sessionTeams": {
+            "description": "Session teams",
+            "example": [
+              {
+                "numberOfPlayers": 2,
+                "teamName": "Team A"
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeamFromSessionCollectionItem"
+            }
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance between the user and the session field in kilometers",
+            "example": 10.5,
+            "readOnly": true
           }
         },
         "required": [
-          "createdAt",
-          "description",
-          "endDate",
-          "uid",
-          "maxPlayersPerTeam",
-          "teamsPerGame",
-          "minPlayersPerTeam",
-          "sport",
-          "startDate",
-          "title",
-          "updatedAt"
+          "fieldImage",
+          "fieldShortAddress",
+          "fieldLatitude",
+          "fieldLongitude",
+          "sessionTeams",
+          "distance"
         ]
       },
-      "PaginationDataSessionResponse": {
+      "PaginationDataSessionCollectionItem": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SessionResponse"
+              "$ref": "#/components/schemas/SessionCollectionItem"
             }
           },
           "nextCursor": {
@@ -5072,7 +5769,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseSessionResponse": {
+      "PaginationResponseSessionCollectionItem": {
         "type": "object",
         "properties": {
           "message": {
@@ -5083,7 +5780,7 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataSessionResponse"
+                "$ref": "#/components/schemas/PaginationDataSessionCollectionItem"
               }
             ]
           },
@@ -5115,11 +5812,6 @@
             "description": "The uid of the field",
             "example": "cmajhjkjf000bq77q4b5ugn8b"
           },
-          "userUid": {
-            "type": "string",
-            "description": "The uid of the creator",
-            "example": "cmajhjkjf000bq77q4b5ugn8b"
-          },
           "gameMode": {
             "type": "string",
             "description": "The game mode of the session",
@@ -5134,7 +5826,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE"
+            "example": "THREE_V_THREE"
           },
           "startDate": {
             "type": "string",
@@ -5307,6 +5999,438 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "CreateUserHourPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "dayOfWeek": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 6,
+            "description": "The day of the week, 0 is Sunday, 6 is Saturday",
+            "example": 0
+          },
+          "timePeriod": {
+            "type": "string",
+            "description": "The time period",
+            "enum": [
+              "MORNING",
+              "AFTERNOON",
+              "EVENING"
+            ],
+            "example": "MORNING"
+          },
+          "preferenceType": {
+            "type": "string",
+            "description": "The preference type, RECURRENT is a recurring preference, ONE_TIME is a one time preference",
+            "enum": [
+              "RECURRENT",
+              "ONE_TIME"
+            ],
+            "example": "RECURRENT"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date of the preference",
+            "example": "2025-05-10T22:30:32.525Z"
+          }
+        },
+        "required": [
+          "timePeriod",
+          "preferenceType"
+        ]
+      },
+      "UserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "RECURRENT",
+              "ONE_TIME"
+            ],
+            "example": "RECURRENT",
+            "readOnly": true
+          },
+          "timePeriod": {
+            "type": "string",
+            "enum": [
+              "MORNING",
+              "AFTERNOON",
+              "EVENING"
+            ],
+            "example": "MORNING",
+            "readOnly": true
+          },
+          "dayOfWeek": {
+            "type": "number",
+            "example": 0,
+            "readOnly": true
+          },
+          "userUid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "createdAt",
+          "uid",
+          "type",
+          "timePeriod",
+          "dayOfWeek",
+          "userUid",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataUserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserHourPreferenceResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseUserHourPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataUserHourPreferenceResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateUserSportPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "sport": {
+            "type": "string",
+            "description": "The sport that the user wants to register as a preference",
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "example": "BASKETBALL"
+          }
+        },
+        "required": [
+          "sport"
+        ]
+      },
+      "UserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "The unique identifier of the user sport preference"
+          },
+          "sport": {
+            "type": "string",
+            "description": "The sport of the user sport preference"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The user ID of the user sport preference"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The creation date of the user sport preference"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The update date of the user sport preference"
+          }
+        },
+        "required": [
+          "uid",
+          "sport",
+          "userUid",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginationDataUserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserSportPreferenceResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseUserSportPreferenceResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataUserSportPreferenceResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ConversationType": {
+        "type": "string",
+        "enum": [
+          "PRIVATE",
+          "GROUP",
+          "SESSION"
+        ]
+      },
+      "ConversationResponse": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Conversation creation date",
+            "example": "2025-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Conversation creation date",
+            "example": "2025-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Conversation ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "sessionUid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Session ID",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "type": {
+            "type": "object",
+            "description": "Conversation type: PRIVATE, GROUP, SESSION",
+            "example": "PRIVATE",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Conversation name",
+            "example": "Conversation 1",
+            "readOnly": true
+          },
+          "lastMessageAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Conversation last message date",
+            "example": "2025-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "members": {
+            "description": "Conversation members",
+            "example": [
+              "cmajhjkjf000bq77q4b5ugn8b",
+              "cmajhjkjf000bq77q4b5ugn8b"
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "messages": {
+            "description": "Conversation messages",
+            "example": [
+              "cmajhjkjf000bq77q4b5ugn8b",
+              "cmajhjkjf000bq77q4b5ugn8b"
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "createdAt",
+          "updatedAt",
+          "uid",
+          "type",
+          "name",
+          "lastMessageAt"
+        ]
+      },
+      "PaginationDataConversationResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseConversationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataConversationResponse"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ForbiddenResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 403
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Forbidden"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Access denied"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
         ]
       },
       "CreateSessionInvitationDto": {
@@ -6862,266 +7986,6 @@
           "connectedAccountId"
         ]
       },
-      "CreateUserHourPreferenceDto": {
-        "type": "object",
-        "properties": {
-          "dayOfWeek": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 6,
-            "description": "The day of the week, 0 is Sunday, 6 is Saturday",
-            "example": 0
-          },
-          "timePeriod": {
-            "type": "string",
-            "description": "The time period",
-            "enum": [
-              "MORNING",
-              "AFTERNOON",
-              "EVENING"
-            ],
-            "example": "MORNING"
-          },
-          "preferenceType": {
-            "type": "string",
-            "description": "The preference type, RECURRENT is a recurring preference, ONE_TIME is a one time preference",
-            "enum": [
-              "RECURRENT",
-              "ONE_TIME"
-            ],
-            "example": "RECURRENT"
-          },
-          "date": {
-            "type": "string",
-            "description": "The date of the preference",
-            "example": "2025-05-10T22:30:32.525Z"
-          }
-        },
-        "required": [
-          "timePeriod",
-          "preferenceType"
-        ]
-      },
-      "UserHourPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session creation date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "uid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "RECURRENT",
-              "ONE_TIME"
-            ],
-            "example": "RECURRENT",
-            "readOnly": true
-          },
-          "timePeriod": {
-            "type": "string",
-            "enum": [
-              "MORNING",
-              "AFTERNOON",
-              "EVENING"
-            ],
-            "example": "MORNING",
-            "readOnly": true
-          },
-          "dayOfWeek": {
-            "type": "number",
-            "example": 0,
-            "readOnly": true
-          },
-          "userUid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session update date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "createdAt",
-          "uid",
-          "type",
-          "timePeriod",
-          "dayOfWeek",
-          "userUid",
-          "updatedAt"
-        ]
-      },
-      "PaginationDataUserHourPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserHourPreferenceResponse"
-            }
-          },
-          "nextCursor": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "totalCount": {
-            "type": "number",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "items",
-          "nextCursor",
-          "totalCount"
-        ]
-      },
-      "PaginationResponseUserHourPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaginationDataUserHourPreferenceResponse"
-              }
-            ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "CreateUserSportPreferenceDto": {
-        "type": "object",
-        "properties": {
-          "sport": {
-            "type": "string",
-            "description": "The sport that the user wants to register as a preference",
-            "enum": [
-              "BASKETBALL",
-              "FOOTBALL",
-              "TENNIS",
-              "VOLLEYBALL",
-              "PADDEL",
-              "BADMINTON",
-              "PING-PONG"
-            ],
-            "example": "BASKETBALL"
-          }
-        },
-        "required": [
-          "sport"
-        ]
-      },
-      "UserSportPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "type": "string",
-            "description": "The unique identifier of the user sport preference"
-          },
-          "sport": {
-            "type": "string",
-            "description": "The sport of the user sport preference"
-          },
-          "userUid": {
-            "type": "string",
-            "description": "The user ID of the user sport preference"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "The creation date of the user sport preference"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "The update date of the user sport preference"
-          }
-        },
-        "required": [
-          "uid",
-          "sport",
-          "userUid",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "PaginationDataUserSportPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSportPreferenceResponse"
-            }
-          },
-          "nextCursor": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "totalCount": {
-            "type": "number",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "items",
-          "nextCursor",
-          "totalCount"
-        ]
-      },
-      "PaginationResponseUserSportPreferenceResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaginationDataUserSportPreferenceResponse"
-              }
-            ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "FieldResponseDto": {
         "type": "object",
         "properties": {
@@ -7137,7 +8001,12 @@
           },
           "address": {
             "type": "string",
-            "example": "123 Main St, Anytown, USA",
+            "example": "38 Rue du Ballon, 93160 Noisy-le-Grand, France",
+            "readOnly": true
+          },
+          "shortAddress": {
+            "type": "string",
+            "example": "38 Rue du Ballon, Noisy-le-Grand",
             "readOnly": true
           },
           "latitude": {
@@ -7187,12 +8056,27 @@
             "type": "string",
             "example": "cm7hvgonx0000to0mh5maqajc",
             "readOnly": true
+          },
+          "openingHours": {
+            "example": [
+              {
+                "closeTime": "12:00",
+                "dayOfWeek": 1,
+                "openTime": "10:00"
+              }
+            ],
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "uid",
           "name",
           "address",
+          "shortAddress",
           "latitude",
           "longitude",
           "fieldImages",
@@ -7200,7 +8084,8 @@
           "entryFee",
           "isVerified",
           "sport",
-          "partnerUid"
+          "partnerUid",
+          "openingHours"
         ]
       },
       "PaginationDataFieldResponseDto": {

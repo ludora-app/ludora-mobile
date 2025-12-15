@@ -1,4 +1,4 @@
-import useUserLocationStore from '@/stores/user-localtion.store';
+import useUserLocationStore from '@/stores/user-geolocalisation.store';
 
 const R = 6371; // Rayon de la Terre en km
 function toRadians(value: number) {

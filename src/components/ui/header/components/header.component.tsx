@@ -7,12 +7,13 @@ import COLORS from '@/constants/COLORS';
 interface HeaderProps {
   title?: string;
   subTitle?: string;
+  hasNewSession?: boolean;
 }
 
 export const HEADER_HEIGHT = 210;
 
 export default function Header(props: PropsWithChildren<HeaderProps>) {
-  const { children, subTitle, title } = props;
+  const { children, hasNewSession = false, subTitle, title } = props;
 
   return (
     <Wrapper className="flex-row items-end" hasSafeArea edges={['top']} style={{ height: HEADER_HEIGHT }}>
@@ -26,18 +27,24 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
               fillColor="#FFFFFF"
               strokeColor={COLORS.primary}
               strokeWidth={2}
-              fontFamily="NunitoSans400Regular"
-              fontWeight="900"
+              fontFamily="NunitoSans700Bold"
             />
           </Box>
           <String colorVariant="white" font="primaryBold">
             {subTitle}
           </String>
           {children}
+          {hasNewSession && (
+            <Box className="absolute bottom-16 right-0 -z-10">
+              <Icon name="mascotte-ludora" className="size-36" />
+            </Box>
+          )}
         </Box>
-        <Box className="justify-end">
-          <Icon name="mascotte-ludora" className="size-36" />
-        </Box>
+        {!hasNewSession && (
+          <Box className="justify-end">
+            <Icon name="mascotte-ludora" className="size-36" />
+          </Box>
+        )}
       </Box>
     </Wrapper>
   );

@@ -275,6 +275,8 @@ export function SvgTextOutlined({
                 stroke={strokeColor}
                 strokeWidth={strokeWidth * 2}
                 fill="none"
+                strokeLinejoin="round"
+                strokeLinecap="round"
               >
                 {line}
               </SvgText>

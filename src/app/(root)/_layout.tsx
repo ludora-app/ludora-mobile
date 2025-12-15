@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
-import UserLocationProvider from '@/providers/user-location-provider';
+
+import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
 function AppLayoutNav() {
   return (
@@ -23,8 +24,9 @@ function AppLayoutNav() {
 
 export default function AppLayout() {
   return (
-    <UserLocationProvider>
+    <>
+      <GeolocalisationProvider />
       <AppLayoutNav />
-    </UserLocationProvider>
+    </>
   );
 }

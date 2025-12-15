@@ -2,7 +2,10 @@ import ky from 'ky';
 import fs from 'fs';
 import path from 'path';
 
-const SWAGGER_URL = `http://localhost:2424/swagger-json`;
+const LOCAL_SWAGGER_URL = `http://localhost:2424/swagger-json`;
+const REMOTE_SWAGGER_URL = `${process.env.EXPO_PUBLIC_DEV_API_URL}/swagger-json`;
+const SWAGGER_URL = LOCAL_SWAGGER_URL;
+console.log('SWAGGER_URL', SWAGGER_URL);
 const basicAuth = Buffer.from(`${process.env.SWAGGER_USER}:${process.env.SWAGGER_PASSWORD}`).toString('base64');
 
 (async () => {

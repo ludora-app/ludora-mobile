@@ -10,6 +10,7 @@
   "home.events_waiting_for_players_title": "Matches waiting for players",
   "home.header.button_create_match": "Create a match",
   "home.header.sub_title": "What shall we do today?",
+  "home.header.sub_title_incoming_session": "Your next upcoming game...",
   "home.header.title": "Hi {username} !",
   "home.session_card_header_list_title": "Matches waiting for players",
   "login.user_not_found": "Incorrect email or password",

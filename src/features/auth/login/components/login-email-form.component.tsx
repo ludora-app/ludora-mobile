@@ -32,12 +32,11 @@ export default function LoginEmailForm() {
 
   const onSubmit = useCallback(
     async (data: LoginFormData) => {
-      console.log('data', data);
       try {
         const response = await loginMutation({
           data: {
             email: 'amir.398@hotmail.fr',
-            password: 'Sk43subezero@',
+            password: 'Ludora98@',
           },
         });
 

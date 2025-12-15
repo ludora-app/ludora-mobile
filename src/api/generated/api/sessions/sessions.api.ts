@@ -27,9 +27,11 @@ import type {
   BadRequestResponseDto,
   CreateSessionDto,
   NotFoundResponseDto,
-  PaginationResponseSessionResponse,
+  PaginationResponseSessionCollectionItem,
+  PaginationResponseSessionCollectionSuggestionItem,
   ResponseTypeDto,
   SessionsFindAllParams,
+  SessionsFindAllSuggestionsParams,
   UnauthorizedResponseDto,
   UpdateSessionDto,
 } from '../../model';
@@ -106,10 +108,189 @@ export const useSessionsCreate = <
   return useMutation(mutationOptions);
 };
 /**
+ * @summary Find matching sessions based on user preferences and filters
+ */
+export const sessionsFindAllSuggestions = (
+  params?: SessionsFindAllSuggestionsParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<PaginationResponseSessionCollectionSuggestionItem>({
+    url: `/sessions/list/suggestions/collection`,
+    method: 'GET',
+    params,
+    signal,
+  });
+};
+
+export const getSessionsFindAllSuggestionsQueryKey = (
+  params?: SessionsFindAllSuggestionsParams,
+) => {
+  return [`/sessions/list/suggestions/collection`, ...(params ? [params] : [])] as const;
+};
+
+export const getSessionsFindAllSuggestionsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    SessionsFindAllSuggestionsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: SessionsFindAllSuggestionsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+        SessionsFindAllSuggestionsParams['cursor']
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getSessionsFindAllSuggestionsQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    QueryKey,
+    SessionsFindAllSuggestionsParams['cursor']
+  > = ({ signal, pageParam }) =>
+    sessionsFindAllSuggestions({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+    SessionsFindAllSuggestionsParams['cursor']
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type SessionsFindAllSuggestionsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sessionsFindAllSuggestions>>
+>;
+export type SessionsFindAllSuggestionsInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
+
+export function useSessionsFindAllSuggestionsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    SessionsFindAllSuggestionsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params: undefined | SessionsFindAllSuggestionsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+        SessionsFindAllSuggestionsParams['cursor']
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsFindAllSuggestionsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    SessionsFindAllSuggestionsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: SessionsFindAllSuggestionsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+        SessionsFindAllSuggestionsParams['cursor']
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsFindAllSuggestionsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    SessionsFindAllSuggestionsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: SessionsFindAllSuggestionsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+        SessionsFindAllSuggestionsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Find matching sessions based on user preferences and filters
+ */
+
+export function useSessionsFindAllSuggestionsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+    SessionsFindAllSuggestionsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: SessionsFindAllSuggestionsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof sessionsFindAllSuggestions>>,
+        TError,
+        TData,
+        QueryKey,
+        SessionsFindAllSuggestionsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getSessionsFindAllSuggestionsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * @summary Get all sessions
  */
 export const sessionsFindAll = (params?: SessionsFindAllParams, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseSessionResponse>({
+  return customInstance<PaginationResponseSessionCollectionItem>({
     url: `/sessions/list/collection`,
     method: 'GET',
     params,

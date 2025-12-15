@@ -1,12 +1,13 @@
 import ky from 'ky';
 
+const LOCAL_API_URL = `http://localhost:2424`;
+const REMOTE_API_URL = process.env.EXPO_PUBLIC_DEV_API_URL;
+const SWAGGER_URL = `${LOCAL_API_URL}/swagger-json`;
+
+const PAGINATION_KEYWORDS = ['/collection'];
+
+const basicAuth = Buffer.from(`${process.env.SWAGGER_USER}:${process.env.SWAGGER_PASSWORD}`).toString('base64');
 export default async function getOrvalOperations() {
-  const SWAGGER_URL = `${process.env.EXPO_PUBLIC_DEV_API_URL}/swagger-json`;
-
-  const PAGINATION_KEYWORDS = ['/collection'];
-
-  const basicAuth = Buffer.from(`${process.env.SWAGGER_USER}:${process.env.SWAGGER_PASSWORD}`).toString('base64');
-
   const res = await ky.get(SWAGGER_URL, {
     headers: {
       Authorization: `Basic ${basicAuth}`,

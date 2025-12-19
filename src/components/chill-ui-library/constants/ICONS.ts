@@ -92,6 +92,68 @@ export const ICONS = {
     ],
     viewBox: '0 0 448 512',
   },
+  'chill-ui-close-circle-regular': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+            {
+              d: 'M9.17004 14.8299L14.83 9.16992',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+            {
+              d: 'M14.83 14.8299L9.17004 9.16992',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_4418_9821)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'none',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_4418_9821',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 24',
+  },
   'circle-info-solid': {
     path: [
       'M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z',

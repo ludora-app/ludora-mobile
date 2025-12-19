@@ -18,4 +18,5 @@ export type ButtonProps = ChillUiButtonProps & {
     position?: 'left' | 'right';
     name: TIconNameChillUi | TIconName;
   };
+  isLoading?: boolean;
 };

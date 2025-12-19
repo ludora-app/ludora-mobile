@@ -1,9 +1,9 @@
 import { Stack } from 'expo-router';
-import GoBackHeader from '@/components/ui/go-back-header.compoent';
 
-const header = () => <GoBackHeader />;
+import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 export default function AuthLayout() {
+  const header = () => <HeaderGoBack />;
   return (
     <Stack
       screenOptions={{
@@ -13,7 +13,9 @@ export default function AuthLayout() {
       }}
       initialRouteName="index"
     >
-      <Stack.Screen name="login" options={{ header: () => header(), headerShown: true }} />
+      <Stack.Screen name="login" options={{ headerShown: true }} />
+      <Stack.Screen name="reset-password" options={{ header, headerShown: true }} />
+      <Stack.Screen name="verify-code" options={{ header, headerShown: true }} />
     </Stack>
   );
 }

@@ -1,17 +1,17 @@
-import { cn } from '../../../utils';
-import { Box } from '../../box';
 import { Animated } from 'react-native';
-import { Icon } from '../../icon';
 import { useEffect, useMemo } from 'react';
-import { String } from '../../string';
-import { AnimatedBox } from '../../animatedBox';
 
 import type { ToastItemProps } from '../types/toast.types';
 
+import { Box } from '../../box';
+import { Icon } from '../../icon';
+import { cn } from '../../../utils';
+import { String } from '../../string';
 import { useToast } from '../hooks/useToast';
+import { AnimatedBox } from '../../animatedBox';
 import { twStyles } from '../styles/Toast.styles';
-import { toastDefaultProps } from '../utils/defaultProps';
 import { useToastSwipe } from '../hooks/useToastSwipe';
+import { toastDefaultProps } from '../utils/defaultProps';
 import { variantConfig, PROGRESS_BAR_HEIGHT } from '../utils/toastConfig';
 
 /**
@@ -23,7 +23,7 @@ function ToastItem({
   safeAreaInsets,
   scale,
   stackIndex,
-  swipeable = false,
+  swipeable = toastDefaultProps.swipeable,
   toast,
   variants = variantConfig,
   yOffset,
@@ -103,9 +103,7 @@ function ToastItem({
         <Box className={twStyles.customContent}>{customRender || config.render}</Box>
       ) : (
         <Box className={twStyles.contentRow}>
-          {config.customIcon || (
-            <Icon {...config.iconProps} {...toast.iconProps} size="lg" className={twStyles.icon} />
-          )}
+          {config.customIcon || <Icon {...config.iconProps} {...toast.iconProps} size="lg" className={twStyles.icon} />}
 
           <Box className={twStyles.textContainer}>
             {title && (

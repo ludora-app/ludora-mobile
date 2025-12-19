@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.tsx",
   "scripts": {
-    "start": "bun inject:env expo start --port 8086",
+    "start": "node tools/update-ip/update-ip.js && bun inject:env expo start --port 8086",
     "start:clear": "bun inject:env expo start --port 8086 --clear",
     "generate:icons": "node tools/svg-2-obj/index.js",
     "inject:env": "chmod +x tools/vault/inject-env.sh && bash tools/vault/inject-env.sh",

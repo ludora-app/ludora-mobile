@@ -1,9 +1,11 @@
 const ROUTES = {
   AUTH: {
     LOGIN: '/auth/login',
+    NEW_PASSWORD: '/auth/new-password',
     REGISTER_STEP_1: '/auth/register/step-1',
     REGISTER_STEP_2: '/auth/register/step-2',
     RESET_PASSWORD: '/auth/reset-password',
+    VERIFY_CODE: '/auth/verify-code',
   },
   HOME: '/',
   SESSION: {

@@ -21,3 +21,4 @@ export * from './dialog.types';
 export * from './outlineString.types';
 export * from './skeleton.types';
 export * from './chilluiDevtool.types';
+export * from './iconButton.types';

@@ -6,8 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SessionsFindAllScope =
-  (typeof SessionsFindAllScope)[keyof typeof SessionsFindAllScope];
+export type SessionsFindAllScope = (typeof SessionsFindAllScope)[keyof typeof SessionsFindAllScope];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SessionsFindAllScope = {

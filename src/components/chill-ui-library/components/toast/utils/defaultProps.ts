@@ -4,7 +4,7 @@ export const toastDefaultProps = {
   allowMultiple: false,
   maxToasts: 4,
   offsetY: 0,
-  position: 'bottom' as ToastPositionProps,
-  swipeable: false,
+  position: 'top' as ToastPositionProps,
+  swipeable: true,
   variant: 'success' as ToastVariantProps,
 };

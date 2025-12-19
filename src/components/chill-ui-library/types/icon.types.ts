@@ -4,12 +4,12 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import type { IconConfig } from '../components/icon/context/IconContext';
 import type { iconSizeTv, iconPaddingTv } from '../components/icon/styles/Icon.styles';
 
-import { ICONS } from '../constants';
+import { ICONS, TIcons } from '../constants';
 
 /**
  * Props for the Icon component
  */
-export type IconProps<T extends IconConfig = typeof ICONS> = {
+export type IconProps<T extends IconConfig = TIcons> = {
   /** Component to use when pressable:
    * - `'pressable'`
    * - `'touchable-opacity'`

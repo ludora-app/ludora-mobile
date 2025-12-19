@@ -24,8 +24,8 @@ export interface IconStructure {
   strokeWidth?: string;
   strokeLinecap?: string;
   strokeLinejoin?: string;
-  children?: IconStructure[];
   props?: Record<string, any>;
+  children?: readonly IconStructure[];
   type: 'g' | 'path' | 'defs' | 'clipPath' | 'rect';
 }
 

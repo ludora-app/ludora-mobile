@@ -2,7 +2,7 @@ import { ToastVariantTypeProps } from '../../../types';
 
 export const variantConfig: ToastVariantTypeProps = {
   error: {
-    iconProps: { color: '#FFFFFF', name: 'xmark-solid' },
+    iconProps: { color: '#FFFFFF', name: 'chill-ui-close-circle-regular' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#F44336' },

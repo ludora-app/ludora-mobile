@@ -1,8 +1,8 @@
-import { ToastProps, ToastProviderProps } from '../../../types';
 import { createContext, useContext, useRef, useCallback, useMemo, PropsWithChildren } from 'react';
 
 import Toast from './Toast';
 import { toastDefaultProps } from '../utils/defaultProps';
+import { ToastProps, ToastProviderProps } from '../../../types';
 import { ToastRefProps, ToastContextPropsType } from '../types/toast.types';
 
 /** Context for providing toast functionality throughout the app */
@@ -69,7 +69,7 @@ export function ToastProvider({
       offsetY: toastOffsetY,
       position = toastDefaultProps.position,
       render,
-      swipeable: toastSwipeable,
+      swipeable: toastSwipeable = toastDefaultProps.swipeable,
       title,
       titleStringProps,
       variant = toastDefaultProps.variant,

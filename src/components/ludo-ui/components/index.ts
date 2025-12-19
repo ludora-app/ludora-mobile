@@ -6,6 +6,6 @@ export * from './icon';
 export * from './image';
 export * from './screen-layout';
 export * from './box';
-export * from './flashList';
 export * from './skeleton';
 export * from './wrapper';
+export * from './icon-button';

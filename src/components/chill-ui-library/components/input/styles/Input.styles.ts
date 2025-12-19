@@ -69,7 +69,7 @@ export const twStyles = {
   errorContainer: 'flex-row items-center gap-[4px] pl-[4px]',
   iconContainer: 'flex-row items-center gap-[4px]',
   label: 'ml-[4px]',
-  leftIcon: 'mr-[6px]',
+  leftIcon: 'mr-[10px]',
   lengthText: 'mr-[2px]',
   rightIcon: 'ml-[6px]',
 };

@@ -6,8 +6,13 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { TeamFromSessionCollectionItem } from './teamFromSessionCollectionItem';
+import type { SessionCollectionItemSport } from './sessionCollectionItemSport';
 
 export interface SessionCollectionItem {
+  /** Session creator */
+  readonly creatorUid: string;
+  /** Session end date */
+  readonly endDate: string;
   /** Session field image */
   readonly fieldImage?: string;
   /** Field latitude */
@@ -16,8 +21,24 @@ export interface SessionCollectionItem {
   readonly fieldLongitude: number;
   /** Session field short address */
   readonly fieldShortAddress: string;
+  /** Session game mode */
+  readonly gameMode: string;
+  /** Session level */
+  readonly level: number;
+  /** Maximum number of players per team */
+  readonly maxPlayersPerTeam: number;
+  /** Minimum number of players per team */
+  readonly minPlayersPerTeam: number;
   /** Session teams */
   readonly sessionTeams: readonly TeamFromSessionCollectionItem[];
+  /** Sport played during the session */
+  readonly sport: SessionCollectionItemSport;
+  /** Session start date */
+  readonly startDate: string;
+  /** Number of teams per game */
+  readonly teamsPerGame: number;
+  /** Session ID */
+  readonly uid: string;
   /** Distance to the session in meters */
   readonly userDistance: number;
 }

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
+import { useAuthStore } from '@/stores/auth.store';
 import { useUserMe } from '@/queries/user-me.query';
 import { WS_RESOURCES } from '@/types/websocket.type';
 import { useWebsocketStore } from '@/stores/websocket.store';
@@ -9,7 +10,8 @@ import { connect, disconnect, join, leave, on, emit, off } from '@/services/webs
 import { useAppState } from './app-state.hook';
 
 export const useWebsocketConnection = () => {
-  const { userMeId } = useUserMe();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const { userMeId } = useUserMe(isAuthenticated);
 
   const { setAuthentication, setStatus, status } = useWebsocketStore();
   const { appState } = useAppState({ onlyIos: true });

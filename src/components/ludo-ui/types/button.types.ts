@@ -11,6 +11,11 @@ import { RouteValues } from '@/constants/ROUTES';
 
 export type ButtonProps = ChillUiButtonProps & {
   redirect?: RouteValues;
+  image?: {
+    source: string;
+    contentFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+    className?: string;
+  };
   title?: string;
   titleProps?: ButtonTitleProps;
   contentProps?: ButtonContentProps;

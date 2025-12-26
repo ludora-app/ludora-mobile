@@ -6,6 +6,7 @@ import type { ButtonTv } from '../components/button/styles/Button.styles';
 import { IconProps } from './icon.types';
 import { TIconName } from '../constants';
 import { StringProps } from './string.types';
+import { IconConfig } from '../components/icon/context/IconContext';
 import { LoadingIndicatorProps } from './loadingIndicatorsKit.types';
 
 type TouchableComponentType = 'touchable-opacity' | 'pressable' | 'ripple-pressable' | 'scale-pressable';
@@ -38,7 +39,7 @@ export type ButtonContentProps = {
   position?: 'left' | 'center' | 'right';
 };
 
-export type ButtonIconProps<T = any> = {
+export type ButtonIconProps<T extends IconConfig = any> = {
   /** Icon name from the icon set */
   name?: keyof T | TIconName;
   /** Icon position: 'left' | 'right' | 'inline' */

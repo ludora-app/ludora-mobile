@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { View } from 'react-native';
+
+import { Button } from '@/components/ludo-ui';
+import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 
 export default function Profil() {
+  const { logout } = useAuthHelpers();
   return (
     <View className="mt-36">
-      <Text>profil</Text>
+      <Button title="Se déconnecter" onPress={logout} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

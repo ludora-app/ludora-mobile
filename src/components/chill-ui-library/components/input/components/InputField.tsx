@@ -7,7 +7,7 @@ import { useInputContext } from '../context/InputContext';
 import { InputFieldProps } from '../../../types/input.types';
 
 export default function InputField(props: InputFieldProps) {
-  const { allow, className, customRegex, font, onChangeText, ref, size, value, ...rest } = props;
+  const { allow, as, className, customRegex, font, onChangeText, ref, size, value, ...rest } = props;
   const [inputValue, setInputValue] = useState<string>(value || '');
 
   useEffect(() => {

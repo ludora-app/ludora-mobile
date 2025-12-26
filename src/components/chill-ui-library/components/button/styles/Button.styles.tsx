@@ -99,11 +99,6 @@ export const ButtonTv = tv({
       white: 'bg-button-white-background',
     },
 
-    contentPosition: {
-      center: 'justify-center',
-      left: 'justify-start',
-      right: 'justify-end',
-    },
     isDisabled: {
       true: 'opacity-[0.4]',
     },
@@ -120,42 +115,6 @@ export const ButtonTv = tv({
       contained: 'border-transparent',
       outlined: 'bg-transparent',
       text: 'bg-transparent border-transparent',
-    },
-  },
-});
-
-// Icon Position Tailwind Variants
-export const IconPositionTv = tv({
-  compoundVariants: [
-    {
-      className: 'left-3',
-      isAbsolute: true,
-      position: 'left',
-    },
-    {
-      className: 'right-3',
-      isAbsolute: true,
-      position: 'right',
-    },
-    {
-      className: 'mr-2',
-      isAbsolute: false,
-      position: 'left',
-    },
-    {
-      className: 'ml-2',
-      isAbsolute: false,
-      position: 'right',
-    },
-  ],
-  variants: {
-    isAbsolute: {
-      true: 'absolute',
-    },
-    position: {
-      center: '',
-      left: '',
-      right: '',
     },
   },
 });
@@ -419,8 +378,18 @@ export const ButtonStringTv = tv({
   },
 });
 
+export const buttonContentTv = tv({
+  variants: {
+    position: {
+      center: 'justify-center',
+      left: 'justify-start',
+      right: 'justify-end',
+    },
+  },
+});
+
 export const twStyles = {
-  content: 'flex-row items-center',
+  content: 'flex-row items-center flex-1',
   loadingContainer: 'pointer-events-none',
   pointerEventsNone: 'pointer-events-none',
   touchableComponent: 'px-3 justify-start rounded-lg border-2 items-center flex-row',

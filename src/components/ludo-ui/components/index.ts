@@ -9,3 +9,5 @@ export * from './box';
 export * from './skeleton';
 export * from './wrapper';
 export * from './icon-button';
+export * from './separator';
+export * from './chip';

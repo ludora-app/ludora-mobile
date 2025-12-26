@@ -7,7 +7,7 @@ import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, StyleSheet } f
 import COLORS from '@/constants/COLORS';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID, IS_IOS } from '@/constants/PLATFORM';
-import { SessionCollectionSuggestionItem } from '@/api/generated/model';
+import { SessionCollectionItem } from '@/api/generated/model';
 import { HEADER_HEIGHT } from '@/components/ui/header/components/header.component';
 
 import HomeSessionCard from '../home-session-card.component';
@@ -31,14 +31,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// TYPES
 type SkeletonItem = { type: 'skeleton'; uid: string };
-type ListItem = SessionCollectionSuggestionItem | SkeletonItem;
+type ListItem = SessionCollectionItem | SkeletonItem;
 
-// COMPOSANT ANIMÉ TYPÉ
 const AnimatedFlashList = Animated.createAnimatedComponent<FlashListProps<ListItem>>(FlashList);
 
-// OPTIMISATION 1 : Constante sortie du composant (plus besoin de useMemo)
 const SKELETON_COUNT = 3;
 const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
   type: 'skeleton',
@@ -90,7 +87,7 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
     if ('type' in item && item.type === 'skeleton') {
       return <HomeSessionCardSkeleton />;
     }
-    return <HomeSessionCard session={item as SessionCollectionSuggestionItem} />;
+    return <HomeSessionCard session={item as SessionCollectionItem} />;
   }, []);
 
   const getItemType = useCallback(

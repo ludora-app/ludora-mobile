@@ -1,13 +1,15 @@
+import { TextInput } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useRef, useState } from 'react';
 import { cn, InputMessage, useToast } from '@chillui/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { WrapperSafeAreaView, FormInput, String, BoxRow, Box } from '@ludo/ui';
-import { NativeSyntheticEvent, TextInput, TextInputKeyPressEventData } from 'react-native';
+import { WrapperSafeAreaView, FormInput, String, BoxRow } from '@ludo/ui';
 
 import ROUTES from '@/constants/ROUTES';
+import { ErrorResponse } from '@/api/orval.instance';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useVerifyCode } from '../queries/verify-code.query';
 import { VERIFY_CODE_ERRORS } from '../utils/verify-code-errors.utils';
@@ -24,11 +26,13 @@ export default function VerifyCodeScreen() {
   const { t } = useTranslate();
   const { toast } = useToast();
   const { email } = useLocalSearchParams();
+  const { trackError, trackEvent } = useAnalytics();
   const {
     control,
     formState: { errors },
     getValues,
     handleSubmit,
+    watch,
   } = useForm<VerifyCodeFormData>({
     resolver: zodResolver(formSchema),
   });
@@ -36,6 +40,8 @@ export default function VerifyCodeScreen() {
   const inputRefs = useRef<TextInput[]>([]);
   const { isPending: isVerifyingCode, mutateAsync: verifyCode } = useVerifyCode();
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const values = watch();
+  const parsedValues = Object.values(values).join('');
 
   const refInputCallback = useCallback((ref: TextInput | null) => {
     if (ref && !inputRefs.current.includes(ref)) {
@@ -49,20 +55,36 @@ export default function VerifyCodeScreen() {
   }));
 
   const onSubmit = async (data: VerifyCodeFormData) => {
+    trackEvent({
+      eventName: 'reset_password_verify_code_requested',
+    });
     const code = Object.values(data).join('');
     try {
-      // const response = await verifyCode({ data: { code, email: 'amir.398@hotmail.fr' } });
-      return router.push({ params: { resetToken: '' }, pathname: ROUTES.AUTH.NEW_PASSWORD });
+      const response = await verifyCode({ data: { code, email: email?.toString() ?? '' } });
+      trackEvent({
+        eventName: 'reset_password_verify_code_success',
+      });
+      return router.replace({ params: { resetToken: response.resetToken }, pathname: ROUTES.AUTH.NEW_PASSWORD });
     } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackEvent({
+        eventName: 'reset_password_verify_code_failed',
+        properties: {
+          error_message: errorResponse.api_error_detail,
+        },
+      });
       let errorMessage: string = 'common.error_generic';
-      if (error.message === VERIFY_CODE_ERRORS.CODE_INCORRECT) {
+      if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.CODE_INCORRECT) {
         errorMessage = 'auth.verify-code.incorrect_code';
-      }
-      if (error.message === VERIFY_CODE_ERRORS.EXPIRED_CODE) {
+      } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXPIRED_CODE) {
         errorMessage = 'auth.verify-code.expired_code';
-      }
-      if (error.message === VERIFY_CODE_ERRORS.EXCEEDED_ATTEMPTS) {
+      } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXCEEDED_ATTEMPTS) {
         errorMessage = 'auth.verify-code.exceeded_attempts';
+      } else {
+        trackError({
+          error,
+          showToast: false,
+        });
       }
       return toast({ message: t(errorMessage), variant: 'error' });
     }
@@ -102,7 +124,7 @@ export default function VerifyCodeScreen() {
               maxLength={1}
               onFocus={() => setFocusedIndex(index)}
               onBlur={() => setFocusedIndex(current => (current === index ? null : current))}
-              onKeyPress={(event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+              onKeyPress={event => {
                 const value = getValues()[field.name];
                 goToPreviousInput({ e: event, index, inputRefs, value });
               }}
@@ -114,9 +136,10 @@ export default function VerifyCodeScreen() {
         )}
       </ContentWapper>
       <VerifyCodeSubmitButton
-        focusedIndex={focusedIndex}
         isLoading={isVerifyingCode}
         onSubmit={handleSubmit(onSubmit)}
+        userEmail={email?.toString() ?? ''}
+        code={parsedValues}
       />
     </WrapperSafeAreaView>
   );

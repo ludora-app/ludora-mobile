@@ -1,28 +1,55 @@
+import { PropsWithChildren, ReactElement } from 'react';
+
 import { Box } from '../../box';
-import { cn } from '../../../utils';
-import { SeparatorProps } from '../../../types';
-import { twStyles } from '../styles/Separator.styles';
+import SeparatorDivider from './SeparatorDivider';
+import SeparatorContent from './SeparatorContent';
+import { cloneElement, cn, extractPropFromComponent, getChildByType } from '../../../utils';
+import { SeparatorContentProps, SeparatorDividerProps, SeparatorProps } from '../../../types';
 
 /**
  * The `<Separator />` component displays a horizontal line for visual separation.
  *
  * <!-- STORYBOOK_IMPORT_START
  * ```tsx
- * import { Separator } from 'react-native-chill-ui';
+ * import { Separator, SeparatorContent, SeparatorDivider } from '@chillui/ui';
  * ```
  * STORYBOOK_IMPORT_END -->
  *
  * @example
  * ```tsx
- * <Separator />
+ * <Separator >
+ * <SeparatorDivider />
+ * <SeparatorContent position="center"><Text>Or</Text></SeparatorContent>
+ * </Separator>
  * ```
  *
  * @param className - Custom CSS classes for styling the separator
  * @param viewProps - Rest of the view props
  */
-export function Separator(props: SeparatorProps) {
-  const { className, ...rest } = props;
-  return <Box className={cn(twStyles.separator, className)} {...rest} />;
+export default function Separator(props: PropsWithChildren<SeparatorProps>) {
+  const { children, className, ...rest } = props;
+
+  const separatorContent = getChildByType<SeparatorContentProps>(children, SeparatorContent);
+
+  const separatorDivider = getChildByType<SeparatorDividerProps>(children, SeparatorDivider);
+
+  const separatorContentPosition = extractPropFromComponent(separatorContent, 'position', 'center');
+
+  const showLeftBox = separatorContentPosition === 'center' || separatorContentPosition === 'right';
+
+  const showRightBox = separatorContentPosition === 'left' || separatorContentPosition === 'center';
+
+  if (separatorContent) {
+    return (
+      <Box className={cn('flex-row items-center gap-1', className)} {...rest}>
+        {showLeftBox && cloneElement(separatorDivider as ReactElement, { key: 'left-divider' })}
+        {separatorContent}
+        {showRightBox && cloneElement(separatorDivider as ReactElement, { key: 'right-divider' })}
+      </Box>
+    );
+  }
+
+  return <Box className={cn('flex-row items-center', className)}>{separatorDivider}</Box>;
 }
 
 Separator.displayName = 'Separator';

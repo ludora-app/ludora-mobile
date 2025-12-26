@@ -1,39 +1,15 @@
 import { registerImage } from 'assets';
-import { Image, Button } from '@ludo/ui';
-import { Link, useRouter } from 'expo-router';
-import { String, Wrapper, Box } from '@chillui/ui';
+import { Pressable } from 'react-native';
+import { useTranslate } from '@tolgee/react';
+import { Image, Button, String, Box, WrapperSafeAreaView, Link } from '@ludo/ui';
 
-import ROUTES from '@/constants/ROUTES';
-import { TIcons } from '@/constants/ICONS';
-
-type ButtonsProps = {
-  icon: keyof TIcons;
-  onPress: () => void;
-  title: string;
-};
+import LoginSocialGoogle from '../../login/components/login-social-networks/login-social-google.component';
 
 export default function RegisterStep1Screen() {
-  const router = useRouter();
-  const buttons: ButtonsProps[] = [
-    {
-      icon: 'envelope-solid',
-      onPress: () => router.push(ROUTES.AUTH.REGISTER_STEP_2),
-      title: 'Continuer avec Email',
-    },
-    {
-      icon: 'google-solid',
-      onPress: () => null,
-      title: 'Continuer avec Google',
-    },
-    {
-      icon: 'facebook-solid',
-      onPress: () => null,
-      title: 'Continuer avec Facebook',
-    },
-  ];
+  const { t } = useTranslate();
 
   return (
-    <Wrapper>
+    <WrapperSafeAreaView edges={['bottom']}>
       <Box className="flex-1 items-center justify-end gap-3">
         <Image source={registerImage} contentFit="contain" className="h-[40%] w-5/6" />
         <Box className="items-center justify-center gap-3 px-10">
@@ -47,19 +23,19 @@ export default function RegisterStep1Screen() {
       </Box>
       <Box className="flex-1 justify-around">
         <Box className="gap-4">
-          {buttons.map(button => (
-            <Button key={button.title} title={button.title} onPress={button.onPress} />
-          ))}
+          <Button title="Continuer avec Email" redirect="/auth/register/step-2" className="w-full" size="lg" />
+          <LoginSocialGoogle flow="register" />
         </Box>
-        <String className="text-center" useFastText={false}>
-          Vous avez déjà un compte ?{' '}
-          <Link href="/auth/login">
-            <String className="text-primary underline" useFastText={false}>
-              Connectez-vous
+
+        <Link href="/auth/login" asChild replace>
+          <Pressable className="mb-5 flex-row items-center justify-center">
+            <String>{t('auth.register.dont_have_an_account')} </String>
+            <String font="primaryBold" colorVariant="primary" className="underline">
+              {t('auth.register.dont_have_an_account_create_account')}
             </String>
-          </Link>
-        </String>
+          </Pressable>
+        </Link>
       </Box>
-    </Wrapper>
+    </WrapperSafeAreaView>
   );
 }

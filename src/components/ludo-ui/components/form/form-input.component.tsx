@@ -54,6 +54,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
         onChangeText: handleOnChangeText,
         placeholder,
         value,
+
         ...rest,
       }}
       label={label}

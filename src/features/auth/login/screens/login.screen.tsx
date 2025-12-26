@@ -1,47 +1,34 @@
-import { useEffect } from 'react';
-import { Link } from 'expo-router';
-import { Image } from 'expo-image';
-import { loginImage } from 'assets';
-import { useTrackEvent } from 'expo-plausible';
-import { Separator, Box, String, Wrapper } from '@chillui/ui';
+import { Pressable } from 'react-native';
+import { useTranslate } from '@tolgee/react';
+import { Box, String, Separator, Link, WrapperKeyboardAwareScrollView } from '@ludo/ui';
 
 import LoginEmailForm from '../components/login-email-form.component';
 import LoginSocialNetworks from '../components/login-social-networks/login-social-networks.component';
 
 export default function LoginScreen() {
-  const trackEvent = useTrackEvent();
-
-  useEffect(() => {
-    trackEvent({
-      name: 'login',
-      url: '/auth/login',
-    });
-  }, []);
+  const { t } = useTranslate();
 
   return (
-    <Wrapper>
-      <Box className="items-end justify-end gap-4 pt-10">
-        <Image source={loginImage} contentFit="contain" className="size-16" />
-      </Box>
-      <Box className="flex-1 justify-around gap-5">
+    <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']}>
+      <Box className="mb-10 flex-1">
         <Box>
-          <String size="2xl" className="mb-10">
+          <String variant="title-3" font="primaryExtraBold" className="mb-10">
             Se connecter
           </String>
 
           <LoginEmailForm />
-          <Separator title="Ou se connecter avec" className="mb-5 mt-10" />
-          <LoginSocialNetworks />
+          <Separator title={t('auth.login.divider_title')} className="my-5" />
+          <LoginSocialNetworks flow="login" />
         </Box>
-        <String className="text-center" useFastText={false}>
-          Vous avez déjà un compte ?{' '}
-          <Link href="/auth/register">
-            <String variant="body-1" className="text-primary underline" useFastText={false}>
-              Créer un compte
-            </String>
-          </Link>
-        </String>
       </Box>
-    </Wrapper>
+      <Link href="/auth/register/step-1" asChild replace>
+        <Pressable className="flex-row items-center justify-center">
+          <String>{t('auth.login.dont_have_an_account')} </String>
+          <String font="primaryBold" colorVariant="primary" className="underline">
+            {t('auth.login.dont_have_an_account_create_account')}
+          </String>
+        </Pressable>
+      </Link>
+    </WrapperKeyboardAwareScrollView>
   );
 }

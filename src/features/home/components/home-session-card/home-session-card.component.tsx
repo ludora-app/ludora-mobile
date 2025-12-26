@@ -1,12 +1,12 @@
 import { memo } from 'react';
 
 import { SessionCard } from '@/components/ui/session-card';
-import { SessionCollectionSuggestionItem } from '@/api/generated/model';
+import { SessionCollectionItem } from '@/api/generated/model';
 
 import HomeSessionCardWrapper from './home-session-card-wrapper.component';
 
 interface HomeSessionCardProps {
-  session: SessionCollectionSuggestionItem;
+  session: SessionCollectionItem;
 }
 
 function HomeSessionCard({ session }: HomeSessionCardProps) {

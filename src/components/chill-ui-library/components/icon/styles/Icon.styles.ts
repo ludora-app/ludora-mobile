@@ -30,7 +30,7 @@ export const iconPaddingTv = tv({
       '2xl': 'p-[20px]',
       '2xs': 'p-[1px]',
       '3xl': 'p-[24px]',
-      '3xs': 'p-[1px]',
+      '3xs': 'p-[0.5px]',
       lg: 'p-[12px]',
       md: 'p-[8px]',
       sm: 'p-[6px]',

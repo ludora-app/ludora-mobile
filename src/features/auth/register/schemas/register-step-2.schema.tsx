@@ -1,28 +1,39 @@
 import { z } from 'zod';
+import { TolgeeInstance } from '@tolgee/react';
 
-export const formSchema = z
-  .object({
-    confirmPassword: z.string({ error: 'Confirmation du mot de passe est requise' }),
-    email: z.email({ message: 'Email invalide' }),
-    firstname: z.string({ error: 'Ce champ est requis' }),
-    lastname: z.string({ error: 'Ce champ est requis' }),
-    password: z
-      .string({ error: 'Mot de passe est requis' })
-      .min(12, { error: 'Le mot de passe doit contenir au moins 12 caractères' })
-      .refine(val => /[a-z]/.test(val), { error: 'Le mot de passe doit contenir au moins une minuscule' })
-      .refine(val => /[A-Z]/.test(val), { error: 'Le mot de passe doit contenir au moins une majuscule' })
-      .refine(val => /[^a-zA-Z0-9]/.test(val), {
-        error: 'Le mot de passe doit contenir au moins un caractère spécial',
-      }),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (password !== confirmPassword) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Les mots de passe ne correspondent pas',
-        path: ['confirmPassword'],
-      });
-    }
-  });
+import { emailSchema, nameSchema, passwordSchema } from '@/utils/zod-schemas.utils';
+
+export const formSchema = (t: TolgeeInstance['t']) =>
+  z
+    .object({
+      birthdate: z
+        .date({
+          error: t('common.input_birthdate_invalid_required'),
+        })
+        .refine(
+          date => {
+            const minDate = new Date();
+            minDate.setFullYear(minDate.getFullYear() - 15);
+            return date <= minDate;
+          },
+          {
+            message: t('common.input_birthdate_invalid_age'),
+          },
+        ),
+      confirmPassword: z.string({ error: t('common.input_confirm_password_invalid_required') }),
+      email: emailSchema(t),
+      firstname: nameSchema(t),
+      lastname: nameSchema(t),
+      password: passwordSchema(t),
+    })
+    .superRefine(({ confirmPassword, password }, ctx) => {
+      if (password !== confirmPassword) {
+        ctx.addIssue({
+          code: 'custom',
+          message: t('common.input_confirm_password_invalid_match'),
+          path: ['confirmPassword'],
+        });
+      }
+    });
 
 export type formSchemaType = z.infer<typeof formSchema>;

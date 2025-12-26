@@ -1,6 +1,6 @@
-import { useAuthStore } from '@/stores/auth.store';
 import * as SplashScreenNative from 'expo-splash-screen';
-import { useShallow } from 'zustand/shallow';
+
+import { useAuthStore } from '@/stores/auth.store';
 
 SplashScreenNative.preventAutoHideAsync();
 
@@ -9,7 +9,7 @@ SplashScreenNative.setOptions({
 });
 
 export default function SplashScreen() {
-  const isLoading = useAuthStore(useShallow(state => state.isLoading));
+  const isLoading = useAuthStore(state => state.isLoading);
 
   if (!isLoading) {
     SplashScreenNative.hideAsync();

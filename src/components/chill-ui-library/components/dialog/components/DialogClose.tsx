@@ -1,11 +1,11 @@
+import { PropsWithChildren } from 'react';
+import { Pressable, TouchableOpacity } from 'react-native';
+
 import type { DialogCloseProps } from '../../../types';
 
 import { Slot } from '../../../utils';
-import { PropsWithChildren } from 'react';
-import { Pressable, TouchableOpacity } from 'react-native';
-import { RipplePressable } from '../../ripplePressable';
-
 import { useDialog } from './DialogContext';
+import { RipplePressable } from '../../ripplePressable';
 import { dialogDefaultProps } from '../utils/defaultProps';
 
 /**

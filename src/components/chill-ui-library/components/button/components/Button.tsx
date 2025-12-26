@@ -1,14 +1,14 @@
 import { Pressable, TouchableOpacity } from 'react-native';
-import { forwardRef, PropsWithChildren, useCallback, useMemo, useState } from 'react';
+import { forwardRef, PropsWithChildren, useMemo } from 'react';
 
 import type { ButtonProps } from '../../../types';
 
 import { cn } from '../../../utils';
 import { ScalePressable } from '../../scalePressable';
 import { RipplePressable } from '../../ripplePressable';
+import { ButtonContext } from '../context/ButtonContext';
 import { buttonDefaultProps } from '../utils/defaultProps';
 import { ButtonTv, twStyles } from '../styles/Button.styles';
-import { ButtonContext, ContentPosition } from '../context/ButtonContext';
 
 type SizingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
@@ -76,12 +76,12 @@ TouchableComponent.displayName = 'TouchableComponent';
  * @example
  * ```tsx
  * <Button onPress={handlePress}>
- *   <ButtonContainer>
+ *   <ButtonContain>
  *     <ButtonIcon name="star" position="left" />
  *     <ButtonContent>
  *       <ButtonTitle>Favorite</ButtonTitle>
  *     </ButtonContent>
- *   </ButtonContainer>
+ *   </ButtonContain>
  * </Button>
  * ```
  */
@@ -99,23 +99,16 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
   } = props;
 
   const sizingVariant = getSizingVariant(size);
-  const [contentPosition, setContentPosition] = useState<ContentPosition>('center');
-
-  const handleSetContentPosition = useCallback((position: ContentPosition) => {
-    setContentPosition(position);
-  }, []);
 
   const contextValue = useMemo(
     () => ({
       colorVariant,
-      contentPosition,
       isDisabled: !!isDisabled,
-      setContentPosition: handleSetContentPosition,
       size,
       sizingVariant,
       variant,
     }),
-    [colorVariant, contentPosition, handleSetContentPosition, isDisabled, size, sizingVariant, variant],
+    [colorVariant, isDisabled, size, sizingVariant, variant],
   );
 
   return (
@@ -127,7 +120,6 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
           twStyles.touchableComponent,
           ButtonTv({
             colorVariant,
-            contentPosition,
             isDisabled: !!isDisabled,
             size,
             variant,

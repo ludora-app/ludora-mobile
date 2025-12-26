@@ -22,3 +22,4 @@ export * from './outlineString.types';
 export * from './skeleton.types';
 export * from './chilluiDevtool.types';
 export * from './iconButton.types';
+export * from './chip.types';

@@ -115,27 +115,6 @@
         ]
       }
     },
-    "/metrics": {
-      "get": {
-        "operationId": "MetricsController_index",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Metrics"
-        ]
-      }
-    },
     "/geolocalisation/details": {
       "post": {
         "operationId": "GeolocalisationController_getDetailedAddressFromCoordinates",
@@ -910,26 +889,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RegisterResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during registration",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "User already exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConflictResponseDto"
                 }
               }
             }
@@ -2275,6 +2234,27 @@
         ]
       }
     },
+    "/metrics": {
+      "get": {
+        "operationId": "MetricsController_index",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Metrics"
+        ]
+      }
+    },
     "/sessions": {
       "post": {
         "operationId": "SessionsController_create",
@@ -2441,11 +2421,19 @@
             }
           },
           {
-            "name": "userUid",
-            "required": true,
+            "name": "level",
+            "required": false,
             "in": "query",
+            "description": "Level for filtering sessions",
             "schema": {
-              "type": "string"
+              "example": 1,
+              "type": "number",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
             }
           }
         ],
@@ -2609,6 +2597,22 @@
                   "PING-PONG"
                 ]
               }
+            }
+          },
+          {
+            "name": "level",
+            "required": false,
+            "in": "query",
+            "description": "Level for filtering sessions",
+            "schema": {
+              "example": 1,
+              "type": "number",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
             }
           }
         ],
@@ -4464,10 +4468,6 @@
       "description": "Storage operations"
     },
     {
-      "name": "Metrics",
-      "description": "Metrics operations"
-    },
-    {
       "name": "Geolocalisation",
       "description": "Geolocalisation operations"
     },
@@ -4494,6 +4494,10 @@
     {
       "name": "Conversations",
       "description": "Conversations operations"
+    },
+    {
+      "name": "Metrics",
+      "description": "Metrics operations"
     },
     {
       "name": "Sessions",
@@ -6063,6 +6067,17 @@
             "type": "number",
             "description": "The minimum number of players per team",
             "example": 3
+          },
+          "level": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "number",
+            "description": "Level for the session",
+            "example": 1
           }
         },
         "required": [
@@ -6097,6 +6112,71 @@
       "SessionCollectionItem": {
         "type": "object",
         "properties": {
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "type": "string",
+            "description": "Sport played during the session",
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "Session game mode",
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
           "fieldImage": {
             "type": "string",
             "description": "Session field image",
@@ -6140,14 +6220,30 @@
             "description": "Distance to the session in meters",
             "example": 1200,
             "readOnly": true
+          },
+          "level": {
+            "type": "number",
+            "description": "Session level",
+            "example": 1,
+            "readOnly": true
           }
         },
         "required": [
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "teamsPerGame",
+          "minPlayersPerTeam",
+          "sport",
+          "startDate",
+          "gameMode",
+          "creatorUid",
           "fieldShortAddress",
           "sessionTeams",
           "fieldLatitude",
           "fieldLongitude",
-          "userDistance"
+          "userDistance",
+          "level"
         ]
       },
       "PaginationDataSessionCollectionItem": {
@@ -6264,6 +6360,17 @@
             "type": "string",
             "description": "The uid of the user",
             "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "level": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "number",
+            "description": "Level for the session",
+            "example": 1
           }
         },
         "required": [

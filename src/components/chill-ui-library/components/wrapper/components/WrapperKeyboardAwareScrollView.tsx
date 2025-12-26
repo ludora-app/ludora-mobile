@@ -1,25 +1,12 @@
 import type { PropsWithChildren } from 'react';
 
-import { cn, customConsole } from '../../../utils';
-import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
+import { cn } from '../../../utils';
 import { wrapperTv } from '../styles/Wrapper.styles';
-import { WrapperScrollView } from './WrapperScrollView';
 import { wrapperDefaultProps } from '../utils/defaultProps';
 import { WrapperSafeAreaView } from './WrapperSafeAreaView';
-
-let KeyboardAwareScrollView: any;
-
-try {
-  const keyboardController = require('react-native-keyboard-controller');
-  if (keyboardController) {
-    KeyboardAwareScrollView = keyboardController.KeyboardAwareScrollView;
-  }
-} catch {
-  customConsole.error(
-    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAwareScrollView, please install it: npm install react-native-keyboard-controller and wrap your app with KeyboardProvider',
-  );
-}
+import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
 
 /**
  * KeyboardAwareScrollView wrapper component for better keyboard handling.
@@ -59,19 +46,6 @@ export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperK
     px,
     ...rest
   } = props;
-
-  if (!KeyboardAwareScrollView) {
-    return (
-      <WrapperScrollView
-        className={cn(wrapperTv({ fill, grow, px }), className)}
-        hasSafeArea={hasSafeArea}
-        edges={edges}
-        {...rest}
-      >
-        {children}
-      </WrapperScrollView>
-    );
-  }
 
   const content = (
     <KeyboardAwareScrollView

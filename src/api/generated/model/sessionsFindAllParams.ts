@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { SessionsFindAllSportsItem } from './sessionsFindAllSportsItem';
+import type { SessionsFindAllLevel } from './sessionsFindAllLevel';
 
 export type SessionsFindAllParams = {
   /**
@@ -44,5 +45,8 @@ export type SessionsFindAllParams = {
    * Filter for urgent sessions only
    */
   urgent?: boolean;
-  userUid: string;
+  /**
+   * Level for filtering sessions
+   */
+  level?: SessionsFindAllLevel;
 };

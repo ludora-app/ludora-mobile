@@ -1,10 +1,9 @@
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { Box } from '../../box';
 import { cn } from '../../../utils';
-import { twStyles } from '../styles/Button.styles';
-import { useButtonContext } from '../context/ButtonContext';
 import { ButtonContentProps } from '../../../types/button.types';
+import { buttonContentTv, twStyles } from '../styles/Button.styles';
 
 /**
  * ButtonContent component for wrapping button content.
@@ -26,13 +25,7 @@ export default function ButtonContent({
   className,
   position = 'center',
 }: PropsWithChildren<ButtonContentProps>) {
-  const { setContentPosition } = useButtonContext();
-
-  useEffect(() => {
-    setContentPosition(position);
-  }, [position, setContentPosition]);
-
-  return <Box className={cn(twStyles.content, className)}>{children}</Box>;
+  return <Box className={cn(buttonContentTv({ position }), twStyles.content, className)}>{children}</Box>;
 }
 
 ButtonContent.displayName = 'ButtonContent';

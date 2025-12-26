@@ -13,8 +13,6 @@ export default {
       colors: {
         accent: '#CE3728',
         background: '#F2F4F8',
-        bluePrimary: '#97CDCC',
-        blueSecondary: '#6AAFAD',
         border: '#e4e4e4',
         button: {
           accent: {
@@ -26,7 +24,7 @@ export default {
             content: '#FFF',
           },
           dark: {
-            background: '#323F4B',
+            background: '#000',
             content: '#FFF',
           },
           disabled: {

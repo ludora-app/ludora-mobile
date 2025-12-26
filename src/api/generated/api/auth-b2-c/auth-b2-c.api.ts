@@ -23,7 +23,6 @@ import type {
   AuthB2CGenerateAccessTokenFromCode200,
   AuthB2CGoogleCallback200,
   BadRequestResponseDto,
-  ConflictResponseDto,
   CreateGoogleUserDto,
   CreateOrConnectGoogleResponseDto,
   ForgottenPasswordDto,
@@ -87,10 +86,7 @@ export const authB2CRegister = (registerB2CWithFileDto: RegisterB2CWithFileDto, 
   });
 };
 
-export const getAuthB2CRegisterMutationOptions = <
-  TError = BadRequestResponseDto | ConflictResponseDto,
-  TContext = unknown,
->(options?: {
+export const getAuthB2CRegisterMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authB2CRegister>>,
     TError,
@@ -121,15 +117,12 @@ export type AuthB2CRegisterMutationResult = NonNullable<
   Awaited<ReturnType<typeof authB2CRegister>>
 >;
 export type AuthB2CRegisterMutationBody = RegisterB2CWithFileDto;
-export type AuthB2CRegisterMutationError = BadRequestResponseDto | ConflictResponseDto;
+export type AuthB2CRegisterMutationError = unknown;
 
 /**
  * @summary Create a user account
  */
-export const useAuthB2CRegister = <
-  TError = BadRequestResponseDto | ConflictResponseDto,
-  TContext = unknown,
->(options?: {
+export const useAuthB2CRegister = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authB2CRegister>>,
     TError,

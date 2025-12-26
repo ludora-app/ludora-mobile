@@ -6,8 +6,8 @@ import { tennisBall, basketballBall, footballBall } from 'assets';
 import { Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
+import { SessionCollectionItem } from '@/api/generated/model';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
-import { SessionCollectionSuggestionItem } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 interface SessionCardProps {
   isNextSession?: boolean;
-  session: SessionCollectionSuggestionItem;
+  session: SessionCollectionItem;
 }
 
 export default function SessionCard(props: SessionCardProps) {

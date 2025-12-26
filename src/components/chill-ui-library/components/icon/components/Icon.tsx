@@ -42,7 +42,7 @@ export default function Icon<T extends IconConfig>(props: IconProps<T>) {
     hasPressEffect = iconDefaultProps.hasPressEffect,
     name,
     onPress,
-    pressEffectSize,
+    pressEffectSize = iconDefaultProps.pressEffectSize,
     size = iconDefaultProps.size,
     style,
   } = props;
@@ -81,7 +81,7 @@ export default function Icon<T extends IconConfig>(props: IconProps<T>) {
             className={cn(
               twStyles.iconBase,
               iconPressableTv({ hasPressEffect }),
-              hasPressEffect && iconPaddingTv({ size: pressEffectSize ?? size }),
+              hasPressEffect && iconPaddingTv({ size: pressEffectSize }),
               className,
             )}
             style={style}

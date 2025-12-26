@@ -1,4 +1,3 @@
-import { useToast } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
@@ -6,6 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { WrapperSafeAreaView, FormInput, Button } from '@ludo/ui';
 
 import ROUTES from '@/constants/ROUTES';
+import { ErrorResponse } from '@/api/orval.instance';
+import { useDisableBack } from '@/hooks/navigation.hook';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import AuthHeader from '../../components/auth-header/ auth-header.component';
 import { formSchema, ResetPasswordFormData } from '../schemas/reset-password.schema';
@@ -13,21 +15,40 @@ import ContentWapper from '../../components/content-wrapper/content-wrapper.comp
 import { useSendVerificationCodeByEmail } from '../queries/send-verification-code.query';
 
 export default function ResetPasswordScreen() {
+  useDisableBack();
   const { t } = useTranslate();
   const { isPending: isSendingVerificationCode, mutateAsync: sendVerificationCode } = useSendVerificationCodeByEmail();
   const router = useRouter();
-  const { toast } = useToast();
+  const { trackError, trackEvent } = useAnalytics();
 
-  const { control, handleSubmit } = useForm<ResetPasswordFormData>({
+  const {
+    control,
+    formState: { isValid },
+    handleSubmit,
+  } = useForm<ResetPasswordFormData>({
+    mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: ResetPasswordFormData) => {
+    trackEvent({
+      eventName: 'reset_password_send_code_with_email_requested',
+    });
     try {
-      // await sendVerificationCode({ data: { email: data.email.toLowerCase() } });
+      await sendVerificationCode({ data: { email: data.email } });
+      trackEvent({
+        eventName: 'reset_password_send_code_with_email_success',
+      });
       router.push({ params: { email: data.email.toLowerCase() }, pathname: ROUTES.AUTH.VERIFY_CODE });
-    } catch {
-      toast({ message: t('common.error_generic'), variant: 'error' });
+    } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackError({
+        error,
+      });
+      trackEvent({
+        eventName: 'reset_password_send_code_with_email_failed',
+        properties: { error_message: errorResponse?.api_error_detail || 'unknow error' },
+      });
     }
   };
 
@@ -49,6 +70,7 @@ export default function ResetPasswordScreen() {
         className="w-full"
         size="lg"
         isLoading={isSendingVerificationCode}
+        isDisabled={!isValid}
       />
     </WrapperSafeAreaView>
   );

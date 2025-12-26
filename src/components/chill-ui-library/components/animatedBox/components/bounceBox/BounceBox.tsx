@@ -1,38 +1,21 @@
+import React, { useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
+import {
+  createAnimatedComponent,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSequence,
+  withRepeat,
+  withDelay,
+  cancelAnimation,
+} from 'react-native-reanimated';
+
 import type { BounceBoxProps, BounceBoxRef } from '../../../../types';
 
-import { Animated } from 'react-native';
-import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
+import { Box } from '../../../box/components/Box';
 
-import { AnimatedBox } from '../animatedBox/AnimatedBox';
+const AnimatedBox = createAnimatedComponent(Box);
 
-/**
- * The `<BounceBox />` component creates a playful bounce animation effect for its children.
- *
- * <!-- STORYBOOK_IMPORT_START
- * ```tsx
- * import { BounceBox } from 'react-native-chill-ui';
- * ```
- * STORYBOOK_IMPORT_END -->
- *
- * @example
- * ```tsx
- * <BounceBox autoStart infiniteLoop bounceHeight={15} className="bg-red-500 p-4 rounded-full">
- *   <String className="text-white font-bold">New Message!</String>
- * </BounceBox>
- * ```
- *
- * @param children - Content to be rendered inside the bouncing container
- * @param className - CSS classes for NativeWind styling
- * @param bounceHeight - Height of bounce in pixels (default: `20`)
- * @param bounceInterval - Time between bounces in milliseconds (default: `2000`)
- * @param autoStart - Automatically start animation when component mounts (default: `false`)
- * @param duration - Duration of the bounce animation in milliseconds (default: `400`)
- * @param infiniteLoop - Loop animation continuously (default: `false`)
- * @param onBounce - Callback function called on each bounce
- * @param style - Inline styles for traditional styling or style overrides
- * @param ref - Ref for manual animation control (bounce, start, stop methods)
- * @param AnimatedBoxProps - Any other props accepted by the `AnimatedBox` component
- */
 const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((props, ref) => {
   const {
     autoStart = false,
@@ -46,101 +29,71 @@ const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((p
     style,
     ...rest
   } = props;
-  const bounceAnim = useRef(new Animated.Value(0)).current;
-  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isRunningRef = useRef(false);
 
-  const startBounce = useCallback(() => {
-    animationRef.current?.stop();
-    bounceAnim.setValue(0);
+  const translateY = useSharedValue(0);
 
-    const animation = Animated.sequence([
-      Animated.timing(bounceAnim, {
-        duration: duration / 2,
-        toValue: 1,
-        useNativeDriver: true,
+  const triggerSingleBounce = useCallback(() => {
+    translateY.value = withSequence(
+      withTiming(-bounceHeight, { duration: duration / 2 }),
+      withTiming(0, { duration: duration / 2 }, finished => {
+        if (finished && onBounce) {
+          onBounce();
+        }
       }),
-      Animated.timing(bounceAnim, {
-        duration: duration / 2,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-    ]);
-
-    animationRef.current = animation;
-    animation.start();
-    onBounce?.();
-  }, [bounceAnim, duration, onBounce]);
+    );
+  }, [bounceHeight, duration, onBounce]);
 
   const startAnimation = useCallback(() => {
-    if (isRunningRef.current) return;
-
-    isRunningRef.current = true;
-
     if (infiniteLoop) {
-      intervalRef.current = setInterval(startBounce, bounceInterval);
-      startBounce();
+      // 2. Boucle infinie gérée nativement avec un délai (bounceInterval)
+      // On crée une séquence : Rebond -> Retour -> Attente
+      translateY.value = withRepeat(
+        withSequence(
+          withTiming(-bounceHeight, { duration: duration / 2 }),
+          withTiming(0, { duration: duration / 2 }),
+          withDelay(bounceInterval - duration, withTiming(0, { duration: 0 })),
+        ),
+        -1, // -1 signifie infini
+        false, // ne pas inverser (on veut recommencer la séquence à chaque fois)
+      );
     } else {
-      startBounce();
+      triggerSingleBounce();
     }
-  }, [infiniteLoop, bounceInterval, startBounce]);
+  }, [infiniteLoop, bounceHeight, duration, bounceInterval, triggerSingleBounce]);
 
   const stopAnimation = useCallback(() => {
-    isRunningRef.current = false;
-    animationRef.current?.stop();
-
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-
-    bounceAnim.setValue(0);
-  }, [bounceAnim]);
+    cancelAnimation(translateY);
+    translateY.value = withTiming(0);
+  }, []);
 
   useImperativeHandle(
     ref,
     () => ({
-      bounce: startBounce,
+      bounce: triggerSingleBounce,
       start: startAnimation,
       stop: stopAnimation,
     }),
-    [startBounce, startAnimation, stopAnimation],
+    [triggerSingleBounce, startAnimation, stopAnimation],
   );
 
   useEffect(() => {
-    if (autoStart || infiniteLoop) {
+    if (autoStart) {
       startAnimation();
     }
+    return () => stopAnimation();
+  }, [autoStart, startAnimation, stopAnimation]);
 
-    return () => {
-      stopAnimation();
-    };
-  }, [autoStart, infiniteLoop, startAnimation, stopAnimation]);
+  // 3. Style animé calculé sur le thread UI
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   return (
-    <AnimatedBox
-      className={className}
-      style={[
-        {
-          transform: [
-            {
-              translateY: bounceAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -bounceHeight],
-              }),
-            },
-          ],
-        },
-        style,
-      ]}
-      {...rest}
-    >
+    <AnimatedBox className={className} style={[animatedStyle, style]} {...rest}>
       {children}
     </AnimatedBox>
   );
 });
 
 BounceBox.displayName = 'BounceBox';
-
 export default BounceBox;

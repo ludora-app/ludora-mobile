@@ -92,6 +92,59 @@ export const ICONS = {
     ],
     viewBox: '0 0 448 512',
   },
+  'chill-ui-checked-circle-solid': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M9 11.9106L11.67 14.7906L21 6.14062',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2',
+              type: 'path',
+            },
+            {
+              d: 'M15.47 3.53016C14.39 3.13016 13.22 2.91016 12 2.91016C6.48 2.91016 2 7.39016 2 12.9102C2 18.4302 6.48 22.9102 12 22.9102C17.52 22.9102 22 18.4302 22 12.9102',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeWidth: '2',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_3247_9455)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'white',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_3247_9455',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 25',
+  },
   'chill-ui-close-circle-regular': {
     fill: 'none',
     structure: {
@@ -103,7 +156,7 @@ export const ICONS = {
               stroke: '#fff',
               strokeLinecap: 'round',
               strokeLinejoin: 'round',
-              strokeWidth: '1.5',
+              strokeWidth: '2',
               type: 'path',
             },
             {
@@ -111,7 +164,7 @@ export const ICONS = {
               stroke: '#fff',
               strokeLinecap: 'round',
               strokeLinejoin: 'round',
-              strokeWidth: '1.5',
+              strokeWidth: '2',
               type: 'path',
             },
             {
@@ -119,7 +172,7 @@ export const ICONS = {
               stroke: '#fff',
               strokeLinecap: 'round',
               strokeLinejoin: 'round',
-              strokeWidth: '1.5',
+              strokeWidth: '2',
               type: 'path',
             },
           ],

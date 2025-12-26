@@ -18,6 +18,7 @@ export type InputFieldProps = TextInputProps & {
   value?: string;
   onChangeText?: (text: string) => void;
   size?: 'xl' | 'lg' | 'md' | 'sm';
+  as?: 'pressable' | 'ripple-pressable' | 'touchable-opacity';
 };
 
 export type InputLabelProps = StringProps & {

@@ -1,5 +1,6 @@
-import { RegisterB2CWithFileDto } from '@/api/generated/model';
 import { useAuthB2CRegister } from '@generatedApi/auth-b2-c/auth-b2-c.api';
+
+import { RegisterB2CWithFileDto } from '@/api/generated/model';
 
 export const useRegister = () => {
   const mutation = useAuthB2CRegister();
@@ -8,9 +9,7 @@ export const useRegister = () => {
     mutation.mutate({ data });
   };
 
-  const mutateAsync = async (data: RegisterB2CWithFileDto) => {
-    return mutation.mutateAsync({ data });
-  };
+  const mutateAsync = async (data: RegisterB2CWithFileDto) => mutation.mutateAsync({ data });
 
   return {
     mutate,

@@ -8,8 +8,8 @@ import { useUserMe } from '@/queries/user-me.query';
 import { truncateString } from '@/utils/string.utils';
 import { SessionCard } from '@/components/ui/session-card';
 import { ReanimatedBox } from '@/components/chill-ui-library';
+import { SessionCollectionItem } from '@/api/generated/model';
 import Header from '@/components/ui/header/components/header.component';
-import { SessionCollectionSuggestionItem } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   orangeHeader: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 interface HomeHeaderProps {
   scrollY: SharedValue<number>;
 }
-const mockSession: SessionCollectionSuggestionItem = {
+const mockSession: SessionCollectionItem = {
   creatorUid: 'cmj5pw27v002275ls35a4rnad',
   endDate: '2026-01-22T12:00:00.000Z',
   fieldLatitude: 48.75098440000001,
@@ -51,7 +51,7 @@ const mockSession: SessionCollectionSuggestionItem = {
 export function HomeHeader({ scrollY }: HomeHeaderProps) {
   const { t } = useTranslate();
   const { userMe } = useUserMe();
-  const hasNewSession = true;
+  const hasNewSession = false;
 
   const headerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolation.CLAMP),
@@ -76,6 +76,7 @@ export function HomeHeader({ scrollY }: HomeHeaderProps) {
             title={t('home.header.button_create_match')}
             colorVariant="inverted"
             as="scale-pressable"
+            redirect="/create-session"
             iconProps={{
               color: COLORS.primary,
               name: 'flash-solid',

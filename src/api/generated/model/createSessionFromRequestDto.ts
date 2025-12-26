@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { CreateSessionFromRequestDtoGameMode } from './createSessionFromRequestDtoGameMode';
+import type { CreateSessionFromRequestDtoLevel } from './createSessionFromRequestDtoLevel';
 
 export interface CreateSessionFromRequestDto {
   /** The description of the session */
@@ -16,6 +17,8 @@ export interface CreateSessionFromRequestDto {
   fieldUid: string;
   /** The game mode of the session */
   gameMode: CreateSessionFromRequestDtoGameMode;
+  /** Level for the session */
+  level?: CreateSessionFromRequestDtoLevel;
   /** The maximum number of players per team */
   maxPlayersPerTeam: number;
   /** The minimum number of players per team */

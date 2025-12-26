@@ -5,7 +5,7 @@ export default function HeaderGoBack() {
   const router = useRouter();
   return (
     <WrapperSafeAreaView fill={false} edges={['top']} className="mb-10 pt-3">
-      <Box className="self-start">
+      <Box className="flex-row items-center gap-3">
         <IconButton
           iconName="arrow-left-regular"
           className="rounded-xl border-[1px] border-[#D8DADC] bg-transparent"

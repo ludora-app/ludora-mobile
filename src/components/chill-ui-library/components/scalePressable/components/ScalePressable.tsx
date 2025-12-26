@@ -1,10 +1,8 @@
 import { Animated, Pressable } from 'react-native';
 import { useRef, PropsWithChildren, forwardRef } from 'react';
 
-import { cn } from '../../../utils';
-import { AnimatedBox } from '../../animatedBox';
 import { ScalePressableProps } from '../../../types';
-import { twStyles } from '../styles/ScalePressable.styles';
+import { cloneChildWithProps } from '../../../utils';
 import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 /**
@@ -35,6 +33,9 @@ import { scalePressableDefaultProps } from '../utils/defaultProps';
  * @returns ScalePressable component with scale animation
  * @throws Error if no children are provided
  */
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressableProps>>((props, ref) => {
   const {
     children,
@@ -75,19 +76,17 @@ export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressablePr
   };
 
   return (
-    <AnimatedBox style={animatedStyle}>
-      <Pressable
-        ref={ref}
-        onPress={handlePress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        className={cn(twStyles.container, className)}
-        style={style}
-        {...rest}
-      >
-        {children}
-      </Pressable>
-    </AnimatedBox>
+    <AnimatedPressable
+      ref={ref}
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      className={className}
+      style={[animatedStyle, style]}
+      {...rest}
+    >
+      {cloneChildWithProps(children, { pointerEvents: 'none' })}
+    </AnimatedPressable>
   );
 });
 

@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import {
-  Input as InputChillUi,
-  InputContainer,
-  InputField,
-  InputLabel,
-  InputIcon,
-  InputMessage,
-  cn,
-} from '@chillui/ui';
+import { Input as InputChillUi, InputContainer, InputField, InputLabel, InputMessage, cn, Box } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
-import { TIcons } from '@/constants/ICONS';
 
+import { Icon } from '../icon';
 import { InputProps } from '../../types/input.types';
 
 export default function Input(props: InputProps) {
@@ -38,7 +30,7 @@ export default function Input(props: InputProps) {
     <InputChillUi className={className}>
       {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
       <InputContainer className={cn({ 'border-error': showError }, inputContainerClassName)}>
-        {leftIconAction?.name && <InputIcon<TIcons> {...leftIconAction} />}
+        {leftIconAction?.name && <Icon {...leftIconAction} />}
 
         <InputField
           placeholderTextColor={COLORS.ring}
@@ -49,19 +41,26 @@ export default function Input(props: InputProps) {
           secureTextEntry={isSecure}
         />
 
-        {rightIconAction?.name && <InputIcon<TIcons> {...rightIconAction} />}
+        {rightIconAction?.name && <Icon {...rightIconAction} />}
 
         {inputFieldProps.secureTextEntry && (
-          <InputIcon<TIcons>
+          <Icon
             name={showPassword ? 'eye-slash-solid' : 'eye-solid'}
-            color="#000"
+            color="#00000099"
             onPress={() => setShowPassword(prev => !prev)}
             size="sm"
             pressEffectSize="xs"
           />
         )}
       </InputContainer>
-      {showMessageError && <InputMessage colorVariant="error">{error}</InputMessage>}
+      {showMessageError && (
+        <Box className="flex-row items-center">
+          <Icon name="warning-solid" size="xs" color="red" />
+          <InputMessage colorVariant="error" size="xs">
+            {error}
+          </InputMessage>
+        </Box>
+      )}
     </InputChillUi>
   );
 }

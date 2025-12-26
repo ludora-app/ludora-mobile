@@ -10,6 +10,7 @@ import type { SessionsFindAllByUserUidCreatedAtSortOrder } from './sessionsFindA
 import type { SessionsFindAllByUserUidStartDateSortOrder } from './sessionsFindAllByUserUidStartDateSortOrder';
 import type { SessionsFindAllByUserUidScope } from './sessionsFindAllByUserUidScope';
 import type { SessionsFindAllByUserUidSportsItem } from './sessionsFindAllByUserUidSportsItem';
+import type { SessionsFindAllByUserUidLevel } from './sessionsFindAllByUserUidLevel';
 
 export type SessionsFindAllByUserUidParams = {
   /**
@@ -44,4 +45,8 @@ export type SessionsFindAllByUserUidParams = {
    * Sports of the sessions
    */
   sports?: SessionsFindAllByUserUidSportsItem[];
+  /**
+   * Level for filtering sessions
+   */
+  level?: SessionsFindAllByUserUidLevel;
 };

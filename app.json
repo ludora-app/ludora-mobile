@@ -22,7 +22,8 @@
           "locationAlwaysAndWhenInUsePermission": "Autoriser $(PRODUCT_NAME) à accéder à votre position."
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-localization"
     ],
     "name": "ludora",
     "slug": "ludora",

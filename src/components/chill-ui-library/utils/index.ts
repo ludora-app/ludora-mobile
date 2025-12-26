@@ -4,3 +4,4 @@ export * from './console';
 export * from './string';
 export * from './styles';
 export * from './utils';
+export * from './reactChildren';

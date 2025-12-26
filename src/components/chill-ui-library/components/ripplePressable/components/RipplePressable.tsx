@@ -1,12 +1,12 @@
-import type { RipplePressableProps } from '../../../types';
-
-import { cn } from '../../../utils';
 import { View, Pressable } from 'react-native';
 import { useState, useRef, PropsWithChildren } from 'react';
 
+import type { RipplePressableProps } from '../../../types';
+
+import { cn } from '../../../utils';
 import { RippleEffect } from './RippleEffect';
-import { extractBorderRadius } from '../utils/extractBorder';
 import { twStyles } from '../styles/RipplePressable.styles';
+import { extractBorderRadius } from '../utils/extractBorder';
 
 /**
  * RipplePressable component that provides a ripple effect on press.

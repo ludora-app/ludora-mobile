@@ -1,32 +1,15 @@
-import { setTempToken } from '@/api/api.instance';
 import { ForgottenPasswordDto } from '@/api/generated/model';
-import { useAuthB2CPasswordReset } from '@/api/generated/api/auth-b2-c/auth-b2-c.api';
+import { useResetUserPassword } from '@/api/hooks/reset-user-password.hook';
 
-export const useNewPassword = (resetToken: string) => {
-  const mutation = useAuthB2CPasswordReset();
+export const useNewPassword = () => {
+  const mutation = useResetUserPassword();
 
-  const mutateAsync = async (data: ForgottenPasswordDto) => {
-    setTempToken(resetToken);
-    mutation.mutateAsync(
-      { data },
-      {
-        onSuccess: () => {
-          setTempToken(null);
-        },
-      },
-    );
+  const mutateAsync = async (data: ForgottenPasswordDto & { resetToken: string }) => {
+    mutation.mutateAsync({ newPassword: data.newPassword, resetToken: data.resetToken });
   };
 
-  const mutate = async (data: ForgottenPasswordDto) => {
-    setTempToken(resetToken);
-    mutation.mutate(
-      { data },
-      {
-        onSettled: () => {
-          setTempToken(null);
-        },
-      },
-    );
+  const mutate = async (data: ForgottenPasswordDto & { resetToken: string }) => {
+    mutation.mutate({ newPassword: data.newPassword, resetToken: data.resetToken });
   };
 
   return {

@@ -16,3 +16,4 @@ export * from './outlinedString';
 export * from './skeleton';
 export * from './chilluiDevTool';
 export * from './iconButton';
+export * from './chip';

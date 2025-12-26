@@ -27,3 +27,5 @@ export default function ButtonTitle({ children, className, ...props }: PropsWith
     </String>
   );
 }
+
+ButtonTitle.displayName = 'ButtonTitle';

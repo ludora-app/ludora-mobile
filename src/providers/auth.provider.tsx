@@ -1,10 +1,10 @@
-import { PropsWithChildren, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuthB2CVerifyToken } from '@generatedApi/auth-b2-c/auth-b2-c.api';
 
 import { useAuthStore } from '@/stores/auth.store';
 import { useSecureStorageState } from '@/hooks/secure-storage-state.hook';
 
-export default function AuthProvider({ children }: PropsWithChildren) {
+export default function AuthProvider() {
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
   const setIsLoading = useAuthStore(state => state.setIsLoading);
 
@@ -32,5 +32,5 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     }
   }, [isFetchingVerifyToken, isLoadingToken, dataVerifyToken, errorVerifyToken, setIsLoading, setIsAuthenticated]);
 
-  return children;
+  return null;
 }

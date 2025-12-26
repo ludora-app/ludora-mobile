@@ -1,102 +1,99 @@
 import { z } from 'zod';
-import { useCallback } from 'react';
+import { useToast } from '@chillui/ui';
 import { useForm } from 'react-hook-form';
-import { Box, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { Button, FormInput, String } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, FormInput, String, Box } from '@ludo/ui';
 
+import { ErrorResponse } from '@/api/orval.instance';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useLogin } from '../queries/login.hook';
-
-const formSchema = z.object({
-  email: z.email('Email invalide'),
-  password: z.string().min(1, 'Mot de passe est requis'),
-});
-
-type LoginFormData = z.infer<typeof formSchema>;
+import { formSchema } from '../schemas/login.schema';
+import { LOGIN_ERRORS } from '../constants/login-errors.constants';
 
 export default function LoginEmailForm() {
   const { t } = useTranslate();
   const { isPending: loginIsPending, mutateAsync: loginMutation } = useLogin();
   const { login } = useAuthHelpers();
   const { toast } = useToast();
-  const { control, handleSubmit } = useForm<LoginFormData>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    resolver: zodResolver(formSchema),
+  const loginFormSchema = formSchema(t);
+  const { control, handleSubmit } = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
   });
 
-  const onSubmit = useCallback(
-    async (data: LoginFormData) => {
-      try {
-        const response = await loginMutation({
-          data: {
-            email: 'amir.398@hotmail.fr',
-            password: 'Ludora98@',
-          },
-        });
+  const { trackError, trackEvent } = useAnalytics();
 
-        if (!response?.data.accessToken || !response?.data.refreshToken) {
-          throw new Error('Invalid response from server');
-        }
+  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+    trackEvent({
+      eventName: 'login_requested',
+      properties: { method: 'email' },
+    });
+    try {
+      const response = await loginMutation({
+        data: {
+          email: data.email,
+          password: data.password,
+        },
+      });
 
-        await login({
-          accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
-        });
-
-        toast({
-          message: t('login.success'),
-          position: 'top',
-          variant: 'success',
-        });
-      } catch (error) {
-        console.log(error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-
-        if (errorMessage.includes('User not found') || errorMessage.includes('Invalid credentials')) {
-          toast({
-            message: t('login.user_not_found'),
-            position: 'top',
-            variant: 'error',
-          });
-        } else if (errorMessage.includes('Network')) {
-          toast({
-            message: t('common.error_network'),
-            position: 'top',
-            variant: 'error',
-          });
-        } else {
-          toast({
-            message: t('common.error_generic'),
-            position: 'top',
-            variant: 'error',
-          });
-        }
+      if (!response?.data.accessToken || !response?.data.refreshToken) {
+        throw new Error('Invalid response from server');
       }
-    },
-    [loginMutation, login, toast, t],
-  );
+
+      await login({
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+      });
+      trackEvent({
+        eventName: 'login_success',
+        properties: { method: 'email' },
+      });
+    } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackEvent({
+        eventName: 'login_failed',
+        properties: { error_message: errorResponse.api_error_detail, method: 'email' },
+      });
+      if (Object.values(LOGIN_ERRORS).includes(errorResponse.api_error_detail)) {
+        toast({
+          message: t('auth.login.toaster_user_not_found'),
+          variant: 'error',
+        });
+      } else {
+        trackError({ error });
+      }
+    }
+  };
 
   return (
-    <Box className="gap-2">
-      <FormInput control={control} label="Email" name="email" placeholder="Email" value="amir.398@hotmail.fr" />
+    <Box className="gap-5">
       <FormInput
         control={control}
-        hasSecureTextEntry
-        label="Mot de passe"
-        name="password"
-        placeholder="Mot de passe"
-        value="Sk43subezero@"
+        label={t('common.input_email_label')}
+        name="email"
+        placeholder={t('common.input_email_placeholder')}
       />
-      <String size="sm" className="-mt-3 text-right underline" redirect="/auth/reset-password">
-        Mot de passe oublié ?
-      </String>
-      <Button isLoading={loginIsPending} title="Se connecter" onPress={handleSubmit(onSubmit)} />
+      <Box>
+        <FormInput
+          control={control}
+          secureTextEntry
+          label={t('common.input_password_label')}
+          name="password"
+          placeholder="••••••••"
+        />
+        <String size="sm" className="text-right" redirect="/auth/reset-password">
+          {t('auth.login.forgot_password')}
+        </String>
+      </Box>
+      <Button
+        isLoading={loginIsPending}
+        title={t('auth.login.button_form_title')}
+        onPress={handleSubmit(onSubmit)}
+        className="w-full"
+        size="lg"
+      />
     </Box>
   );
 }

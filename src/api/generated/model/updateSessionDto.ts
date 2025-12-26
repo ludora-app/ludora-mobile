@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { UpdateSessionDtoGameMode } from './updateSessionDtoGameMode';
+import type { UpdateSessionDtoLevel } from './updateSessionDtoLevel';
 
 export interface UpdateSessionDto {
   /** The description of the session */
@@ -16,6 +17,8 @@ export interface UpdateSessionDto {
   fieldUid?: string;
   /** The game mode of the session */
   gameMode: UpdateSessionDtoGameMode;
+  /** Level for the session */
+  level?: UpdateSessionDtoLevel;
   /** The maximum number of players per team */
   maxPlayersPerTeam: number;
   /** The minimum number of players per team */

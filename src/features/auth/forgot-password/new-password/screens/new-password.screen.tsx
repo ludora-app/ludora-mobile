@@ -1,12 +1,14 @@
 import { z } from 'zod/v4-mini';
+import { Box } from '@chillui/ui';
 import { useForm } from 'react-hook-form';
-import { Box, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { useLocalSearchParams } from 'expo-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { WrapperSafeAreaView, FormInput, Button } from '@ludo/ui';
 
+import { ErrorResponse } from '@/api/orval.instance';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { formSchema } from '../schemas/new-password.schema';
 import { useNewPassword } from '../queries/new-password.query';
@@ -16,23 +18,36 @@ import ContentWapper from '../../components/content-wrapper/content-wrapper.comp
 export default function NewPasswordScreen() {
   const { t } = useTranslate();
   const { login } = useAuthHelpers();
-  const { toast } = useToast();
   const { resetToken } = useLocalSearchParams();
-  const { isPending: isAddingNewPassword, mutateAsync: addNewPassword } = useNewPassword(resetToken.toString());
+  const { trackError, trackEvent } = useAnalytics();
+  const { isPending: isAddingNewPassword, mutateAsync: addNewPassword } = useNewPassword();
   const newPasswordFormSchema = formSchema(t);
   const { control, handleSubmit } = useForm<z.infer<typeof newPasswordFormSchema>>({
+    mode: 'onChange',
     resolver: zodResolver(newPasswordFormSchema),
   });
 
   const onSubmit = async (data: z.infer<typeof newPasswordFormSchema>) => {
+    trackEvent({
+      eventName: 'reset_password_new_password_requested',
+    });
     const { newPassword } = data;
     try {
-      const response = await addNewPassword({ data: { newPassword } });
+      const response = await addNewPassword({ newPassword, resetToken: resetToken.toString() });
       login(response.data);
-    } catch {
-      toast({
-        message: t('common.error_generic'),
-        variant: 'error',
+      trackEvent({
+        eventName: 'reset_password_new_password_success',
+      });
+    } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackEvent({
+        eventName: 'reset_password_new_password_failed',
+        properties: {
+          error_message: errorResponse.api_error_detail,
+        },
+      });
+      trackError({
+        error,
       });
     }
   };

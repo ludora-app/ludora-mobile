@@ -112,7 +112,7 @@ export const useSessionsCreate = <
 /**
  * @summary Get all sessions
  */
-export const sessionsFindAll = (params: SessionsFindAllParams, signal?: AbortSignal) => {
+export const sessionsFindAll = (params?: SessionsFindAllParams, signal?: AbortSignal) => {
   return customInstance<PaginationResponseSessionCollectionItem>({
     url: `/sessions/list/collection`,
     method: 'GET',
@@ -121,7 +121,7 @@ export const sessionsFindAll = (params: SessionsFindAllParams, signal?: AbortSig
   });
 };
 
-export const getSessionsFindAllQueryKey = (params: SessionsFindAllParams) => {
+export const getSessionsFindAllQueryKey = (params?: SessionsFindAllParams) => {
   return [`/sessions/list/collection`, ...(params ? [params] : [])] as const;
 };
 
@@ -132,7 +132,7 @@ export const getSessionsFindAllInfiniteQueryOptions = <
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: SessionsFindAllParams,
+  params?: SessionsFindAllParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -177,7 +177,7 @@ export function useSessionsFindAllInfinite<
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: SessionsFindAllParams,
+  params: undefined | SessionsFindAllParams,
   options: {
     query: Partial<
       UseInfiniteQueryOptions<
@@ -201,7 +201,7 @@ export function useSessionsFindAllInfinite<
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: SessionsFindAllParams,
+  params?: SessionsFindAllParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -225,7 +225,7 @@ export function useSessionsFindAllInfinite<
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: SessionsFindAllParams,
+  params?: SessionsFindAllParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -249,7 +249,7 @@ export function useSessionsFindAllInfinite<
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: SessionsFindAllParams,
+  params?: SessionsFindAllParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<

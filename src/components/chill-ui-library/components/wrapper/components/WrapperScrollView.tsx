@@ -1,9 +1,10 @@
 import type { PropsWithChildren } from 'react';
+
+import { ScrollView } from 'react-native';
+
 import type { WrapperScrollViewProps } from '../../../types';
 
 import { cn } from '../../../utils';
-import { ScrollView } from 'react-native';
-
 import { wrapperTv } from '../styles/Wrapper.styles';
 import { wrapperDefaultProps } from '../utils/defaultProps';
 import { WrapperSafeAreaView } from './WrapperSafeAreaView';

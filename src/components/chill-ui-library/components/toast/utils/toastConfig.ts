@@ -16,7 +16,7 @@ export const variantConfig: ToastVariantTypeProps = {
     titleStringProps: { color: '#FFFFFF', variant: 'body-2' },
   },
   success: {
-    iconProps: { color: '#FFFFFF', name: 'check-circle-solid' },
+    iconProps: { color: '#FFFFFF', name: 'chill-ui-checked-circle-solid' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#4CAF50' },

@@ -1,10 +1,12 @@
 import { Link } from 'expo-router';
+import { Image } from 'expo-image';
 import { Button as ButtonChillUI, ButtonContent, ButtonIcon, ButtonLoader, ButtonTitle, cn } from '@chillui/ui';
 
 import { ButtonProps } from '../../types/button.types';
 
 export default function Button(props: ButtonProps) {
-  const { className, contentProps, iconProps, isDisabled, isLoading, redirect, title, titleProps, ...rest } = props;
+  const { className, contentProps, iconProps, image, isDisabled, isLoading, redirect, title, titleProps, ...rest } =
+    props;
 
   const buttonContent = (
     <ButtonChillUI
@@ -14,14 +16,15 @@ export default function Button(props: ButtonProps) {
       {...rest}
     >
       <ButtonContent {...contentProps}>
-        {iconProps && iconProps.position === 'left' && <ButtonIcon {...iconProps} />}
+        {image?.source && <Image source={image?.source} contentFit={image.contentFit} className={image.className} />}
+        {!isLoading && iconProps && iconProps.position === 'left' && <ButtonIcon {...iconProps} />}
         {!isLoading && (
           <ButtonTitle font="primaryBold" {...titleProps}>
             {title}
           </ButtonTitle>
         )}
         {isLoading && <ButtonLoader name="swing" color="#FFF" />}
-        {iconProps && iconProps.position !== 'left' && <ButtonIcon {...iconProps} />}
+        {!isLoading && iconProps && iconProps.position !== 'left' && <ButtonIcon {...iconProps} />}
       </ButtonContent>
     </ButtonChillUI>
   );

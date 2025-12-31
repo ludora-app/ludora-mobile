@@ -25,72 +25,99 @@ const CALENDAR_CONFIG = {
   DISABLED_OPACITY: 0.3,
   HEADER_SPACING: 16,
   MAX_YEARS_AHEAD: 2,
+  RANGE_COLOR: '#E0F2FE', // Couleur pour les jours dans la plage
   TODAY_COLOR: '#000000',
   WEEK_NAME_HEIGHT: 25,
 } as const;
 
 // 🎨 Types
-export interface CalendarProps {
-  /** Callback appelé quand une date est validée */
-  onDayChange?: (date: Date) => void;
+export interface DateRange {
+  endDate: Date | null;
+  startDate: Date | null;
+}
+
+export interface CalendarDateRangeProps {
+  /** Callback appelé quand une plage est validée */
+  onDateRangeChange?: (range: DateRange) => void;
   /** Callback appelé quand le mois change */
   onMonthChange?: (dateId: string) => void;
-  /** Date initialement sélectionnée */
-  initialDate?: Date;
+  /** Plage initialement sélectionnée */
+  initialDateRange?: DateRange;
   /** Date minimum sélectionnable (par défaut: aujourd'hui) */
   minDate?: Date;
   /** Date maximum sélectionnable (par défaut: aujourd'hui + 2 ans) */
   maxDate?: Date;
   /** Callback appelé lors de l'annulation */
   onCancel?: () => void;
-
   /** Callback appelé lors de la validation */
-  onValidate?: (date: Date) => void;
+  onValidate?: (range: DateRange) => void;
   /** Masquer les boutons Annuler/Valider */
   hideActions?: boolean;
   /** Texte du bouton d'annulation */
   cancelButtonText?: string;
   /** Texte du bouton de validation */
   validateButtonText?: string;
+  /** Nombre minimum de jours dans la plage */
+  minRangeDays?: number;
+  /** Nombre maximum de jours dans la plage */
+  maxRangeDays?: number;
 }
 
-function Calendar(props: CalendarProps) {
+function CalendarDateRange(props: CalendarDateRangeProps) {
   const tolgee = useTolgee(['language']);
   const tolgeeLang = tolgee.getLanguage();
 
   const {
     cancelButtonText = 'Annuler',
     hideActions = false,
-    initialDate = new Date(),
+    initialDateRange = { endDate: null, startDate: null },
     maxDate,
+    maxRangeDays,
     minDate = new Date(),
+    minRangeDays,
     onCancel,
-    onDayChange,
+    onDateRangeChange,
     onMonthChange,
     onValidate,
     validateButtonText = 'Valider',
   } = props;
 
+  // 📅 États
   const todayId = useMemo(() => toDateId(minDate), [minDate]);
   const maxDateId = useMemo(() => {
     if (maxDate) return toDateId(maxDate);
     return toDateId(dayjs(minDate).add(CALENDAR_CONFIG.MAX_YEARS_AHEAD, 'year').toDate());
   }, [maxDate, minDate]);
 
-  const [confirmedDate, setConfirmedDate] = useState<Date>(initialDate);
-  const [tempSelectedDate, setTempSelectedDate] = useState<Date>(initialDate);
-  const [currentMonthId, setCurrentMonthId] = useState(() => toDateId(initialDate));
+  const [confirmedRange, setConfirmedRange] = useState<DateRange>(initialDateRange);
+  const [tempStartDate, setTempStartDate] = useState<Date | null>(initialDateRange.startDate);
+  const [tempEndDate, setTempEndDate] = useState<Date | null>(initialDateRange.endDate);
+  const [currentMonthId, setCurrentMonthId] = useState(() => toDateId(initialDateRange.startDate || minDate));
 
-  const calendarActiveDateRanges = useMemo<CalendarActiveDateRange[]>(
-    () => [
+  // 🎯 Calcul des dates actives pour le style
+  const calendarActiveDateRanges = useMemo<CalendarActiveDateRange[]>(() => {
+    if (!tempStartDate) return [];
+
+    if (!tempEndDate) {
+      // Seulement la date de début sélectionnée
+      return [
+        {
+          endId: toDateId(tempStartDate),
+          startId: toDateId(tempStartDate),
+        },
+      ];
+    }
+
+    // Plage complète
+    return [
       {
-        endId: toDateId(tempSelectedDate),
-        startId: toDateId(tempSelectedDate),
+        endId: toDateId(tempEndDate),
+        startId: toDateId(tempStartDate),
       },
-    ],
-    [tempSelectedDate],
-  );
+    ];
+  }, [tempStartDate, tempEndDate]);
 
+  // 🚫 Logique de désactivation des flèches
   const navigationBounds = useMemo(() => {
     const minMonth = dayjs(todayId).format('YYYY-MM');
     const maxMonth = dayjs(maxDateId).format('YYYY-MM');
@@ -107,6 +134,7 @@ function Calendar(props: CalendarProps) {
     [currentMonthId, navigationBounds.maxMonth],
   );
 
+  // 📆 Hooks du calendrier
   const { calendarRowMonth, weekDaysList, weeksList } = useCalendar({
     calendarActiveDateRanges,
     calendarFormatLocale: tolgeeLang,
@@ -115,6 +143,7 @@ function Calendar(props: CalendarProps) {
     calendarMonthId: currentMonthId,
   });
 
+  // 🎬 Handlers
   const handlePrevMonth = useCallback(() => {
     if (isPrevDisabled) return;
     const prevMonth = dayjs(currentMonthId).subtract(1, 'month').toDate();
@@ -134,34 +163,83 @@ function Calendar(props: CalendarProps) {
   const handleDayPress = useCallback<CalendarOnDayPress>(
     dateId => {
       const selectedDate = fromDateId(dateId);
-      setTempSelectedDate(selectedDate);
-      onDayChange?.(selectedDate);
-      if (hideActions) {
-        setConfirmedDate(selectedDate);
+
+      // 🔄 Logique de sélection de plage
+      if (!tempStartDate || (tempStartDate && tempEndDate)) {
+        // Première sélection ou reset
+        setTempStartDate(selectedDate);
+        setTempEndDate(null);
+      } else {
+        // Deuxième sélection
+        const start = dayjs(tempStartDate);
+        const end = dayjs(selectedDate);
+
+        if (end.isBefore(start)) {
+          // Si la fin est avant le début, inverser
+          setTempStartDate(selectedDate);
+          setTempEndDate(tempStartDate);
+        } else {
+          // Vérifier les contraintes de durée
+          const daysDiff = end.diff(start, 'day') + 1;
+
+          if (minRangeDays && daysDiff < minRangeDays) {
+            // Trop court, on reset
+            setTempStartDate(selectedDate);
+            setTempEndDate(null);
+            return;
+          }
+
+          if (maxRangeDays && daysDiff > maxRangeDays) {
+            // Trop long, on reset
+            setTempStartDate(selectedDate);
+            setTempEndDate(null);
+            return;
+          }
+
+          setTempEndDate(selectedDate);
+        }
+      }
+
+      // Si pas de boutons de validation, appliquer directement
+      if (hideActions && tempStartDate && selectedDate) {
+        const newRange = {
+          endDate: selectedDate,
+          startDate: tempStartDate,
+        };
+        setConfirmedRange(newRange);
+        onDateRangeChange?.(newRange);
       }
     },
-    [hideActions, onDayChange],
+    [tempStartDate, tempEndDate, hideActions, onDateRangeChange, minRangeDays, maxRangeDays],
   );
 
   const handleValidate = useCallback(() => {
-    setConfirmedDate(tempSelectedDate);
-    onValidate?.(tempSelectedDate);
-  }, [onValidate, tempSelectedDate]);
+    if (!tempStartDate || !tempEndDate) return;
+
+    const newRange = {
+      endDate: tempEndDate,
+      startDate: tempStartDate,
+    };
+    setConfirmedRange(newRange);
+    onValidate?.(newRange);
+  }, [tempStartDate, tempEndDate, onValidate]);
 
   const handleCancel = useCallback(() => {
-    setTempSelectedDate(confirmedDate);
+    setTempStartDate(confirmedRange.startDate);
+    setTempEndDate(confirmedRange.endDate);
     onCancel?.();
-  }, [confirmedDate, onCancel]);
+  }, [confirmedRange, onCancel]);
 
+  // 🎨 Thème du calendrier avec gestion de la plage
   const dayTheme: CalendarTheme['itemDay'] = useMemo(
     () => ({
-      active: () => ({
+      active: ({ isEndOfRange, isStartOfRange }) => ({
         container: {
           backgroundColor: COLORS.primary,
-          borderBottomLeftRadius: CALENDAR_CONFIG.BORDER_RADIUS,
-          borderBottomRightRadius: CALENDAR_CONFIG.BORDER_RADIUS,
-          borderTopLeftRadius: CALENDAR_CONFIG.BORDER_RADIUS,
-          borderTopRightRadius: CALENDAR_CONFIG.BORDER_RADIUS,
+          borderBottomLeftRadius: isStartOfRange ? CALENDAR_CONFIG.BORDER_RADIUS : 0,
+          borderBottomRightRadius: isEndOfRange ? CALENDAR_CONFIG.BORDER_RADIUS : 0,
+          borderTopLeftRadius: isStartOfRange ? CALENDAR_CONFIG.BORDER_RADIUS : 0,
+          borderTopRightRadius: isEndOfRange ? CALENDAR_CONFIG.BORDER_RADIUS : 0,
         },
         content: {
           color: CALENDAR_CONFIG.ACTIVE_TEXT_COLOR,
@@ -202,9 +280,13 @@ function Calendar(props: CalendarProps) {
     [],
   );
 
+  // 🔍 Vérifier si le bouton de validation doit être désactivé
+  const isValidateDisabled = !tempStartDate || !tempEndDate;
+
   return (
     <Box>
       <FlashCalendar.VStack spacing={CALENDAR_CONFIG.HEADER_SPACING}>
+        {/* 🧭 HEADER */}
         <FlashCalendar.HStack alignItems="center" justifyContent="space-between">
           <Icon
             name="arrow-left-regular"
@@ -225,6 +307,7 @@ function Calendar(props: CalendarProps) {
           />
         </FlashCalendar.HStack>
 
+        {/* 📅 JOURS DE LA SEMAINE */}
         <FlashCalendar.Row.Week>
           {weekDaysList.map((weekDay, i) => (
             <FlashCalendar.Item.WeekName key={i} height={CALENDAR_CONFIG.WEEK_NAME_HEIGHT}>
@@ -235,6 +318,7 @@ function Calendar(props: CalendarProps) {
           ))}
         </FlashCalendar.Row.Week>
 
+        {/* 🗓️ GRILLE DU CALENDRIER */}
         {weeksList.map((week, i) => (
           <FlashCalendar.Row.Week key={i}>
             {week.map(day => (
@@ -258,14 +342,39 @@ function Calendar(props: CalendarProps) {
         ))}
       </FlashCalendar.VStack>
 
+      {/* 📊 AFFICHAGE DE LA SÉLECTION */}
+      {(tempStartDate || tempEndDate) && !hideActions && (
+        <BoxRow className="mt-4 justify-between">
+          <Box>
+            <String variant="body-xs" colorVariant="muted">
+              Début
+            </String>
+            <String font="primaryBold">{tempStartDate ? dayjs(tempStartDate).format('DD/MM/YYYY') : '—'}</String>
+          </Box>
+          <Box>
+            <String variant="body-xs" colorVariant="muted">
+              Fin
+            </String>
+            <String font="primaryBold">{tempEndDate ? dayjs(tempEndDate).format('DD/MM/YYYY') : '—'}</String>
+          </Box>
+        </BoxRow>
+      )}
+
+      {/* ✅ BOUTONS D'ACTION */}
       {!hideActions && (
         <BoxRow className="mt-7 gap-2">
           <Button title={cancelButtonText} className="flex-[1]" variant="outlined" size="md" onPress={handleCancel} />
-          <Button title={validateButtonText} className="flex-[2]" size="md" onPress={handleValidate} />
+          <Button
+            title={validateButtonText}
+            className="flex-[2]"
+            size="md"
+            onPress={handleValidate}
+            isDisabled={isValidateDisabled}
+          />
         </BoxRow>
       )}
     </Box>
   );
 }
 
-export default memo(Calendar);
+export default memo(CalendarDateRange);

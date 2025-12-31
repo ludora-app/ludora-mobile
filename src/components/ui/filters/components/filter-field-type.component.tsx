@@ -20,7 +20,7 @@ const fieldType = [
     value: 'PUBLIC',
   },
 ];
-
+const AnimatedBox = Animated.createAnimatedComponent(Box);
 export default function FilterFieldType() {
   const { t } = useTranslate();
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ export default function FilterFieldType() {
 
   return (
     <Pressable onPress={() => setIsOpen(!isOpen)} style={({ pressed }) => [{ opacity: pressed ? 0.9 : 1 }]}>
-      <Box className="gap-2 rounded-xl border border-ring bg-white p-3 py-4">
+      <Box className="rounded-xl border border-ring bg-white p-3 py-4">
         {/* Header Toujours Visible */}
         <Box className="flex-row justify-between">
           <String variant="body-sm" font="primaryBold" colorVariant="muted">
@@ -47,23 +47,20 @@ export default function FilterFieldType() {
           </String>
         </Box>
 
-        {/* Box Animée */}
-        {isOpen && (
-          <Animated.View style={animatedStyle}>
-            <Box className="flex-row gap-2">
-              {fieldType.map(type => (
-                <Button
-                  key={type.id}
-                  title={t(`filters.field_type_${type.value}`)}
-                  className="flex-1"
-                  size="xs"
-                  variant={type.value === fieldTypeStore ? 'contained' : 'outlined'}
-                  onPress={() => setFilters({ fieldType: type.value })}
-                />
-              ))}
-            </Box>
-          </Animated.View>
-        )}
+        <AnimatedBox style={animatedStyle}>
+          <Box className="flex-row gap-2">
+            {fieldType.map(type => (
+              <Button
+                key={type.id}
+                title={t(`filters.field_type_${type.value}`)}
+                className="flex-1"
+                size="xs"
+                variant={type.value === fieldTypeStore ? 'contained' : 'outlined'}
+                onPress={() => setFilters({ fieldType: type.value })}
+              />
+            ))}
+          </Box>
+        </AnimatedBox>
       </Box>
     </Pressable>
   );

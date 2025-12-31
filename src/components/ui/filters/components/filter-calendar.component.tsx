@@ -1,18 +1,29 @@
-import { useState } from 'react';
 import { Wrapper } from '@ludo/ui';
+import { useRouter } from 'expo-router';
 
 import { Calendar } from '../../calendar';
+import { useFiltersStore } from '../store/filters.store';
+import { CalendarProps } from '../../calendar/components/calendar.component';
 
-export default function FilterCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedMonth, setSelectedMonth] = useState<string>();
+type FilterCalendarProps = CalendarProps;
 
-  console.log('selectedDate', selectedDate);
-  console.log('selectedMonth', selectedMonth);
+export default function FilterCalendar(props: FilterCalendarProps) {
+  const { date } = useFiltersStore(state => state.filters);
+  const setFilters = useFiltersStore(state => state.setFilters);
+  const router = useRouter();
+
+  const handleValidate = (selectedDate: Date) => {
+    setFilters({ date: selectedDate });
+    router.back();
+  };
+
+  const handleCancel = () => {
+    router.back();
+  };
 
   return (
-    <Wrapper className="pt-3" key={`${selectedDate.getMonth()}-${selectedDate.getFullYear()}`}>
-      <Calendar onDayChange={setSelectedDate} onMonthChange={setSelectedMonth} />
+    <Wrapper className="pt-3">
+      <Calendar {...props} onValidate={handleValidate} onCancel={handleCancel} initialDate={date} />
     </Wrapper>
   );
 }

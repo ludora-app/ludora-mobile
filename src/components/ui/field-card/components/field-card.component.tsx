@@ -28,8 +28,6 @@ interface FieldCardProps {
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
   const { children, field, onPress } = props;
 
-  console.log('onPress', onPress);
-
   const sessionImage = useMemo(() => {
     switch (field.sport) {
       case 'BASKETBALL':

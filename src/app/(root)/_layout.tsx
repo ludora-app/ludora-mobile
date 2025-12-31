@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
 
-import { Box } from '@/components/chill-ui-library';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
@@ -30,6 +29,18 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: [0.8],
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="filters/filters-fields"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />

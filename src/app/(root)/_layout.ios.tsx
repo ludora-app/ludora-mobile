@@ -33,11 +33,12 @@ function AppLayoutNav() {
         options={{
           animation: 'slide_from_bottom',
           contentStyle: {
-            backgroundColor: 'transparent',
+            backgroundColor: '#FFF',
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.5],
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen

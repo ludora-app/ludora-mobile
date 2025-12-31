@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { FieldsFindAllByPartnerUidSportsItem } from './fieldsFindAllByPartnerUidSportsItem';
-import type { FieldsFindAllByPartnerUidGameModesItem } from './fieldsFindAllByPartnerUidGameModesItem';
+import type { FieldsFindAllByPartnerUidGameModeItem } from './fieldsFindAllByPartnerUidGameModeItem';
 
 export type FieldsFindAllByPartnerUidParams = {
   /**
@@ -24,7 +24,15 @@ export type FieldsFindAllByPartnerUidParams = {
   /**
    * The game mode of the field
    */
-  gameModes?: FieldsFindAllByPartnerUidGameModesItem[];
+  gameMode?: FieldsFindAllByPartnerUidGameModeItem[];
+  /**
+   * The start date of the field
+   */
+  date?: string;
+  /**
+   * True pour terrains publics, False pour privés
+   */
+  isFree?: boolean;
   /**
    * Cursor for pagination
    */
@@ -36,11 +44,11 @@ export type FieldsFindAllByPartnerUidParams = {
   /**
    * Latitude of the user
    */
-  latitude?: number;
+  userLat?: number;
   /**
    * Longitude of the user
    */
-  longitude?: number;
+  userLon?: number;
   /**
    * Maximum distance of the field search (in km)
    */

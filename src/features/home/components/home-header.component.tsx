@@ -77,11 +77,13 @@ export function HomeHeader({ scrollY }: HomeHeaderProps) {
             colorVariant="inverted"
             as="scale-pressable"
             redirect="/create-session"
+            size="md"
             iconProps={{
               color: COLORS.primary,
               name: 'flash-solid',
               size: 'lg',
             }}
+            fit
             contentProps={{
               className: 'gap-1',
             }}

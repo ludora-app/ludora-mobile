@@ -1,8 +1,8 @@
-import { Animated, Pressable } from 'react-native';
-import { useRef, PropsWithChildren, forwardRef } from 'react';
+import { forwardRef } from 'react';
+import { Pressable } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { ScalePressableProps } from '../../../types';
-import { cloneChildWithProps } from '../../../utils';
 import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 /**
@@ -36,43 +36,39 @@ import { scalePressableDefaultProps } from '../utils/defaultProps';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressableProps>>((props, ref) => {
+export const ScalePressable = forwardRef<any, React.PropsWithChildren<ScalePressableProps>>((props, ref) => {
   const {
     children,
     className,
     duration = scalePressableDefaultProps.duration,
     onPress,
+    pointerEvents = 'auto',
     scaleValue = scalePressableDefaultProps.scaleValue,
     style,
     ...rest
   } = props;
 
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  // 1. On remplace useRef par useSharedValue
+  const scale = useSharedValue(1);
 
+  // 2. Définition du style animé (UI Thread)
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  // 3. Gestionnaires de pression avec withTiming
   const handlePressIn = () => {
-    Animated.timing(scaleAnim, {
-      duration,
-      toValue: scaleValue,
-      useNativeDriver: true,
-    }).start();
+    scale.value = withTiming(scaleValue, { duration });
   };
 
   const handlePressOut = () => {
-    Animated.timing(scaleAnim, {
-      duration,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
+    scale.value = withTiming(1, { duration });
   };
 
   const handlePress = (event: any) => {
     if (onPress) {
       onPress(event);
     }
-  };
-
-  const animatedStyle = {
-    transform: [{ scale: scaleAnim }],
   };
 
   return (
@@ -85,7 +81,7 @@ export const ScalePressable = forwardRef<any, PropsWithChildren<ScalePressablePr
       style={[animatedStyle, style]}
       {...rest}
     >
-      {cloneChildWithProps(children, { pointerEvents: 'none' })}
+      {children}
     </AnimatedPressable>
   );
 });

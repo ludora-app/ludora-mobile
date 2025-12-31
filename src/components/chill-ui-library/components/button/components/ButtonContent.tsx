@@ -2,6 +2,8 @@ import { PropsWithChildren } from 'react';
 
 import { Box } from '../../box';
 import { cn } from '../../../utils';
+import { buttonDefaultProps } from '../utils/defaultProps';
+import { useButtonContext } from '../context/ButtonContext';
 import { ButtonContentProps } from '../../../types/button.types';
 import { buttonContentTv, twStyles } from '../styles/Button.styles';
 
@@ -23,9 +25,10 @@ import { buttonContentTv, twStyles } from '../styles/Button.styles';
 export default function ButtonContent({
   children,
   className,
-  position = 'center',
+  position = buttonDefaultProps.position,
 }: PropsWithChildren<ButtonContentProps>) {
-  return <Box className={cn(buttonContentTv({ position }), twStyles.content, className)}>{children}</Box>;
+  const { fit } = useButtonContext();
+  return <Box className={cn(buttonContentTv({ fit, position }), twStyles.content, className)}>{children}</Box>;
 }
 
 ButtonContent.displayName = 'ButtonContent';

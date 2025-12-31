@@ -11,5 +11,11 @@
     }
   },
   "extends": "expo/tsconfig.base",
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "src/hooks/geolocalisation.hookts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    "src/hooks/geolocalisation.hookts",
+    "src/features/filters/filters-calendar"
+  ]
 }

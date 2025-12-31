@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const twStyles = {
-  chip: 'px-6  rounded-[6px] border',
+  chip: 'px-3 rounded-[6px] border',
   content: 'flex-row items-center flex-1',
   loadingContainer: 'pointer-events-none',
   pointerEventsNone: 'pointer-events-none',

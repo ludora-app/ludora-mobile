@@ -1,24 +1,12 @@
 import { memo } from 'react';
 import { cn } from '@chillui/ui';
-import { StyleSheet } from 'react-native';
 import { Skeleton, Box, BoxGrow, BoxRow } from '@ludo/ui';
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { height: 2, width: 0 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2.84,
-  },
-});
 
 function SessionCardSkeleton() {
   const hasImage = true;
 
   return (
-    <Box style={styles.container}>
+    <Box>
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <Skeleton className="size-full rounded-none" />
       </Box>

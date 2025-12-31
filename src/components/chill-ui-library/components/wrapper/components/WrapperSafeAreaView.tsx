@@ -6,6 +6,7 @@ import type { WrapperSafeAreaViewProps } from '../../../types';
 
 import { cn } from '../../../utils';
 import { wrapperTv } from '../styles/Wrapper.styles';
+import { wrapperDefaultProps } from '../utils/defaultProps';
 
 /**
  * SafeAreaView wrapper component for handling safe areas.
@@ -25,7 +26,7 @@ import { wrapperTv } from '../styles/Wrapper.styles';
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
 export function WrapperSafeAreaView(props: PropsWithChildren<WrapperSafeAreaViewProps>) {
-  const { children, className, fill, grow, px, ...rest } = props;
+  const { children, className, fill = wrapperDefaultProps.fill, grow, px, ...rest } = props;
 
   return (
     <SafeAreaView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>

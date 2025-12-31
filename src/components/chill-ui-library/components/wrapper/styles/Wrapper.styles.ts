@@ -7,15 +7,7 @@ export const twStyles = {
 };
 
 export const wrapperTv = tv({
-  compoundVariants: [
-    {
-      className: 'flex-grow flex-none',
-      fill: true,
-      grow: true,
-    },
-  ],
   defaultVariants: {
-    fill: true,
     px: 'md',
   },
   variants: {

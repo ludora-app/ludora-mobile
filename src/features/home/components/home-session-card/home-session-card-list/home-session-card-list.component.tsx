@@ -15,7 +15,7 @@ import HomeSessionCardSkeleton from '../home-session-card-skeleton.component';
 import HomeSessionCardListEmpty from './home-session-card-list-empty.component';
 import HomeSessionCardListHeader from './home-session-card-list-header.component';
 import HomeSessionCardListFooter from './home-session-card-list-footer.component';
-import { useGetAllSessionsByFilter } from '../../../queries/useGetAllSessionsByFilter.query';
+import { useGetAllSessionsByFilter } from '../../../queries/get-sessions-by-filter.query';
 
 interface HomeSessionCardListProps {
   scrollY?: SharedValue<number>;

@@ -61,7 +61,7 @@ export default function SessionCard(props: SessionCardProps) {
           {/* left card content */}
           <Box className="items-center justify-center bg-[#F5F5F5] p-4">
             <Image source={sessionImage} className="size-7" />
-            <String font="primaryExtraBold">{t(`session-card.${session.gameMode}`)}</String>
+            <String font="primaryExtraBold">{t(`common.game_mode_${session.gameMode}`, { space: '' })}</String>
           </Box>
 
           {/* center card content */}

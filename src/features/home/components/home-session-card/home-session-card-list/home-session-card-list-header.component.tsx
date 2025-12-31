@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { Dayjs } from 'dayjs';
-import { Input } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { String, Wrapper, Box } from '@ludo/ui';
 import { SharedValue } from 'react-native-reanimated';
@@ -33,9 +32,6 @@ function HomeSessionCardListHeader({ isFetching, scrollY }: HomeSessionCardListH
   return (
     <Box className="pt-6">
       {IS_IOS && <HeaderSessionCardListRefreshControl scrollY={scrollY} isFetching={isFetching} />}
-      <Wrapper>
-        <Input placeholder="rechercher" />
-      </Wrapper>
       <DaysCarousel className="my-5" contentContainerClassName="px-4" onSelect={handleDateSelect} />
       <Wrapper className="mb-5">
         <String font="primaryBold" variant="body-sm">

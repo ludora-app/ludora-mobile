@@ -13,6 +13,7 @@ import QueryProvider from './query.provider';
 import ToastProvider from './toast.provider';
 import TolgeeProvider from './tolgee-provider';
 import PostHogProvider from './posthog.provider';
+import DebuggerProvider from './debugger.provider';
 import WebsocketProvider from './websocket.provider';
 import PostHogIdentifierProvider from './poshog-identifier.provider';
 
@@ -29,6 +30,7 @@ export default function MainProvider({ children }: PropsWithChildren) {
               <KeyboardProvider navigationBarTranslucent>
                 <BottomSheetModalProvider>
                   <ChilluiDevTool className="border border-black bg-primary" />
+                  <DebuggerProvider />
                   <FontProvider>
                     <IconProvider>
                       <ToastProvider>{children}</ToastProvider>

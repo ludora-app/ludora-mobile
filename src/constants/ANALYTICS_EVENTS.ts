@@ -29,6 +29,12 @@ export const ANALYTICS_EVENTS = {
     RESET_PASSWORD_NEW_PASSWORD_REQUESTED: 'reset_password_new_password_requested',
     RESET_PASSWORD_NEW_PASSWORD_SUCCESS: 'reset_password_new_password_success',
   },
+
+  CREATE_SESSION: {
+    SESSION_CREATED: 'create_session_completed',
+    STEP_1_COMPLETED: 'create_session_step_1_completed',
+    STEP_2_COMPLETED: 'create_session_step_2_completed',
+  },
 } as const;
 
 type DeepValue<T> = T extends string ? T : T extends object ? DeepValue<T[keyof T]> : never;

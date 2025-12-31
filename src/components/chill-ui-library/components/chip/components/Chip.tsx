@@ -3,6 +3,7 @@ import { forwardRef, PropsWithChildren, useMemo } from 'react';
 
 import type { ButtonProps, ChipProps } from '../../../types';
 
+import { Box } from '../../box';
 import { cn } from '../../../utils';
 import { ChipContext } from '../context/ChipContext';
 import { ScalePressable } from '../../scalePressable';
@@ -113,25 +114,43 @@ const Chip = forwardRef<any, PropsWithChildren<ChipProps>>((props, ref) => {
 
   return (
     <ChipContext.Provider value={contextValue}>
-      <TouchableComponent
-        ref={ref}
-        as={as}
-        className={cn(
-          twStyles.chip,
-          chipTv({
-            colorVariant,
-            isDisabled: !!isDisabled,
-            size,
-            variant,
-          }),
-          className,
-        )}
-        isDisabled={isDisabled}
-        onPress={onPress}
-        style={style}
-      >
-        {children}
-      </TouchableComponent>
+      {onPress ? (
+        <TouchableComponent
+          ref={ref}
+          as={as}
+          className={cn(
+            twStyles.chip,
+            chipTv({
+              colorVariant,
+              isDisabled: !!isDisabled,
+              size,
+              variant,
+            }),
+            className,
+          )}
+          isDisabled={isDisabled}
+          onPress={onPress}
+          style={style}
+        >
+          {children}
+        </TouchableComponent>
+      ) : (
+        <Box
+          className={cn(
+            twStyles.chip,
+            chipTv({
+              colorVariant,
+              isDisabled: !!isDisabled,
+              size,
+              variant,
+            }),
+            className,
+          )}
+          style={style}
+        >
+          {children}
+        </Box>
+      )}
     </ChipContext.Provider>
   );
 });

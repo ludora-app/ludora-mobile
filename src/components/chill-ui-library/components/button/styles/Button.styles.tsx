@@ -99,6 +99,9 @@ export const ButtonTv = tv({
       white: 'bg-button-white-background',
     },
 
+    fit: {
+      true: 'self-start',
+    },
     isDisabled: {
       true: 'opacity-[0.4]',
     },
@@ -370,6 +373,7 @@ export const ButtonStringTv = tv({
       warning: '',
       white: '',
     },
+
     variant: {
       contained: '',
       outlined: '',
@@ -380,6 +384,7 @@ export const ButtonStringTv = tv({
 
 export const buttonContentTv = tv({
   variants: {
+    fit: { false: 'flex-1' },
     position: {
       center: 'justify-center',
       left: 'justify-start',
@@ -389,8 +394,7 @@ export const buttonContentTv = tv({
 });
 
 export const twStyles = {
-  content: 'flex-row items-center flex-1',
-  loadingContainer: 'pointer-events-none',
+  content: 'flex-row items-center',
   pointerEventsNone: 'pointer-events-none',
-  touchableComponent: 'px-3 justify-start rounded-lg border-2 items-center flex-row',
+  touchableComponent: 'px-3 rounded-lg border-2 items-center flex-row',
 };

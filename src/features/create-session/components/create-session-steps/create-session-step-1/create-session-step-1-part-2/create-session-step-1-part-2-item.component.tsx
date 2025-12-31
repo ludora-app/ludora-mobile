@@ -7,7 +7,7 @@ import { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reani
 import { BounceBox, cn } from '@/components/chill-ui-library';
 import { SESSION_LEVEL_TYPE } from '@/constants/session.constants';
 
-import { createSessionStore } from '../../../../store/create-session.store';
+import { useCreateSessionStore } from '../../../../store/create-session.store';
 
 type CreateSessionStep1Part2LevelItemProps = {
   difficulty: SESSION_LEVEL_TYPE;
@@ -16,12 +16,12 @@ type CreateSessionStep1Part2LevelItemProps = {
 const LEVEL_ICON_SIZE_SELECTED = 80;
 const LEVEL_ICON_SIZE_UNSELECTED = 50;
 
-export default function CreateSessionStep1Part2LevelItem(props: CreateSessionStep1Part2LevelItemProps) {
+export default function CreateSessionStep1Part2Item(props: CreateSessionStep1Part2LevelItemProps) {
   const { t } = useTranslate();
   const { difficulty } = props;
 
-  const selectedLevel = createSessionStore(state => state.session?.level);
-  const setSession = createSessionStore(state => state.setSession);
+  const selectedLevel = useCreateSessionStore(state => state.session?.level);
+  const setSession = useCreateSessionStore(state => state.setSession);
 
   const isSelectedLevel = selectedLevel === difficulty.code;
 

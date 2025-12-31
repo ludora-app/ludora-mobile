@@ -26,7 +26,7 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * </WrapperScrollView>
  * ```
  *
- * @param className - Custom CSS classes for the wrapper (NativeWind only)
+ * @param contentContainerClassName - Custom CSS classes for the content container (nativewind only)
  * @param edges - Safe area edges to apply when hasSafeArea is true: `'top'` | `'right'` | `'bottom'` | `'left'`
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
@@ -35,11 +35,11 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * @param ScrollViewProps - Any other props accepted by the native `ScrollView` component.
  */
 export function WrapperScrollView(props: PropsWithChildren<WrapperScrollViewProps>) {
-  const { children, className, edges, fill, grow, hasSafeArea, px, ...rest } = props;
+  const { children, contentContainerClassName, edges, fill, grow, hasSafeArea, px, ...rest } = props;
 
   const content = (
     <ScrollView
-      contentContainerClassName={cn(wrapperTv({ fill, grow, px }), className)}
+      contentContainerClassName={cn(wrapperTv({ fill, grow, px }), contentContainerClassName)}
       alwaysBounceVertical={wrapperDefaultProps.alwaysBounceVertical}
       showsVerticalScrollIndicator={wrapperDefaultProps.showsVerticalScrollIndicator}
       {...rest}

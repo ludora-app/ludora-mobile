@@ -1,5 +1,6 @@
 import { Dayjs } from 'dayjs';
-import { useCallback } from 'react';
+import { debounce } from 'radash';
+import { useCallback, useMemo } from 'react';
 import { Carousel, CarouselContent, cn } from '@chillui/ui';
 
 import { useDateCarousel } from '../hooks/days-carousel.hook';
@@ -11,16 +12,26 @@ type DateCarouselProps = {
   contentContainerClassName?: string;
 };
 
+const DEBOUNCE_DELAY = 300;
+
 export default function DaysCarousel(props: DateCarouselProps) {
   const { className, contentContainerClassName, onSelect } = props;
   const { days, isSelected, setSelected } = useDateCarousel();
 
+  const debouncedOnSelect = useMemo(
+    () =>
+      debounce({ delay: DEBOUNCE_DELAY }, (date: Dayjs) => {
+        onSelect?.(date);
+      }),
+    [onSelect],
+  );
+
   const handleSelect = useCallback(
     (date: Dayjs) => {
       setSelected(date);
-      onSelect?.(date);
+      debouncedOnSelect(date);
     },
-    [setSelected, onSelect],
+    [setSelected, debouncedOnSelect],
   );
 
   return (

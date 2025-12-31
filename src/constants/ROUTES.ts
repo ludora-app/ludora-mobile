@@ -7,9 +7,15 @@ const ROUTES = {
     RESET_PASSWORD: '/auth/reset-password',
     VERIFY_CODE: '/auth/verify-code',
   },
-  HOME: '/',
+  CREATE_SESSION: {
+    FIELD_CARD_PUBLIC_AVAILIBILITIES_FORM_SHEET: '/create-session/create-session-field-card-public-availibilities',
+    INDEX: '/create-session',
+  },
+  FILTERS: {
+    FILTER_CALENDAR: '/filters/filters-calendar',
+    FILTER_FIELDS: '/filters/filters-fields',
+  },
   SESSION: {
-    CREATE_SESSION: '/create-session',
     DETAILS: '/session',
     FILTER: '(root)/(modals)/session-filter',
     TEAM: '/session/team',
@@ -17,8 +23,9 @@ const ROUTES = {
 } as const;
 
 export type RouteValues =
-  | typeof ROUTES.HOME
   | (typeof ROUTES.AUTH)[keyof typeof ROUTES.AUTH]
-  | (typeof ROUTES.SESSION)[keyof typeof ROUTES.SESSION];
+  | (typeof ROUTES.CREATE_SESSION)[keyof typeof ROUTES.CREATE_SESSION]
+  | (typeof ROUTES.SESSION)[keyof typeof ROUTES.SESSION]
+  | (typeof ROUTES.FILTERS)[keyof typeof ROUTES.FILTERS];
 
 export default ROUTES;

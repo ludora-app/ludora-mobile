@@ -1,6 +1,7 @@
-import { ComponentType } from 'react';
 import { VariantProps } from 'tailwind-variants';
-import { StyleProp, ViewStyle, ViewProps, ScrollViewProps } from 'react-native';
+import { ComponentType, RefObject } from 'react';
+import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
+import { StyleProp, ViewStyle, ViewProps, ScrollViewProps, ScrollView } from 'react-native';
 
 import { wrapperTv } from '../components/wrapper/styles/Wrapper.styles';
 
@@ -25,7 +26,19 @@ export type WrapperProps = WrapperBaseProps;
 /**
  * Props for WrapperScrollView component
  */
-export type WrapperScrollViewProps = WrapperBaseProps & ScrollViewProps;
+export type WrapperScrollViewProps = WrapperBaseProps &
+  ScrollViewProps & {
+    ref?: RefObject<ScrollView | null>;
+  };
+
+/**
+ * Props for WrapperGestureHandlerScrollView component
+ */
+export type WrapperGestureHandlerScrollViewProps = WrapperBaseProps &
+  ScrollViewProps & {
+    contentContainerClassName?: string;
+    ref?: RefObject<GestureHandlerScrollView | null>;
+  };
 
 /**
  * Props for WrapperSafeAreaView component

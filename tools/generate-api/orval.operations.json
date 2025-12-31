@@ -5,6 +5,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "ConversationsController_findAllByUserUid": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "FieldsController_findAllVerified": {
     "query": {
       "useInfinite": true,
@@ -12,12 +18,6 @@
     }
   },
   "FieldsController_findAllByPartnerUid": {
-    "query": {
-      "useInfinite": true,
-      "useInfiniteQueryParam": "cursor"
-    }
-  },
-  "ConversationsController_findAllByUserUid": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

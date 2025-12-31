@@ -1,54 +1,59 @@
 import { Box } from '@ludo/ui';
-import { useTranslate } from '@tolgee/react';
-import { tennisBall, footballBall, basketballBall } from 'assets';
+import { useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
-import { SessionsFindAllSportsItem } from '@/api/generated/model';
+import { WrapperGestureHandlerScrollViewProps } from '@/components/chill-ui-library';
+import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
-import { createSessionStore } from '../../../store/create-session.store';
-import CreateSessionStep1Part1 from './create-session-step-1-part-1.component';
-import CreateSessionStep1Part3 from './create-session-step-1-part-3.component';
+import CreateSessionStep1Part1 from './create-session-step-1-part-1/create-session-step-1-part-1.component';
+import CreateSessionStep1Part3 from './create-session-step-1-part-3/create-session-step-1-part-3.component';
 import CreateSessionStep1Part2 from './create-session-step-1-part-2/create-session-step-1-part-2.component';
 
-type SPORTSPROPS = {
-  id: number;
-  image: string;
-  name: SessionsFindAllSportsItem;
+type CreateSessionStep1Props = {
+  scrollViewRef: WrapperGestureHandlerScrollViewProps['ref'];
 };
 
-const sports: SPORTSPROPS[] = [
-  {
-    id: 1,
-    image: tennisBall,
-    name: 'TENNIS',
-  },
-  {
-    id: 2,
-    image: footballBall,
-    name: 'FOOTBALL',
-  },
-  {
-    id: 3,
-    image: basketballBall,
-    name: 'BASKETBALL',
-  },
-  {
-    id: 4,
-    image: tennisBall,
-    name: 'PADDEL',
-  },
-];
+export default function CreateSessionStep1({ scrollViewRef }: CreateSessionStep1Props) {
+  const hasScrolledToP3 = useRef(false);
 
-export default function CreateSessionStep1() {
-  const selectedSport = createSessionStore(state => state.session?.sport);
-  const setSession = createSessionStore(state => state.setSession);
+  const { level, sport } = useCreateSessionStore(
+    useShallow(state => ({
+      level: !!state.session?.level,
+      sport: !!state.session?.sport,
+    })),
+  );
 
-  const { t } = useTranslate();
+  const showPart2 = !!sport;
+  const showPart3 = !!level;
+
+  useEffect(() => {
+    if (!showPart3) {
+      hasScrolledToP3.current = false;
+    }
+  }, [showPart3]);
 
   return (
-    <Box>
+    <>
       <CreateSessionStep1Part1 />
-      <CreateSessionStep1Part2 />
-      <CreateSessionStep1Part3 />
-    </Box>
+      {showPart2 && <CreateSessionStep1Part2 />}
+      {showPart3 && (
+        <Box
+          onLayout={event => {
+            const { y } = event.nativeEvent.layout;
+            if (!hasScrolledToP3.current) {
+              requestAnimationFrame(() => {
+                scrollViewRef.current?.scrollTo({
+                  animated: true,
+                  y,
+                });
+              });
+              hasScrolledToP3.current = true;
+            }
+          }}
+        >
+          <CreateSessionStep1Part3 />
+        </Box>
+      )}
+    </>
   );
 }

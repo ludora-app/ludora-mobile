@@ -11,3 +11,4 @@ export * from './wrapper';
 export * from './icon-button';
 export * from './separator';
 export * from './chip';
+export * from './input';

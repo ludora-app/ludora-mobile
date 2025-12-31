@@ -15,16 +15,13 @@ function RootLayoutNav() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   useEffect(() => {
-    if (__DEV__) {
-      posthog.screen(pathname, params);
-    }
+    posthog.screen(pathname, params);
   }, [pathname, params, posthog]);
 
   return (
     <Stack
       screenOptions={{
         animation: 'ios_from_right',
-        contentStyle: { backgroundColor: '#fff' },
         headerShown: false,
       }}
     >

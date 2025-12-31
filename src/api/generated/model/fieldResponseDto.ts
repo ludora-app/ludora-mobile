@@ -5,19 +5,29 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { FieldAvailabilityDto } from './fieldAvailabilityDto';
+import type { FieldImageResponseDto } from './fieldImageResponseDto';
+import type { FieldResponseDtoType } from './fieldResponseDtoType';
 
 export interface FieldResponseDto {
-  readonly address: string;
-  readonly entryFee: number;
-  readonly fieldImages: readonly string[];
-  readonly gameMode: string;
-  readonly isVerified: boolean;
-  readonly latitude: number;
-  readonly longitude: number;
-  readonly name: string;
-  readonly openingHours: readonly string[];
-  readonly partnerUid: string;
-  readonly shortAddress: string;
-  readonly sport: string;
-  readonly uid: string;
+  /** availabilities of the field */
+  availabilities?: FieldAvailabilityDto[];
+  /** images of the field */
+  fieldImages?: FieldImageResponseDto[];
+  /** latitude of the field */
+  latitude: number;
+  /** longitude of the field */
+  longitude: number;
+  /** name of the field */
+  name?: string;
+  /** short address of the field */
+  shortAddress: string;
+  /** sport of the field */
+  sport: string;
+  /** type of the field */
+  type: FieldResponseDtoType;
+  /** uid of the field */
+  uid: string;
+  /** distance to the field in meters */
+  userDistance?: number;
 }

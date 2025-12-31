@@ -24,4 +24,9 @@ export interface ScalePressableProps extends Omit<PressableProps, 'onPress' | 'o
    * Style object for the pressable container
    */
   style?: StyleProp<ViewStyle>;
+
+  /**
+   * Pointer events (default: 'auto')
+   */
+  pointerEvents?: 'auto' | 'box-none' | 'box-only' | 'none';
 }

@@ -52,8 +52,8 @@ export default {
             content: '#666',
           },
           neutral: {
-            background: '#CBD2D9',
-            content: '#333',
+            background: '#00000060',
+            content: '#FFF',
           },
           primary: {
             background: '#F15924',
@@ -78,12 +78,13 @@ export default {
         error: '#ff3333',
         gray: '#7C7C7C',
         input: '#e4e4e4',
+        muted: '#666',
         primary: '#F15924',
         primaryHover: '#F14500',
         purplePrimary: '#864C9E',
         purpleSecondary: '#652F8F',
         purpleTertiary: '#3C215A',
-        ring: '#9e9e9e',
+        ring: '#B4B4B4',
         secondary: '#FCBD1D',
       },
 

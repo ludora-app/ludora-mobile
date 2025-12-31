@@ -21,6 +21,8 @@ export interface FindMeUserResponseDataDto {
   readonly firstname: string;
   /** @nullable */
   readonly imageUrl?: string | null;
+  /** */
+  readonly isEmailVerified?: boolean;
   readonly lastname: string;
   /** @nullable */
   readonly name?: string | null;

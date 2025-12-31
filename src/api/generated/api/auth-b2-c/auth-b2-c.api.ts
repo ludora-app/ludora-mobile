@@ -37,7 +37,6 @@ import type {
   RegisterResponseDto,
   SuccessTypeDto,
   UnauthorizedResponseDto,
-  VerifyEmailCodeDto,
   VerifyEmailResponseDto,
   VerifyMailDto,
   VerifyTokenResponseDto,
@@ -269,7 +268,7 @@ export const useAuthB2CLogin = <TError = BadRequestResponseDto, TContext = unkno
   return useMutation(mutationOptions);
 };
 /**
- * @summary Allow to verify the email, unprotected route
+ * @summary Allows to verify if an email is available or not, unprotected route used during the registration process
  */
 export const authB2CVerifyEmail = (verifyMailDto: VerifyMailDto, signal?: AbortSignal) => {
   return customInstance<VerifyEmailResponseDto>({
@@ -318,7 +317,7 @@ export type AuthB2CVerifyEmailMutationBody = VerifyMailDto;
 export type AuthB2CVerifyEmailMutationError = BadRequestResponseDto;
 
 /**
- * @summary Allow to verify the email, unprotected route
+ * @summary Allows to verify if an email is available or not, unprotected route used during the registration process
  */
 export const useAuthB2CVerifyEmail = <TError = BadRequestResponseDto, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
@@ -338,77 +337,86 @@ export const useAuthB2CVerifyEmail = <TError = BadRequestResponseDto, TContext =
   return useMutation(mutationOptions);
 };
 /**
- * @summary Verify the email code
+ * @summary Allows a user to verify his email by clicking on the link in the email
  */
-export const authB2CVerifyEmailCode = (verifyEmailCodeDto: VerifyEmailCodeDto, signal?: AbortSignal) => {
-  return customInstance<VerifyEmailResponseDto>({
-    url: `/auth-b2c/verify-email-code`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: verifyEmailCodeDto,
-    signal,
-  });
+export const authB2CVerifyEmailCode = (signal?: AbortSignal) => {
+  return customInstance<VerifyEmailResponseDto>({ url: `/auth-b2c/verify-email-link`, method: 'GET', signal });
 };
 
-export const getAuthB2CVerifyEmailCodeMutationOptions = <
+export const getAuthB2CVerifyEmailCodeQueryKey = () => {
+  return [`/auth-b2c/verify-email-link`] as const;
+};
+
+export const getAuthB2CVerifyEmailCodeQueryOptions = <
+  TData = Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
-  TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>>;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getAuthB2CVerifyEmailCodeQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>> = ({ signal }) =>
+    authB2CVerifyEmailCode(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
     TError,
-    { data: VerifyEmailCodeDto },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
-  TError,
-  { data: VerifyEmailCodeDto },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
-    { data: VerifyEmailCodeDto }
-  > = props => {
-    const { data } = props ?? {};
-
-    return authB2CVerifyEmailCode(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type AuthB2CVerifyEmailCodeMutationResult = NonNullable<
+export type AuthB2CVerifyEmailCodeQueryResult = NonNullable<
   Awaited<ReturnType<typeof authB2CVerifyEmailCode>>
 >;
-export type AuthB2CVerifyEmailCodeMutationBody = VerifyEmailCodeDto;
-export type AuthB2CVerifyEmailCodeMutationError = BadRequestResponseDto | UnauthorizedResponseDto;
+export type AuthB2CVerifyEmailCodeQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
 
-/**
- * @summary Verify the email code
- */
-export const useAuthB2CVerifyEmailCode = <
+export function useAuthB2CVerifyEmailCode<
+  TData = Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
-  TContext = unknown,
+>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>> &
+    Pick<
+      DefinedInitialDataOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>,
+      'initialData'
+    >;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useAuthB2CVerifyEmailCode<
+  TData = Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
-    TError,
-    { data: VerifyEmailCodeDto },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
-  TError,
-  { data: VerifyEmailCodeDto },
-  TContext
-> => {
-  const mutationOptions = getAuthB2CVerifyEmailCodeMutationOptions(options);
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>> &
+    Pick<
+      UndefinedInitialDataOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>,
+      'initialData'
+    >;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useAuthB2CVerifyEmailCode<
+  TData = Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Allows a user to verify his email by clicking on the link in the email
+ */
 
-  return useMutation(mutationOptions);
-};
+export function useAuthB2CVerifyEmailCode<
+  TData = Awaited<ReturnType<typeof authB2CVerifyEmailCode>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authB2CVerifyEmailCode>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getAuthB2CVerifyEmailCodeQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 /**
  * @summary Resend the verification code
  */

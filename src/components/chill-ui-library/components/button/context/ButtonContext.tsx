@@ -8,6 +8,7 @@ export type ButtonContextValue = {
   size: ButtonProps['size'];
   sizingVariant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   variant: ButtonProps['variant'];
+  fit: boolean;
 };
 
 export const ButtonContext = createContext<ButtonContextValue | null>(null);

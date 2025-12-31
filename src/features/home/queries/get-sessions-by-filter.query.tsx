@@ -1,7 +1,7 @@
 import { useSessionsFilterStore } from '@/stores/sessions-filter.store';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
-import { useGetAllSessions } from './useGetAllSessions.query';
+import { useGetAllSessions } from './get-sessions.query';
 
 export const useGetAllSessionsByFilter = () => {
   const sessionFilter = useSessionsFilterStore(state => state.sessionFilter);
@@ -16,6 +16,7 @@ export const useGetAllSessionsByFilter = () => {
       userLon: userLocation.longitude,
     }),
   });
+
   const items = data?.pages.flatMap(page => page.data.items) ?? [];
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 

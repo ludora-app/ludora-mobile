@@ -13,6 +13,7 @@ export default function Button(props: ButtonProps) {
       as="scale-pressable"
       className={cn('rounded-full', className)}
       isDisabled={isLoading || isDisabled}
+      size="lg"
       {...rest}
     >
       <ButtonContent {...contentProps}>

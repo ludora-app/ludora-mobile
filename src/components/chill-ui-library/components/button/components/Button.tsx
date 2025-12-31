@@ -91,6 +91,7 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
     children,
     className,
     colorVariant = buttonDefaultProps.colorVariant,
+    fit = buttonDefaultProps.fit,
     isDisabled,
     onPress,
     size = buttonDefaultProps.size,
@@ -103,12 +104,13 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
   const contextValue = useMemo(
     () => ({
       colorVariant,
+      fit,
       isDisabled: !!isDisabled,
       size,
       sizingVariant,
       variant,
     }),
-    [colorVariant, isDisabled, size, sizingVariant, variant],
+    [colorVariant, isDisabled, size, sizingVariant, variant, fit],
   );
 
   return (
@@ -120,6 +122,7 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
           twStyles.touchableComponent,
           ButtonTv({
             colorVariant,
+            fit,
             isDisabled: !!isDisabled,
             size,
             variant,

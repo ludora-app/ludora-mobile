@@ -11,7 +11,7 @@ export default function Button(props: ChipProps) {
   const buttonContent = (
     <ChipChillUI
       as="scale-pressable"
-      className={cn('rounded-full bg-white', className)}
+      className={cn('rounded-full', className)}
       isDisabled={isLoading || isDisabled}
       {...rest}
     >

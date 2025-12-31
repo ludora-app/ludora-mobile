@@ -5,9 +5,9 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import type { RegisterResponseDataDto } from './registerResponseDataDto';
+import type { BasicLoginResponseDto } from './basicLoginResponseDto';
 
 export interface RegisterResponseDto {
-  readonly data: RegisterResponseDataDto;
+  readonly data: BasicLoginResponseDto;
   readonly message?: string;
 }

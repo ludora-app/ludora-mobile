@@ -5,12 +5,17 @@ import { SessionsFindAllSportsItem } from '@/api/generated/model';
 
 type SessionProps = CreateSessionFromRequestDto & { sport: SessionsFindAllSportsItem };
 
+type Session = Partial<SessionProps> & { day?: string };
+
 interface CreateSessionStore {
-  session: SessionProps;
-  setSession: (session: Partial<SessionProps>) => void;
+  session: Session;
+
+  setSession: (session: Session) => void;
 }
 
-export const createSessionStore = create<CreateSessionStore>((set, get) => ({
-  session: null,
+export const useCreateSessionStore = create<CreateSessionStore>((set, get) => ({
+  session: {
+    day: new Date().toISOString(),
+  },
   setSession: session => set({ session: { ...get().session, ...session } }),
 }));

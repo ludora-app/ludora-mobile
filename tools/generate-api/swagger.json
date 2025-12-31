@@ -47,27 +47,240 @@
         ]
       }
     },
-    "/emails/test": {
-      "get": {
-        "operationId": "EmailsController_testEmail",
+    "/auth-b2c/register": {
+      "post": {
+        "operationId": "AuthB2CController_register",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterB2CWithFileDto"
+              }
+            }
           }
         },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a user account",
         "tags": [
-          "Emails"
+          "AuthB2C"
         ]
       }
     },
-    "/storage/upload": {
+    "/auth-b2c/google-login": {
       "post": {
-        "operationId": "StorageController_upload",
+        "operationId": "AuthB2CController_createOrConnectGoogleUser",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoogleUserDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User created or connected successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrConnectGoogleResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during Google user creation or connection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Creates or connects a user with a Google account",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/login": {
+      "post": {
+        "operationId": "AuthB2CController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Allow the user to login",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify-mail": {
+      "post": {
+        "operationId": "AuthB2CController_verifyEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyMailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during email verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Allows to verify if an email is available or not, unprotected route used during the registration process",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify-email-link": {
+      "get": {
+        "operationId": "AuthB2CController_verifyEmailCode",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email code verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during email verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Allows a user to verify his email by clicking on the link in the email",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/resend-verification-code": {
+      "post": {
+        "operationId": "AuthB2CController_resendVerificationCode",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Verification code resent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during verification code resend",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -75,31 +288,75 @@
             "JWT-auth": []
           }
         ],
+        "summary": "Resend the verification code",
         "tags": [
-          "Storage"
+          "AuthB2C"
         ]
       }
     },
-    "/storage/get-signed-url": {
-      "get": {
-        "operationId": "StorageController_getSignedUrl",
-        "parameters": [
-          {
-            "name": "filename",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
+    "/auth-b2c/refresh-token": {
+      "post": {
+        "operationId": "AuthB2CController_refreshToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Tokens refreshed successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/RefreshTokenResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during token refresh",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Refresh access token using refresh token",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/logout": {
+      "post": {
+        "operationId": "AuthB2CController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
                 }
               }
             }
@@ -110,17 +367,149 @@
             "JWT-auth": []
           }
         ],
+        "summary": "Logout user from current device",
         "tags": [
-          "Storage"
+          "AuthB2C"
         ]
       }
     },
-    "/geolocalisation/details": {
+    "/auth-b2c/logout-all-devices": {
       "post": {
-        "operationId": "GeolocalisationController_getDetailedAddressFromCoordinates",
+        "operationId": "AuthB2CController_logoutAllDevices",
         "parameters": [],
         "responses": {
-          "201": {
+          "200": {
+            "description": "Logged out from all devices successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Logout user from all devices",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/generate-access-token-from-code": {
+      "post": {
+        "operationId": "AuthB2CController_generateAccessTokenFromCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateAccessTokenFromCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "resetToken": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during access token generation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Generate an access token from a verification code",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/verify": {
+      "get": {
+        "operationId": "AuthB2CController_verifyToken",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyTokenResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during token verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Verify the validity of the token & the user account",
+        "tags": [
+          "AuthB2C"
+        ]
+      }
+    },
+    "/auth-b2c/google/callback": {
+      "get": {
+        "operationId": "AuthB2CController_googleCallback",
+        "parameters": [],
+        "responses": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
@@ -132,70 +521,64 @@
           }
         },
         "tags": [
-          "Geolocalisation"
+          "AuthB2C"
         ]
       }
     },
-    "/geolocalisation/address": {
-      "post": {
-        "operationId": "GeolocalisationController_getAddressFromCoordinates",
+    "/auth-b2c/password-reset": {
+      "patch": {
+        "operationId": "AuthB2CController_passwordReset",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgottenPasswordDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error resetting password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Verification code not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
                 }
               }
             }
           }
         },
-        "tags": [
-          "Geolocalisation"
-        ]
-      }
-    },
-    "/geolocalisation/coordinates": {
-      "post": {
-        "operationId": "GeolocalisationController_getCoordinatesFromAddress",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+        "security": [
+          {
+            "JWT-auth": []
           }
-        },
+        ],
+        "summary": "This method is used to reset the password of a user when he forgot his password",
         "tags": [
-          "Geolocalisation"
-        ]
-      }
-    },
-    "/geolocalisation/coordinates-and-short-address": {
-      "post": {
-        "operationId": "GeolocalisationController_getCoordinatesAndShortAddressFromAddress",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Geolocalisation"
+          "AuthB2C"
         ]
       }
     },
@@ -839,6 +1222,158 @@
         ]
       }
     },
+    "/emails/test": {
+      "get": {
+        "operationId": "EmailsController_testEmail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Emails"
+        ]
+      }
+    },
+    "/storage/upload": {
+      "post": {
+        "operationId": "StorageController_upload",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Storage"
+        ]
+      }
+    },
+    "/storage/get-signed-url": {
+      "get": {
+        "operationId": "StorageController_getSignedUrl",
+        "parameters": [
+          {
+            "name": "filename",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Storage"
+        ]
+      }
+    },
+    "/geolocalisation/details": {
+      "post": {
+        "operationId": "GeolocalisationController_getDetailedAddressFromCoordinates",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/address": {
+      "post": {
+        "operationId": "GeolocalisationController_getAddressFromCoordinates",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/coordinates": {
+      "post": {
+        "operationId": "GeolocalisationController_getCoordinatesFromAddress",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
+    "/geolocalisation/coordinates-and-short-address": {
+      "post": {
+        "operationId": "GeolocalisationController_getCoordinatesAndShortAddressFromAddress",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Geolocalisation"
+        ]
+      }
+    },
     "/partners": {
       "post": {
         "operationId": "PartnersController_create",
@@ -865,1161 +1400,6 @@
         ],
         "tags": [
           "Partners"
-        ]
-      }
-    },
-    "/auth-b2c/register": {
-      "post": {
-        "operationId": "AuthB2CController_register",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterB2CWithFileDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegisterResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Create a user account",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/google-login": {
-      "post": {
-        "operationId": "AuthB2CController_createOrConnectGoogleUser",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGoogleUserDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User created or connected successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateOrConnectGoogleResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during Google user creation or connection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Creates or connects a user with a Google account",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/login": {
-      "post": {
-        "operationId": "AuthB2CController_login",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Allow the user to login",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/verify-mail": {
-      "post": {
-        "operationId": "AuthB2CController_verifyEmail",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VerifyMailDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Email verified successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during email verification",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Allow to verify the email, unprotected route",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/verify-email-code": {
-      "post": {
-        "operationId": "AuthB2CController_verifyEmailCode",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VerifyEmailCodeDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Email code verified successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VerifyEmailResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during email code verification",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid or expired code",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Verify the email code",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/resend-verification-code": {
-      "post": {
-        "operationId": "AuthB2CController_resendVerificationCode",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Verification code resent successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessTypeDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during verification code resend",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Resend the verification code",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/refresh-token": {
-      "post": {
-        "operationId": "AuthB2CController_refreshToken",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RefreshTokenDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Tokens refreshed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during token refresh",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Refresh access token using refresh token",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/logout": {
-      "post": {
-        "operationId": "AuthB2CController_logout",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Logged out successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LogoutResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Logout user from current device",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/logout-all-devices": {
-      "post": {
-        "operationId": "AuthB2CController_logoutAllDevices",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Logged out from all devices successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LogoutResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Logout user from all devices",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/generate-access-token-from-code": {
-      "post": {
-        "operationId": "AuthB2CController_generateAccessTokenFromCode",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateAccessTokenFromCodeDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Access token generated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "resetToken": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during access token generation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Generate an access token from a verification code",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/verify": {
-      "get": {
-        "operationId": "AuthB2CController_verifyToken",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Token is valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VerifyTokenResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error during token verification",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token invalid: user missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Verify the validity of the token & the user account",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/google/callback": {
-      "get": {
-        "operationId": "AuthB2CController_googleCallback",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/auth-b2c/password-reset": {
-      "patch": {
-        "operationId": "AuthB2CController_passwordReset",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ForgottenPasswordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error resetting password",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Verification code not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "This method is used to reset the password of a user when he forgot his password",
-        "tags": [
-          "AuthB2C"
-        ]
-      }
-    },
-    "/fields": {
-      "post": {
-        "operationId": "FieldsController_create",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConflictResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create a public field",
-        "tags": [
-          "Fields"
-        ]
-      }
-    },
-    "/fields/list-verified/collection": {
-      "get": {
-        "operationId": "FieldsController_findAllVerified",
-        "parameters": [
-          {
-            "name": "name",
-            "required": false,
-            "in": "query",
-            "description": "The name of the field",
-            "schema": {
-              "example": "Field 1",
-              "type": "string"
-            }
-          },
-          {
-            "name": "address",
-            "required": false,
-            "in": "query",
-            "description": "The address of the field",
-            "schema": {
-              "example": "123 Main St, Anytown, USA",
-              "type": "string"
-            }
-          },
-          {
-            "name": "sports",
-            "required": false,
-            "in": "query",
-            "description": "Sports of the session",
-            "schema": {
-              "example": [
-                "BASKETBALL",
-                "FOOTBALL"
-              ],
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "BASKETBALL",
-                  "FOOTBALL",
-                  "TENNIS",
-                  "VOLLEYBALL",
-                  "PADDEL",
-                  "BADMINTON",
-                  "PING-PONG"
-                ]
-              }
-            }
-          },
-          {
-            "name": "gameModes",
-            "required": false,
-            "in": "query",
-            "description": "The game mode of the field",
-            "schema": {
-              "example": [
-                "THREE_V_THREE",
-                "FIVE_V_FIVE"
-              ],
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "TWO_V_TWO",
-                  "THREE_V_THREE",
-                  "FOUR_V_FOUR",
-                  "FIVE_V_FIVE",
-                  "SIX_V_SIX",
-                  "SEVEN_V_SEVEN",
-                  "EIGHT_V_EIGHT",
-                  "TEN_V_TEN",
-                  "ELEVEN_V_ELEVEN"
-                ]
-              }
-            }
-          },
-          {
-            "name": "cursor",
-            "required": false,
-            "in": "query",
-            "description": "Cursor for pagination",
-            "schema": {
-              "example": "fcacfaca3c2a323bhf",
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Limit of fields to return",
-            "schema": {
-              "minimum": 1,
-              "example": 10,
-              "type": "number"
-            }
-          },
-          {
-            "name": "latitude",
-            "required": false,
-            "in": "query",
-            "description": "Latitude of the user",
-            "schema": {
-              "example": "48.8588443",
-              "type": "number"
-            }
-          },
-          {
-            "name": "longitude",
-            "required": false,
-            "in": "query",
-            "description": "Longitude of the user",
-            "schema": {
-              "example": "2.2943506",
-              "type": "number"
-            }
-          },
-          {
-            "name": "maxDistance",
-            "required": false,
-            "in": "query",
-            "description": "Maximum distance of the field search (in km)",
-            "schema": {
-              "minimum": 0,
-              "example": "10",
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get all verified fields",
-        "tags": [
-          "Fields"
-        ]
-      }
-    },
-    "/fields/list-by-partner/collection": {
-      "get": {
-        "operationId": "FieldsController_findAllByPartnerUid",
-        "parameters": [
-          {
-            "name": "name",
-            "required": false,
-            "in": "query",
-            "description": "The name of the field",
-            "schema": {
-              "example": "Field 1",
-              "type": "string"
-            }
-          },
-          {
-            "name": "address",
-            "required": false,
-            "in": "query",
-            "description": "The address of the field",
-            "schema": {
-              "example": "123 Main St, Anytown, USA",
-              "type": "string"
-            }
-          },
-          {
-            "name": "sports",
-            "required": false,
-            "in": "query",
-            "description": "Sports of the session",
-            "schema": {
-              "example": [
-                "BASKETBALL",
-                "FOOTBALL"
-              ],
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "BASKETBALL",
-                  "FOOTBALL",
-                  "TENNIS",
-                  "VOLLEYBALL",
-                  "PADDEL",
-                  "BADMINTON",
-                  "PING-PONG"
-                ]
-              }
-            }
-          },
-          {
-            "name": "gameModes",
-            "required": false,
-            "in": "query",
-            "description": "The game mode of the field",
-            "schema": {
-              "example": [
-                "THREE_V_THREE",
-                "FIVE_V_FIVE"
-              ],
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "TWO_V_TWO",
-                  "THREE_V_THREE",
-                  "FOUR_V_FOUR",
-                  "FIVE_V_FIVE",
-                  "SIX_V_SIX",
-                  "SEVEN_V_SEVEN",
-                  "EIGHT_V_EIGHT",
-                  "TEN_V_TEN",
-                  "ELEVEN_V_ELEVEN"
-                ]
-              }
-            }
-          },
-          {
-            "name": "cursor",
-            "required": false,
-            "in": "query",
-            "description": "Cursor for pagination",
-            "schema": {
-              "example": "fcacfaca3c2a323bhf",
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Limit of fields to return",
-            "schema": {
-              "minimum": 1,
-              "example": 10,
-              "type": "number"
-            }
-          },
-          {
-            "name": "latitude",
-            "required": false,
-            "in": "query",
-            "description": "Latitude of the user",
-            "schema": {
-              "example": "48.8588443",
-              "type": "number"
-            }
-          },
-          {
-            "name": "longitude",
-            "required": false,
-            "in": "query",
-            "description": "Longitude of the user",
-            "schema": {
-              "example": "2.2943506",
-              "type": "number"
-            }
-          },
-          {
-            "name": "maxDistance",
-            "required": false,
-            "in": "query",
-            "description": "Maximum distance of the field search (in km)",
-            "schema": {
-              "minimum": 0,
-              "example": "10",
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get all fields by partner uid",
-        "tags": [
-          "Fields"
-        ]
-      }
-    },
-    "/fields/{uid}": {
-      "get": {
-        "operationId": "FieldsController_findOne",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get a field by uid",
-        "tags": [
-          "Fields"
-        ]
-      }
-    },
-    "/fields/update-public/{uid}": {
-      "patch": {
-        "operationId": "FieldsController_updatePublicField",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateFieldDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Field updated successfully"
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Update a public field",
-        "tags": [
-          "Fields"
-        ]
-      }
-    },
-    "/fields/update-private/{uid}": {
-      "patch": {
-        "operationId": "FieldsController_updatePartnerField",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdatePrivateFieldDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Field updated successfully"
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Update a partner field",
-        "tags": [
-          "Fields"
         ]
       }
     },
@@ -2231,6 +1611,513 @@
         "summary": "Get a conversation by uid",
         "tags": [
           "Conversations"
+        ]
+      }
+    },
+    "/fields": {
+      "post": {
+        "operationId": "FieldsController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a public field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/list-verified/collection": {
+      "get": {
+        "operationId": "FieldsController_findAllVerified",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "The name of the field",
+            "schema": {
+              "example": "Field 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "required": false,
+            "in": "query",
+            "description": "The address of the field",
+            "schema": {
+              "example": "123 Main St, Anytown, USA",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports of the session",
+            "schema": {
+              "example": [
+                "BASKETBALL",
+                "FOOTBALL"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "gameMode",
+            "required": false,
+            "in": "query",
+            "description": "The game mode of the field",
+            "schema": {
+              "example": [
+                "THREE_V_THREE",
+                "FIVE_V_FIVE"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ONE_V_ONE",
+                  "TWO_V_TWO",
+                  "THREE_V_THREE",
+                  "FOUR_V_FOUR",
+                  "FIVE_V_FIVE",
+                  "SIX_V_SIX",
+                  "SEVEN_V_SEVEN",
+                  "EIGHT_V_EIGHT",
+                  "TEN_V_TEN",
+                  "ELEVEN_V_ELEVEN"
+                ]
+              }
+            }
+          },
+          {
+            "name": "date",
+            "required": false,
+            "in": "query",
+            "description": "The start date of the field",
+            "schema": {
+              "example": "2025-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "isFree",
+            "required": false,
+            "in": "query",
+            "description": "True pour terrains publics, False pour privés",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of fields to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "userLat",
+            "required": false,
+            "in": "query",
+            "description": "Latitude of the user",
+            "schema": {
+              "example": "48.8588443",
+              "type": "number"
+            }
+          },
+          {
+            "name": "userLon",
+            "required": false,
+            "in": "query",
+            "description": "Longitude of the user",
+            "schema": {
+              "example": "2.2943506",
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance of the field search (in km)",
+            "schema": {
+              "minimum": 0,
+              "example": "10",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all verified fields",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/list-by-partner/collection": {
+      "get": {
+        "operationId": "FieldsController_findAllByPartnerUid",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "The name of the field",
+            "schema": {
+              "example": "Field 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "required": false,
+            "in": "query",
+            "description": "The address of the field",
+            "schema": {
+              "example": "123 Main St, Anytown, USA",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sports",
+            "required": false,
+            "in": "query",
+            "description": "Sports of the session",
+            "schema": {
+              "example": [
+                "BASKETBALL",
+                "FOOTBALL"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BASKETBALL",
+                  "FOOTBALL",
+                  "TENNIS",
+                  "VOLLEYBALL",
+                  "PADDEL",
+                  "BADMINTON",
+                  "PING-PONG"
+                ]
+              }
+            }
+          },
+          {
+            "name": "gameMode",
+            "required": false,
+            "in": "query",
+            "description": "The game mode of the field",
+            "schema": {
+              "example": [
+                "THREE_V_THREE",
+                "FIVE_V_FIVE"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ONE_V_ONE",
+                  "TWO_V_TWO",
+                  "THREE_V_THREE",
+                  "FOUR_V_FOUR",
+                  "FIVE_V_FIVE",
+                  "SIX_V_SIX",
+                  "SEVEN_V_SEVEN",
+                  "EIGHT_V_EIGHT",
+                  "TEN_V_TEN",
+                  "ELEVEN_V_ELEVEN"
+                ]
+              }
+            }
+          },
+          {
+            "name": "date",
+            "required": false,
+            "in": "query",
+            "description": "The start date of the field",
+            "schema": {
+              "example": "2025-01-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "isFree",
+            "required": false,
+            "in": "query",
+            "description": "True pour terrains publics, False pour privés",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of fields to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "userLat",
+            "required": false,
+            "in": "query",
+            "description": "Latitude of the user",
+            "schema": {
+              "example": "48.8588443",
+              "type": "number"
+            }
+          },
+          {
+            "name": "userLon",
+            "required": false,
+            "in": "query",
+            "description": "Longitude of the user",
+            "schema": {
+              "example": "2.2943506",
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance of the field search (in km)",
+            "schema": {
+              "minimum": 0,
+              "example": "10",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFieldResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all fields by partner uid",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/{uid}": {
+      "get": {
+        "operationId": "FieldsController_findOne",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a field by uid",
+        "tags": [
+          "Fields"
         ]
       }
     },
@@ -4460,6 +4347,18 @@
       "description": "App operations"
     },
     {
+      "name": "AuthB2C",
+      "description": "AuthB2C operations"
+    },
+    {
+      "name": "AuthB2B",
+      "description": "AuthB2B operations"
+    },
+    {
+      "name": "Users",
+      "description": "Users operations"
+    },
+    {
       "name": "Emails",
       "description": "Emails operations"
     },
@@ -4472,28 +4371,16 @@
       "description": "Geolocalisation operations"
     },
     {
-      "name": "AuthB2B",
-      "description": "AuthB2B operations"
-    },
-    {
-      "name": "Users",
-      "description": "Users operations"
-    },
-    {
       "name": "Partners",
       "description": "Partners operations"
     },
     {
-      "name": "AuthB2C",
-      "description": "AuthB2C operations"
+      "name": "Conversations",
+      "description": "Conversations operations"
     },
     {
       "name": "Fields",
       "description": "Fields operations"
-    },
-    {
-      "name": "Conversations",
-      "description": "Conversations operations"
     },
     {
       "name": "Metrics",
@@ -4541,6 +4428,496 @@
       }
     },
     "schemas": {
+      "RegisterB2CWithFileDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "user type (USER or ADMIN)",
+            "enum": [
+              "USER",
+              "ADMIN",
+              "PARTNER"
+            ],
+            "example": "USER"
+          },
+          "deviceUid": {
+            "type": "string",
+            "description": "device uid, only for phones",
+            "example": "123456"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "email",
+            "example": "test@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "password",
+            "example": "Test!1234"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "firstname of user",
+            "example": "Doe"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "lastname of user",
+            "example": "Doe"
+          },
+          "phone": {
+            "type": "string",
+            "description": "phone number",
+            "example": "+33612345678"
+          },
+          "bio": {
+            "type": "string",
+            "description": "Bio",
+            "example": "I'm a user of the application."
+          },
+          "birthdate": {
+            "type": "string",
+            "description": "birthdate of user",
+            "example": "1990-01-01",
+            "format": "date"
+          },
+          "sex": {
+            "type": "string",
+            "description": "sex of user",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ],
+            "example": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ]
+          },
+          "file": {
+            "type": "string",
+            "description": "File image (avatar)",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "type",
+          "email",
+          "password"
+        ]
+      },
+      "BasicLoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RegisterResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicLoginResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateGoogleUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user",
+            "example": "test@gmail.com"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "The firstname of the user",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "The lastname of the user",
+            "example": "Doe"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "The image url of the user",
+            "example": "https://www.example.com/image.jpg"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The provider of the user",
+            "enum": [
+              "FACEBOOK",
+              "GOOGLE",
+              "LUDORA"
+            ],
+            "example": "GOOGLE"
+          }
+        },
+        "required": [
+          "email",
+          "firstname"
+        ]
+      },
+      "CreateOrConnectGoogleResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true,
+            "example": "User created or connected successfully"
+          },
+          "data": {
+            "type": "object",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BadRequestResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Bad Request"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "email must be an email"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email",
+            "example": "test@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User Password.\n      Must contain at least:\n        - 8 characters\n        - 1 uppercase letter\n        - 1 special character",
+            "example": "Test!1234",
+            "pattern": "^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$"
+          },
+          "deviceUid": {
+            "type": "string",
+            "description": "Device identifier, only for phones",
+            "example": "123456"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicLoginResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "VerifyMailDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user",
+            "example": "test@gmail.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "VerifyEmailResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "isAvailable"
+        ]
+      },
+      "VerifyEmailResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VerifyEmailResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UnauthorizedResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 401
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Access denied"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
+      "SuccessTypeDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 200
+          }
+        }
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token to get new access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "RefreshTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BasicLoginResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LogoutResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Logout success message",
+            "example": "Logged out successfully"
+          },
+          "status": {
+            "type": "number",
+            "example": 200
+          }
+        }
+      },
+      "GenerateAccessTokenFromCodeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 6,
+            "description": "Code to generate the access token from in the password reset workflow",
+            "example": "123456"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email",
+            "example": "test@gmail.com"
+          }
+        },
+        "required": [
+          "code",
+          "email"
+        ]
+      },
+      "VerifyTokenResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean",
+            "example": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "isValid"
+        ]
+      },
+      "VerifyTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VerifyTokenResponseDataDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ForgottenPasswordDto": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "description": "New password of the user",
+            "example": "password"
+          }
+        },
+        "required": [
+          "newPassword"
+        ]
+      },
+      "NotFoundResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The HTTP status code",
+            "example": 404
+          },
+          "error": {
+            "type": "string",
+            "description": "The short name of the HTTP error",
+            "example": "Not Found"
+          },
+          "message": {
+            "description": "The detailed error messages",
+            "oneOf": [
+              {
+                "example": "An error occurred",
+                "type": "string"
+              }
+            ],
+            "example": "Resource not found"
+          }
+        },
+        "required": [
+          "statusCode",
+          "error",
+          "message"
+        ]
+      },
       "RegisterB2BWithFileDto": {
         "type": "object",
         "properties": {
@@ -4606,75 +4983,6 @@
           "partnerAddress"
         ]
       },
-      "RegisterResponseDataDto": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "example": "123e4567-e89b-12d3-a456-426614174000",
-            "readOnly": true
-          },
-          "refreshToken": {
-            "type": "string",
-            "example": "123e4567-e89b-12d3-a456-426614174000",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
-      },
-      "RegisterResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RegisterResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "BadRequestResponseDto": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "number",
-            "description": "The HTTP status code",
-            "example": 400
-          },
-          "error": {
-            "type": "string",
-            "description": "The short name of the HTTP error",
-            "example": "Bad Request"
-          },
-          "message": {
-            "description": "The detailed error messages",
-            "oneOf": [
-              {
-                "example": "An error occurred",
-                "type": "string"
-              }
-            ],
-            "example": "email must be an email"
-          }
-        },
-        "required": [
-          "statusCode",
-          "error",
-          "message"
-        ]
-      },
       "ConflictResponseDto": {
         "type": "object",
         "properties": {
@@ -4697,102 +5005,6 @@
               }
             ],
             "example": "Resource already exists"
-          }
-        },
-        "required": [
-          "statusCode",
-          "error",
-          "message"
-        ]
-      },
-      "LoginDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "User email",
-            "example": "test@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "description": "User Password.\n      Must contain at least:\n        - 8 characters\n        - 1 uppercase letter\n        - 1 special character",
-            "example": "Test!1234",
-            "pattern": "^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$"
-          },
-          "deviceUid": {
-            "type": "string",
-            "description": "Device identifier, only for phones",
-            "example": "123456"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
-      },
-      "LoginResponseDataDto": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-            "readOnly": true
-          },
-          "refreshToken": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
-      },
-      "LoginResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LoginResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "NotFoundResponseDto": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "number",
-            "description": "The HTTP status code",
-            "example": 404
-          },
-          "error": {
-            "type": "string",
-            "description": "The short name of the HTTP error",
-            "example": "Not Found"
-          },
-          "message": {
-            "description": "The detailed error messages",
-            "oneOf": [
-              {
-                "example": "An error occurred",
-                "type": "string"
-              }
-            ],
-            "example": "Resource not found"
           }
         },
         "required": [
@@ -4915,36 +5127,6 @@
         },
         "required": [
           "data"
-        ]
-      },
-      "UnauthorizedResponseDto": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "number",
-            "description": "The HTTP status code",
-            "example": 401
-          },
-          "error": {
-            "type": "string",
-            "description": "The short name of the HTTP error",
-            "example": "Unauthorized"
-          },
-          "message": {
-            "description": "The detailed error messages",
-            "oneOf": [
-              {
-                "example": "An error occurred",
-                "type": "string"
-              }
-            ],
-            "example": "Access denied"
-          }
-        },
-        "required": [
-          "statusCode",
-          "error",
-          "message"
         ]
       },
       "FindOneUserResponseDataDto": {
@@ -5126,6 +5308,12 @@
                 "sport"
               ]
             }
+          },
+          "isEmailVerified": {
+            "type": "boolean",
+            "example": true,
+            "nullable": false,
+            "readOnly": true
           }
         },
         "required": [
@@ -5268,574 +5456,6 @@
           "name",
           "address"
         ]
-      },
-      "RegisterB2CWithFileDto": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "user type (USER or ADMIN)",
-            "enum": [
-              "USER",
-              "ADMIN",
-              "PARTNER"
-            ],
-            "example": "USER"
-          },
-          "deviceUid": {
-            "type": "string",
-            "description": "device uid, only for phones",
-            "example": "123456"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "email",
-            "example": "test@mail.com"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "description": "password",
-            "example": "Test!1234"
-          },
-          "firstname": {
-            "type": "string",
-            "description": "firstname of user",
-            "example": "Doe"
-          },
-          "lastname": {
-            "type": "string",
-            "description": "lastname of user",
-            "example": "Doe"
-          },
-          "phone": {
-            "type": "string",
-            "description": "phone number",
-            "example": "+33612345678"
-          },
-          "bio": {
-            "type": "string",
-            "description": "Bio",
-            "example": "I'm a user of the application."
-          },
-          "birthdate": {
-            "type": "string",
-            "description": "birthdate of user",
-            "example": "1990-01-01",
-            "format": "date"
-          },
-          "sex": {
-            "type": "string",
-            "description": "sex of user",
-            "enum": [
-              "MALE",
-              "FEMALE",
-              "OTHER"
-            ],
-            "example": [
-              "MALE",
-              "FEMALE",
-              "OTHER"
-            ]
-          },
-          "file": {
-            "type": "string",
-            "description": "File image (avatar)",
-            "format": "binary"
-          }
-        },
-        "required": [
-          "type",
-          "email",
-          "password"
-        ]
-      },
-      "CreateGoogleUserDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The email of the user",
-            "example": "test@gmail.com"
-          },
-          "firstname": {
-            "type": "string",
-            "description": "The firstname of the user",
-            "example": "John"
-          },
-          "lastname": {
-            "type": "string",
-            "description": "The lastname of the user",
-            "example": "Doe"
-          },
-          "imageUrl": {
-            "type": "string",
-            "format": "uri",
-            "description": "The image url of the user",
-            "example": "https://www.example.com/image.jpg"
-          },
-          "provider": {
-            "type": "string",
-            "description": "The provider of the user",
-            "enum": [
-              "FACEBOOK",
-              "GOOGLE",
-              "LUDORA"
-            ],
-            "example": "GOOGLE"
-          }
-        },
-        "required": [
-          "email",
-          "firstname"
-        ]
-      },
-      "CreateOrConnectGoogleResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RegisterResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "VerifyMailDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The email of the user",
-            "example": "test@gmail.com"
-          }
-        },
-        "required": [
-          "email"
-        ]
-      },
-      "VerifyEmailResponseDataDto": {
-        "type": "object",
-        "properties": {
-          "isAvailable": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "isAvailable"
-        ]
-      },
-      "VerifyEmailResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VerifyEmailResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "VerifyEmailCodeDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "minLength": 6,
-            "maxLength": 6
-          }
-        },
-        "required": [
-          "code"
-        ]
-      },
-      "SuccessTypeDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "status": {
-            "type": "number",
-            "example": 200
-          }
-        }
-      },
-      "RefreshTokenDto": {
-        "type": "object",
-        "properties": {
-          "refreshToken": {
-            "type": "string",
-            "description": "Refresh token to get new access token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-          }
-        },
-        "required": [
-          "refreshToken"
-        ]
-      },
-      "RefreshTokenResponseDataDto": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-            "readOnly": true
-          },
-          "refreshToken": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
-      },
-      "RefreshTokenResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RefreshTokenResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "LogoutResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Logout success message",
-            "example": "Logged out successfully"
-          },
-          "status": {
-            "type": "number",
-            "example": 200
-          }
-        }
-      },
-      "GenerateAccessTokenFromCodeDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "minLength": 6,
-            "maxLength": 6,
-            "description": "Code to generate the access token from in the password reset workflow",
-            "example": "123456"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "User email",
-            "example": "test@gmail.com"
-          }
-        },
-        "required": [
-          "code",
-          "email"
-        ]
-      },
-      "VerifyTokenResponseDataDto": {
-        "type": "object",
-        "properties": {
-          "isValid": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "isValid"
-        ]
-      },
-      "VerifyTokenResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VerifyTokenResponseDataDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "ForgottenPasswordDto": {
-        "type": "object",
-        "properties": {
-          "newPassword": {
-            "type": "string",
-            "description": "New password of the user",
-            "example": "password"
-          }
-        },
-        "required": [
-          "newPassword"
-        ]
-      },
-      "ResponseTypeDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "type": "object",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "FieldResponseDto": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
-          "name": {
-            "type": "string",
-            "example": "Field 1",
-            "readOnly": true
-          },
-          "address": {
-            "type": "string",
-            "example": "38 Rue du Ballon, 93160 Noisy-le-Grand, France",
-            "readOnly": true
-          },
-          "shortAddress": {
-            "type": "string",
-            "example": "38 Rue du Ballon, Noisy-le-Grand",
-            "readOnly": true
-          },
-          "latitude": {
-            "type": "number",
-            "example": 48.8588443,
-            "readOnly": true
-          },
-          "longitude": {
-            "type": "number",
-            "example": 2.2943506,
-            "readOnly": true
-          },
-          "fieldImages": {
-            "example": [
-              {
-                "order": 1,
-                "url": "https://example.com/image.jpg"
-              }
-            ],
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "gameMode": {
-            "type": "string",
-            "example": "THREE_V_THREE",
-            "readOnly": true
-          },
-          "entryFee": {
-            "type": "number",
-            "example": 10,
-            "readOnly": true
-          },
-          "isVerified": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true
-          },
-          "sport": {
-            "type": "string",
-            "example": "BASKETBALL",
-            "readOnly": true
-          },
-          "partnerUid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
-          "openingHours": {
-            "example": [
-              {
-                "closeTime": "12:00",
-                "dayOfWeek": 1,
-                "openTime": "10:00"
-              }
-            ],
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "uid",
-          "name",
-          "address",
-          "shortAddress",
-          "latitude",
-          "longitude",
-          "fieldImages",
-          "gameMode",
-          "entryFee",
-          "isVerified",
-          "sport",
-          "partnerUid",
-          "openingHours"
-        ]
-      },
-      "PaginationDataFieldResponseDto": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FieldResponseDto"
-            }
-          },
-          "nextCursor": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "totalCount": {
-            "type": "number",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "items",
-          "nextCursor",
-          "totalCount"
-        ]
-      },
-      "PaginationResponseFieldResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaginationDataFieldResponseDto"
-              }
-            ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "UpdateFieldDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Field 1",
-            "readOnly": true
-          },
-          "address": {
-            "type": "string",
-            "example": "123 Main St, Anytown, USA",
-            "readOnly": true
-          },
-          "isVerified": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true
-          }
-        }
-      },
-      "UpdatePrivateFieldDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Field 1",
-            "readOnly": true
-          },
-          "address": {
-            "type": "string",
-            "example": "123 Main St, Anytown, USA",
-            "readOnly": true
-          },
-          "isVerified": {
-            "type": "boolean",
-            "example": true,
-            "readOnly": true
-          },
-          "entryFee": {
-            "type": "number",
-            "example": 10,
-            "readOnly": true
-          },
-          "gameMode": {
-            "type": "object",
-            "example": "THREE_V_THREE",
-            "readOnly": true
-          }
-        }
       },
       "ConversationResponse": {
         "type": "object",
@@ -6009,6 +5629,210 @@
           "message"
         ]
       },
+      "ResponseTypeDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "type": "object",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FieldImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "number",
+            "example": 0,
+            "readOnly": true
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "order",
+          "url"
+        ]
+      },
+      "FieldAvailabilityDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the availability",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string",
+            "description": "start time of the availability",
+            "example": "2025-12-28T18:00:00Z"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string",
+            "description": "end time of the availability",
+            "example": "2025-12-28T19:00:00Z"
+          },
+          "type": {
+            "type": "string",
+            "description": "type of the availability",
+            "enum": [
+              "RESERVATION",
+              "MATCH_TO_JOIN"
+            ],
+            "example": "RESERVATION"
+          },
+          "price": {
+            "type": "number",
+            "description": "price of the availability",
+            "example": 25
+          },
+          "pricePerPlayer": {
+            "type": "number",
+            "description": "price per player of the availability",
+            "example": 10
+          }
+        },
+        "required": [
+          "uid",
+          "startTime",
+          "endTime",
+          "type"
+        ]
+      },
+      "FieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the field",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "type": {
+            "type": "string",
+            "description": "type of the field",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PRIVATE"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the field",
+            "example": "Hoopsfactory - Court 2"
+          },
+          "sport": {
+            "type": "string",
+            "description": "sport of the field",
+            "example": "BASKETBALL"
+          },
+          "shortAddress": {
+            "type": "string",
+            "description": "short address of the field",
+            "example": "38 Rue du Ballon, Noisy-le-Grand"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "latitude of the field",
+            "example": 48.8588443
+          },
+          "longitude": {
+            "type": "number",
+            "description": "longitude of the field",
+            "example": 2.2943506
+          },
+          "fieldImages": {
+            "description": "images of the field",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldImageResponseDto"
+            }
+          },
+          "availabilities": {
+            "description": "availabilities of the field",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldAvailabilityDto"
+            }
+          },
+          "userDistance": {
+            "type": "number",
+            "description": "distance to the field in meters",
+            "example": 1200
+          }
+        },
+        "required": [
+          "uid",
+          "type",
+          "sport",
+          "shortAddress",
+          "latitude",
+          "longitude"
+        ]
+      },
+      "PaginationDataFieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldResponseDto"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseFieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataFieldResponseDto"
+              }
+            ]
+          },
+          "status": {
+            "type": "number",
+            "example": 200,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "CreateSessionFromRequestDto": {
         "type": "object",
         "properties": {
@@ -6031,6 +5855,7 @@
             "type": "string",
             "description": "The game mode of the session",
             "enum": [
+              "ONE_V_ONE",
               "TWO_V_TWO",
               "THREE_V_THREE",
               "FOUR_V_FOUR",
@@ -6319,6 +6144,7 @@
             "type": "string",
             "description": "The game mode of the session",
             "enum": [
+              "ONE_V_ONE",
               "TWO_V_TWO",
               "THREE_V_THREE",
               "FOUR_V_FOUR",

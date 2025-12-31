@@ -1,9 +1,11 @@
-import { Skeleton as ChillUiSkeleton, cn } from '@chillui/ui';
+import { cn } from '@chillui/ui';
+
+import { SkeletonPulse } from '@/components/chill-ui-library/components/skeleton/components/SkeletonPulse';
 
 import { SkeletonProps } from '../../types/skeleton.types';
 
 export default function Skeleton(props: SkeletonProps) {
   const { className, ...rest } = props;
 
-  return <ChillUiSkeleton className={cn('bg-black/20', className)} {...rest} />;
+  return <SkeletonPulse className={cn('bg-black/20', className)} {...rest} />;
 }

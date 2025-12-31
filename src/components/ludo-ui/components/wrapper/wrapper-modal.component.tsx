@@ -1,5 +1,6 @@
+import { cn } from '@chillui/ui';
 import { PropsWithChildren } from 'react';
-import { cn, WrapperSafeAreaView, Wrapper } from '@chillui/ui';
+import { WrapperSafeAreaView, Box } from '@ludo/ui';
 
 import { IS_IOS } from '@/constants/PLATFORM';
 
@@ -9,11 +10,15 @@ export default function WrapperModal(props: PropsWithChildren<WrapperModalProps>
   const { children, className } = props;
 
   if (IS_IOS) {
-    return children;
+    return (
+      <WrapperSafeAreaView px="none" edges={['bottom']}>
+        {children}
+      </WrapperSafeAreaView>
+    );
   }
   return (
     <WrapperSafeAreaView px="none" className="pt-10">
-      <Wrapper className={cn('flex-1 rounded-lg bg-background', className)}>{children}</Wrapper>
+      <Box className={cn('flex-1 rounded-lg bg-background', className)}>{children}</Box>
     </WrapperSafeAreaView>
   );
 }

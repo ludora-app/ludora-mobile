@@ -12,7 +12,9 @@ export default function Separator(props: SeparatorProps) {
       <SeparatorDivider className={cn('bg-[#D8DADC]', deviderClassName)} />
       {!!title && (
         <SeparatorContent>
-          <String>{title}</String>
+          <String variant="body-xs" colorVariant="muted">
+            {title}
+          </String>
         </SeparatorContent>
       )}
     </SeparatorChillUi>

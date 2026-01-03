@@ -12,4 +12,5 @@ export type InputProps = {
   inputContainerClassName?: string;
   hasError?: boolean;
   hasMessageError?: boolean;
+  hasClearIcon?: boolean;
 };

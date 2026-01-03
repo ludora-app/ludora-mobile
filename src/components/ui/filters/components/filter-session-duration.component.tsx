@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { Box, BoxRow, BoxRowCenterBetween, Button, Icon, String } from '@ludo/ui';
 
 import { useFiltersStore } from '../store/filters.store';
@@ -25,22 +22,12 @@ const sessionDuration = [
   },
 ];
 
-const AnimatedBox = Animated.createAnimatedComponent(Box);
 export default function FilterSessionDuration() {
   const { t } = useTranslate();
-  const [isOpen, setIsOpen] = useState(false);
   const sessionDurationStore = useFiltersStore(state => state.filters.sessionDuration);
   const setFilters = useFiltersStore(state => state.setFilters);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    height: withTiming(isOpen ? 77 : 0, { duration: 300 }),
-    marginTop: withTiming(isOpen ? 12 : 0, { duration: 300 }),
-    opacity: withTiming(isOpen ? 1 : 0, { duration: 250 }),
-    overflow: 'hidden',
-  }));
-
   const filterRightText = () => {
-    if (isOpen) return t('common.close');
     if (sessionDurationStore) return `${sessionDurationStore} min`;
     return '- min';
   };
@@ -67,55 +54,56 @@ export default function FilterSessionDuration() {
   };
 
   return (
-    <Pressable onPress={() => setIsOpen(!isOpen)} style={({ pressed }) => [{ opacity: pressed ? 0.9 : 1 }]}>
-      <Box className="rounded-xl border border-ring bg-white p-3 py-4">
-        {/* Header Toujours Visible */}
-        <Box className="flex-row justify-between">
+    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
+      {/* Header Toujours Visible */}
+      <Box className="flex-row justify-between">
+        <Box className="flex-row items-center gap-2">
+          <Icon name="time-tracking" color="#666" />
           <String variant="body-sm" font="primaryBold" colorVariant="muted">
             {t('filters.session_duration_title')}
           </String>
-          <String variant="body-sm" font="primaryBold">
-            {filterRightText()}
-          </String>
         </Box>
-
-        <AnimatedBox style={animatedStyle}>
-          <BoxRowCenterBetween className="mb-2">
-            <Icon
-              name="minus-circle-regular-colored"
-              onPress={() => handleSetDuration({ duration: sessionDurationStore, remove: true })}
-              pressEffectSize="xs"
-              size="lg"
-            />
-
-            {sessionDurationStore && (
-              <String font="primaryBold" useFastText={false}>
-                {sessionDurationStore} <String useFastText={false}>min</String>
-              </String>
-            )}
-            {!sessionDurationStore && <String colorVariant="muted">-</String>}
-
-            <Icon
-              name="add-circle-regular-colored"
-              onPress={() => handleSetDuration({ add: true, duration: sessionDurationStore })}
-              pressEffectSize="xs"
-              size="lg"
-            />
-          </BoxRowCenterBetween>
-          <BoxRow className="flex-row gap-2">
-            {sessionDuration.map(type => (
-              <Button
-                key={type.id}
-                title={`${type.value} min`}
-                className="flex-1"
-                size="xs"
-                variant={type.value === sessionDurationStore ? 'contained' : 'outlined'}
-                onPress={() => setFilters({ sessionDuration: type.value })}
-              />
-            ))}
-          </BoxRow>
-        </AnimatedBox>
+        <String variant="body-sm" font="primaryBold">
+          {filterRightText()}
+        </String>
       </Box>
-    </Pressable>
+
+      <Box>
+        <BoxRowCenterBetween className="mb-2">
+          <Icon
+            name="minus-circle-regular-colored"
+            onPress={() => handleSetDuration({ duration: sessionDurationStore, remove: true })}
+            pressEffectSize="xs"
+            size="lg"
+          />
+
+          {sessionDurationStore && (
+            <String font="primaryBold" useFastText={false}>
+              {sessionDurationStore} <String useFastText={false}>min</String>
+            </String>
+          )}
+          {!sessionDurationStore && <String colorVariant="muted">-</String>}
+
+          <Icon
+            name="add-circle-regular-colored"
+            onPress={() => handleSetDuration({ add: true, duration: sessionDurationStore })}
+            pressEffectSize="xs"
+            size="lg"
+          />
+        </BoxRowCenterBetween>
+        <BoxRow className="flex-row gap-2">
+          {sessionDuration.map(type => (
+            <Button
+              key={type.id}
+              title={`${type.value} min`}
+              className="flex-1"
+              size="xs"
+              variant={type.value === sessionDurationStore ? 'contained' : 'outlined'}
+              onPress={() => setFilters({ sessionDuration: type.value })}
+            />
+          ))}
+        </BoxRow>
+      </Box>
+    </Box>
   );
 }

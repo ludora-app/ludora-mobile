@@ -10,6 +10,7 @@ export default function Input(props: InputProps) {
   const {
     className,
     error,
+    hasClearIcon = true,
     hasError,
     hasMessageError,
     inputContainerClassName,
@@ -24,7 +25,9 @@ export default function Input(props: InputProps) {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const isSecure = inputFieldProps.secureTextEntry ? !showPassword : false;
+  const isSecure = inputFieldProps?.secureTextEntry ? !showPassword : false;
+
+  const showClearIcon = hasClearIcon && inputFieldProps?.value;
 
   return (
     <InputChillUi className={className}>
@@ -42,8 +45,16 @@ export default function Input(props: InputProps) {
         />
 
         {rightIconAction?.name && <Icon {...rightIconAction} />}
-
-        {inputFieldProps.secureTextEntry && (
+        {showClearIcon && (
+          <Icon
+            name="close-circle-bulk"
+            color="#00000099"
+            onPress={() => inputFieldProps?.onChangeText?.('')}
+            size="sm"
+            pressEffectSize="xs"
+          />
+        )}
+        {inputFieldProps?.secureTextEntry && (
           <Icon
             name={showPassword ? 'eye-slash-solid' : 'eye-solid'}
             color="#00000099"

@@ -1,10 +1,14 @@
 import dayjs from 'dayjs';
 import { create } from 'zustand';
+import { Place } from '@chillui/ui';
 
 type Filters = {
   fieldType: 'PRIVATE' | 'PUBLIC' | 'ALL';
   sessionDuration: string;
   date: Date;
+  maxDistance: number;
+  address: Place;
+  nearby: boolean;
 };
 
 interface FiltersStore {

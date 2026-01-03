@@ -1,6 +1,6 @@
-import { Box, String } from '@ludo/ui';
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
+import { Box, String, Wrapper } from '@ludo/ui';
 
 import { useFiltersStore } from '../store/filters.store';
 import FormSheetHeader from '../../form-sheet/components/form-sheet-header.component';
@@ -14,7 +14,7 @@ export default function FilterHeader() {
   };
 
   return (
-    <Box>
+    <Wrapper fill={false}>
       <FormSheetHeader />
       <Box className="my-4 flex-row items-center justify-center">
         <Pressable onPress={handleResetFilters} className="absolute left-0 z-50 underline">
@@ -26,6 +26,6 @@ export default function FilterHeader() {
           {t('filters.formsheet_header_title')}
         </String>
       </Box>
-    </Box>
+    </Wrapper>
   );
 }

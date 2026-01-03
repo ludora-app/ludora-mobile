@@ -17,3 +17,5 @@ export * from './skeleton';
 export * from './chilluiDevTool';
 export * from './iconButton';
 export * from './chip';
+export * from './slider';
+export * from './placesInput';

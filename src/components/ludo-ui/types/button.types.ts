@@ -2,12 +2,13 @@ import {
   ButtonContentProps,
   ButtonTitleProps,
   ButtonProps as ChillUiButtonProps,
-  ButtonIconProps,
   TIconName as TIconNameChillUi,
 } from '@chillui/ui';
 
 import { TIconName } from '@/constants/ICONS';
 import { RouteValues } from '@/constants/ROUTES';
+
+import { IconProps } from './icon.types';
 
 export type ButtonProps = ChillUiButtonProps & {
   redirect?: RouteValues;
@@ -19,8 +20,8 @@ export type ButtonProps = ChillUiButtonProps & {
   title?: string;
   titleProps?: ButtonTitleProps;
   contentProps?: ButtonContentProps;
-  iconProps?: Omit<ButtonIconProps, 'name'> & {
-    position?: 'left' | 'right';
+  iconProps?: Omit<IconProps, 'name'> & {
+    position?: 'left' | 'right' | 'left-outside' | 'right-outside';
     name: TIconNameChillUi | TIconName;
   };
   isLoading?: boolean;

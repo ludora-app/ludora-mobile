@@ -16,6 +16,7 @@ export default function Button(props: ButtonProps) {
       size="lg"
       {...rest}
     >
+      {!isLoading && iconProps && iconProps.position === 'left-outside' && <ButtonIcon {...iconProps} />}
       <ButtonContent {...contentProps}>
         {image?.source && <Image source={image?.source} contentFit={image.contentFit} className={image.className} />}
         {!isLoading && iconProps && iconProps.position === 'left' && <ButtonIcon {...iconProps} />}
@@ -25,7 +26,7 @@ export default function Button(props: ButtonProps) {
           </ButtonTitle>
         )}
         {isLoading && <ButtonLoader name="swing" color="#FFF" />}
-        {!isLoading && iconProps && iconProps.position !== 'left' && <ButtonIcon {...iconProps} />}
+        {!isLoading && iconProps && iconProps.position === 'right' && <ButtonIcon {...iconProps} />}
       </ButtonContent>
     </ButtonChillUI>
   );

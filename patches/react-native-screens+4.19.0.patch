@@ -1,0 +1,350 @@
+diff --git a/node_modules/react-native-screens/android/.classpath b/node_modules/react-native-screens/android/.classpath
+new file mode 100644
+index 0000000..bbe97e5
+--- /dev/null
++++ b/node_modules/react-native-screens/android/.classpath
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<classpath>
++	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
++	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
++	<classpathentry kind="output" path="bin/default"/>
++</classpath>
+diff --git a/node_modules/react-native-screens/android/.project b/node_modules/react-native-screens/android/.project
+new file mode 100644
+index 0000000..374f32e
+--- /dev/null
++++ b/node_modules/react-native-screens/android/.project
+@@ -0,0 +1,34 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>react-native-screens</name>
++	<comment>Project react-native-screens created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.jdt.core.javabuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.jdt.core.javanature</nature>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1767195123193</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/react-native-screens/android/.settings/org.eclipse.buildship.core.prefs b/node_modules/react-native-screens/android/.settings/org.eclipse.buildship.core.prefs
+new file mode 100644
+index 0000000..1675490
+--- /dev/null
++++ b/node_modules/react-native-screens/android/.settings/org.eclipse.buildship.core.prefs
+@@ -0,0 +1,2 @@
++connection.project.dir=../../../android
++eclipse.preferences.version=1
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt
+index 691be1e..9ae6a72 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt
+@@ -29,6 +29,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
+ import com.google.android.material.shape.ShapeAppearanceModel
+ import com.swmansion.rnscreens.bottomsheet.SheetDetents
+ import com.swmansion.rnscreens.bottomsheet.isSheetFitToContents
++import com.swmansion.rnscreens.bottomsheet.updateMetrics
+ import com.swmansion.rnscreens.bottomsheet.useSingleDetent
+ import com.swmansion.rnscreens.bottomsheet.usesFormSheetPresentation
+ import com.swmansion.rnscreens.events.HeaderHeightChangeEvent
+@@ -92,6 +93,7 @@ class Screen(
+     var sheetClosesOnTouchOutside = true
+     var sheetElevation: Float = 24F
+     var sheetShouldOverflowTopInset = false
++    var sheetContentDefaultResizeAnimationEnabled = true
+ 
+     /**
+      * On Paper, when using form sheet presentation we want to delay enter transition in order
+@@ -147,12 +149,21 @@ class Screen(
+     ) {
+         val height = bottom - top
+ 
++        val sheetBehavior = sheetBehavior
+         if (usesFormSheetPresentation()) {
+-            if (isSheetFitToContents()) {
+-                sheetBehavior?.useSingleDetent(height)
+-                // During the initial call in `onCreateView`, insets are not yet available,
+-                // so we need to request an additional layout pass later to account for them.
+-                requestLayout()
++            if (isSheetFitToContents() && sheetBehavior != null) {
++                val oldHeight = sheetBehavior.maxHeight
++                val shouldAnimateContentHeightChange = oldHeight > 0 && oldHeight != height
++
++                if (shouldAnimateContentHeightChange) {
++                    if (sheetContentDefaultResizeAnimationEnabled) {
++                        animateSheetContentHeightChangeWithDefaultAnimation(sheetBehavior, oldHeight, height)
++                    } else {
++                        updateSheetDetentContentHeightAndLayout(sheetBehavior, height)
++                    }
++                } else {
++                    updateSheetDetentWithoutHeightChangeAnimation(sheetBehavior, height)
++                }
+             }
+ 
+             if (!BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+@@ -168,6 +179,111 @@ class Screen(
+         }
+     }
+ 
++    private fun animateSheetContentHeightChangeWithDefaultAnimation(
++        behavior: BottomSheetBehavior<Screen>,
++        oldHeight: Int,
++        newHeight: Int,
++    ) {
++        val delta = (newHeight - oldHeight).toFloat()
++        val isContentExpanding = delta > 0
++
++        if (isContentExpanding) {
++            /*
++             * Expanding content animation:
++             *
++             * Before animation, we're updating the SheetBehavior - the maximum height is the new
++             * content height, then we're forcing a layout pass. This ensures the view calculates
++             * with its new bounds when the animation starts.
++             *
++             * In the animation, we're translating the Screen back to it's (newly calculated) origin
++             * position, providing an impression that FormSheet expands. It already has the final size,
++             * but some content is not yet visible on the screen.
++             *
++             * After animation, we just need to send a notification that ShadowTree state should be updated,
++             * as the positioning of pressables has changed due to the Y translation manipulation.
++             */
++            this.translationY = delta
++            this
++                .animate()
++                .translationY(0f)
++                .withStartAction {
++                    behavior.updateMetrics(newHeight)
++                    layout(this.left, this.bottom - newHeight, this.right, this.bottom)
++                }.withEndAction {
++                    // Force a layout pass on the CoordinatorLayout to synchronize BottomSheetBehavior's
++                    // internal offsets with the new maxHeight. This prevents the sheet from snapping back
++                    // to its old position when the user starts a gesture.
++                    parent.requestLayout()
++                    onSheetYTranslationChanged()
++                }.start()
++        } else {
++            /*
++             * Shrinking content animation:
++             *
++             * Before the animation, our Screen translationY is 0 - because its actual layout and visual position are equal.
++             *
++             * Before the animation, I'm updating sheet metrics to the target value - it won't update until the next layout pass,
++             * which is controlled by end action. This is done deliberately, to allow catching the case when quick combination
++             * of shrink & expand animation is detected.
++             *
++             * In the animation, we're translating the Screen down by the calculated height delta to the position (which will
++             * be new absolute 0 for the Screen, after ending the transition), providing an impression that FormSheet shrinks.
++             * FormSheet's size remains unchanged during the whole animation, therefore there is no view clipping.
++             *
++             * After animation, we can update the layout: the maximum FormSheet height is updated and we're forcing
++             * another layout pass. Additionally, since the actual layout and the target position are equal,
++             * we can reset translationY to 0.
++             *
++             * After animation, we need to send a notification that ShadowTree state should be updated,
++             * as the FormSheet size has changed and the positioning of pressables has changed due to the Y translation manipulation.
++             */
++            this
++                .animate()
++                .translationY(-delta)
++                .withStartAction {
++                    behavior.updateMetrics(newHeight)
++                }.withEndAction {
++                    layout(this.left, this.bottom - newHeight, this.right, this.bottom)
++                    this.translationY = 0f
++                    // Force a layout pass on the CoordinatorLayout to synchronize BottomSheetBehavior's
++                    // internal offsets with the new maxHeight. This prevents the sheet from snapping back
++                    // to its old position when the user starts a gesture.
++                    parent.requestLayout()
++                    onSheetYTranslationChanged()
++                }.start()
++        }
++    }
++
++    private fun updateSheetDetentContentHeightAndLayout(
++        behavior: BottomSheetBehavior<Screen>,
++        height: Int,
++    ) {
++        /*
++         * We're just updating sheets height and forcing Screen layout to be updated immediately.
++         * This allows custom animators in RN to work, as we do not interfere with these animations
++         * and we're just reacting to the sheet's content size changes.
++         */
++        behavior.updateMetrics(height)
++        layout(this.left, this.bottom - height, this.right, this.bottom)
++        // Force a layout pass on the CoordinatorLayout to synchronize BottomSheetBehavior's
++        // internal offsets with the new maxHeight. This prevents the sheet from snapping back
++        // to its old position when the user starts a gesture.
++        parent.requestLayout()
++        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
++            updateScreenSizeFabric(width, height, top + translationY.toInt())
++        }
++    }
++
++    private fun updateSheetDetentWithoutHeightChangeAnimation(
++        behavior: BottomSheetBehavior<Screen>,
++        height: Int,
++    ) {
++        behavior.useSingleDetent(height)
++        // During the initial call in `onCreateView`, insets are not yet available,
++        // so we need to request an additional layout pass later to account for them.
++        requestLayout()
++    }
++
+     fun registerLayoutCallbackForWrapper(wrapper: ScreenContentWrapper) {
+         wrapper.delegate = this
+     }
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenViewManager.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenViewManager.kt
+index bc7dfa3..6db2893 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenViewManager.kt
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenViewManager.kt
+@@ -277,6 +277,13 @@ open class ScreenViewManager :
+         view?.sheetShouldOverflowTopInset = sheetShouldOverflowTopInset
+     }
+     
++    @ReactProp(name = "sheetContentDefaultResizeAnimationEnabled")
++    override fun setSheetContentDefaultResizeAnimationEnabled(
++        view: Screen?,
++        sheetContentDefaultResizeAnimationEnabled: Boolean,
++    ) {
++        view?.sheetContentDefaultResizeAnimationEnabled = sheetContentDefaultResizeAnimationEnabled
++    }
+     // mark: iOS-only
+     // these props are not available on Android, however we must override their setters
+     override fun setFullScreenSwipeEnabled(
+diff --git a/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerDelegate.java b/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerDelegate.java
+index 2e0721e..eb832be 100644
+--- a/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerDelegate.java
++++ b/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerDelegate.java
+@@ -53,6 +53,9 @@ public class RNSScreenManagerDelegate<T extends View, U extends BaseViewManager<
+       case "sheetShouldOverflowTopInset":
+         mViewManager.setSheetShouldOverflowTopInset(view, value == null ? false : (boolean) value);
+         break;
++      case "sheetContentDefaultResizeAnimationEnabled":
++        mViewManager.setSheetContentDefaultResizeAnimationEnabled(view, value == null ? true : (boolean) value);
++        break;
+       case "customAnimationOnSwipe":
+         mViewManager.setCustomAnimationOnSwipe(view, value == null ? false : (boolean) value);
+         break;
+diff --git a/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerInterface.java b/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerInterface.java
+index 02e0801..14bc5ae 100644
+--- a/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerInterface.java
++++ b/node_modules/react-native-screens/android/src/paper/java/com/facebook/react/viewmanagers/RNSScreenManagerInterface.java
+@@ -25,6 +25,7 @@ public interface RNSScreenManagerInterface<T extends View> extends ViewManagerWi
+   void setSheetInitialDetent(T view, int value);
+   void setSheetElevation(T view, int value);
+   void setSheetShouldOverflowTopInset(T view, boolean value);
++  void setSheetContentDefaultResizeAnimationEnabled(T view, boolean value);
+   void setCustomAnimationOnSwipe(T view, boolean value);
+   void setFullScreenSwipeEnabled(T view, @Nullable String value);
+   void setFullScreenSwipeShadowEnabled(T view, boolean value);
+diff --git a/node_modules/react-native-screens/src/components/Screen.tsx b/node_modules/react-native-screens/src/components/Screen.tsx
+index 94b6c41..e20f846 100644
+--- a/node_modules/react-native-screens/src/components/Screen.tsx
++++ b/node_modules/react-native-screens/src/components/Screen.tsx
+@@ -99,6 +99,7 @@ export const InnerScreen = React.forwardRef<View, ScreenProps>(
+       sheetElevation = 24,
+       sheetInitialDetentIndex = 0,
+       sheetShouldOverflowTopInset = false,
++      sheetContentDefaultResizeAnimationEnabled = true,
+       // Other
+       screenId,
+       stackPresentation,
+@@ -231,6 +232,9 @@ export const InnerScreen = React.forwardRef<View, ScreenProps>(
+             sheetLargestUndimmedDetent={resolvedSheetLargestUndimmedDetent}
+             sheetElevation={sheetElevation}
+             sheetShouldOverflowTopInset={sheetShouldOverflowTopInset}
++            sheetContentDefaultResizeAnimationEnabled={
++              sheetContentDefaultResizeAnimationEnabled
++            }
+             sheetGrabberVisible={sheetGrabberVisible}
+             sheetCornerRadius={sheetCornerRadius}
+             sheetExpandsWhenScrolledToEdge={sheetExpandsWhenScrolledToEdge}
+diff --git a/node_modules/react-native-screens/src/components/ScreenStackItem.tsx b/node_modules/react-native-screens/src/components/ScreenStackItem.tsx
+index 5ecb22f..8b0ab11 100644
+--- a/node_modules/react-native-screens/src/components/ScreenStackItem.tsx
++++ b/node_modules/react-native-screens/src/components/ScreenStackItem.tsx
+@@ -229,7 +229,7 @@ function getPositioningStyle(
+ 
+   // Other platforms, tested reliably only on Android
+   if (allowedDetents === 'fitToContents') {
+-    return {};
++    return styles.absoluteWithNoBottom;
+   }
+ 
+   return styles.container;
+diff --git a/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
+index 196807b..4bda0cb 100644
+--- a/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
+@@ -82,6 +82,7 @@ export interface NativeProps extends ViewProps {
+   sheetInitialDetent?: CT.WithDefault<CT.Int32, 0>;
+   sheetElevation?: CT.WithDefault<CT.Int32, 24>;
+   sheetShouldOverflowTopInset?: CT.WithDefault<boolean, false>;
++  sheetContentDefaultResizeAnimationEnabled?: CT.WithDefault<boolean, true>;
+   customAnimationOnSwipe?: boolean;
+   fullScreenSwipeEnabled?: CT.WithDefault<OptionalBoolean, 'undefined'>;
+   fullScreenSwipeShadowEnabled?: CT.WithDefault<boolean, true>;
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
+index 6f6ad6c..21640dc 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
+@@ -84,6 +84,7 @@ export interface NativeProps extends ViewProps {
+   sheetInitialDetent?: CT.WithDefault<CT.Int32, 0>;
+   sheetElevation?: CT.WithDefault<CT.Int32, 24>;
+   sheetShouldOverflowTopInset?: CT.WithDefault<boolean, false>;
++  sheetContentDefaultResizeAnimationEnabled?: CT.WithDefault<boolean, true>;
+   customAnimationOnSwipe?: boolean;
+   fullScreenSwipeEnabled?: CT.WithDefault<OptionalBoolean, 'undefined'>;
+   fullScreenSwipeShadowEnabled?: CT.WithDefault<boolean, true>;
+diff --git a/node_modules/react-native-screens/src/types.tsx b/node_modules/react-native-screens/src/types.tsx
+index c6b9bfe..8590777 100644
+--- a/node_modules/react-native-screens/src/types.tsx
++++ b/node_modules/react-native-screens/src/types.tsx
+@@ -503,6 +503,23 @@ export interface ScreenProps extends ViewProps {
+    * @platform android
+    */
+   sheetShouldOverflowTopInset?: boolean;
++    /**
++   * Whether the default native animation should be used when the sheet's with
++   * `fitToContents` content size changes.
++   *
++   * When set to `true`, the sheet uses internal logic to synchronize size updates and
++   * translation animations during entry, exit, or content updates. This ensures a smooth
++   * transition for standard, static content mounting/unmounting.
++   *
++   * When set to `false`, the internal animation and translation logic is ignored. This
++   * allows the sheet to adjust its size dynamically based on the current dimensions of
++   * the content provided by the developer, allowing implementing custom resizing animations.
++   *
++   * Defaults to `true`.
++   *
++   * @platform android
++   */
++  sheetContentDefaultResizeAnimationEnabled?: boolean;
+   /**
+    * How the screen should appear/disappear when pushed or popped at the top of the stack.
+    * The following values are currently supported:

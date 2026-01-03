@@ -12,6 +12,7 @@ const ROUTES = {
     INDEX: '/create-session',
   },
   FILTERS: {
+    FILTER_ADDRESSES: '/filters/filters-addresses',
     FILTER_CALENDAR: '/filters/filters-calendar',
     FILTER_FIELDS: '/filters/filters-fields',
   },

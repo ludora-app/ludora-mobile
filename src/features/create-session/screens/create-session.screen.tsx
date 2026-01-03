@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-
-import { WrapperGestureHandlerScrollView } from '@/components/chill-ui-library';
+import { WrapperGestureHandlerScrollView } from '@ludo/ui';
 
 import CreateSessionHeader from '../components/create-session-header.component';
 import CreateSessionFooter from '../components/create-session-footer.component';

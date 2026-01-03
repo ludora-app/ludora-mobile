@@ -23,3 +23,5 @@ export * from './skeleton.types';
 export * from './chilluiDevtool.types';
 export * from './iconButton.types';
 export * from './chip.types';
+export * from './slider.types';
+export * from './placesInput.types';

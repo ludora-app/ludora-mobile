@@ -42,8 +42,8 @@ export type ButtonContentProps = {
 export type ButtonIconProps<T extends IconConfig = any> = {
   /** Icon name from the icon set */
   name?: keyof T | TIconName;
-  /** Icon position: 'left' | 'right' | 'inline' */
-  position?: 'left' | 'right' | 'inline';
+  /** Icon position: 'left' | 'right' | 'inline' | 'left-outside' | 'right-outside' */
+  position?: 'left' | 'right' | 'inline' | 'left-outside' | 'right-outside';
   /** Icon color */
   color?: string;
   /** Additional class names */

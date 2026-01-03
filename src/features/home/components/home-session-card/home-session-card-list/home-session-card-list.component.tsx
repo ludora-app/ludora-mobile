@@ -97,12 +97,19 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
 
   const dataToRender = useMemo(() => (showSkeletons ? SKELETON_DATA : sessions), [showSkeletons, sessions]);
 
+  const keyExtractor = useCallback((item: ListItem) => {
+    if ('type' in item && item.type === 'skeleton') {
+      return item.uid;
+    }
+    return item.uid.toString();
+  }, []);
+
   return (
     <AnimatedFlashList
       data={dataToRender}
       renderItem={renderItem}
       getItemType={getItemType}
-      keyExtractor={item => item?.uid?.toString()}
+      keyExtractor={keyExtractor}
       ListEmptyComponent={<HomeSessionCardListEmpty />}
       contentContainerStyle={{ marginTop: listPaddingTop, paddingBottom: bottomTab + listPaddingTop }}
       contentContainerClassName="bg-background rounded-t-2xl"

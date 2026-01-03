@@ -2,7 +2,11 @@ import { Stack } from 'expo-router';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
+import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
+function FormSheetHeaderComponent() {
+  return <FormSheetHeader />;
+}
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
   return (
@@ -40,7 +44,21 @@ function AppLayoutNav() {
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
+          sheetAllowedDetents: [0.93],
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="filters/filters-addresses"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+            paddingBottom: bottom,
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.93],
           sheetCornerRadius: 12,
         }}
       />

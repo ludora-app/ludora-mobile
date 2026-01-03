@@ -1,8 +1,10 @@
 import { Stack } from 'expo-router';
 
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
 function AppLayoutNav() {
+  const { bottom } = useSafeArea();
   return (
     <Stack
       initialRouteName="(tabs)"
@@ -36,9 +38,20 @@ function AppLayoutNav() {
             backgroundColor: '#FFF',
           },
           headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
+          presentation: 'modal',
           sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="filters/filters-addresses"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+            paddingBottom: bottom,
+          },
+          headerShown: false,
+          presentation: 'modal',
         }}
       />
       <Stack.Screen

@@ -25,11 +25,12 @@ import type {
 } from '@tanstack/react-query';
 import type {
   BadRequestResponseDto,
-  ConversationResponse,
+  ConversationResponseDto,
   ConversationsFindAllByUserUidParams,
+  CreateMessageDto,
   ForbiddenResponseDto,
   NotFoundResponseDto,
-  PaginationResponseConversationResponse,
+  PaginationResponseConversationResponseData,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
@@ -38,7 +39,7 @@ import { customInstance } from '../../../orval.instance';
  * @summary DEV ONLY:Create mock conversations
  */
 export const conversationsCreateMockConversation = (signal?: AbortSignal) => {
-  return customInstance<ConversationResponse>({ url: `/conversations/mock`, method: 'POST', signal });
+  return customInstance<ConversationResponseDto>({ url: `/conversations/mock`, method: 'POST', signal });
 };
 
 export const getConversationsCreateMockConversationMutationOptions = <
@@ -107,7 +108,7 @@ export const conversationsFindAllByUserUid = (
   params?: ConversationsFindAllByUserUidParams,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginationResponseConversationResponse>({
+  return customInstance<PaginationResponseConversationResponseData>({
     url: `/conversations/list/collection`,
     method: 'GET',
     params,
@@ -283,7 +284,7 @@ export function useConversationsFindAllByUserUidInfinite<
  * @summary Get a conversation by uid
  */
 export const conversationsFindOne = (uid: string, signal?: AbortSignal) => {
-  return customInstance<ConversationResponse>({ url: `/conversations/${uid}`, method: 'GET', signal });
+  return customInstance<ConversationResponseDto>({ url: `/conversations/${uid}`, method: 'GET', signal });
 };
 
 export const getConversationsFindOneQueryKey = (uid: string) => {
@@ -378,3 +379,77 @@ export function useConversationsFindOne<
 
   return query;
 }
+
+export const conversationsCreateMessage = (
+  conversationUid: string,
+  createMessageDto: CreateMessageDto,
+  signal?: AbortSignal,
+) => {
+  const formData = new FormData();
+  if (createMessageDto.content !== undefined) {
+    formData.append('content', createMessageDto.content);
+  }
+  formData.append('type', createMessageDto.type);
+  if (createMessageDto.file !== undefined) {
+    formData.append('file', createMessageDto.file);
+  }
+
+  return customInstance<void>({
+    url: `/conversations/${conversationUid}/messages`,
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
+    signal,
+  });
+};
+
+export const getConversationsCreateMessageMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
+    TError,
+    { conversationUid: string; data: CreateMessageDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof conversationsCreateMessage>>,
+  TError,
+  { conversationUid: string; data: CreateMessageDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
+    { conversationUid: string; data: CreateMessageDto }
+  > = props => {
+    const { conversationUid, data } = props ?? {};
+
+    return conversationsCreateMessage(conversationUid, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConversationsCreateMessageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsCreateMessage>>
+>;
+export type ConversationsCreateMessageMutationBody = CreateMessageDto;
+export type ConversationsCreateMessageMutationError = unknown;
+
+export const useConversationsCreateMessage = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
+    TError,
+    { conversationUid: string; data: CreateMessageDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof conversationsCreateMessage>>,
+  TError,
+  { conversationUid: string; data: CreateMessageDto },
+  TContext
+> => {
+  const mutationOptions = getConversationsCreateMessageMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};

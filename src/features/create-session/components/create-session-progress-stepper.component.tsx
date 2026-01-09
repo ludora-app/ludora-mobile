@@ -30,7 +30,6 @@ function StepCircle({ activeStep, step }: StepCircleProps) {
 
   useEffect(() => {
     if (activeStep >= step) {
-      // On garde votre logique de délai
       const delay = step === 1 ? 0 : TUBE_DURATION + 300;
       progress.value = withDelay(delay, withTiming(1, { duration: CIRCLE_DURATION }));
     } else {
@@ -38,18 +37,12 @@ function StepCircle({ activeStep, step }: StepCircleProps) {
     }
   }, [activeStep, step, progress]);
 
-  // Style animé pour le fond du cercle
   const animatedBorderStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(progress.value, [0, 1], ['rgba(0,0,0,0.1)', COLORS.primary]),
   }));
 
-  // 2. Style animé pour la couleur du texte
   const animatedTextStyle = useAnimatedStyle(() => ({
-    color: interpolateColor(
-      progress.value,
-      [0, 1],
-      ['#000000', '#FFFFFF'], // Passe du noir au blanc
-    ),
+    color: interpolateColor(progress.value, [0, 1], ['#000000', '#FFFFFF']),
   }));
 
   return (
@@ -89,7 +82,7 @@ function StepConnector({ activeStep, step }: StepConnectorProps) {
 
 export default function CreateSessionProgressStepper({ activeStep = 1 }: CreateSessionStepsProps) {
   return (
-    <Box className="flex-row items-center justify-center">
+    <Box className="flex-row items-center justify-center pb-2">
       {list(1, 4).map((step, index) => (
         <React.Fragment key={step}>
           <StepCircle step={step} activeStep={activeStep} />

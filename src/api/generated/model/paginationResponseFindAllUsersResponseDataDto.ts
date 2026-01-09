@@ -10,5 +10,4 @@ import type { PaginationDataFindAllUsersResponseDataDto } from './paginationData
 export interface PaginationResponseFindAllUsersResponseDataDto {
   readonly data: PaginationDataFindAllUsersResponseDataDto;
   readonly message?: string;
-  readonly status?: number;
 }

@@ -11,6 +11,7 @@ export type FieldsFindAllVerifiedGameModesItem =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FieldsFindAllVerifiedGameModesItem = {
+  ONE_V_ONE: 'ONE_V_ONE',
   TWO_V_TWO: 'TWO_V_TWO',
   THREE_V_THREE: 'THREE_V_THREE',
   FOUR_V_FOUR: 'FOUR_V_FOUR',

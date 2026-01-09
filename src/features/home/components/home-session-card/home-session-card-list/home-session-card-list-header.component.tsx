@@ -6,8 +6,8 @@ import { SharedValue } from 'react-native-reanimated';
 
 import { IS_IOS } from '@/constants/PLATFORM';
 import { DaysCarousel } from '@/components/ui/days-carousel';
-import { useSessionsFilterStore } from '@/stores/sessions-filter.store';
 
+import { useSessionsFilterStore } from '../../../stores/home-sessions-filters.store';
 import HeaderSessionCardListRefreshControl from './header-session-card-list-refresh-control.component';
 
 interface HomeSessionCardListHeaderProps {

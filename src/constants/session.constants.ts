@@ -1,4 +1,10 @@
-import { CreateSessionFromRequestDtoLevel } from '@/api/generated/model';
+import { basketballBall, tennisBall, footballBall } from 'assets';
+
+import {
+  CreateSessionFromRequestDtoLevel,
+  SessionCollectionItemGameMode,
+  SessionCollectionItemSport,
+} from '@/api/generated/model';
 
 import { TIconsAll } from './ICONS';
 
@@ -12,23 +18,46 @@ export const SESSION_LEVELS: SESSION_LEVEL_TYPE[] = [
   {
     code: 1,
     icon: 'mascot-level-easy',
-    name: 'easy',
+    name: 'EASY',
   },
   {
     code: 2,
     icon: 'mascot-level-medium',
-    name: 'medium',
+    name: 'MEDIUM',
   },
   {
     code: 3,
     icon: 'mascot-level-hard',
-    name: 'hard',
+    name: 'HARD',
   },
 ];
 
 export const GAMEMODES_BY_SPORT = {
-  BASKETBALL: ['ONE_V_ONE', 'THREE_V_THREE', 'FIVE_V_FIVE'],
-  FOOTBALL: ['ONE_V_ONE', 'TWO_V_TWO', 'FIVE_V_FIVE', 'SEVEN_V_SEVEN', 'ELEVEN_V_ELEVEN'],
-  PADDEL: ['ONE_V_ONE', 'TWO_V_TWO'],
-  TENNIS: ['ONE_V_ONE', 'TWO_V_TWO'],
+  [SessionCollectionItemSport.BASKETBALL]: [
+    SessionCollectionItemGameMode.ONE_V_ONE,
+    SessionCollectionItemGameMode.THREE_V_THREE,
+    SessionCollectionItemGameMode.FIVE_V_FIVE,
+  ],
+  [SessionCollectionItemSport.FOOTBALL]: [
+    SessionCollectionItemGameMode.ONE_V_ONE,
+    SessionCollectionItemGameMode.TWO_V_TWO,
+    SessionCollectionItemGameMode.FIVE_V_FIVE,
+    SessionCollectionItemGameMode.SEVEN_V_SEVEN,
+    SessionCollectionItemGameMode.ELEVEN_V_ELEVEN,
+  ],
+  [SessionCollectionItemSport.PADDEL]: [
+    SessionCollectionItemGameMode.ONE_V_ONE,
+    SessionCollectionItemGameMode.TWO_V_TWO,
+  ],
+  [SessionCollectionItemSport.TENNIS]: [
+    SessionCollectionItemGameMode.ONE_V_ONE,
+    SessionCollectionItemGameMode.TWO_V_TWO,
+  ],
 };
+
+export const SPORT_IMAGES = {
+  [SessionCollectionItemSport.BASKETBALL]: basketballBall,
+  [SessionCollectionItemSport.FOOTBALL]: footballBall,
+  [SessionCollectionItemSport.PADDEL]: tennisBall,
+  [SessionCollectionItemSport.TENNIS]: tennisBall,
+} as const;

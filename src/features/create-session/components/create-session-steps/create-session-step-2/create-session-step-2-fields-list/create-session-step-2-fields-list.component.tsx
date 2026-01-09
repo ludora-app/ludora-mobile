@@ -1,6 +1,6 @@
 import { list } from 'radash';
+import { useCallback, useMemo } from 'react';
 import { FlashList } from '@shopify/flash-list';
-import React, { useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { FieldResponseDto } from '@/api/generated/model';
@@ -8,7 +8,7 @@ import { useGetAllFieldsByFilter } from '@/features/create-session/queries/get-f
 import HomeSessionCardListEmpty from '@/features/home/components/home-session-card/home-session-card-list/home-session-card-list-empty.component';
 import HomeSessionCardListFooterComponent from '@/features/home/components/home-session-card/home-session-card-list/home-session-card-list-footer.component';
 
-import CreateSessionStep2FieldsListHeader from './create-session-step-2-fields-list-header.componen';
+import CreateSessionStep2FieldsListHeader from './create-session-step-2-fields-list-header.component';
 import CreateSessionStep2FieldCard from '../create-session-step-2-field-card/create-session-step-2-field-card';
 import CreateSessionStep2FieldCardSkeleton from '../create-session-step-2-field-card/create-session-step-2-field-card-skeleton';
 
@@ -44,7 +44,7 @@ export default function CreateSessionStep2FieldsList() {
     if ('type' in item && item.type === 'skeleton') {
       return <CreateSessionStep2FieldCardSkeleton />;
     }
-    return <CreateSessionStep2FieldCard field={item as FieldResponseDto} />;
+    return <CreateSessionStep2FieldCard field={item} />;
   }, []);
 
   const getItemType = useCallback(
@@ -53,13 +53,20 @@ export default function CreateSessionStep2FieldsList() {
   );
 
   const dataToRender = useMemo(() => (showSkeletons ? SKELETON_DATA : fields), [showSkeletons, fields]);
+  const keyExtractor = useCallback((item: ListItem) => {
+    if ('type' in item && item.type === 'skeleton') {
+      return (item as SkeletonItem).uid;
+    }
+    return item?.uid?.toString();
+  }, []);
 
+  // TODO: fix keyboard issue with flashlist (dosnt clic on item when keyboard is open)
   return (
     <FlashList
       data={dataToRender}
       renderItem={renderItem}
       getItemType={getItemType}
-      keyExtractor={item => item?.uid?.toString()}
+      keyExtractor={keyExtractor}
       ListEmptyComponent={<HomeSessionCardListEmpty />}
       ListHeaderComponent={<CreateSessionStep2FieldsListHeader />}
       stickyHeaderHiddenOnScroll
@@ -70,6 +77,9 @@ export default function CreateSessionStep2FieldsList() {
       onEndReached={onEndReached}
       onEndReachedThreshold={0.5}
       drawDistance={500}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="always"
+      nestedScrollEnabled
     />
   );
 }

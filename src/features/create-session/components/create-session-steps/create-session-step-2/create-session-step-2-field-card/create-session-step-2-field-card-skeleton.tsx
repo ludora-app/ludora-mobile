@@ -5,7 +5,7 @@ import CreateSessionStep2FieldCardWrapper from './create-session-step-2-field-ca
 export default function CreateSessionStep2FieldCardSkeleton() {
   return (
     <CreateSessionStep2FieldCardWrapper>
-      <FieldCardSkeleton />
+      <FieldCardSkeleton showSlots />
     </CreateSessionStep2FieldCardWrapper>
   );
 }

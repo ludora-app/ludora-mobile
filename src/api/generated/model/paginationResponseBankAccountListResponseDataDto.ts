@@ -10,5 +10,4 @@ import type { PaginationDataBankAccountListResponseDataDto } from './paginationD
 export interface PaginationResponseBankAccountListResponseDataDto {
   readonly data: PaginationDataBankAccountListResponseDataDto;
   readonly message?: string;
-  readonly status?: number;
 }

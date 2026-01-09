@@ -16,6 +16,8 @@
     "**/*.tsx",
     "nativewind-env.d.ts",
     "src/hooks/geolocalisation.hookts",
-    "src/features/filters/filters-calendar"
+    "src/features/filters/filters-calendar",
+    "src/utils/api-url.utils.ts",
+    "tools/generate-api/api-url.utils.js"
   ]
 }

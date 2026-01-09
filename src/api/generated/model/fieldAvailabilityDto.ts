@@ -10,7 +10,7 @@ import type { FieldAvailabilityDtoType } from './fieldAvailabilityDtoType';
 export interface FieldAvailabilityDto {
   /** end time of the availability */
   endTime: string;
-  /** price of the availability */
+  /** price of the field slot */
   price?: number;
   /** price per player of the availability */
   pricePerPlayer?: number;

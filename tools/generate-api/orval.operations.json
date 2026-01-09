@@ -23,6 +23,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "FriendsController_findAll": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "SessionsController_findAll": {
     "query": {
       "useInfinite": true,

@@ -14,12 +14,24 @@ export default function CreateSessionStep2FieldCardPrivateAvailabilitiesList(
   props: CreateSessionStep2FieldCardPrivateAvailabilitiesListProps,
 ) {
   const { field, onSelect } = props;
+
   const slotUid = useCreateSessionStore(state => state.session.slotUid);
-  const setSession = useCreateSessionStore(state => state.setSession);
+  const setCreateSession = useCreateSessionStore(state => state.setSession);
 
   const handleSelectAvailability = (availability: FieldAvailabilityDto) => {
     onSelect?.(availability);
-    setSession({ fieldUid: field.uid, slotUid: availability.uid });
+    setCreateSession({
+      additionalData: {
+        fieldType: 'partner',
+        price: availability.price,
+        pricePerPlayer: availability.pricePerPlayer,
+        sport: field.sport,
+      },
+      endDate: availability.endTime,
+      fieldUid: field.uid,
+      slotUid: availability.uid,
+      startDate: availability.startTime,
+    });
   };
 
   return (

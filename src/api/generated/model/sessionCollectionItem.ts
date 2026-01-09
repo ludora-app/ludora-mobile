@@ -5,6 +5,7 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { SessionCollectionItemGameMode } from './sessionCollectionItemGameMode';
 import type { TeamFromSessionCollectionItem } from './teamFromSessionCollectionItem';
 import type { SessionCollectionItemSport } from './sessionCollectionItemSport';
 
@@ -22,7 +23,7 @@ export interface SessionCollectionItem {
   /** Session field short address */
   readonly fieldShortAddress: string;
   /** Session game mode */
-  readonly gameMode: string;
+  readonly gameMode: SessionCollectionItemGameMode;
   /** Session level */
   readonly level: number;
   /** Maximum number of players per team */

@@ -19,3 +19,7 @@ export * from './iconButton';
 export * from './chip';
 export * from './slider';
 export * from './placesInput';
+export * from './badge';
+export * from './toggle';
+export * from './segmentedControl';
+export * from './avatar';

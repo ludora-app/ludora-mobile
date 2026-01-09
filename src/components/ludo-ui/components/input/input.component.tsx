@@ -33,7 +33,7 @@ export default function Input(props: InputProps) {
     <InputChillUi className={className}>
       {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
       <InputContainer className={cn({ 'border-error': showError }, inputContainerClassName)}>
-        {leftIconAction?.name && <Icon {...leftIconAction} />}
+        {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
           placeholderTextColor={COLORS.ring}

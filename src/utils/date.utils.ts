@@ -8,16 +8,16 @@ import 'dayjs/locale/fr';
  * @returns "Hier" if the date is yesterday
  * @returns "dd/mm/yyyy" if the date is not today or yesterday
  */
-function formatDate(date: string) {
-  if (dayjs(date).isSame(dayjs(), 'day')) {
-    return "Aujourd'hui";
-  }
-  if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
-    return 'Hier';
-  }
+// function formatDate(date: string) {
+//   if (dayjs(date).isSame(dayjs(), 'day')) {
+//     return "Aujourd'hui";
+//   }
+//   if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
+//     return 'Hier';
+//   }
 
-  return dayjs(date).format('DD/MM/YYYY');
-}
+//   return dayjs(date).format('DD/MM/YYYY');
+// }
 
 /**
  * Format the hour to be displayed as hh:mm
@@ -56,6 +56,10 @@ function getEstimatedTime(startDate: string, endDate: string) {
   const hours = Math.floor(durationInMinutes / 60);
   const minutes = durationInMinutes % 60;
   return `${hours}h${minutes > 0 ? minutes : ''}`;
+}
+
+function formatDate({ date, format = 'DD/MM/YYYY' }: { date: string; format?: string }) {
+  return dayjs(date).format(format);
 }
 
 export { formatDate, formatHour, getDayOfWeek, getEstimatedTime };

@@ -2,7 +2,12 @@ import { memo } from 'react';
 import { cn } from '@chillui/ui';
 import { Skeleton, Box, BoxRow } from '@ludo/ui';
 
-function FieldCardSkeleton() {
+type FieldCardSkeletonProps = {
+  showSlots?: boolean;
+};
+
+function FieldCardSkeleton(props: FieldCardSkeletonProps) {
+  const { showSlots = false } = props;
   return (
     <Box>
       <Box className="h-16 overflow-hidden rounded-t-xl">
@@ -24,12 +29,14 @@ function FieldCardSkeleton() {
               </Box>
             </BoxRow>
           </Box>
-          <Box className="flex-row items-center gap-2 px-3 py-2">
-            <Skeleton variant="square" size="xs" className="flex-1" />
-            <Skeleton variant="square" size="xs" className="flex-1" />
-            <Skeleton variant="square" size="xs" className="flex-1" />
-            <Skeleton variant="square" size="xs" className="flex-1" />
-          </Box>
+          {showSlots && (
+            <Box className="flex-row items-center gap-2 px-3 py-2">
+              <Skeleton variant="square" size="xs" className="flex-1" />
+              <Skeleton variant="square" size="xs" className="flex-1" />
+              <Skeleton variant="square" size="xs" className="flex-1" />
+              <Skeleton variant="square" size="xs" className="flex-1" />
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

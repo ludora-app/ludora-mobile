@@ -1,21 +1,38 @@
 import { create } from 'zustand';
 import { CreateSessionFromRequestDto } from '@api/generated/model/createSessionFromRequestDto';
 
-import { SessionsFindAllSportsItem } from '@/api/generated/model';
+import { SessionCollectionItemSport } from '@/api/generated/model';
 
-type SessionProps = CreateSessionFromRequestDto & { sport: SessionsFindAllSportsItem };
+type SessionProps = CreateSessionFromRequestDto & {
+  additionalData: {
+    price?: number;
+    pricePerPlayer?: number;
+    publicFieldSlotUid?: string;
+    sport?: SessionCollectionItemSport;
+    fieldType?: 'partner' | 'public';
+    createdSessionUid?: string;
+  };
+};
 
-type Session = Partial<SessionProps> & { day?: string };
+export type Session = Partial<SessionProps>;
 
 interface CreateSessionStore {
   session: Session;
-
+  reset: () => void;
   setSession: (session: Session) => void;
 }
 
 export const useCreateSessionStore = create<CreateSessionStore>((set, get) => ({
+  reset: () => set({ session: { visibility: 'PUBLIC' } }),
   session: {
-    day: new Date().toISOString(),
+    visibility: 'PUBLIC',
   },
-  setSession: session => set({ session: { ...get().session, ...session } }),
+  setSession: session =>
+    set({
+      session: {
+        ...get().session,
+        ...session,
+        additionalData: { ...get().session.additionalData, ...session.additionalData },
+      },
+    }),
 }));

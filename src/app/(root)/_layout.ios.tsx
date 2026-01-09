@@ -13,17 +13,13 @@ function AppLayoutNav() {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="create-session/index"
-        options={{
-          animation: 'slide_from_bottom',
-          presentation: 'modal',
-        }}
-      />
+      <Stack.Screen name="create-session/index" />
       <Stack.Screen
         name="create-session/create-session-field-card-public-availibilities"
         options={{
-          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: [0.8],
@@ -31,7 +27,29 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="filters/filters-fields"
+        name="create-session/create-session-step-3-payment"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.8],
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="invite-people"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="filters/index"
         options={{
           animation: 'slide_from_bottom',
           contentStyle: {

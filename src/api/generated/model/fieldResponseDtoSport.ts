@@ -6,6 +6,9 @@
  * OpenAPI spec version: 0.0.1
  */
 
+/**
+ * sport of the field
+ */
 export type FieldResponseDtoSport = (typeof FieldResponseDtoSport)[keyof typeof FieldResponseDtoSport];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare

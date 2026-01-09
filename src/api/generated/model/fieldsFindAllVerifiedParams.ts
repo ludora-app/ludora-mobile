@@ -6,33 +6,38 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { FieldsFindAllVerifiedSportsItem } from './fieldsFindAllVerifiedSportsItem';
-import type { FieldsFindAllVerifiedGameModeItem } from './fieldsFindAllVerifiedGameModeItem';
+import type { FieldsFindAllVerifiedGameModesItem } from './fieldsFindAllVerifiedGameModesItem';
+import type { FieldsFindAllVerifiedType } from './fieldsFindAllVerifiedType';
 
 export type FieldsFindAllVerifiedParams = {
-  /**
-   * The name of the field
-   */
-  name?: string;
-  /**
-   * The address of the field
-   */
-  address?: string;
   /**
    * Sports of the session
    */
   sports?: FieldsFindAllVerifiedSportsItem[];
   /**
+   * Search query
+   */
+  search?: string;
+  /**
    * The game mode of the field
    */
-  gameMode?: FieldsFindAllVerifiedGameModeItem[];
+  gameModes?: FieldsFindAllVerifiedGameModesItem[];
   /**
    * The start date of the field
    */
   date?: string;
   /**
-   * True pour terrains publics, False pour privés
+   * Type of the field
    */
-  isFree?: boolean;
+  type?: FieldsFindAllVerifiedType;
+  /**
+   * Duration of the session
+   */
+  duration?: number;
+  /**
+   * User TimeZone
+   */
+  timezone?: string;
   /**
    * Cursor for pagination
    */

@@ -1,14 +1,12 @@
 import ky from 'ky';
 import * as SecureStore from 'expo-secure-store';
 
+import { getApiUrl } from '@/utils/api-url.utils';
 import { useAuthStore } from '@/stores/auth.store';
 
 import { POST as refreshTokenPost } from './queries/refresh-token.query';
 
 let refreshPromise: Promise<string | null> | null = null;
-
-const LOCAL_API_URL = `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:2424`;
-const REMOTE_API_URL = process.env.EXPO_PUBLIC_DEV_API_URL;
 
 const handleLogout = async () => {
   refreshPromise = null;
@@ -74,7 +72,7 @@ const kyApi = ky.create({
       },
     ],
   },
-  prefixUrl: LOCAL_API_URL,
+  prefixUrl: getApiUrl(),
   retry: {
     limit: 3,
     methods: ['get', 'put', 'delete', 'patch'],

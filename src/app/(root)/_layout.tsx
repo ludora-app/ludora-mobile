@@ -2,11 +2,7 @@ import { Stack } from 'expo-router';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
-function FormSheetHeaderComponent() {
-  return <FormSheetHeader />;
-}
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
   return (
@@ -17,15 +13,7 @@ function AppLayoutNav() {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="create-session/index"
-        options={{
-          animation: 'slide_from_bottom',
-          presentation: 'formSheet',
-          sheetAllowedDetents: [0.93],
-          sheetCornerRadius: 12,
-        }}
-      />
+      <Stack.Screen name="create-session/index" />
       <Stack.Screen
         name="create-session/create-session-field-card-public-availibilities"
         options={{
@@ -37,7 +25,29 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="filters/filters-fields"
+        name="create-session/create-session-step-3-payment"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.8],
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="invite-people"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="filters/index"
         options={{
           contentStyle: {
             backgroundColor: '#FFF',

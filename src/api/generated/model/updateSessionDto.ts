@@ -7,6 +7,7 @@
  */
 import type { UpdateSessionDtoGameMode } from './updateSessionDtoGameMode';
 import type { UpdateSessionDtoLevel } from './updateSessionDtoLevel';
+import type { UpdateSessionDtoVisibility } from './updateSessionDtoVisibility';
 
 export interface UpdateSessionDto {
   /** The description of the session */
@@ -23,6 +24,8 @@ export interface UpdateSessionDto {
   maxPlayersPerTeam: number;
   /** The minimum number of players per team */
   minPlayersPerTeam: number;
+  /** The uid of the field slot */
+  slotUid?: string;
   /** The start date of the session */
   startDate: string;
   /** The number of teams per game */
@@ -31,4 +34,6 @@ export interface UpdateSessionDto {
   title?: string;
   /** The uid of the user */
   userUid?: string;
+  /** The visibility of the session */
+  visibility?: UpdateSessionDtoVisibility;
 }

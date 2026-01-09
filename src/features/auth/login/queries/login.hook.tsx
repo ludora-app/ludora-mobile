@@ -9,8 +9,8 @@ export const useLogin = () => {
   const mutateAsync = async (data: LoginDto) => mutation.mutateAsync({ data });
 
   return {
+    ...mutation,
     mutate,
     mutateAsync,
-    ...mutation,
   };
 };

@@ -1,11 +1,17 @@
+import { cn } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { Box, IconButton, WrapperSafeAreaView } from '@ludo/ui';
 
-export default function HeaderGoBack() {
+type HeaderGoBackProps = {
+  className?: string;
+};
+
+export default function HeaderGoBack(props: HeaderGoBackProps) {
+  const { className } = props;
   const router = useRouter();
   return (
-    <WrapperSafeAreaView fill={false} edges={['top']} className="mb-10 pt-3">
-      <Box className="flex-row items-center gap-3">
+    <WrapperSafeAreaView fill={false} className={cn('pb-10 pt-3', className)}>
+      <Box className="flex-row items-center">
         <IconButton
           iconName="arrow-left-regular"
           className="rounded-xl border-[1px] border-[#D8DADC] bg-transparent"

@@ -50,7 +50,7 @@ export default function CreateSessionStep1Part2Item(props: CreateSessionStep1Par
       </BounceBox>
       <Box className={cn('h-2 w-full rounded-full bg-[#D9D9D9]', isSelectedLevel && 'bg-[#69B42E]')} />
       <String position="center" size="xs">
-        {t(`create-session-steps.step-1.session_level_${difficulty.name}`)}
+        {t(`common.session_level_${difficulty.name}`)}
       </String>
     </Pressable>
   );

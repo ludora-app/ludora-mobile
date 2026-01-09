@@ -6,33 +6,38 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { FieldsFindAllByPartnerUidSportsItem } from './fieldsFindAllByPartnerUidSportsItem';
-import type { FieldsFindAllByPartnerUidGameModeItem } from './fieldsFindAllByPartnerUidGameModeItem';
+import type { FieldsFindAllByPartnerUidGameModesItem } from './fieldsFindAllByPartnerUidGameModesItem';
+import type { FieldsFindAllByPartnerUidType } from './fieldsFindAllByPartnerUidType';
 
 export type FieldsFindAllByPartnerUidParams = {
-  /**
-   * The name of the field
-   */
-  name?: string;
-  /**
-   * The address of the field
-   */
-  address?: string;
   /**
    * Sports of the session
    */
   sports?: FieldsFindAllByPartnerUidSportsItem[];
   /**
+   * Search query
+   */
+  search?: string;
+  /**
    * The game mode of the field
    */
-  gameMode?: FieldsFindAllByPartnerUidGameModeItem[];
+  gameModes?: FieldsFindAllByPartnerUidGameModesItem[];
   /**
    * The start date of the field
    */
   date?: string;
   /**
-   * True pour terrains publics, False pour privés
+   * Type of the field
    */
-  isFree?: boolean;
+  type?: FieldsFindAllByPartnerUidType;
+  /**
+   * Duration of the session
+   */
+  duration?: number;
+  /**
+   * User TimeZone
+   */
+  timezone?: string;
   /**
    * Cursor for pagination
    */

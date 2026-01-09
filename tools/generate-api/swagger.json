@@ -1413,7 +1413,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationResponse"
+                  "$ref": "#/components/schemas/ConversationResponseDto"
                 }
               }
             }
@@ -1501,7 +1501,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseConversationResponse"
+                  "$ref": "#/components/schemas/PaginationResponseConversationResponseData"
                 }
               }
             }
@@ -1557,7 +1557,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationResponse"
+                  "$ref": "#/components/schemas/ConversationResponseDto"
                 }
               }
             }
@@ -1611,6 +1611,73 @@
         "summary": "Get a conversation by uid",
         "tags": [
           "Conversations"
+        ]
+      }
+    },
+    "/conversations/{conversationUid}/messages": {
+      "post": {
+        "operationId": "ConversationsController_createMessage",
+        "parameters": [
+          {
+            "name": "conversationUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/fields/field-slots": {
+      "post": {
+        "operationId": "FieldsController_createFieldSlot",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFieldSlotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "tags": [
+          "Fields"
         ]
       }
     },
@@ -1671,30 +1738,67 @@
         ]
       }
     },
+    "/fields/private": {
+      "post": {
+        "operationId": "FieldsController_createPrivateField",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePrivateFieldDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a private field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
     "/fields/list-verified/collection": {
       "get": {
         "operationId": "FieldsController_findAllVerified",
         "parameters": [
-          {
-            "name": "name",
-            "required": false,
-            "in": "query",
-            "description": "The name of the field",
-            "schema": {
-              "example": "Field 1",
-              "type": "string"
-            }
-          },
-          {
-            "name": "address",
-            "required": false,
-            "in": "query",
-            "description": "The address of the field",
-            "schema": {
-              "example": "123 Main St, Anytown, USA",
-              "type": "string"
-            }
-          },
           {
             "name": "sports",
             "required": false,
@@ -1721,7 +1825,17 @@
             }
           },
           {
-            "name": "gameMode",
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query",
+            "schema": {
+              "example": "Basketball",
+              "type": "string"
+            }
+          },
+          {
+            "name": "gameModes",
             "required": false,
             "in": "query",
             "description": "The game mode of the field",
@@ -1759,12 +1873,38 @@
             }
           },
           {
-            "name": "isFree",
+            "name": "type",
             "required": false,
             "in": "query",
-            "description": "True pour terrains publics, False pour privés",
+            "description": "Type of the field",
             "schema": {
-              "type": "boolean"
+              "example": "PUBLIC",
+              "type": "string",
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
+            }
+          },
+          {
+            "name": "duration",
+            "required": false,
+            "in": "query",
+            "description": "Duration of the session",
+            "schema": {
+              "example": 60,
+              "type": "number"
+            }
+          },
+          {
+            "name": "timezone",
+            "required": false,
+            "in": "query",
+            "description": "User TimeZone",
+            "schema": {
+              "default": "UTC",
+              "example": "Europe/Paris",
+              "type": "string"
             }
           },
           {
@@ -1868,26 +2008,6 @@
         "operationId": "FieldsController_findAllByPartnerUid",
         "parameters": [
           {
-            "name": "name",
-            "required": false,
-            "in": "query",
-            "description": "The name of the field",
-            "schema": {
-              "example": "Field 1",
-              "type": "string"
-            }
-          },
-          {
-            "name": "address",
-            "required": false,
-            "in": "query",
-            "description": "The address of the field",
-            "schema": {
-              "example": "123 Main St, Anytown, USA",
-              "type": "string"
-            }
-          },
-          {
             "name": "sports",
             "required": false,
             "in": "query",
@@ -1913,7 +2033,17 @@
             }
           },
           {
-            "name": "gameMode",
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query",
+            "schema": {
+              "example": "Basketball",
+              "type": "string"
+            }
+          },
+          {
+            "name": "gameModes",
             "required": false,
             "in": "query",
             "description": "The game mode of the field",
@@ -1951,12 +2081,38 @@
             }
           },
           {
-            "name": "isFree",
+            "name": "type",
             "required": false,
             "in": "query",
-            "description": "True pour terrains publics, False pour privés",
+            "description": "Type of the field",
             "schema": {
-              "type": "boolean"
+              "example": "PUBLIC",
+              "type": "string",
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
+            }
+          },
+          {
+            "name": "duration",
+            "required": false,
+            "in": "query",
+            "description": "Duration of the session",
+            "schema": {
+              "example": 60,
+              "type": "number"
+            }
+          },
+          {
+            "name": "timezone",
+            "required": false,
+            "in": "query",
+            "description": "User TimeZone",
+            "schema": {
+              "default": "UTC",
+              "example": "Europe/Paris",
+              "type": "string"
             }
           },
           {
@@ -2074,7 +2230,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
+                  "$ref": "#/components/schemas/FindOneFieldResponseDto"
                 }
               }
             }
@@ -2118,6 +2274,354 @@
         "summary": "Get a field by uid",
         "tags": [
           "Fields"
+        ]
+      }
+    },
+    "/friends": {
+      "post": {
+        "operationId": "FriendsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFriendDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new friend request at the PENDING status",
+        "tags": [
+          "Friends"
+        ]
+      }
+    },
+    "/friends/my-collection": {
+      "get": {
+        "operationId": "FriendsController_findAll",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of users to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFriendResponseData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all friends of the connected user",
+        "tags": [
+          "Friends"
+        ]
+      }
+    },
+    "/friends/my-friend-request/{otherUserUid}": {
+      "get": {
+        "operationId": "FriendsController_findMyFriendRequest",
+        "parameters": [
+          {
+            "name": "otherUserUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FriendResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a friend request between the connected user and the receiver",
+        "tags": [
+          "Friends"
+        ]
+      }
+    },
+    "/friends/{userUid}": {
+      "patch": {
+        "operationId": "FriendsController_update",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFriendDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Friend request updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a friend request between the connected user and the receiver",
+        "tags": [
+          "Friends"
+        ]
+      }
+    },
+    "/friends/{otherUserUid}": {
+      "delete": {
+        "operationId": "FriendsController_remove",
+        "parameters": [
+          {
+            "name": "otherUserUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Friend removed successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Remove an existing friend (ACCEPTED status)",
+        "tags": [
+          "Friends"
         ]
       }
     },
@@ -2330,7 +2834,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionItem"
+                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionItemDto"
                 }
               }
             }
@@ -2501,6 +3005,20 @@
                 3
               ]
             }
+          },
+          {
+            "name": "visibility",
+            "required": false,
+            "in": "query",
+            "description": "Visibility for filtering sessions",
+            "schema": {
+              "example": "PUBLIC",
+              "type": "string",
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
+            }
           }
         ],
         "responses": {
@@ -2509,7 +3027,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionItem"
+                  "$ref": "#/components/schemas/PaginationResponseSessionCollectionItemDto"
                 }
               }
             }
@@ -2565,7 +3083,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
+                  "$ref": "#/components/schemas/SessionResponseDto"
                 }
               }
             }
@@ -2851,7 +3369,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponse"
+                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponseData"
                 }
               }
             }
@@ -2960,7 +3478,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponse"
+                  "$ref": "#/components/schemas/PaginationResponseSessionInvitationResponseData"
                 }
               }
             }
@@ -3024,7 +3542,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
+                  "$ref": "#/components/schemas/SessionInvitationResponseDto"
                 }
               }
             }
@@ -3199,7 +3717,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseSessionTeamResponse"
+                  "$ref": "#/components/schemas/PaginationResponseSessionTeamResponseData"
                 }
               }
             }
@@ -3265,7 +3783,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
+                  "$ref": "#/components/schemas/SessionTeamResponseDto"
                 }
               }
             }
@@ -3398,7 +3916,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponse"
+                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponseDto"
                 }
               }
             }
@@ -3445,7 +3963,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponse"
+                  "$ref": "#/components/schemas/PaginationResponseUserHourPreferenceResponseDto"
                 }
               }
             }
@@ -3617,7 +4135,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponse"
+                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponseDto"
                 }
               }
             }
@@ -3674,7 +4192,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponse"
+                  "$ref": "#/components/schemas/PaginationResponseUserSportPreferenceResponseDto"
                 }
               }
             }
@@ -4381,6 +4899,10 @@
     {
       "name": "Fields",
       "description": "Fields operations"
+    },
+    {
+      "name": "Friends",
+      "description": "Friends operations"
     },
     {
       "name": "Metrics",
@@ -5118,11 +5640,6 @@
                 "$ref": "#/components/schemas/PaginationDataFindAllUsersResponseDataDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [
@@ -5457,7 +5974,7 @@
           "address"
         ]
       },
-      "ConversationResponse": {
+      "ConversationResponseData": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -5521,8 +6038,16 @@
           "messages": {
             "description": "Conversation messages",
             "example": [
-              "cmajhjkjf000bq77q4b5ugn8b",
-              "cmajhjkjf000bq77q4b5ugn8b"
+              {
+                "content": "Hello",
+                "conversationUid": "cmajhjkjf000bq77q4b5ugn8b",
+                "createdAt": "2025-01-01T00:00:00.000Z",
+                "globalStatus": "SENT",
+                "senderUid": "cmajhjkjf000bq77q4b5ugn8b",
+                "type": "TEXT",
+                "uid": "cmajhjkjf000bq77q4b5ugn8b",
+                "updatedAt": "2025-01-01T00:00:00.000Z"
+              }
             ],
             "readOnly": true,
             "type": "array",
@@ -5540,6 +6065,26 @@
           "lastMessageAt"
         ]
       },
+      "ConversationResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConversationResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "ConversationType": {
         "type": "string",
         "enum": [
@@ -5548,14 +6093,14 @@
           "SESSION"
         ]
       },
-      "PaginationDataConversationResponse": {
+      "PaginationDataConversationResponseData": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConversationResponse"
+              "$ref": "#/components/schemas/ConversationResponseData"
             }
           },
           "nextCursor": {
@@ -5574,7 +6119,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseConversationResponse": {
+      "PaginationResponseConversationResponseData": {
         "type": "object",
         "properties": {
           "message": {
@@ -5585,14 +6130,9 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataConversationResponse"
+                "$ref": "#/components/schemas/PaginationDataConversationResponseData"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [
@@ -5629,6 +6169,72 @@
           "message"
         ]
       },
+      "CreateMessageDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Content of the message (text)",
+            "example": "Hello, how are you?"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the message",
+            "enum": [
+              "TEXT",
+              "IMAGE",
+              "VIDEO",
+              "AUDIO"
+            ],
+            "example": "TEXT"
+          },
+          "file": {
+            "type": "string",
+            "description": "File image (message)",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CreateFieldSlotDto": {
+        "type": "object",
+        "properties": {
+          "fieldUid": {
+            "type": "string",
+            "description": "Field uid",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Start time of the slot",
+            "example": "2026-01-05T10:00:00Z"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "End time of the slot",
+            "example": "2026-01-05T11:00:00Z"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the slot",
+            "example": 25.5
+          },
+          "gameMode": {
+            "type": "object",
+            "description": "Game mode (e.g., FIVE_V_FIVE, THREE_V_THREE)",
+            "example": "FIVE_V_FIVE"
+          }
+        },
+        "required": [
+          "fieldUid",
+          "startTime",
+          "endTime",
+          "price",
+          "gameMode"
+        ]
+      },
       "ResponseTypeDto": {
         "type": "object",
         "properties": {
@@ -5643,6 +6249,93 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "CreateImageDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "nom de l'image",
+            "example": "10121551_image.jpg"
+          },
+          "order": {
+            "type": "number",
+            "description": "Ordre d'affichage de l'image",
+            "example": 1
+          },
+          "file": {
+            "type": "string",
+            "description": "Fichier de l'image",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "name",
+          "file"
+        ]
+      },
+      "CreatePrivateFieldDto": {
+        "type": "object",
+        "properties": {
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "The sport of the field",
+            "example": "BASKETBALL"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the field",
+            "example": "My Basketball Court"
+          },
+          "address": {
+            "type": "string",
+            "description": "The address of the field",
+            "example": "123 Main St, Anytown, USA"
+          },
+          "lat": {
+            "type": "number",
+            "description": "The latitude of the field",
+            "example": 40.7128
+          },
+          "lng": {
+            "type": "number",
+            "description": "The longitude of the field",
+            "example": -74.006
+          },
+          "shortAddress": {
+            "type": "string",
+            "description": "The short address of the field",
+            "example": "123 Main St, Anytown, USA"
+          },
+          "partnerUid": {
+            "type": "string",
+            "description": "The uid of the partner",
+            "example": "cmjzyy8j300084jt3dc8pswsu"
+          },
+          "images": {
+            "maxItems": 5,
+            "description": "The images of the field",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateImageDto"
+            }
+          }
+        },
+        "required": [
+          "sport",
+          "name",
+          "address",
+          "partnerUid"
         ]
       },
       "FieldImageResponseDto": {
@@ -5695,7 +6388,7 @@
           },
           "price": {
             "type": "number",
-            "description": "price of the availability",
+            "description": "price of the field slot",
             "example": 25
           },
           "pricePerPlayer": {
@@ -5734,6 +6427,15 @@
             "example": "Hoopsfactory - Court 2"
           },
           "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
             "type": "string",
             "description": "sport of the field",
             "example": "BASKETBALL"
@@ -5769,7 +6471,7 @@
           },
           "userDistance": {
             "type": "number",
-            "description": "distance to the field in meters",
+            "description": "distance (in meters) between the user and the field",
             "example": 1200
           }
         },
@@ -5822,15 +6524,295 @@
                 "$ref": "#/components/schemas/PaginationDataFieldResponseDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [
           "data"
+        ]
+      },
+      "PartnerDto": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the partner",
+            "example": "cmjzyy8j300084jt3dc8pswsu"
+          },
+          "rank": {
+            "type": "number",
+            "description": "rank of the partner",
+            "example": 0
+          }
+        },
+        "required": [
+          "uid",
+          "rank"
+        ]
+      },
+      "FindOneFieldResponseData": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the field",
+            "example": "cmjzyy8k1000e4jt31vpr30yv"
+          },
+          "type": {
+            "type": "string",
+            "description": "type of the field",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PRIVATE"
+          },
+          "status": {
+            "type": "string",
+            "description": "status of the field",
+            "enum": [
+              "PENDING",
+              "APPROVED",
+              "REJECTED"
+            ],
+            "example": "APPROVED"
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "sport of the field",
+            "example": "BASKETBALL"
+          },
+          "partnerUid": {
+            "type": "string",
+            "description": "uid of the partner",
+            "example": "cmjzyy8j300084jt3dc8pswsu"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the field",
+            "example": "The One Ball - Court 2"
+          },
+          "address": {
+            "type": "string",
+            "description": "address of the field",
+            "example": "38 Rue du Ballon, 93160 Noisy-le-Grand"
+          },
+          "shortAddress": {
+            "type": "string",
+            "description": "short address of the field",
+            "example": "38 Rue du Ballon, 93160 Noisy-le-Grand"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "latitude of the field",
+            "example": 48.83436030000001
+          },
+          "longitude": {
+            "type": "number",
+            "description": "longitude of the field",
+            "example": 2.5689833
+          },
+          "fieldImages": {
+            "description": "images of the field",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldImageResponseDto"
+            }
+          },
+          "partner": {
+            "description": "partner of the field",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PartnerDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "type",
+          "status",
+          "sport",
+          "address",
+          "shortAddress",
+          "latitude",
+          "longitude"
+        ]
+      },
+      "FindOneFieldResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindOneFieldResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateFriendDto": {
+        "type": "object",
+        "properties": {
+          "receiverUid": {
+            "type": "string",
+            "description": "The uid of the user who is receiving the friend request",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          }
+        },
+        "required": [
+          "receiverUid"
+        ]
+      },
+      "FriendResponseData": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Friend request creation date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Friend request update date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "status": {
+            "type": "object",
+            "description": "Friend request status",
+            "example": "PENDING",
+            "readOnly": true
+          },
+          "friendUid": {
+            "type": "string",
+            "description": "User uid of the friend",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "userName": {
+            "type": "string",
+            "description": "Concatenated firstname and lastname of the friend",
+            "example": "John Doe",
+            "readOnly": true
+          },
+          "userProfilePicture": {
+            "type": "string",
+            "description": "Friend request user profile picture",
+            "example": "https://example.com/image.jpg",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "status",
+          "friendUid",
+          "userName",
+          "userProfilePicture"
+        ]
+      },
+      "PaginationDataFriendResponseData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FriendResponseData"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseFriendResponseData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataFriendResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FriendResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FriendResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateFriendDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status to apply to the friend request",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED",
+              "CANCELED"
+            ],
+            "example": "ACCEPTED"
+          }
+        },
+        "required": [
+          "status"
         ]
       },
       "CreateSessionFromRequestDto": {
@@ -5849,6 +6831,11 @@
           "fieldUid": {
             "type": "string",
             "description": "The uid of the field",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "slotUid": {
+            "type": "string",
+            "description": "The uid of the field slot",
             "example": "cmajhjkjf000bq77q4b5ugn8b"
           },
           "gameMode": {
@@ -5878,21 +6865,6 @@
             "description": "The end date of the session",
             "example": "2021-01-01T00:00:00.000Z"
           },
-          "maxPlayersPerTeam": {
-            "type": "number",
-            "description": "The maximum number of players per team",
-            "example": 5
-          },
-          "teamsPerGame": {
-            "type": "number",
-            "description": "The number of teams per game",
-            "example": 2
-          },
-          "minPlayersPerTeam": {
-            "type": "number",
-            "description": "The minimum number of players per team",
-            "example": 3
-          },
           "level": {
             "enum": [
               0,
@@ -5903,19 +6875,26 @@
             "type": "number",
             "description": "Level for the session",
             "example": 1
+          },
+          "visibility": {
+            "type": "string",
+            "default": "PUBLIC",
+            "description": "The visibility of the session",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PUBLIC"
           }
         },
         "required": [
           "fieldUid",
           "gameMode",
           "startDate",
-          "endDate",
-          "maxPlayersPerTeam",
-          "teamsPerGame",
-          "minPlayersPerTeam"
+          "endDate"
         ]
       },
-      "TeamFromSessionCollectionItem": {
+      "TeamFromSessionCollectionItemDto": {
         "type": "object",
         "properties": {
           "teamName": {
@@ -5934,7 +6913,7 @@
           "numberOfPlayers"
         ]
       },
-      "SessionCollectionItem": {
+      "SessionCollectionItemDto": {
         "type": "object",
         "properties": {
           "endDate": {
@@ -5969,8 +6948,6 @@
             "readOnly": true
           },
           "sport": {
-            "type": "string",
-            "description": "Sport played during the session",
             "enum": [
               "BASKETBALL",
               "FOOTBALL",
@@ -5980,6 +6957,8 @@
               "BADMINTON",
               "PING-PONG"
             ],
+            "type": "string",
+            "description": "Sport played during the session",
             "example": "FOOTBALL",
             "readOnly": true
           },
@@ -5991,7 +6970,7 @@
             "readOnly": true
           },
           "gameMode": {
-            "type": "string",
+            "type": "object",
             "description": "Session game mode",
             "example": "THREE_VS_THREE",
             "readOnly": true
@@ -6000,6 +6979,12 @@
             "type": "string",
             "description": "Session creator",
             "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Session visibility",
+            "example": "PUBLIC",
             "readOnly": true
           },
           "fieldImage": {
@@ -6025,7 +7010,7 @@
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TeamFromSessionCollectionItem"
+              "$ref": "#/components/schemas/TeamFromSessionCollectionItemDto"
             }
           },
           "fieldLatitude": {
@@ -6047,6 +7032,12 @@
             "readOnly": true
           },
           "level": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
             "type": "number",
             "description": "Session level",
             "example": 1,
@@ -6057,8 +7048,6 @@
           "endDate",
           "uid",
           "maxPlayersPerTeam",
-          "teamsPerGame",
-          "minPlayersPerTeam",
           "sport",
           "startDate",
           "gameMode",
@@ -6067,18 +7056,17 @@
           "sessionTeams",
           "fieldLatitude",
           "fieldLongitude",
-          "userDistance",
           "level"
         ]
       },
-      "PaginationDataSessionCollectionItem": {
+      "PaginationDataSessionCollectionItemDto": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SessionCollectionItem"
+              "$ref": "#/components/schemas/SessionCollectionItemDto"
             }
           },
           "nextCursor": {
@@ -6097,7 +7085,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseSessionCollectionItem": {
+      "PaginationResponseSessionCollectionItemDto": {
         "type": "object",
         "properties": {
           "message": {
@@ -6108,14 +7096,140 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataSessionCollectionItem"
+                "$ref": "#/components/schemas/PaginationDataSessionCollectionItemDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SessionResponseData": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
             "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Session description",
+            "example": "Test session",
+            "readOnly": true
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "Sport played during the session",
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Session title",
+            "example": "Session 1",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "object",
+            "description": "Session game mode",
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Session visibility",
+            "example": "PUBLIC",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "sport",
+          "startDate",
+          "gameMode",
+          "creatorUid"
+        ]
+      },
+      "SessionResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionResponseData"
+              }
+            ]
           }
         },
         "required": [
@@ -6138,6 +7252,11 @@
           "fieldUid": {
             "type": "string",
             "description": "The uid of the field",
+            "example": "cmajhjkjf000bq77q4b5ugn8b"
+          },
+          "slotUid": {
+            "type": "string",
+            "description": "The uid of the field slot",
             "example": "cmajhjkjf000bq77q4b5ugn8b"
           },
           "gameMode": {
@@ -6167,21 +7286,6 @@
             "description": "The end date of the session",
             "example": "2021-01-01T00:00:00.000Z"
           },
-          "maxPlayersPerTeam": {
-            "type": "number",
-            "description": "The maximum number of players per team",
-            "example": 5
-          },
-          "teamsPerGame": {
-            "type": "number",
-            "description": "The number of teams per game",
-            "example": 2
-          },
-          "minPlayersPerTeam": {
-            "type": "number",
-            "description": "The minimum number of players per team",
-            "example": 3
-          },
           "userUid": {
             "type": "string",
             "description": "The uid of the user",
@@ -6197,6 +7301,31 @@
             "type": "number",
             "description": "Level for the session",
             "example": 1
+          },
+          "visibility": {
+            "type": "string",
+            "default": "PUBLIC",
+            "description": "The visibility of the session",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PUBLIC"
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "The maximum number of players per team",
+            "example": 5
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "The number of teams per game",
+            "example": 2
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "The minimum number of players per team",
+            "example": 3
           }
         },
         "required": [
@@ -6229,7 +7358,7 @@
           "receiverUid"
         ]
       },
-      "SessionInvitationResponse": {
+      "SessionInvitationResponseData": {
         "type": "object",
         "properties": {
           "sessionUid": {
@@ -6286,14 +7415,14 @@
           "updatedAt"
         ]
       },
-      "PaginationDataSessionInvitationResponse": {
+      "PaginationDataSessionInvitationResponseData": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SessionInvitationResponse"
+              "$ref": "#/components/schemas/SessionInvitationResponseData"
             }
           },
           "nextCursor": {
@@ -6312,7 +7441,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseSessionInvitationResponse": {
+      "PaginationResponseSessionInvitationResponseData": {
         "type": "object",
         "properties": {
           "message": {
@@ -6323,14 +7452,29 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataSessionInvitationResponse"
+                "$ref": "#/components/schemas/PaginationDataSessionInvitationResponseData"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SessionInvitationResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
             "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionInvitationResponseData"
+              }
+            ]
           }
         },
         "required": [
@@ -6393,7 +7537,7 @@
           "imageUrl"
         ]
       },
-      "SessionTeamResponse": {
+      "SessionTeamResponseData": {
         "type": "object",
         "properties": {
           "uid": {
@@ -6443,14 +7587,14 @@
           "Session_players"
         ]
       },
-      "PaginationDataSessionTeamResponse": {
+      "PaginationDataSessionTeamResponseData": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SessionTeamResponse"
+              "$ref": "#/components/schemas/SessionTeamResponseData"
             }
           },
           "nextCursor": {
@@ -6469,7 +7613,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseSessionTeamResponse": {
+      "PaginationResponseSessionTeamResponseData": {
         "type": "object",
         "properties": {
           "message": {
@@ -6480,14 +7624,29 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataSessionTeamResponse"
+                "$ref": "#/components/schemas/PaginationDataSessionTeamResponseData"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SessionTeamResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
             "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionTeamResponseData"
+              }
+            ]
           }
         },
         "required": [
@@ -6534,7 +7693,7 @@
           "preferenceType"
         ]
       },
-      "UserHourPreferenceResponse": {
+      "UserHourPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -6582,9 +7741,9 @@
           "date": {
             "format": "date-time",
             "type": "string",
+            "nullable": true,
             "description": "Applicable date for a ONE_TIME preference, null for a RECURRENT preference",
             "example": "2025-05-10T22:30:32.525Z",
-            "nullable": true,
             "readOnly": true
           }
         },
@@ -6598,14 +7757,14 @@
           "date"
         ]
       },
-      "PaginationDataUserHourPreferenceResponse": {
+      "PaginationDataUserHourPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserHourPreferenceResponse"
+              "$ref": "#/components/schemas/UserHourPreferenceResponseDto"
             }
           },
           "nextCursor": {
@@ -6624,7 +7783,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseUserHourPreferenceResponse": {
+      "PaginationResponseUserHourPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "message": {
@@ -6635,14 +7794,9 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataUserHourPreferenceResponse"
+                "$ref": "#/components/schemas/PaginationDataUserHourPreferenceResponseDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [
@@ -6684,7 +7838,7 @@
           "level"
         ]
       },
-      "UserSportPreferenceResponse": {
+      "UserSportPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "uid": {
@@ -6700,13 +7854,13 @@
             "description": "The user ID of the user sport preference"
           },
           "level": {
-            "type": "number",
-            "description": "The level of the user sport preference",
             "enum": [
               1,
               2,
               3
             ],
+            "type": "number",
+            "description": "The level of the user sport preference",
             "example": 1
           },
           "createdAt": {
@@ -6723,14 +7877,14 @@
           "createdAt"
         ]
       },
-      "PaginationDataUserSportPreferenceResponse": {
+      "PaginationDataUserSportPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserSportPreferenceResponse"
+              "$ref": "#/components/schemas/UserSportPreferenceResponseDto"
             }
           },
           "nextCursor": {
@@ -6749,7 +7903,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseUserSportPreferenceResponse": {
+      "PaginationResponseUserSportPreferenceResponseDto": {
         "type": "object",
         "properties": {
           "message": {
@@ -6760,14 +7914,9 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataUserSportPreferenceResponse"
+                "$ref": "#/components/schemas/PaginationDataUserSportPreferenceResponseDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [
@@ -7935,11 +9084,6 @@
                 "$ref": "#/components/schemas/PaginationDataBankAccountListResponseDataDto"
               }
             ]
-          },
-          "status": {
-            "type": "number",
-            "example": 200,
-            "readOnly": true
           }
         },
         "required": [

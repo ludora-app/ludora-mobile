@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { useLayoutState } from '@shopify/flash-list';
 // import 'dayjs/locale/fr'; // TODO: put in index or app ??
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 
 const DAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
@@ -26,6 +26,10 @@ export function useDateCarousel({ initialDate, numberOfDays = 14, startDate }: U
 
   const [selected, setSelected] = useLayoutState<Dayjs>(effectiveInitialDate);
 
+  useEffect(() => {
+    setSelected(effectiveInitialDate);
+  }, [effectiveInitialDate, setSelected]);
+
   const startTimestamp = effectiveStartDate.valueOf();
 
   const days: DayItem[] = useMemo(() => {
@@ -33,7 +37,7 @@ export function useDateCarousel({ initialDate, numberOfDays = 14, startDate }: U
 
     return Array.from({ length: numberOfDays }, (_, i) => {
       const date = start.add(i, 'day');
-      const dayIndex = date.day(); // 0 (Sunday) to 6 (Saturday)
+      const dayIndex = date.day();
 
       return {
         date,

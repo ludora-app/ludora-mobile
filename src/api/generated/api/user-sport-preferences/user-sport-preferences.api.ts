@@ -23,7 +23,7 @@ import type {
   BadRequestResponseDto,
   CreateUserSportPreferenceDtoFromRequest,
   NotFoundResponseDto,
-  PaginationResponseUserSportPreferenceResponse,
+  PaginationResponseUserSportPreferenceResponseDto,
   ResponseTypeDto,
   UnauthorizedResponseDto,
 } from '../../model';
@@ -111,7 +111,7 @@ export const useUserSportPreferencesCreate = <
  * @summary Get all user sport preferences by user ID
  */
 export const userSportPreferencesFindAllByUserUid = (userUid: string, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseUserSportPreferenceResponse>({
+  return customInstance<PaginationResponseUserSportPreferenceResponseDto>({
     url: `/user-sport-preferences/list-by-user/${userUid}`,
     method: 'GET',
     signal,
@@ -233,7 +233,7 @@ export function useUserSportPreferencesFindAllByUserUid<
  * @summary Get the sport preferences of the connected user
  */
 export const userSportPreferencesFindMySportPreferences = (signal?: AbortSignal) => {
-  return customInstance<PaginationResponseUserSportPreferenceResponse>({
+  return customInstance<PaginationResponseUserSportPreferenceResponseDto>({
     url: `/user-sport-preferences/my-list`,
     method: 'GET',
     signal,

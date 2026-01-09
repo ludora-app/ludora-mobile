@@ -7,6 +7,11 @@ import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 import { useAuthStore } from '@/stores/auth.store';
 import MainProvider from '@/providers/main.provider';
 import LoadingScreen from '@/features/splash/screens/splash.screen';
+import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
+
+function StorybookHeader() {
+  return <HeaderGoBack className="bg-white pb-3" />;
+}
 
 function RootLayoutNav() {
   const posthog = usePostHog();
@@ -31,6 +36,30 @@ function RootLayoutNav() {
       <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen name="auth" />
       </Stack.Protected>
+      <Stack.Screen
+        name="dev-tools"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#F2F4F8',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.95],
+        }}
+      />
+      <Stack.Screen
+        name="storybook"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#F2F4F8',
+          },
+          header: StorybookHeader,
+          headerShown: true,
+          presentation: 'modal',
+        }}
+      />
     </Stack>
   );
 }

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "acme",
+    "scheme": "ludora",
     "newArchEnabled": true,
     "userInterfaceStyle": "automatic",
     "orientation": "default",
@@ -23,7 +23,14 @@
         }
       ],
       "expo-secure-store",
-      "expo-localization"
+      "expo-localization",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.ludora",
+          "enableGooglePay": true
+        }
+      ]
     ],
     "name": "ludora",
     "slug": "ludora",

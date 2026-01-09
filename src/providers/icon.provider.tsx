@@ -1,6 +1,7 @@
-import { ICONS } from '@/constants/ICONS';
+import { PropsWithChildren } from 'react';
 import { IconProvider as IconProviderChillUI } from '@chillui/ui';
-import React, { PropsWithChildren } from 'react';
+
+import { ICONS } from '@/constants/ICONS';
 
 export default function IconProvider({ children }: PropsWithChildren) {
   return <IconProviderChillUI icons={ICONS}>{children}</IconProviderChillUI>;

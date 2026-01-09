@@ -3,11 +3,11 @@ import { ImageBackground } from 'expo-image';
 import { cn, ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
 import { Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
-import { tennisBall, basketballBall, footballBall } from 'assets';
 
 import COLORS from '@/constants/COLORS';
+import { getSportImage } from '@/utils/sports.utils';
 import { convertMToKm } from '@/utils/distance.utils';
-import { FieldResponseDto } from '@/api/generated/model';
+import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,26 +28,21 @@ interface FieldCardProps {
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
   const { children, field, onPress } = props;
 
-  const sessionImage = useMemo(() => {
-    switch (field.sport) {
-      case 'BASKETBALL':
-        return basketballBall;
-      case 'TENNIS':
-        return tennisBall;
-      case 'PADDEL':
-        return tennisBall;
-      case 'FOOTBALL':
-        return footballBall;
-      default:
-        return basketballBall;
-    }
-  }, [field.sport]);
+  const { fieldImages, name, shortAddress, sport, type, userDistance = 0 } = field || {};
+
+  const fieldImage = useMemo(() => {
+    const customImage = fieldImages?.find(img => img.order === 0)?.url;
+    if (customImage) return customImage;
+    return getSportImage(sport);
+  }, [fieldImages, sport]);
 
   const content = (
     <Box style={styles.container}>
       <Box className="h-16 overflow-hidden rounded-t-xl">
-        <ImageBackground source={sessionImage} contentFit="cover" className="h-16">
-          {field.type === 'PUBLIC' && <Chip title="Terrain publique" size="2xs" className="ml-auto mr-2 mt-2" />}
+        <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
+          {type === FieldResponseDtoType.PUBLIC && (
+            <Chip title="Terrain publique" size="2xs" className="ml-auto mr-2 mt-2" />
+          )}
         </ImageBackground>
       </Box>
 
@@ -55,17 +50,15 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
         <Box>
           {/* top card content */}
           <Box className="gap-2 bg-white px-3 py-2">
-            <String font="primaryExtraBold">{field.name}</String>
+            <String font="primaryExtraBold">{name}</String>
             <BoxRow className="items-center gap-1">
               <Icon name="location-solid" color={COLORS.primary} size="xs" />
               <Box className="no-wrap flex-1 flex-row items-center gap-2">
                 <String variant="body-xs" numberOfLines={1} ellipsizeMode="tail">
-                  {field.shortAddress}
+                  {shortAddress}s
                 </String>
                 <Box>
-                  <String variant="body-xs">
-                    {field.userDistance ? `(${convertMToKm(field.userDistance)} km)` : ''}
-                  </String>
+                  <String variant="body-xs">{userDistance ? `(${convertMToKm(userDistance)} km)` : ''}</String>
                 </Box>
               </Box>
             </BoxRow>

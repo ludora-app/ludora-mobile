@@ -8,7 +8,7 @@ type FormSheetHeaderProps = {
 export default function FormSheetHeader(props: FormSheetHeaderProps) {
   const { title } = props;
   return (
-    <Box>
+    <Box collapsable={false}>
       <Box className="mx-auto mt-2 h-1 w-12 rounded-full bg-zinc-400" />
       {title && (
         <Box className="my-3 flex-row items-center justify-center">

@@ -32,10 +32,8 @@ export default function LoginEmailForm() {
     });
     try {
       const response = await loginMutation({
-        data: {
-          email: data.email,
-          password: data.password,
-        },
+        email: data.email,
+        password: data.password,
       });
 
       if (!response?.data.accessToken || !response?.data.refreshToken) {

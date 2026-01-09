@@ -10,13 +10,14 @@ type DateCarouselProps = {
   onSelect?: (date: Dayjs) => void;
   className?: string;
   contentContainerClassName?: string;
+  initialDate?: Dayjs;
 };
 
 const DEBOUNCE_DELAY = 300;
 
 export default function DaysCarousel(props: DateCarouselProps) {
-  const { className, contentContainerClassName, onSelect } = props;
-  const { days, isSelected, setSelected } = useDateCarousel();
+  const { className, contentContainerClassName, initialDate, onSelect } = props;
+  const { days, isSelected, setSelected } = useDateCarousel({ initialDate });
 
   const debouncedOnSelect = useMemo(
     () =>

@@ -23,7 +23,7 @@ import type {
   BadRequestResponseDto,
   CreateUserHourPreferenceDto,
   NotFoundResponseDto,
-  PaginationResponseUserHourPreferenceResponse,
+  PaginationResponseUserHourPreferenceResponseDto,
   ResponseTypeDto,
   UnauthorizedResponseDto,
 } from '../../model';
@@ -111,7 +111,7 @@ export const useUserHourPreferencesCreate = <
  * @summary Get all user hour preferences by user ID
  */
 export const userHourPreferencesFindAllByUserUid = (userUid: string, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseUserHourPreferenceResponse>({
+  return customInstance<PaginationResponseUserHourPreferenceResponseDto>({
     url: `/user-hour-preferences/list-by-user/${userUid}`,
     method: 'GET',
     signal,
@@ -230,7 +230,7 @@ export function useUserHourPreferencesFindAllByUserUid<
  * @summary Get the hour preferences of the connected user
  */
 export const userHourPreferencesFindMyHourPreferences = (signal?: AbortSignal) => {
-  return customInstance<PaginationResponseUserHourPreferenceResponse>({
+  return customInstance<PaginationResponseUserHourPreferenceResponseDto>({
     url: `/user-hour-preferences/my-list`,
     method: 'GET',
     signal,

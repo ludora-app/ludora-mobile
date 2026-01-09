@@ -10,5 +10,4 @@ import type { PaginationDataFieldResponseDto } from './paginationDataFieldRespon
 export interface PaginationResponseFieldResponseDto {
   readonly data: PaginationDataFieldResponseDto;
   readonly message?: string;
-  readonly status?: number;
 }

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/stores/auth.store';
+import { resetCaches } from '@/utils/reset-caches.utils';
 import { useSignOut as useGoogleSignOut } from '@/api/hooks/auth-google.hook';
 
 import { useSecureStorageState } from './secure-storage-state.hook';
@@ -34,6 +35,7 @@ export function useAuthHelpers() {
     setAccessTokenStorage(null);
     setRefreshTokenStorage(null);
     setIsAuthenticated(false);
+    resetCaches();
     await signOut();
     queryClient.clear();
   }, [queryClient, signOut, setAccessTokenStorage, setRefreshTokenStorage, setIsAuthenticated]);

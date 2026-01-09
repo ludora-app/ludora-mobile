@@ -27,8 +27,9 @@ import type {
   BadRequestResponseDto,
   CreateSessionFromRequestDto,
   NotFoundResponseDto,
-  PaginationResponseSessionCollectionItem,
+  PaginationResponseSessionCollectionItemDto,
   ResponseTypeDto,
+  SessionResponseDto,
   SessionsFindAllByUserUidParams,
   SessionsFindAllParams,
   UnauthorizedResponseDto,
@@ -113,7 +114,7 @@ export const useSessionsCreate = <
  * @summary Get all sessions
  */
 export const sessionsFindAll = (params?: SessionsFindAllParams, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseSessionCollectionItem>({
+  return customInstance<PaginationResponseSessionCollectionItemDto>({
     url: `/sessions/list/collection`,
     method: 'GET',
     params,
@@ -280,7 +281,7 @@ export const sessionsFindAllByUserUid = (
   params?: SessionsFindAllByUserUidParams,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginationResponseSessionCollectionItem>({
+  return customInstance<PaginationResponseSessionCollectionItemDto>({
     url: `/sessions/my-list/collection`,
     method: 'GET',
     params,
@@ -454,7 +455,7 @@ export function useSessionsFindAllByUserUidInfinite<
  * @summary Get a session by uid
  */
 export const sessionsFindOne = (uid: string, signal?: AbortSignal) => {
-  return customInstance<ResponseTypeDto>({ url: `/sessions/${uid}`, method: 'GET', signal });
+  return customInstance<SessionResponseDto>({ url: `/sessions/${uid}`, method: 'GET', signal });
 };
 
 export const getSessionsFindOneQueryKey = (uid: string) => {

@@ -11,7 +11,7 @@ import CreateSessionStep1Part3Item from './create-session-step-1-part-3-item.com
 
 export default function CreateSessionStep1Part3() {
   const { t } = useTranslate();
-  const selectedSport = useCreateSessionStore(state => state.session?.sport);
+  const selectedSport = useCreateSessionStore(state => state.session?.additionalData?.sport);
 
   return (
     <ReanimatedBox entering={FadeIn}>

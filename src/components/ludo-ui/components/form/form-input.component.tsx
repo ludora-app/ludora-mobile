@@ -17,9 +17,11 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     inputContainerClassName,
     inputFieldClassName,
     label,
+    leftIconAction,
     name,
     onChangeText,
     placeholder,
+    rightIconAction,
     ...rest
   } = props;
   const { t } = useTranslate();
@@ -54,12 +56,13 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
         onChangeText: handleOnChangeText,
         placeholder,
         value,
-
         ...rest,
       }}
       label={label}
       inputContainerClassName={inputContainerClassName}
       className={className}
+      leftIconAction={leftIconAction}
+      rightIconAction={rightIconAction}
     />
   );
 }

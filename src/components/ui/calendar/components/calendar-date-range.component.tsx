@@ -82,7 +82,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     validateButtonText = 'Valider',
   } = props;
 
-  // 📅 États
   const todayId = useMemo(() => toDateId(minDate), [minDate]);
   const maxDateId = useMemo(() => {
     if (maxDate) return toDateId(maxDate);
@@ -94,12 +93,10 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
   const [tempEndDate, setTempEndDate] = useState<Date | null>(initialDateRange.endDate);
   const [currentMonthId, setCurrentMonthId] = useState(() => toDateId(initialDateRange.startDate || minDate));
 
-  // 🎯 Calcul des dates actives pour le style
   const calendarActiveDateRanges = useMemo<CalendarActiveDateRange[]>(() => {
     if (!tempStartDate) return [];
 
     if (!tempEndDate) {
-      // Seulement la date de début sélectionnée
       return [
         {
           endId: toDateId(tempStartDate),
@@ -117,7 +114,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     ];
   }, [tempStartDate, tempEndDate]);
 
-  // 🚫 Logique de désactivation des flèches
   const navigationBounds = useMemo(() => {
     const minMonth = dayjs(todayId).format('YYYY-MM');
     const maxMonth = dayjs(maxDateId).format('YYYY-MM');
@@ -134,7 +130,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     [currentMonthId, navigationBounds.maxMonth],
   );
 
-  // 📆 Hooks du calendrier
   const { calendarRowMonth, weekDaysList, weeksList } = useCalendar({
     calendarActiveDateRanges,
     calendarFormatLocale: tolgeeLang,
@@ -143,7 +138,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     calendarMonthId: currentMonthId,
   });
 
-  // 🎬 Handlers
   const handlePrevMonth = useCallback(() => {
     if (isPrevDisabled) return;
     const prevMonth = dayjs(currentMonthId).subtract(1, 'month').toDate();
@@ -164,22 +158,17 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     dateId => {
       const selectedDate = fromDateId(dateId);
 
-      // 🔄 Logique de sélection de plage
       if (!tempStartDate || (tempStartDate && tempEndDate)) {
-        // Première sélection ou reset
         setTempStartDate(selectedDate);
         setTempEndDate(null);
       } else {
-        // Deuxième sélection
         const start = dayjs(tempStartDate);
         const end = dayjs(selectedDate);
 
         if (end.isBefore(start)) {
-          // Si la fin est avant le début, inverser
           setTempStartDate(selectedDate);
           setTempEndDate(tempStartDate);
         } else {
-          // Vérifier les contraintes de durée
           const daysDiff = end.diff(start, 'day') + 1;
 
           if (minRangeDays && daysDiff < minRangeDays) {
@@ -230,7 +219,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     onCancel?.();
   }, [confirmedRange, onCancel]);
 
-  // 🎨 Thème du calendrier avec gestion de la plage
   const dayTheme: CalendarTheme['itemDay'] = useMemo(
     () => ({
       active: ({ isEndOfRange, isStartOfRange }) => ({
@@ -280,7 +268,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
     [],
   );
 
-  // 🔍 Vérifier si le bouton de validation doit être désactivé
   const isValidateDisabled = !tempStartDate || !tempEndDate;
 
   return (
@@ -307,7 +294,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
           />
         </FlashCalendar.HStack>
 
-        {/* 📅 JOURS DE LA SEMAINE */}
         <FlashCalendar.Row.Week>
           {weekDaysList.map((weekDay, i) => (
             <FlashCalendar.Item.WeekName key={i} height={CALENDAR_CONFIG.WEEK_NAME_HEIGHT}>
@@ -342,7 +328,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
         ))}
       </FlashCalendar.VStack>
 
-      {/* 📊 AFFICHAGE DE LA SÉLECTION */}
       {(tempStartDate || tempEndDate) && !hideActions && (
         <BoxRow className="mt-4 justify-between">
           <Box>
@@ -360,7 +345,6 @@ function CalendarDateRange(props: CalendarDateRangeProps) {
         </BoxRow>
       )}
 
-      {/* ✅ BOUTONS D'ACTION */}
       {!hideActions && (
         <BoxRow className="mt-7 gap-2">
           <Button title={cancelButtonText} className="flex-[1]" variant="outlined" size="md" onPress={handleCancel} />

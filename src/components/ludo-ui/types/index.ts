@@ -9,3 +9,4 @@ export * from './string.types';
 export * from './separator.types';
 export * from './wrapper-keyboard-aware-scroll-view.types';
 export * from './slider.types';
+export * from './badge.types';

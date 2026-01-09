@@ -26,8 +26,11 @@ import type {
 import type {
   BadRequestResponseDto,
   ConflictResponseDto,
+  CreateFieldSlotDto,
+  CreatePrivateFieldDto,
   FieldsFindAllByPartnerUidParams,
   FieldsFindAllVerifiedParams,
+  FindOneFieldResponseDto,
   NotFoundResponseDto,
   PaginationResponseFieldResponseDto,
   ResponseTypeDto,
@@ -35,6 +38,66 @@ import type {
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
+export const fieldsCreateFieldSlot = (createFieldSlotDto: CreateFieldSlotDto, signal?: AbortSignal) => {
+  return customInstance<void>({
+    url: `/fields/field-slots`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createFieldSlotDto,
+    signal,
+  });
+};
+
+export const getFieldsCreateFieldSlotMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
+    TError,
+    { data: CreateFieldSlotDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
+  TError,
+  { data: CreateFieldSlotDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
+    { data: CreateFieldSlotDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return fieldsCreateFieldSlot(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FieldsCreateFieldSlotMutationResult = NonNullable<
+  Awaited<ReturnType<typeof fieldsCreateFieldSlot>>
+>;
+export type FieldsCreateFieldSlotMutationBody = CreateFieldSlotDto;
+export type FieldsCreateFieldSlotMutationError = unknown;
+
+export const useFieldsCreateFieldSlot = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
+    TError,
+    { data: CreateFieldSlotDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
+  TError,
+  { data: CreateFieldSlotDto },
+  TContext
+> => {
+  const mutationOptions = getFieldsCreateFieldSlotMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 /**
  * @summary Create a public field
  */
@@ -71,6 +134,99 @@ export const useFieldsCreate = <
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof fieldsCreate>>, TError, void, TContext>;
 }): UseMutationResult<Awaited<ReturnType<typeof fieldsCreate>>, TError, void, TContext> => {
   const mutationOptions = getFieldsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Create a private field
+ */
+export const fieldsCreatePrivateField = (
+  createPrivateFieldDto: CreatePrivateFieldDto,
+  signal?: AbortSignal,
+) => {
+  const formData = new FormData();
+  formData.append('sport', createPrivateFieldDto.sport);
+  formData.append('name', createPrivateFieldDto.name);
+  formData.append('address', createPrivateFieldDto.address);
+  if (createPrivateFieldDto.lat !== undefined) {
+    formData.append('lat', createPrivateFieldDto.lat.toString());
+  }
+  if (createPrivateFieldDto.lng !== undefined) {
+    formData.append('lng', createPrivateFieldDto.lng.toString());
+  }
+  if (createPrivateFieldDto.shortAddress !== undefined) {
+    formData.append('shortAddress', createPrivateFieldDto.shortAddress);
+  }
+  formData.append('partnerUid', createPrivateFieldDto.partnerUid);
+  if (createPrivateFieldDto.images !== undefined) {
+    createPrivateFieldDto.images.forEach(value => formData.append('images', JSON.stringify(value)));
+  }
+
+  return customInstance<ResponseTypeDto>({
+    url: `/fields/private`,
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
+    signal,
+  });
+};
+
+export const getFieldsCreatePrivateFieldMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof fieldsCreatePrivateField>>,
+    TError,
+    { data: CreatePrivateFieldDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof fieldsCreatePrivateField>>,
+  TError,
+  { data: CreatePrivateFieldDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof fieldsCreatePrivateField>>,
+    { data: CreatePrivateFieldDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return fieldsCreatePrivateField(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FieldsCreatePrivateFieldMutationResult = NonNullable<
+  Awaited<ReturnType<typeof fieldsCreatePrivateField>>
+>;
+export type FieldsCreatePrivateFieldMutationBody = CreatePrivateFieldDto;
+export type FieldsCreatePrivateFieldMutationError = BadRequestResponseDto | UnauthorizedResponseDto;
+
+/**
+ * @summary Create a private field
+ */
+export const useFieldsCreatePrivateField = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof fieldsCreatePrivateField>>,
+    TError,
+    { data: CreatePrivateFieldDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof fieldsCreatePrivateField>>,
+  TError,
+  { data: CreatePrivateFieldDto },
+  TContext
+> => {
+  const mutationOptions = getFieldsCreatePrivateFieldMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -427,7 +583,7 @@ export function useFieldsFindAllByPartnerUidInfinite<
  * @summary Get a field by uid
  */
 export const fieldsFindOne = (uid: string, signal?: AbortSignal) => {
-  return customInstance<ResponseTypeDto>({ url: `/fields/${uid}`, method: 'GET', signal });
+  return customInstance<FindOneFieldResponseDto>({ url: `/fields/${uid}`, method: 'GET', signal });
 };
 
 export const getFieldsFindOneQueryKey = (uid: string) => {

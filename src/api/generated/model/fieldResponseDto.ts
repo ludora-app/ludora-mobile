@@ -7,6 +7,7 @@
  */
 import type { FieldAvailabilityDto } from './fieldAvailabilityDto';
 import type { FieldImageResponseDto } from './fieldImageResponseDto';
+import type { FieldResponseDtoSport } from './fieldResponseDtoSport';
 import type { FieldResponseDtoType } from './fieldResponseDtoType';
 
 export interface FieldResponseDto {
@@ -23,11 +24,11 @@ export interface FieldResponseDto {
   /** short address of the field */
   shortAddress: string;
   /** sport of the field */
-  sport: string;
+  sport: FieldResponseDtoSport;
   /** type of the field */
   type: FieldResponseDtoType;
   /** uid of the field */
   uid: string;
-  /** distance to the field in meters */
+  /** distance (in meters) between the user and the field */
   userDistance?: number;
 }

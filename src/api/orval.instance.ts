@@ -6,7 +6,7 @@ import { ANALYTICS_EVENTS } from '@/constants/ANALYTICS_EVENTS';
 
 import { kyApi } from './api.instance';
 
-const SLOW_REQUEST_THRESHOLD = 2000; // 2 seconds
+const SLOW_REQUEST_THRESHOLD = 2000;
 
 export type ErrorResponse = {
   api_error?: {

@@ -19,8 +19,8 @@ import type {
 import type {
   BadRequestResponseDto,
   NotFoundResponseDto,
-  PaginationResponseSessionTeamResponse,
-  ResponseTypeDto,
+  PaginationResponseSessionTeamResponseData,
+  SessionTeamResponseDto,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
@@ -29,7 +29,7 @@ import { customInstance } from '../../../orval.instance';
  * @summary Get all teams linked to a session by session uid
  */
 export const sessionTeamsFindTeamsBySessionUid = (sessionUid: string, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseSessionTeamResponse>({
+  return customInstance<PaginationResponseSessionTeamResponseData>({
     url: `/session-teams/list-by-session/${sessionUid}`,
     method: 'GET',
     signal,
@@ -151,7 +151,7 @@ export function useSessionTeamsFindTeamsBySessionUid<
  * @summary Get a team by its uid
  */
 export const sessionTeamsFindOneTeamByUid = (uid: string, signal?: AbortSignal) => {
-  return customInstance<ResponseTypeDto>({ url: `/session-teams/teams/${uid}`, method: 'GET', signal });
+  return customInstance<SessionTeamResponseDto>({ url: `/session-teams/teams/${uid}`, method: 'GET', signal });
 };
 
 export const getSessionTeamsFindOneTeamByUidQueryKey = (uid: string) => {

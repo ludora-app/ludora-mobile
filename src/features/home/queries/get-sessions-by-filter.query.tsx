@@ -1,7 +1,7 @@
-import { useSessionsFilterStore } from '@/stores/sessions-filter.store';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
 import { useGetAllSessions } from './get-sessions.query';
+import { useSessionsFilterStore } from '../stores/home-sessions-filters.store';
 
 export const useGetAllSessionsByFilter = () => {
   const sessionFilter = useSessionsFilterStore(state => state.sessionFilter);

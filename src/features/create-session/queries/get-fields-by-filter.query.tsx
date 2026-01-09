@@ -1,27 +1,27 @@
-import { useShallow } from 'zustand/react/shallow';
-
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
 import { useGetFields } from './get-fields.query';
-import { useCreateSessionStore } from '../store/create-session.store';
+import { FiltersProps, useCreateSessionFiltersFieldsStore } from '../store/create-session-filters-fields.store';
+
+const LIMIT_RESULTS_FIELDS = 10;
 
 export const useGetAllFieldsByFilter = () => {
+  const filters = useCreateSessionFiltersFieldsStore(state => state.filters);
+
+  const cleanedFilters = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== null));
+
+  const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
+
   const location = useUserLocationStore(state => state.location);
-  const { day, gameMode, sport } = useCreateSessionStore(
-    useShallow(state => ({
-      day: state.session.day,
-      gameMode: state.session.gameMode,
-      sport: state.session.sport,
-    })),
-  );
+
+  const dateValue = filterDate?.date;
 
   const { data, ...rest } = useGetFields({
-    date: day,
-    gameMode: gameMode ? [gameMode] : [],
-    limit: 10,
-    sports: sport ? [sport] : [],
+    date: dateValue,
+    limit: LIMIT_RESULTS_FIELDS,
     userLat: location?.latitude,
     userLon: location?.longitude,
+    ...restFilters,
   });
 
   const items = data?.pages.flatMap(page => page.data.items) ?? [];

@@ -32,6 +32,7 @@ export const ANALYTICS_EVENTS = {
 
   CREATE_SESSION: {
     SESSION_CREATED: 'create_session_completed',
+    SESSION_FAILED: 'create_session_failed',
     STEP_1_COMPLETED: 'create_session_step_1_completed',
     STEP_2_COMPLETED: 'create_session_step_2_completed',
   },

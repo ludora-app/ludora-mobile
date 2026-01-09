@@ -1,27 +1,49 @@
 import dayjs from 'dayjs';
+import { list } from 'radash';
 import { FlatList } from 'react-native';
-import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import { useShallow } from 'zustand/react/shallow';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
+import ROUTES from '@/constants/ROUTES';
 import { FieldResponseDto } from '@/api/generated/model';
+import { TimeSlot } from '@/features/create-session/types/create-session-step-2.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
+import { useCreateSessionFiltersFieldsStore } from '@/features/create-session/store/create-session-filters-fields.store';
 
 import CreateSessionStep2FieldCardPublicAvailabilitiesItem from './create-session-step-2-field-card-public-availabilities-item.component';
-
-export type TimeSlot = {
-  id: string;
-  time: Date;
-};
+import CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton from './create-session-step-2-field-card-public-availabilities-item-skeleton.component';
 
 type CreateSessionStep2FieldCardPublicAvailabilitiesListProps = {
   field: FieldResponseDto;
 };
 
-// Fonction utilitaire pour générer une tranche de créneaux
-const getNextSlots = (startDate: dayjs.Dayjs, count: number): TimeSlot[] => {
-  const newSlots: TimeSlot[] = [];
-  let current = startDate;
+const getNextSlots = (startDate: dayjs.Dayjs | null, count: number, selectedDate?: string): TimeSlot[] => {
+  let current: dayjs.Dayjs;
 
-  for (let i = 0; i < count; i++) {
+  if (startDate) {
+    current = startDate;
+  } else {
+    const now = dayjs();
+    const dateToUse = selectedDate ? dayjs(selectedDate) : now;
+    const isToday = dateToUse.isSame(now, 'day');
+
+    if (isToday) {
+      const currentMinutes = now.minute();
+      const roundedMinutes = Math.ceil(currentMinutes / 30) * 30;
+      current = now.hour(now.hour()).minute(roundedMinutes).second(0).millisecond(0);
+      if (current.isBefore(now) || current.isSame(now)) {
+        current = current.add(30, 'minute');
+      }
+    } else {
+      current = dateToUse.hour(7).minute(0).second(0).millisecond(0);
+    }
+  }
+
+  const newSlots: TimeSlot[] = [];
+  const endOfDay = startDate ? startDate.endOf('day') : dayjs(selectedDate).endOf('day');
+
+  for (let i = 0; i < count; i += 1) {
     const dateObj = current.toDate();
     newSlots.push({
       id: dateObj.toISOString(),
@@ -29,71 +51,104 @@ const getNextSlots = (startDate: dayjs.Dayjs, count: number): TimeSlot[] => {
     });
     current = current.add(30, 'minute');
 
-    // On s'arrête si on dépasse la fin de journée
-    if (current.isAfter(startDate.endOf('day'))) break;
+    if (current.isAfter(endOfDay)) break;
   }
   return newSlots;
 };
+type SkeletonItem = { type: 'skeleton'; uid: string };
+type ListItem = TimeSlot | SkeletonItem;
+
+const SKELETON_COUNT = 3;
+const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
+  type: 'skeleton',
+  uid: `skel-${i}`,
+}));
 
 export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
   props: CreateSessionStep2FieldCardPublicAvailabilitiesListProps,
 ) {
+  const router = useRouter();
   const { field } = props;
-  const day = useCreateSessionStore(state => state.session.day);
   const [visibleSlots, setVisibleSlots] = useState<TimeSlot[]>([]);
+  const filterDate = useCreateSessionFiltersFieldsStore(state => state.filters.date);
+  const { endDate, selectedFieldUid, selectedSlotUid } = useCreateSessionStore(
+    useShallow(state => ({
+      endDate: state.session.endDate,
+      selectedFieldUid: state.session.fieldUid,
+      selectedSlotUid: state.session.additionalData?.publicFieldSlotUid,
+    })),
+  );
 
-  const selectedSlotUid = useCreateSessionStore(state => state.session.slotUid);
-  const selectedFieldUid = useCreateSessionStore(state => state.session.fieldUid);
-  const setSession = useCreateSessionStore(state => state.setSession);
-
-  // 1. Initialisation : Quand le jour change, on repart de 07h00 avec 10 items
   useEffect(() => {
-    const startAt = dayjs(day).hour(7).minute(0).second(0).millisecond(0);
-    setVisibleSlots(getNextSlots(startAt, 10));
-  }, [day]);
+    const selectedDate = filterDate?.date;
+    setVisibleSlots(getNextSlots(null, 10, selectedDate));
+  }, [filterDate]);
 
-  // 2. Charger la suite (onEndReached)
   const loadMoreSlots = useCallback(() => {
-    console.log('loadMoreSlots');
     if (visibleSlots.length === 0) return;
 
     const lastSlot = dayjs(visibleSlots[visibleSlots.length - 1].time);
     const nextStart = lastSlot.add(30, 'minute');
 
-    // On ne génère que si on n'a pas fini la journée
-    if (nextStart.isBefore(dayjs(day).endOf('day'))) {
+    if (nextStart.isBefore(nextStart.endOf('day'))) {
       const nextBatch = getNextSlots(nextStart, 10);
       setVisibleSlots(prev => [...prev, ...nextBatch]);
     }
-  }, [visibleSlots, day]);
+  }, [visibleSlots]);
 
-  const handleSelect = (slot: TimeSlot) => {
-    setSession({
-      fieldUid: field.uid,
-      slotUid: slot.id,
-      startDate: slot.time.toISOString(),
-    });
-  };
+  const handleSelect = useCallback(
+    (timeSlot: TimeSlot) => {
+      router.push({
+        params: {
+          fieldUid: field.uid,
+          slotUid: timeSlot.id,
+          sport: field.sport,
+          startDate: timeSlot.time.toISOString(),
+        },
+        pathname: ROUTES.CREATE_SESSION.FIELD_CARD_PUBLIC_AVAILIBILITIES_FORM_SHEET,
+      });
+    },
+    [router, field],
+  );
 
-  return (
-    <FlatList
-      data={visibleSlots}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={item => item.id}
-      onEndReached={loadMoreSlots}
-      onEndReachedThreshold={0.5} // On charge quand il reste 50% des 10 items affichés
-      removeClippedSubviews
-      initialNumToRender={10}
-      renderItem={({ item }) => (
+  const dataToRender = useMemo(() => (visibleSlots.length > 0 ? visibleSlots : SKELETON_DATA), [visibleSlots]);
+
+  const keyExtractor = useCallback((item: ListItem) => {
+    if ('type' in item && item.type === 'skeleton') {
+      return (item as SkeletonItem).uid;
+    }
+    return (item as TimeSlot).id;
+  }, []);
+
+  const renderItem = useCallback(
+    ({ item }) => {
+      if ('type' in item && item.type === 'skeleton') {
+        return <CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton />;
+      }
+      return (
         <CreateSessionStep2FieldCardPublicAvailabilitiesItem
           time={item}
           availabilities={field.availabilities}
           onSelect={() => handleSelect(item)}
-          isSelected={item.id === selectedSlotUid && field.uid === selectedFieldUid}
+          isSelected={item.id === selectedSlotUid && field.uid === selectedFieldUid && !!endDate}
         />
-      )}
-      contentContainerStyle={{ gap: 8 }} // Utilise style au lieu de className pour les tests de perf
+      );
+    },
+    [endDate, field.availabilities, field.uid, handleSelect, selectedFieldUid, selectedSlotUid],
+  );
+
+  return (
+    <FlatList
+      data={dataToRender}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={keyExtractor}
+      onEndReached={loadMoreSlots}
+      onEndReachedThreshold={0.5}
+      removeClippedSubviews
+      initialNumToRender={10}
+      renderItem={renderItem}
+      contentContainerClassName="gap-2"
     />
   );
 }

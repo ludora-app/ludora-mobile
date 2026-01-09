@@ -28,8 +28,9 @@ import type {
   ConflictResponseDto,
   CreateSessionInvitationDto,
   NotFoundResponseDto,
-  PaginationResponseSessionInvitationResponse,
+  PaginationResponseSessionInvitationResponseData,
   ResponseTypeDto,
+  SessionInvitationResponseDto,
   SessionInvitationsFindAllBySessionIdParams,
   SessionInvitationsFindAllByUserIdParams,
   UnauthorizedResponseDto,
@@ -139,7 +140,7 @@ export const sessionInvitationsFindAllByUserId = (
   params: SessionInvitationsFindAllByUserIdParams,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginationResponseSessionInvitationResponse>({
+  return customInstance<PaginationResponseSessionInvitationResponseData>({
     url: `/session-invitations/list-by-user/collection/${userUid}`,
     method: 'GET',
     params,
@@ -331,7 +332,7 @@ export const sessionInvitationsFindAllBySessionId = (
   params: SessionInvitationsFindAllBySessionIdParams,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginationResponseSessionInvitationResponse>({
+  return customInstance<PaginationResponseSessionInvitationResponseData>({
     url: `/session-invitations/list-by-session/collection/${sessionUid}`,
     method: 'GET',
     params,
@@ -524,7 +525,7 @@ export function useSessionInvitationsFindAllBySessionIdInfinite<
  * @summary Get a session invitation by session ID and receiver ID
  */
 export const sessionInvitationsFindOne = (sessionUid: string, receiverUid: string, signal?: AbortSignal) => {
-  return customInstance<ResponseTypeDto>({
+  return customInstance<SessionInvitationResponseDto>({
     url: `/session-invitations/${sessionUid}/${receiverUid}`,
     method: 'GET',
     signal,

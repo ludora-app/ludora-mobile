@@ -1,0 +1,1 @@
+export const MAX_FRIENDS_TO_INVITE_LIMIT = 10;

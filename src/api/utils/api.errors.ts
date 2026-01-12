@@ -3,6 +3,9 @@ const API_ERRORS = {
   FORBIDDEN: 'Forbidden',
   INTERNAL_SERVER_ERROR: 'Internal Server Error',
   INVALID_CREDENTIALS: 'Invalid credentials',
+  INVITE_FRIENDS_TO_SESSION: {
+    USER_ALREADY_INVITED: 'User already invited to the session',
+  },
   NOT_FOUND: 'Not Found',
   UNAUTHORIZED: 'Unauthorized',
   USER_ALREADY_EXISTS: 'User already exists',

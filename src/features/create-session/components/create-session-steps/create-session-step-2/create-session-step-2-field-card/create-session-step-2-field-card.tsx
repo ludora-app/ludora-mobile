@@ -6,17 +6,17 @@ import CreateSessionStep2FieldCardPublicAvailabilitiesList from './create-sessio
 import CreateSessionStep2FieldCardPrivateAvailabilitiesList from './create-session-step-2-field-card-private-availabilities/create-session-step-2-field-card-private-availabilities-list.component';
 
 type CreateSessionStep2FieldCardProps = {
-  field: FieldResponseDto;
+  item: FieldResponseDto;
 };
 
 export default function CreateSessionStep2FieldCard(props: CreateSessionStep2FieldCardProps) {
-  const { field } = props;
+  const { item } = props;
 
   return (
     <CreateSessionStep2FieldCardWrapper>
-      <FieldCard field={field}>
-        {field.type === 'PUBLIC' && <CreateSessionStep2FieldCardPublicAvailabilitiesList field={field} />}
-        {field.type === 'PRIVATE' && <CreateSessionStep2FieldCardPrivateAvailabilitiesList field={field} />}
+      <FieldCard field={item}>
+        {item.type === 'PUBLIC' && <CreateSessionStep2FieldCardPublicAvailabilitiesList field={item} />}
+        {item.type === 'PRIVATE' && <CreateSessionStep2FieldCardPrivateAvailabilitiesList field={item} />}
       </FieldCard>
     </CreateSessionStep2FieldCardWrapper>
   );

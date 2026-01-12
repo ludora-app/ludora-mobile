@@ -9,10 +9,10 @@ export const variantConfig: ToastVariantTypeProps = {
     titleStringProps: { color: '#FFFFFF', variant: 'body-2' },
   },
   info: {
-    iconProps: { color: '#FFFFFF', name: 'eye-solid' },
+    iconProps: { color: '#FFFFFF', name: 'chill-ui-info-circle-regular' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
-    style: { backgroundColor: '#2196F3' },
+    style: { backgroundColor: '#60A5FA' },
     titleStringProps: { color: '#FFFFFF', variant: 'body-2' },
   },
   success: {
@@ -23,7 +23,7 @@ export const variantConfig: ToastVariantTypeProps = {
     titleStringProps: { color: '#FFFFFF' },
   },
   warning: {
-    iconProps: { color: '#FFFFFF', name: 'dot-solid' },
+    iconProps: { color: '#FFFFFF', name: 'chill-ui-warning-regular' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
     style: { backgroundColor: '#FF9800' },

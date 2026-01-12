@@ -37,18 +37,10 @@
     "icon": "./assets/logos/app-icon.png",
     "android": {
       "package": "com.amir398.ludora",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
-        }
-      },
       "permissions": ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"]
     },
     "ios": {
-      "bundleIdentifier": "com.amir398.ludora",
-      "config": {
-        "googleMapsApiKey": "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
-      }
+      "bundleIdentifier": "com.amir398.ludora"
     },
     "extra": {
       "router": {

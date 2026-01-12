@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { PortalProvider } from '@gorhom/portal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -17,25 +18,27 @@ import PostHogIdentifierProvider from './poshog-identifier.provider';
 export default function MainProvider({ children }: PropsWithChildren) {
   return (
     <GestureHandlerRootView>
-      <PostHogProvider>
-        <SafeAreaProvider>
-          <TolgeeProvider>
-            <QueryProvider>
-              <AuthProvider />
-              <PostHogIdentifierProvider />
-              <WebsocketProvider />
-              <KeyboardProvider navigationBarTranslucent>
-                <DebuggerProvider />
-                <FontProvider>
-                  <IconProvider>
-                    <ToastProvider>{children}</ToastProvider>
-                  </IconProvider>
-                </FontProvider>
-              </KeyboardProvider>
-            </QueryProvider>
-          </TolgeeProvider>
-        </SafeAreaProvider>
-      </PostHogProvider>
+      <PortalProvider>
+        <PostHogProvider>
+          <SafeAreaProvider>
+            <TolgeeProvider>
+              <QueryProvider>
+                <AuthProvider />
+                <PostHogIdentifierProvider />
+                <WebsocketProvider />
+                <KeyboardProvider navigationBarTranslucent>
+                  <DebuggerProvider />
+                  <FontProvider>
+                    <IconProvider>
+                      <ToastProvider>{children}</ToastProvider>
+                    </IconProvider>
+                  </FontProvider>
+                </KeyboardProvider>
+              </QueryProvider>
+            </TolgeeProvider>
+          </SafeAreaProvider>
+        </PostHogProvider>
+      </PortalProvider>
     </GestureHandlerRootView>
   );
 }

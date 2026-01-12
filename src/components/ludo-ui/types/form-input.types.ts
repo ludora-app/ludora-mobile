@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { InputFieldProps } from '@/components/chill-ui-library';
 
 import { IconProps } from './icon.types';
+import { InputProps } from './input.types';
 
 export type FormInputProps<T extends FieldValues = FieldValues> = Omit<UseControllerProps<T>, 'defaultValue'> &
   InputFieldProps & {
@@ -14,4 +15,6 @@ export type FormInputProps<T extends FieldValues = FieldValues> = Omit<UseContro
     hasErrorTranslation?: boolean;
     leftIconAction?: IconProps;
     rightIconAction?: IconProps;
+    hasClearIcon?: boolean;
+    rightContentProps?: InputProps['rightContentProps'];
   };

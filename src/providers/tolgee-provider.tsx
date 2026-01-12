@@ -1,9 +1,13 @@
-import { Tolgee, DevTools, TolgeeProvider as TolgeeProviderNative, BackendFetch } from '@tolgee/react';
-import { FormatIcu } from '@tolgee/format-icu';
-
+import '@formatjs/intl-locale/polyfill';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/en';
+import '@formatjs/intl-pluralrules/locale-data/fr';
 import { PropsWithChildren } from 'react';
-import frFR from '../../locales/fr-FR.json';
+import { FormatIcu } from '@tolgee/format-icu';
+import { Tolgee, TolgeeProvider as TolgeeProviderNative } from '@tolgee/react';
+
 import en from '../../locales/en.json';
+import frFR from '../../locales/fr-FR.json';
 
 const tolgee = Tolgee()
   .use(FormatIcu())
@@ -11,8 +15,8 @@ const tolgee = Tolgee()
     defaultLanguage: 'fr-FR',
     fallbackLanguage: 'en',
     staticData: {
+      en,
       'fr-FR': frFR,
-      en: en,
     },
   });
 

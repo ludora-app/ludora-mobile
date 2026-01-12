@@ -6,5 +6,6 @@ export const useGetSessionById = (id: string) => {
       enabled: !!id,
     },
   });
-  return { ...query, data: query.data.data };
+  const sessionData = query?.data?.data;
+  return { ...query, data: sessionData };
 };

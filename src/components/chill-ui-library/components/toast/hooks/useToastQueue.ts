@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
+
 import { ToastProps, ToastVariantProps, ToastPositionProps, IconProps, StringProps } from '../../../types';
 
 interface UseToastQueueOptions {

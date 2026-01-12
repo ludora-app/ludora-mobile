@@ -15,14 +15,14 @@ function AppLayoutNav() {
     >
       <Stack.Screen name="create-session/index" />
       <Stack.Screen
-        name="create-session/create-session-field-card-public-availibilities"
+        name="create-session/create-session-duration"
         options={{
           contentStyle: {
             backgroundColor: '#FFF',
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.8],
+          sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />

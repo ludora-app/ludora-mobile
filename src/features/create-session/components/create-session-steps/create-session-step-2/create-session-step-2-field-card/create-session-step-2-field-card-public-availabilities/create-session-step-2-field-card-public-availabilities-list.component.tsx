@@ -7,12 +7,13 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
 import ROUTES from '@/constants/ROUTES';
 import { FieldResponseDto } from '@/api/generated/model';
+import { RootStackParamList } from '@/types/routes-params.types';
 import { TimeSlot } from '@/features/create-session/types/create-session-step-2.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import { useCreateSessionFiltersFieldsStore } from '@/features/create-session/store/create-session-filters-fields.store';
 
-import CreateSessionStep2FieldCardPublicAvailabilitiesItem from './create-session-step-2-field-card-public-availabilities-item.component';
-import CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton from './create-session-step-2-field-card-public-availabilities-item-skeleton.component';
+import CreateSessionStep2FieldCardPublicAvailabilitiesItem from './create-session-step-2-field-card-public-availabilities-item/create-session-step-2-field-card-public-availabilities-item.component';
+import CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton from './create-session-step-2-field-card-public-availabilities-item/create-session-step-2-field-card-public-availabilities-item-skeleton.component';
 
 type CreateSessionStep2FieldCardPublicAvailabilitiesListProps = {
   field: FieldResponseDto;
@@ -41,17 +42,17 @@ const getNextSlots = (startDate: dayjs.Dayjs | null, count: number, selectedDate
   }
 
   const newSlots: TimeSlot[] = [];
-  const endOfDay = startDate ? startDate.endOf('day') : dayjs(selectedDate).endOf('day');
+  const maxHour = current.hour(22).minute(0).second(0).millisecond(0);
 
   for (let i = 0; i < count; i += 1) {
+    if (current.isAfter(maxHour)) break;
+
     const dateObj = current.toDate();
     newSlots.push({
       id: dateObj.toISOString(),
       time: dateObj,
     });
     current = current.add(30, 'minute');
-
-    if (current.isAfter(endOfDay)) break;
   }
   return newSlots;
 };
@@ -69,6 +70,7 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
 ) {
   const router = useRouter();
   const { field } = props;
+  const { availabilities, sport, uid: fieldUid } = field || {};
   const [visibleSlots, setVisibleSlots] = useState<TimeSlot[]>([]);
   const filterDate = useCreateSessionFiltersFieldsStore(state => state.filters.date);
   const { endDate, selectedFieldUid, selectedSlotUid } = useCreateSessionStore(
@@ -97,18 +99,21 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
   }, [visibleSlots]);
 
   const handleSelect = useCallback(
-    (timeSlot: TimeSlot) => {
+    (timeSlot: TimeSlot, isSelected: boolean) => {
+      const params: RootStackParamList[typeof ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET] = {
+        fieldUid,
+        slotUid: timeSlot?.id,
+        sport,
+        startDate: timeSlot?.time?.toISOString(),
+        ...(isSelected && { endDate }),
+      };
+
       router.push({
-        params: {
-          fieldUid: field.uid,
-          slotUid: timeSlot.id,
-          sport: field.sport,
-          startDate: timeSlot.time.toISOString(),
-        },
-        pathname: ROUTES.CREATE_SESSION.FIELD_CARD_PUBLIC_AVAILIBILITIES_FORM_SHEET,
+        params,
+        pathname: ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET,
       });
     },
-    [router, field],
+    [router, fieldUid, sport, endDate],
   );
 
   const dataToRender = useMemo(() => (visibleSlots.length > 0 ? visibleSlots : SKELETON_DATA), [visibleSlots]);
@@ -125,16 +130,17 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
       if ('type' in item && item.type === 'skeleton') {
         return <CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton />;
       }
+      const isSelected = item.id === selectedSlotUid && fieldUid === selectedFieldUid && !!endDate;
       return (
         <CreateSessionStep2FieldCardPublicAvailabilitiesItem
           time={item}
-          availabilities={field.availabilities}
-          onSelect={() => handleSelect(item)}
-          isSelected={item.id === selectedSlotUid && field.uid === selectedFieldUid && !!endDate}
+          availabilities={availabilities}
+          onSelect={() => handleSelect(item, isSelected)}
+          isSelected={isSelected}
         />
       );
     },
-    [endDate, field.availabilities, field.uid, handleSelect, selectedFieldUid, selectedSlotUid],
+    [endDate, availabilities, fieldUid, handleSelect, selectedFieldUid, selectedSlotUid],
   );
 
   return (

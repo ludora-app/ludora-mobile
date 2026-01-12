@@ -28,10 +28,11 @@ import type {
   ConflictResponseDto,
   CreateFriendDto,
   FriendResponseDto,
-  FriendsFindAllParams,
+  FriendsFindAllMyFriendsParams,
+  FriendsFindAllMyRequestsParams,
   NotFoundResponseDto,
+  PaginationResponseFriendRequestResponseData,
   PaginationResponseFriendResponseData,
-  ResponseTypeDto,
   UnauthorizedResponseDto,
   UpdateFriendDto,
 } from '../../model';
@@ -41,7 +42,7 @@ import { customInstance } from '../../../orval.instance';
  * @summary Create a new friend request at the PENDING status
  */
 export const friendsCreate = (createFriendDto: CreateFriendDto, signal?: AbortSignal) => {
-  return customInstance<ResponseTypeDto>({
+  return customInstance<void>({
     url: `/friends`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -114,116 +115,141 @@ export const useFriendsCreate = <
 /**
  * @summary Get all friends of the connected user
  */
-export const friendsFindAll = (params?: FriendsFindAllParams, signal?: AbortSignal) => {
+export const friendsFindAllMyFriends = (
+  params?: FriendsFindAllMyFriendsParams,
+  signal?: AbortSignal,
+) => {
   return customInstance<PaginationResponseFriendResponseData>({
-    url: `/friends/my-collection`,
+    url: `/friends/my-friends-collection`,
     method: 'GET',
     params,
     signal,
   });
 };
 
-export const getFriendsFindAllQueryKey = (params?: FriendsFindAllParams) => {
-  return [`/friends/my-collection`, ...(params ? [params] : [])] as const;
+export const getFriendsFindAllMyFriendsQueryKey = (params?: FriendsFindAllMyFriendsParams) => {
+  return [`/friends/my-friends-collection`, ...(params ? [params] : [])] as const;
 };
 
-export const getFriendsFindAllInfiniteQueryOptions = <
-  TData = InfiniteData<Awaited<ReturnType<typeof friendsFindAll>>, FriendsFindAllParams['cursor']>,
+export const getFriendsFindAllMyFriendsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+    FriendsFindAllMyFriendsParams['cursor']
+  >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: FriendsFindAllParams,
+  params?: FriendsFindAllMyFriendsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-        FriendsFindAllParams['cursor']
+        FriendsFindAllMyFriendsParams['cursor']
       >
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getFriendsFindAllQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getFriendsFindAllMyFriendsQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof friendsFindAll>>,
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
     QueryKey,
-    FriendsFindAllParams['cursor']
+    FriendsFindAllMyFriendsParams['cursor']
   > = ({ signal, pageParam }) =>
-    friendsFindAll({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
+    friendsFindAllMyFriends({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-    FriendsFindAllParams['cursor']
+    FriendsFindAllMyFriendsParams['cursor']
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type FriendsFindAllInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof friendsFindAll>>
+export type FriendsFindAllMyFriendsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof friendsFindAllMyFriends>>
 >;
-export type FriendsFindAllInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
+export type FriendsFindAllMyFriendsInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
 
-export function useFriendsFindAllInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof friendsFindAll>>, FriendsFindAllParams['cursor']>,
+export function useFriendsFindAllMyFriendsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+    FriendsFindAllMyFriendsParams['cursor']
+  >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: undefined | FriendsFindAllParams,
+  params: undefined | FriendsFindAllMyFriendsParams,
   options: {
     query: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-        FriendsFindAllParams['cursor']
+        FriendsFindAllMyFriendsParams['cursor']
       >
     > &
       Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof friendsFindAll>>, TError, TData, QueryKey>,
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+          TError,
+          TData,
+          QueryKey
+        >,
         'initialData'
       >;
   },
 ): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useFriendsFindAllInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof friendsFindAll>>, FriendsFindAllParams['cursor']>,
+export function useFriendsFindAllMyFriendsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+    FriendsFindAllMyFriendsParams['cursor']
+  >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: FriendsFindAllParams,
+  params?: FriendsFindAllMyFriendsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-        FriendsFindAllParams['cursor']
+        FriendsFindAllMyFriendsParams['cursor']
       >
     > &
       Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof friendsFindAll>>, TError, TData, QueryKey>,
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+          TError,
+          TData,
+          QueryKey
+        >,
         'initialData'
       >;
   },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useFriendsFindAllInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof friendsFindAll>>, FriendsFindAllParams['cursor']>,
+export function useFriendsFindAllMyFriendsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+    FriendsFindAllMyFriendsParams['cursor']
+  >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: FriendsFindAllParams,
+  params?: FriendsFindAllMyFriendsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-        FriendsFindAllParams['cursor']
+        FriendsFindAllMyFriendsParams['cursor']
       >
     >;
   },
@@ -232,24 +258,204 @@ export function useFriendsFindAllInfinite<
  * @summary Get all friends of the connected user
  */
 
-export function useFriendsFindAllInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof friendsFindAll>>, FriendsFindAllParams['cursor']>,
+export function useFriendsFindAllMyFriendsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
+    FriendsFindAllMyFriendsParams['cursor']
+  >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: FriendsFindAllParams,
+  params?: FriendsFindAllMyFriendsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof friendsFindAll>>,
+        Awaited<ReturnType<typeof friendsFindAllMyFriends>>,
         TError,
         TData,
         QueryKey,
-        FriendsFindAllParams['cursor']
+        FriendsFindAllMyFriendsParams['cursor']
       >
     >;
   },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getFriendsFindAllInfiniteQueryOptions(params, options);
+  const queryOptions = getFriendsFindAllMyFriendsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get all friend requests of the connected user
+ */
+export const friendsFindAllMyRequests = (
+  params?: FriendsFindAllMyRequestsParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<PaginationResponseFriendRequestResponseData>({
+    url: `/friends/my-requests-collection`,
+    method: 'GET',
+    params,
+    signal,
+  });
+};
+
+export const getFriendsFindAllMyRequestsQueryKey = (params?: FriendsFindAllMyRequestsParams) => {
+  return [`/friends/my-requests-collection`, ...(params ? [params] : [])] as const;
+};
+
+export const getFriendsFindAllMyRequestsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    FriendsFindAllMyRequestsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FriendsFindAllMyRequestsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+        FriendsFindAllMyRequestsParams['cursor']
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFriendsFindAllMyRequestsQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    QueryKey,
+    FriendsFindAllMyRequestsParams['cursor']
+  > = ({ signal, pageParam }) =>
+    friendsFindAllMyRequests({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+    FriendsFindAllMyRequestsParams['cursor']
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type FriendsFindAllMyRequestsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof friendsFindAllMyRequests>>
+>;
+export type FriendsFindAllMyRequestsInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
+
+export function useFriendsFindAllMyRequestsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    FriendsFindAllMyRequestsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params: undefined | FriendsFindAllMyRequestsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+        FriendsFindAllMyRequestsParams['cursor']
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useFriendsFindAllMyRequestsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    FriendsFindAllMyRequestsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FriendsFindAllMyRequestsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+        FriendsFindAllMyRequestsParams['cursor']
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useFriendsFindAllMyRequestsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    FriendsFindAllMyRequestsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FriendsFindAllMyRequestsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+        FriendsFindAllMyRequestsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get all friend requests of the connected user
+ */
+
+export function useFriendsFindAllMyRequestsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+    FriendsFindAllMyRequestsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FriendsFindAllMyRequestsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof friendsFindAllMyRequests>>,
+        TError,
+        TData,
+        QueryKey,
+        FriendsFindAllMyRequestsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getFriendsFindAllMyRequestsInfiniteQueryOptions(params, options);
 
   const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;

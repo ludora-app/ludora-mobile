@@ -11,6 +11,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
   const {
     className,
     control,
+    hasClearIcon,
     hasError = true,
     hasErrorTranslation = true,
     hasMessageError = true,
@@ -21,6 +22,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     name,
     onChangeText,
     placeholder,
+    rightContentProps,
     rightIconAction,
     ...rest
   } = props;
@@ -59,10 +61,12 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
         ...rest,
       }}
       label={label}
+      hasClearIcon={hasClearIcon}
       inputContainerClassName={inputContainerClassName}
       className={className}
       leftIconAction={leftIconAction}
       rightIconAction={rightIconAction}
+      rightContentProps={rightContentProps}
     />
   );
 }

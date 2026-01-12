@@ -6,31 +6,61 @@ import { useTranslate } from '@tolgee/react';
 import { Box, BoxRowCenter, Icon, String } from '@ludo/ui';
 
 import ROUTES from '@/constants/ROUTES';
-import { FiltersCalendarReturnParams } from '@/features/filters/filters-calendar/types/filters-calendar.types';
+import COLORS from '@/constants/COLORS';
 
 import { useFiltersStore } from '../../store/filters.store';
+import {
+  FiltersCalendarReturnParams,
+  FiltersCalendarScreenParams,
+  FiltersScreenParams,
+} from '../../types/filters.types';
 
-type FilterSessionDateProps = FiltersCalendarReturnParams;
+type FilterSessionDateProps = {
+  date?: FiltersCalendarReturnParams['date'];
+  selectedDayCarouselDate?: FiltersScreenParams['selectedDayCarouselDate'];
+};
 
 function FilterSessionDate(props: FilterSessionDateProps) {
-  const { date } = props;
+  const { date, selectedDayCarouselDate } = props;
 
   const router = useRouter();
   const { t } = useTranslate();
   const setFilters = useFiltersStore(state => state.setFilters);
-  const selectedDate = useFiltersStore(state => state.filters.date);
+  const selectedDate = useFiltersStore(state => state.filters.date?.date);
+
   const formatedDate = dayjs(selectedDate).format('DD/MM/YYYY');
 
   const handlePress = () => {
+    const params: FiltersCalendarScreenParams = {
+      goBackPath: ROUTES.FILTERS.FILTER,
+      initialDate: selectedDate?.toISOString(),
+    };
     router.navigate({
-      params: { GoBackPath: ROUTES.FILTERS.FILTER, initialDate: selectedDate?.toISOString() },
+      params,
       pathname: ROUTES.FILTERS.FILTER_CALENDAR,
     });
   };
 
   useEffect(() => {
+    if (selectedDayCarouselDate) {
+      setFilters({
+        date: {
+          date: new Date(selectedDayCarouselDate),
+          source: 'carousel',
+        },
+        selectedDayCarouselDate,
+      });
+    }
+  }, [selectedDayCarouselDate, setFilters]);
+
+  useEffect(() => {
     if (date) {
-      setFilters({ date: new Date(date) });
+      setFilters({
+        date: {
+          date: new Date(date),
+          source: 'filter',
+        },
+      });
     }
   }, [date, setFilters]);
 
@@ -38,7 +68,7 @@ function FilterSessionDate(props: FilterSessionDateProps) {
     <Pressable onPress={handlePress}>
       <Box className="flex-row items-center justify-between gap-2 rounded-xl border border-ring bg-white p-3 py-4">
         <Box className="flex-row items-center gap-2">
-          <Icon name="calendar-date-regular" color="#666" />
+          <Icon name="calendar-date-regular" color={COLORS.muted} />
           <String variant="body-sm" font="primaryBold" colorVariant="muted">
             {t('filters.session_date_title')}
           </String>
@@ -47,7 +77,7 @@ function FilterSessionDate(props: FilterSessionDateProps) {
           <String variant="body-sm" font="primaryBold">
             {formatedDate}
           </String>
-          <Icon name="arrow-right-regular" color="#666" size="sm" />
+          <Icon name="arrow-right-regular" color={COLORS.muted} size="sm" />
         </BoxRowCenter>
       </Box>
     </Pressable>

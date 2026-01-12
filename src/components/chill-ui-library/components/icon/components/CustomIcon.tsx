@@ -1,5 +1,5 @@
 import { cssInterop } from 'nativewind';
-import Svg, { ClipPath, Defs, G, Path, Rect, type SvgProps } from 'react-native-svg';
+import Svg, { ClipPath, Defs, G, Path, Rect, Ellipse, type SvgProps, Circle } from 'react-native-svg';
 
 import { ICONS } from '../../../constants';
 import { useIconContext, type IconConfig, type IconStructure } from '../context/IconContext';
@@ -57,6 +57,10 @@ const renderStructure = (structure: IconStructure, color?: string, index?: numbe
       );
     case 'rect':
       return <Rect key={key} {...structure.props} />;
+    case 'ellipse':
+      return <Ellipse key={key} {...structure.props} />;
+    case 'circle':
+      return <Circle key={key} {...structure.props} />;
     default:
       return null;
   }

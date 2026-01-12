@@ -1,5 +1,4 @@
 import { AvatarProps } from '../../../types';
-
 import getUserInitials from '../utils/getUsersInititials';
 
 export const useAvatar = (data: AvatarProps['data']) => {

@@ -16,8 +16,12 @@ export const filtersMapper = (filters: Filters) => {
     filter.duration = null;
   }
   if (filters.date) {
-    const date = String(filters?.date);
-    filter.date = { date, source: 'filter' };
+    const date = String(filters?.date.date);
+    if (filters.date.source === 'filter') {
+      filter.date = { date, source: 'filter' };
+    } else {
+      filter.date = { date, source: 'day-carousel' };
+    }
   } else {
     filter.date = { date: new Date().toISOString(), source: 'day-carousel' };
   }

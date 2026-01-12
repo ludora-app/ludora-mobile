@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Box, Icon, String } from '@ludo/ui';
-import { OutlinedString, Wrapper } from '@chillui/ui';
+import { OutlinedString, WrapperSafeAreaView } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -10,13 +10,13 @@ interface HeaderProps {
   hasNewSession?: boolean;
 }
 
-export const HEADER_HEIGHT = 210;
+export const HEADER_HEIGHT = 220;
 
 export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { children, hasNewSession = false, subTitle, title } = props;
 
   return (
-    <Wrapper className="flex-row items-end" hasSafeArea edges={['top']} style={{ height: HEADER_HEIGHT }}>
+    <WrapperSafeAreaView className="flex-row items-end pt-10" edges={['top']} style={{ height: HEADER_HEIGHT }}>
       <Box className="flex-1 flex-row justify-center gap-4">
         <Box className="flex-1 gap-2 pb-3">
           <Box className="-mb-3 w-full">
@@ -46,6 +46,6 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
           </Box>
         )}
       </Box>
-    </Wrapper>
+    </WrapperSafeAreaView>
   );
 }

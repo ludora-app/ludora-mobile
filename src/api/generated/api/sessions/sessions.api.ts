@@ -28,7 +28,6 @@ import type {
   CreateSessionFromRequestDto,
   NotFoundResponseDto,
   PaginationResponseSessionCollectionItemDto,
-  ResponseTypeDto,
   SessionResponseDto,
   SessionsFindAllByUserUidParams,
   SessionsFindAllParams,
@@ -44,7 +43,7 @@ export const sessionsCreate = (
   createSessionFromRequestDto: CreateSessionFromRequestDto,
   signal?: AbortSignal,
 ) => {
-  return customInstance<ResponseTypeDto>({
+  return customInstance<SessionResponseDto>({
     url: `/sessions`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

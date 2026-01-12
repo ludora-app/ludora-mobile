@@ -2292,15 +2292,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
-                }
-              }
-            }
+          "204": {
+            "description": "Friend request created successfully"
           },
           "400": {
             "description": "",
@@ -2354,9 +2347,9 @@
         ]
       }
     },
-    "/friends/my-collection": {
+    "/friends/my-friends-collection": {
       "get": {
-        "operationId": "FriendsController_findAll",
+        "operationId": "FriendsController_findAllMyFriends",
         "parameters": [
           {
             "name": "limit",
@@ -2376,6 +2369,16 @@
             "description": "Cursor for pagination",
             "schema": {
               "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionUid",
+            "required": false,
+            "in": "query",
+            "description": "Session UID to check if the friends have been invited to the session",
+            "schema": {
+              "example": "cmajhjkjf000bq77q4b5ugn8b",
               "type": "string"
             }
           },
@@ -2426,6 +2429,83 @@
           }
         ],
         "summary": "Get all friends of the connected user",
+        "tags": [
+          "Friends"
+        ]
+      }
+    },
+    "/friends/my-requests-collection": {
+      "get": {
+        "operationId": "FriendsController_findAllMyRequests",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit of users to return",
+            "schema": {
+              "minimum": 1,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "fcacfaca3c2a323bhf",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseFriendRequestResponseData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all friend requests of the connected user",
         "tags": [
           "Friends"
         ]
@@ -2666,7 +2746,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseTypeDto"
+                  "$ref": "#/components/schemas/SessionResponseDto"
                 }
               }
             }
@@ -6683,6 +6763,18 @@
       "FriendResponseData": {
         "type": "object",
         "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "Firstname of the friend",
+            "example": "John",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "description": "Lastname of the friend",
+            "example": "Doe",
+            "readOnly": true
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string",
@@ -6709,25 +6801,26 @@
             "example": "cmajhjkjf000bq77q4b5ugn8b",
             "readOnly": true
           },
-          "userName": {
-            "type": "string",
-            "description": "Concatenated firstname and lastname of the friend",
-            "example": "John Doe",
-            "readOnly": true
-          },
-          "userProfilePicture": {
+          "avatarUrl": {
             "type": "string",
             "description": "Friend request user profile picture",
             "example": "https://example.com/image.jpg",
             "nullable": true,
             "readOnly": true
+          },
+          "isInvited": {
+            "type": "boolean",
+            "description": "If the friend has been invited to a session",
+            "example": true,
+            "readOnly": true
           }
         },
         "required": [
+          "firstname",
+          "lastname",
           "status",
           "friendUid",
-          "userName",
-          "userProfilePicture"
+          "avatarUrl"
         ]
       },
       "PaginationDataFriendResponseData": {
@@ -6768,6 +6861,102 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/PaginationDataFriendResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FriendRequestResponseData": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "Firstname of the friend",
+            "example": "John",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "description": "Lastname of the friend",
+            "example": "Doe",
+            "readOnly": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Friend request creation date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Friend request update date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "Friend request user profile picture",
+            "example": "https://example.com/image.jpg",
+            "nullable": true,
+            "readOnly": true
+          },
+          "senderUid": {
+            "type": "string",
+            "description": "Sender uid of the friend request",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "avatarUrl",
+          "senderUid"
+        ]
+      },
+      "PaginationDataFriendRequestResponseData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FriendRequestResponseData"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseFriendRequestResponseData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataFriendRequestResponseData"
               }
             ]
           }
@@ -6892,6 +7081,137 @@
           "gameMode",
           "startDate",
           "endDate"
+        ]
+      },
+      "SessionResponseData": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Session description",
+            "example": "Test session",
+            "readOnly": true
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "Sport played during the session",
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Session title",
+            "example": "Session 1",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "object",
+            "description": "Session game mode",
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Session visibility",
+            "example": "PUBLIC",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "sport",
+          "startDate",
+          "gameMode",
+          "creatorUid"
+        ]
+      },
+      "SessionResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "TeamFromSessionCollectionItemDto": {
@@ -7097,137 +7417,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/PaginationDataSessionCollectionItemDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "SessionResponseData": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session creation date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "description": {
-            "type": "string",
-            "description": "Session description",
-            "example": "Test session",
-            "readOnly": true
-          },
-          "endDate": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session end date",
-            "example": "2025-01-01T11:00:00.000Z",
-            "readOnly": true
-          },
-          "uid": {
-            "type": "string",
-            "description": "Session ID",
-            "example": "cmaistjrg001yob7oe0mqu3ws",
-            "readOnly": true
-          },
-          "maxPlayersPerTeam": {
-            "type": "number",
-            "description": "Maximum number of players per team",
-            "example": 5,
-            "readOnly": true
-          },
-          "teamsPerGame": {
-            "type": "number",
-            "description": "Number of teams per game",
-            "example": 2,
-            "readOnly": true
-          },
-          "minPlayersPerTeam": {
-            "type": "number",
-            "description": "Minimum number of players per team",
-            "example": 3,
-            "readOnly": true
-          },
-          "sport": {
-            "enum": [
-              "BASKETBALL",
-              "FOOTBALL",
-              "TENNIS",
-              "VOLLEYBALL",
-              "PADDEL",
-              "BADMINTON",
-              "PING-PONG"
-            ],
-            "type": "string",
-            "description": "Sport played during the session",
-            "example": "FOOTBALL",
-            "readOnly": true
-          },
-          "startDate": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session start date",
-            "example": "2025-01-01T10:00:00.000Z",
-            "readOnly": true
-          },
-          "title": {
-            "type": "string",
-            "description": "Session title",
-            "example": "Session 1",
-            "readOnly": true
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session update date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "gameMode": {
-            "type": "object",
-            "description": "Session game mode",
-            "example": "THREE_VS_THREE",
-            "readOnly": true
-          },
-          "creatorUid": {
-            "type": "string",
-            "description": "Session creator",
-            "example": "cmajhjkjf000bq77q4b5ugn8b",
-            "readOnly": true
-          },
-          "visibility": {
-            "type": "object",
-            "description": "Session visibility",
-            "example": "PUBLIC",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "endDate",
-          "uid",
-          "maxPlayersPerTeam",
-          "sport",
-          "startDate",
-          "gameMode",
-          "creatorUid"
-        ]
-      },
-      "SessionResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SessionResponseData"
               }
             ]
           }
@@ -7540,11 +7729,6 @@
       "SessionTeamResponseData": {
         "type": "object",
         "properties": {
-          "uid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
           "teamName": {
             "type": "string",
             "example": "Team A",
@@ -7569,22 +7753,26 @@
             "example": "2025-05-10T22:30:32.525Z",
             "readOnly": true
           },
-          "Session_players": {
+          "sessionPlayers": {
             "description": "Players in the team",
             "readOnly": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FlattenedSessionPlayer"
             }
+          },
+          "numberOfPlayers": {
+            "type": "number",
+            "description": "Number of players in the team",
+            "example": 1,
+            "readOnly": true
           }
         },
         "required": [
-          "uid",
           "teamName",
           "teamLabel",
-          "updatedAt",
-          "createdAt",
-          "Session_players"
+          "sessionPlayers",
+          "numberOfPlayers"
         ]
       },
       "PaginationDataSessionTeamResponseData": {

@@ -1,9 +1,9 @@
-import { useFriendsFindAllInfinite } from '@generatedApi/friends/friends.api';
+import { useFriendsFindAllMyFriendsInfinite } from '@generatedApi/friends/friends.api';
 
-import { FriendsFindAllParams } from '@/api/generated/model';
+import { FriendsFindAllMyFriendsParams } from '@/api/generated/model';
 
-export const useGetUserFriends = (filter: FriendsFindAllParams) =>
-  useFriendsFindAllInfinite(filter, {
+export const useGetUserFriends = (filter: FriendsFindAllMyFriendsParams) =>
+  useFriendsFindAllMyFriendsInfinite(filter, {
     query: {
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },

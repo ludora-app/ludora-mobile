@@ -24,6 +24,7 @@ export const useWebsocketConnection = () => {
   };
 
   const handleWSMessage = ({ payload, ressource }: { ressource: string; payload: any }) => {
+    console.log('----WS: ', payload);
     switch (ressource) {
       case WS_RESOURCES.MESSAGE:
         console.log('----WS: CHAT_ROOM_MESSAGE', payload);

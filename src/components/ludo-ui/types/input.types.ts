@@ -1,6 +1,7 @@
 import { InputFieldProps } from '@chillui/ui';
 
 import { IconProps } from './icon.types';
+import { StringProps } from './string.types';
 
 export type InputProps = {
   label?: string;
@@ -13,4 +14,7 @@ export type InputProps = {
   hasError?: boolean;
   hasMessageError?: boolean;
   hasClearIcon?: boolean;
+  rightContentProps?: StringProps & {
+    content: string;
+  };
 };

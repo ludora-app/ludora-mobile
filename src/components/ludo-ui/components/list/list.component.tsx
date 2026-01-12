@@ -1,20 +1,15 @@
 import { list } from 'radash';
-import React, { useCallback, useMemo } from 'react';
-import { FlashList, FlashListProps } from '@shopify/flash-list';
+import { cn } from '@chillui/ui';
+import { useCallback, useMemo } from 'react';
+import { FlashList } from '@shopify/flash-list';
 
-type ListProps = {
-  fetchNextPage: () => void;
-  isFetchingNextPage: boolean;
-  isLoading: boolean;
-  isRefetching: boolean;
-  itemComponent: React.ComponentType<{ item: any }>;
-  items: any[];
-  skeletonComponent?: React.ComponentType;
-  hasNextPage: boolean;
-} & Omit<FlashListProps<any>, 'renderItem' | 'getItemType' | 'data' | 'keyExtractor'>;
+import { EmptyResult } from '@/components/ui/empty-resulat';
+
+import ListFooter from './list-footer.component';
+import { ListProps } from '../../types/list.types';
 
 type SkeletonItem = { type: 'skeleton'; uid: string };
-type ListItem = FieldResponseDto | SkeletonItem;
+type ListItem = any[] | SkeletonItem;
 
 const SKELETON_COUNT = 3;
 const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
@@ -24,14 +19,16 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
 
 export default function List(props: ListProps) {
   const {
+    contentContainerClassName,
+    emptyResultTitle,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading,
     isRefetching,
-    itemComponent: ItemComponent,
+    ItemComponent,
     items,
-    skeletonComponent: SkeletonComponent,
+    SkeletonComponent,
     ...rest
   } = props;
 
@@ -64,7 +61,7 @@ export default function List(props: ListProps) {
     if ('type' in item && item.type === 'skeleton') {
       return (item as SkeletonItem).uid;
     }
-    return item?.uid?.toString();
+    return (item as any)?.uid?.toString();
   }, []);
 
   return (
@@ -76,9 +73,12 @@ export default function List(props: ListProps) {
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
       onEndReached={onEndReached}
-      onEndReachedThreshold={0.7}
+      onEndReachedThreshold={0.5}
+      contentContainerClassName={cn('pb-5', contentContainerClassName)}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always"
+      ListFooterComponent={<ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />}
+      ListEmptyComponent={<EmptyResult title={emptyResultTitle} />}
       {...rest}
     />
   );

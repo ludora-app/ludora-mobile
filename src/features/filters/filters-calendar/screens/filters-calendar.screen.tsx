@@ -2,27 +2,32 @@ import { Wrapper } from '@ludo/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { Calendar } from '@/components/ui/calendar';
+import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
-import { FiltersCalendarScreenParams } from '../types/filters-calendar.types';
+import { FiltersCalendarReturnParams, FiltersCalendarScreenParams } from '../types/filters-calendar.types';
 
 const defaultInitialDate = new Date();
 
 export default function FiltersCalendarScreen() {
   const router = useRouter();
-  const { GoBackPath, initialDate } = useLocalSearchParams<FiltersCalendarScreenParams>();
+  const { goBackPath, initialDate } = useLocalSearchParams<FiltersCalendarScreenParams>();
 
   const onCancel = () => {
-    router.dismissTo({ pathname: GoBackPath });
+    router.dismissTo({ pathname: goBackPath });
   };
 
   const onValidate = (date: Date) => {
-    router.dismissTo({ params: { date: date.toISOString() }, pathname: GoBackPath });
+    const params: FiltersCalendarReturnParams = { date: date.toISOString() };
+    router.dismissTo({ params, pathname: goBackPath });
   };
 
   const calendarInitialDate = initialDate ? new Date(initialDate) : defaultInitialDate;
   return (
-    <Wrapper className="pt-3">
-      <Calendar initialDate={calendarInitialDate} onCancel={onCancel} onValidate={onValidate} />
-    </Wrapper>
+    <>
+      <FormSheetHeader />
+      <Wrapper className="pt-3">
+        <Calendar initialDate={calendarInitialDate} onCancel={onCancel} onValidate={onValidate} />
+      </Wrapper>
+    </>
   );
 }

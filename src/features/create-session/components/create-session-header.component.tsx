@@ -17,7 +17,7 @@ export default function CreateSessionHeader(props: CreateSessionHeaderProps) {
   const router = useRouter();
 
   const handleGoBack = () => {
-    if (activeStep === 1) {
+    if (activeStep === 1 || activeStep === 4) {
       router.back();
       return;
     }
@@ -25,7 +25,7 @@ export default function CreateSessionHeader(props: CreateSessionHeaderProps) {
   };
 
   return (
-    <Box style={{ paddingTop: top }}>
+    <Box style={{ paddingTop: top }} className="relative z-50 bg-background">
       <Box className="flex-row items-center justify-center py-6">
         <Box className="absolute left-4">
           <IconButton

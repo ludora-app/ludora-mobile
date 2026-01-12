@@ -1,11 +1,10 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import { FiltersCalendarReturnParams } from '@/features/filters/filters-calendar/types/filters-calendar.types';
-
 import FilterSessionDate from './filter-session-date.component';
+import { FiltersCalendarReturnParams, FiltersScreenParams } from '../../types/filters.types';
 
 export default function FilterSessionDateWrapper() {
-  const { date } = useLocalSearchParams<FiltersCalendarReturnParams>();
+  const { date, selectedDayCarouselDate } = useLocalSearchParams<FiltersCalendarReturnParams & FiltersScreenParams>();
 
-  return <FilterSessionDate date={date} />;
+  return <FilterSessionDate date={date} selectedDayCarouselDate={selectedDayCarouselDate} />;
 }

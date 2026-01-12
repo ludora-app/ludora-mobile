@@ -2,20 +2,20 @@ import { list } from 'radash';
 import { useCallback, useMemo } from 'react';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated, { SharedValue } from 'react-native-reanimated';
-import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, StyleSheet } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet } from 'react-native';
 
-import COLORS from '@/constants/COLORS';
+import { IS_IOS } from '@/constants/PLATFORM';
+import { ListAnimated } from '@/components/ludo-ui';
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import { IS_ANDROID, IS_IOS } from '@/constants/PLATFORM';
 import { SessionCollectionItem } from '@/api/generated/model';
 import { HEADER_HEIGHT } from '@/components/ui/header/components/header.component';
 
-import HomeSessionCard from '../home-session-card.component';
-import HomeSessionCardSkeleton from '../home-session-card-skeleton.component';
-import HomeSessionCardListEmpty from './home-session-card-list-empty.component';
-import HomeSessionCardListHeader from './home-session-card-list-header.component';
-import HomeSessionCardListFooter from './home-session-card-list-footer.component';
 import { useGetAllSessionsByFilter } from '../../../queries/get-sessions-by-filter.query';
+import HomeSessionListItem from './home-session-list-item/home-session-list-item.component';
+import HomeSessionCardListHeader from './home-session-card-list-headers/home-session-card-list-header.component';
+import HomeSessionCardSkeleton from '../home-session-list/home-session-list-item/home-session-list-item-skeleton.component';
+import HomeSessionCardListHeaderSticky from './home-session-card-list-headers/home-session-card-list-header-sticky.component';
+import { HomeSessionCardListHeaderTopList } from './home-session-card-list-headers/home-session-card-list-header-top-list.component';
 
 interface HomeSessionCardListProps {
   scrollY?: SharedValue<number>;
@@ -105,33 +105,20 @@ export default function HomeSessionCardList({ scrollY }: HomeSessionCardListProp
   }, []);
 
   return (
-    <AnimatedFlashList
-      data={dataToRender}
-      renderItem={renderItem}
-      getItemType={getItemType}
-      keyExtractor={keyExtractor}
-      ListEmptyComponent={<HomeSessionCardListEmpty />}
-      contentContainerStyle={{ marginTop: listPaddingTop, paddingBottom: bottomTab + listPaddingTop }}
-      contentContainerClassName="bg-background rounded-t-2xl"
-      style={styles.listShadow}
-      showsVerticalScrollIndicator={false}
-      ListHeaderComponent={<HomeSessionCardListHeader scrollY={scrollY} isFetching={isShowingRefreshControl} />}
-      ListFooterComponent={<HomeSessionCardListFooter isFetchingNextPage={isFetchingNextPage} />}
+    <ListAnimated
+      items={sessions}
+      ItemComponent={HomeSessionListItem}
+      fetchNextPage={fetchNextPage}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      isLoading={isLoading}
+      isRefetching={isRefetching}
+      SkeletonComponent={HomeSessionCardSkeleton}
+      contentContainerClassName="rounded-t-2xl"
       onScroll={scrollHandler}
-      scrollEventThrottle={16}
-      onScrollEndDrag={onScrollEndDrag}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.7}
-      refreshControl={
-        IS_ANDROID && (
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={refetch}
-            colors={[COLORS.primary]}
-            progressViewOffset={top}
-          />
-        )
-      }
+      HeaderComponent={HomeSessionCardListHeaderTopList}
+      TopListElementComponent={<HomeSessionCardListHeader scrollY={scrollY} isFetching={isShowingRefreshControl} />}
+      StickyElementComponent={HomeSessionCardListHeaderSticky}
     />
   );
 }

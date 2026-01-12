@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import { ToastPositionProps, ToastVariantProps } from '../../../types';
 
 export const useToastState = () => {

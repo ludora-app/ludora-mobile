@@ -1,3 +1,4 @@
+import { filterObjectEntries } from '@/utils/filters.utils';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
 import { useGetFields } from './get-fields.query';
@@ -8,7 +9,7 @@ const LIMIT_RESULTS_FIELDS = 10;
 export const useGetAllFieldsByFilter = () => {
   const filters = useCreateSessionFiltersFieldsStore(state => state.filters);
 
-  const cleanedFilters = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== null));
+  const cleanedFilters = filterObjectEntries(filters);
 
   const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
 

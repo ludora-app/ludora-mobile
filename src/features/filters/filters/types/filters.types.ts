@@ -1,9 +1,14 @@
-import { RouteValues } from '@/constants/ROUTES';
+import ROUTES from '@/constants/ROUTES';
+import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 
-export type FiltersScreenParams = {
-  goBackPath: RouteValues;
-};
+export type FiltersScreenParams = RootStackParamList[typeof ROUTES.FILTERS.FILTER];
 
-export type FiltersReturnParams = {
-  selectedFilters?: string;
-};
+export type FiltersReturnParams = ReturnStackParamList[typeof ROUTES.FILTERS.FILTER];
+
+export type FiltersCalendarScreenParams = RootStackParamList[typeof ROUTES.FILTERS.FILTER_CALENDAR];
+
+export type FiltersCalendarReturnParams = ReturnStackParamList[typeof ROUTES.FILTERS.FILTER_CALENDAR];
+
+export type FiltersAddressesScreenParams = RootStackParamList[typeof ROUTES.FILTERS.FILTER_ADDRESSES];
+
+export type FiltersAddressesReturnParams = ReturnStackParamList[typeof ROUTES.FILTERS.FILTER_ADDRESSES];

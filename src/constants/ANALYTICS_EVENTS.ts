@@ -36,6 +36,11 @@ export const ANALYTICS_EVENTS = {
     STEP_1_COMPLETED: 'create_session_step_1_completed',
     STEP_2_COMPLETED: 'create_session_step_2_completed',
   },
+
+  FILTERS: {
+    FILTER_FIELDS_APPLIED: 'filter_fields_applied',
+    FILTER_SESSIONS_ALL_APPLIED: 'filter_sessions_all_applied',
+  },
 } as const;
 
 type DeepValue<T> = T extends string ? T : T extends object ? DeepValue<T[keyof T]> : never;

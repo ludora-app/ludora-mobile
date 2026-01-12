@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+import { FullWindowOverlay } from 'react-native-screens';
 import { createContext, useContext, useRef, useCallback, useMemo, PropsWithChildren } from 'react';
 
 import Toast from './Toast';
@@ -92,6 +94,16 @@ export function ToastProvider({
     },
     [defaultDuration],
   );
+  const renderToast = () => (
+    <Toast
+      ref={toastRef}
+      variants={variants}
+      allowMultiple={allowMultiple}
+      maxToasts={maxToasts}
+      swipeable={swipeable}
+      offsetY={offsetY}
+    />
+  );
 
   /** Memoized context value to prevent unnecessary re-renders */
   const value = useMemo(() => ({ toast }), [toast]);
@@ -100,14 +112,7 @@ export function ToastProvider({
     <ToastContext.Provider value={value}>
       {children}
 
-      <Toast
-        ref={toastRef}
-        variants={variants}
-        allowMultiple={allowMultiple}
-        maxToasts={maxToasts}
-        swipeable={swipeable}
-        offsetY={offsetY}
-      />
+      {Platform.OS === 'ios' ? <FullWindowOverlay>{renderToast()}</FullWindowOverlay> : renderToast()}
     </ToastContext.Provider>
   );
 }

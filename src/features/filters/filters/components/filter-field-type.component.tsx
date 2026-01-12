@@ -3,7 +3,14 @@ import { Box, Button, Icon, String } from '@ludo/ui';
 
 import { useFiltersStore } from '../store/filters.store';
 
-const fieldType = [
+type FieldsType = 'ALL' | 'PRIVATE' | 'PUBLIC';
+
+type FieldTypeProps = {
+  id: FieldsType;
+  value: FieldsType;
+};
+
+const fieldType: FieldTypeProps[] = [
   {
     id: 'ALL',
     value: 'ALL',

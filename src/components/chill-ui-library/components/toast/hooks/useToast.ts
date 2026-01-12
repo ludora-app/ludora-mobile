@@ -1,17 +1,16 @@
 import { useCallback, useMemo } from 'react';
-import { ToastVariantProps, ToastPositionProps } from '../../../types';
 
 import { useToastState } from './useToastState';
 import { variantConfig } from '../utils/toastConfig';
 import { useToastAnimation } from './useToastAnimation';
+import { ToastVariantProps, ToastPositionProps } from '../../../types';
 
-export const useToast = (variants: any) => {
+export const useToast = (variants: any, onDismiss?: () => void) => {
   const {
     customRender,
     hideToast: hideToastState,
     isVisible,
     message,
-    resetState,
     showToast: showToastState,
     title,
     toastPosition,
@@ -21,11 +20,11 @@ export const useToast = (variants: any) => {
 
   const {
     hideToast: hideToastAnimation,
-    opacityAnim,
-    progressWidthAnim,
-    scaleAnim,
+    opacity,
+    progressWidth,
+    scale,
     showToast: showToastAnimation,
-    translateYAnim,
+    translateY,
   } = useToastAnimation();
 
   const getConfig = useCallback(
@@ -33,28 +32,15 @@ export const useToast = (variants: any) => {
       const defaultConfig = variantConfig[variantType];
       const customConfig = variants[variantType];
 
-      if (!customConfig) {
-        return defaultConfig;
-      }
+      if (!customConfig) return defaultConfig;
+      if (!defaultConfig) return customConfig;
 
-      if (!defaultConfig) {
-        return customConfig;
-      }
       return {
         ...defaultConfig,
         ...customConfig,
-        iconProps: {
-          ...defaultConfig.iconProps,
-          ...customConfig.iconProps,
-        },
-        messageStringProps: {
-          ...defaultConfig.messageStringProps,
-          ...customConfig.messageStringProps,
-        },
-        titleStringProps: {
-          ...defaultConfig.titleStringProps,
-          ...customConfig.titleStringProps,
-        },
+        iconProps: { ...defaultConfig.iconProps, ...customConfig.iconProps },
+        messageStringProps: { ...defaultConfig.messageStringProps, ...customConfig.messageStringProps },
+        titleStringProps: { ...defaultConfig.titleStringProps, ...customConfig.titleStringProps },
       };
     },
     [variants],
@@ -69,22 +55,23 @@ export const useToast = (variants: any) => {
       position: ToastPositionProps = 'bottom',
       duration: number = 3000,
     ) => {
-      resetState();
-
       updateToastData(msg, variantType, position, toastTitle, render);
 
-      setTimeout(() => {
-        showToastState();
+      showToastState();
+
+      requestAnimationFrame(() => {
         showToastAnimation(position, duration).then(() => {
           hideToastAnimation(position).then(() => {
             hideToastState();
+            if (onDismiss) {
+              onDismiss();
+            }
           });
         });
-      }, 0);
+      });
     },
-    [resetState, updateToastData, showToastState, showToastAnimation, hideToastAnimation, hideToastState],
+    [updateToastData, showToastState, showToastAnimation, hideToastAnimation, hideToastState, onDismiss],
   );
-
   const config = useMemo(() => getConfig(variant), [variant, getConfig]);
 
   return {
@@ -92,13 +79,13 @@ export const useToast = (variants: any) => {
     customRender,
     isVisible,
     message,
-    opacityAnim,
-    progressWidthAnim,
-    scaleAnim,
+    opacity,
+    progressWidth,
+    scale,
     showToast,
     title,
     toastPosition,
-    translateYAnim,
+    translateY,
     variant,
   };
 };

@@ -92,6 +92,60 @@ export const ICONS = {
     ],
     viewBox: '0 0 448 512',
   },
+  'chill-ui-add-regular': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M6 12H18',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2.5',
+              type: 'path',
+            },
+            {
+              d: 'M12 18V6',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2.5',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_4418_9825)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'white',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_4418_9825',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 24',
+  },
   'chill-ui-checked-circle-solid': {
     fill: 'none',
     structure: {
@@ -196,6 +250,176 @@ export const ICONS = {
               ],
               props: {
                 id: 'clip0_4418_9821',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 24',
+  },
+  'chill-ui-info-circle-regular': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M12 22.9102C17.5228 22.9102 22 18.433 22 12.9102C22 7.38731 17.5228 2.91016 12 2.91016C6.47715 2.91016 2 7.38731 2 12.9102C2 18.433 6.47715 22.9102 12 22.9102Z',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+            {
+              d: 'M11.99 8.2002H12.01',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2',
+              type: 'path',
+            },
+            {
+              d: 'M13.46 17.6202L13 17.5002C12.4 17.3502 11.98 16.8102 11.98 16.1902V12.3502C11.98 11.7102 11.53 11.1502 10.89 11.0202L10.54 10.9502',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_3247_9453)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'none',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_3247_9453',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 25',
+  },
+  'chill-ui-minus-regular': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M6 12H18',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2.5',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_4418_9826)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'white',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_4418_9826',
+              },
+              type: 'clipPath',
+            },
+          ],
+          type: 'defs',
+        },
+      ],
+      type: 'g',
+    },
+    viewBox: '0 0 24 24',
+  },
+  'chill-ui-warning-regular': {
+    fill: 'none',
+    structure: {
+      children: [
+        {
+          children: [
+            {
+              d: 'M12 7.75V13',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+            {
+              d: 'M21.08 8.58003V15.42C21.08 16.54 20.4799 17.58 19.5099 18.15L13.5699 21.58C12.5999 22.14 11.3999 22.14 10.4199 21.58L4.47992 18.15C3.50992 17.59 2.90991 16.55 2.90991 15.42V8.58003C2.90991 7.46003 3.50992 6.41999 4.47992 5.84999L10.4199 2.42C11.3899 1.86 12.5899 1.86 13.5699 2.42L19.5099 5.84999C20.4799 6.41999 21.08 7.45003 21.08 8.58003Z',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '1.5',
+              type: 'path',
+            },
+            {
+              d: 'M12 16.1992V16.2992',
+              stroke: '#fff',
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              strokeWidth: '2',
+              type: 'path',
+            },
+          ],
+          props: {
+            clipPath: 'url(#clip0_4418_9796)',
+          },
+          type: 'g',
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    fill: 'none',
+                    height: 24,
+                    width: 24,
+                  },
+                  type: 'rect',
+                },
+              ],
+              props: {
+                id: 'clip0_4418_9796',
               },
               type: 'clipPath',
             },

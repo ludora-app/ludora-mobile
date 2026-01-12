@@ -23,7 +23,13 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
-  "FriendsController_findAll": {
+  "FriendsController_findAllMyFriends": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "FriendsController_findAllMyRequests": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

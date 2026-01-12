@@ -23,3 +23,4 @@ export * from './badge';
 export * from './toggle';
 export * from './segmentedControl';
 export * from './avatar';
+export * from './numericInput';

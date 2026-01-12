@@ -16,3 +16,5 @@ export * from './slider';
 export * from './badge';
 export * from './toggle';
 export * from './list';
+export * from './avatar';
+export * from './numeric-input';

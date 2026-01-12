@@ -1,12 +1,11 @@
 import { useTranslate } from '@tolgee/react';
-import { Box, String, WrapperScrollView } from '@ludo/ui';
+import { Box, Icon, String, WrapperScrollView } from '@ludo/ui';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 
 import { SessionCard } from '@/components/ui/session-card';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
-import CreateSessionTitle from '../../create-session-title-component';
 import CreateSessionSubtitle from '../../create-session-subtitle-component';
 
 const AnimatedBox = Animated.createAnimatedComponent(Box);
@@ -18,12 +17,14 @@ export default function CreateSessionStep4() {
 
   return (
     <AnimatedBox entering={FadeInRight} className="flex-1">
-      <WrapperScrollView className="pb-10">
-        <CreateSessionTitle title={t('create-session.step-4.title')} />
+      <WrapperScrollView contentContainerClassName="pb-10">
         <Box className="gap-4">
-          <String colorVariant="primary" className="text-center" font="primaryBold">
-            {t('create-session.step-4.subtitle')}
-          </String>
+          <Box className="items-center">
+            <Icon name="ludora-pompom" className="size-32" />
+            <String colorVariant="primary" className="text-center" font="primaryBold" variant="body-3">
+              {t('create-session.step-4.subtitle')}
+            </String>
+          </Box>
           <String className="text-center">{t('create-session.step-4.description')}</String>
           <String useFastText={false}>
             {t('create-session.step-4.quote_part_1')}

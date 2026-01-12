@@ -1,9 +1,11 @@
-import { Avatar, cn } from '@chillui/ui';
+import { cn, useToast } from '@chillui/ui';
+import { useTranslate } from '@tolgee/react';
 import { useShallow } from 'zustand/react/shallow';
-import { BoxRowCenterBetween, BoxRow, String, IconButton, Box } from '@ludo/ui';
+import { BoxRowCenterBetween, BoxRow, String, IconButton, Box, Avatar, Wrapper } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { FriendResponseData } from '@/api/generated/model';
+import { MAX_FRIENDS_TO_INVITE_LIMIT } from '@/features/invite-friends/constants/invite-friends.constants';
 
 import { useInviteFriendsStore } from '../../../stores/invite-friends.store';
 
@@ -12,47 +14,73 @@ interface InviteFriendsListItemProps {
 }
 
 export default function InviteFriendsListItem(props: InviteFriendsListItemProps) {
+  const { t } = useTranslate();
   const { item } = props;
-  const { addFriend, isInvited, removeFriend } = useInviteFriendsStore(
+  const { addFriend, isFriendSelected, numberOfFriends, removeFriend } = useInviteFriendsStore(
     useShallow(state => ({
       addFriend: state.addFriend,
-      isInvited: state.friends.includes(item),
+      isFriendSelected: state.friends.includes(item),
+      numberOfFriends: state.numberOfFriends,
       removeFriend: state.removeFriend,
     })),
   );
+  const { toast } = useToast();
 
-  const { userName, userProfilePicture } = item || {};
+  const { avatarUrl, firstname, isInvited: isFriendInvited, lastname } = item || {};
 
   const handleSubmit = () => {
-    if (isInvited) {
+    if (isFriendInvited) return;
+    if (isFriendSelected) {
       removeFriend(item);
     } else {
+      if (numberOfFriends === MAX_FRIENDS_TO_INVITE_LIMIT) {
+        toast({
+          allowMultiple: true,
+          message: t('invite-friends.max-friends_to_select_warning_message'),
+          variant: 'warning',
+        });
+        return;
+      }
       addFriend(item);
     }
   };
 
+  const isFriendAlreadlyInvited = isFriendInvited || isFriendSelected;
+
   return (
-    <BoxRowCenterBetween className="mb-3 rounded-2xl bg-black/10 px-4 py-3">
-      <BoxRow className="flex-1 items-center gap-3">
-        <Avatar
-          data={{
-            firstname: userName,
-            image_url: userProfilePicture,
-            // lastname: 'amir',
-          }}
+    <Wrapper fill={false}>
+      <BoxRowCenterBetween className="mb-3 gap-3 rounded-2xl border border-primary bg-primary/10 px-4 py-3">
+        <BoxRow className="flex-1 items-center gap-3">
+          <Avatar
+            data={{
+              firstname,
+              imageUrl: avatarUrl,
+              lastname,
+            }}
+          />
+          <BoxRow className="flex-1 items-center">
+            <Box className="flex-1">
+              <String useFastText={false} truncate>
+                {firstname} {lastname}
+              </String>
+            </Box>
+            {isFriendInvited && (
+              <String color="#666" variant="body-xs" useFastText={false}>
+                {t('invite-friends.friend_already_invited')}
+              </String>
+            )}
+          </BoxRow>
+        </BoxRow>
+        <IconButton
+          isDisabled={isFriendInvited}
+          onPress={handleSubmit}
+          iconName={isFriendAlreadlyInvited ? 'forward-contact-regular' : 'user-add-regular'}
+          variant="outlined"
+          iconColor={COLORS.primary}
+          rounded="circle"
+          className={cn(isFriendAlreadlyInvited && 'opacity-60')}
         />
-        <Box className="flex-1">
-          <String className="text-gray-900 text-base font-semibold">{userName}</String>
-        </Box>
-      </BoxRow>
-      <IconButton
-        onPress={handleSubmit}
-        iconName={isInvited ? 'forward-contact-regular' : 'user-add-regular'}
-        variant="outlined"
-        iconColor={COLORS.primary}
-        rounded="circle"
-        className={cn(isInvited && 'opacity-60')}
-      />
-    </BoxRowCenterBetween>
+      </BoxRowCenterBetween>
+    </Wrapper>
   );
 }

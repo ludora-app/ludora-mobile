@@ -8,8 +8,8 @@ const ROUTES = {
     VERIFY_CODE: '/auth/verify-code',
   },
   CREATE_SESSION: {
-    FIELD_CARD_PUBLIC_AVAILIBILITIES_FORM_SHEET: '/create-session/create-session-field-card-public-availibilities',
     INDEX: '/create-session',
+    STEP_2_DURATION_FORM_SHEET: '/create-session/create-session-duration',
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
   },
   DEV_TOOLS: {

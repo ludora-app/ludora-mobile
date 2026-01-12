@@ -1,12 +1,11 @@
-import { Box, String } from '@ludo/ui';
+import { String, Wrapper } from '@ludo/ui';
+import { useTranslate } from '@tolgee/react';
 
 export default function InviteFriendsHeader() {
+  const { t } = useTranslate();
   return (
-    <Box>
-      <String variant="title-1" font="primaryBold">
-        Inviter tes amis
-      </String>
-      <String colorVariant="muted">Sélectionne les amis à inviter à cette session</String>
-    </Box>
+    <Wrapper fill={false}>
+      <String colorVariant="muted">{t('invite-friends.header_title')}</String>
+    </Wrapper>
   );
 }

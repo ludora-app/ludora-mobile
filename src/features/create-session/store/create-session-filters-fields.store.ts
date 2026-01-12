@@ -38,38 +38,31 @@ interface CreateSessionFiltersFieldsStore {
 
   setFilters: (filters: FiltersProps) => void;
 }
+const getStartDay = () => {
+  const now = dayjs();
+  if (now.hour() >= 22) {
+    return now.add(1, 'day').toISOString();
+  }
+  return now.toISOString();
+};
 
 export const useCreateSessionFiltersFieldsStore = create<CreateSessionFiltersFieldsStore>((set, get) => ({
   filters: {
     date: {
-      date: new Date().toISOString(),
+      date: getStartDay(),
       source: 'day-carousel',
     },
   },
   numberOfFilters: 0,
   reset: () => {
-    const currentFilters = get().filters;
-    const resetFilters: FiltersProps = {
-      date:
-        currentFilters.date?.source === 'day-carousel'
-          ? currentFilters.date
-          : {
-              date: new Date().toISOString(),
-              source: 'day-carousel',
-            },
-    };
-
-    if (currentFilters.gameModes) {
-      resetFilters.gameModes = currentFilters.gameModes;
-    }
-
-    if (currentFilters.sports) {
-      resetFilters.sports = currentFilters.sports;
-    }
-
     set({
-      filters: resetFilters,
-      numberOfFilters: calculateNumberOfFilters(resetFilters),
+      filters: {
+        date: {
+          date: getStartDay(),
+          source: 'day-carousel',
+        },
+      },
+      numberOfFilters: 0,
     });
   },
 

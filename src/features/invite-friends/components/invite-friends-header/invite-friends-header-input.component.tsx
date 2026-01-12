@@ -1,24 +1,53 @@
 import { useForm } from 'react-hook-form';
-import { Box, FormInput } from '@ludo/ui';
+import { debounce, isString } from 'radash';
+import { useTranslate } from '@tolgee/react';
+import { FormInput, Wrapper } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { inviteFriendsSearchSchema } from '../../schemas/invite-friends.schema';
+import { useInviteFriendsFilterStore } from '../../stores/invite-friends-filter.store';
 import InviteFriendsHeaderInvitedFriends from './invite-friends-header-invited-friends.component';
 
 export default function InviteFriendsHeaderInput() {
+  const { t } = useTranslate();
+  const setFilter = useInviteFriendsFilterStore(state => state.setFilter);
   const { control, watch } = useForm({
     defaultValues: { search: '' },
     resolver: zodResolver(inviteFriendsSearchSchema),
   });
+  const inputValue = watch('search');
+
+  const handleSearch = useCallback(
+    async (searchValue: string) => {
+      setFilter({ name: searchValue });
+    },
+    [setFilter],
+  );
+
+  const debouncedSearchRef = useRef(
+    debounce({ delay: 300 }, (searchValue: string) => {
+      handleSearch(searchValue);
+    }),
+  );
+
+  useEffect(() => {
+    if (isString(inputValue)) {
+      debouncedSearchRef.current(inputValue);
+    }
+  }, [inputValue]);
+
   return (
-    <Box className="gap-3 bg-background py-2">
-      <FormInput
-        control={control}
-        name="search"
-        placeholder="Rechercher un ami..."
-        leftIconAction={{ color: '#000', name: 'search-regular', size: 'sm' }}
-      />
+    <>
+      <Wrapper fill={false} className="gap-3 bg-white pb-3 pt-2">
+        <FormInput
+          control={control}
+          name="search"
+          placeholder={t('invite-friends.header_input_placeholder')}
+          leftIconAction={{ color: '#000', name: 'search-regular', size: 'sm' }}
+        />
+      </Wrapper>
       <InviteFriendsHeaderInvitedFriends />
-    </Box>
+    </>
   );
 }

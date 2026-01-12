@@ -26,7 +26,7 @@ export interface IconStructure {
   strokeLinejoin?: string;
   props?: Record<string, any>;
   children?: readonly IconStructure[];
-  type: 'g' | 'path' | 'defs' | 'clipPath' | 'rect';
+  type: 'g' | 'path' | 'defs' | 'clipPath' | 'rect' | 'ellipse' | 'circle';
 }
 
 export interface IconConfig {

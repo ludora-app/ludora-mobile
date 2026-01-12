@@ -2,16 +2,20 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { penTool, openBook } from 'assets';
 import { FloatingDevTools } from '@buoy-gg/core';
+import { FullWindowOverlay } from 'react-native-screens';
 
 import ROUTES from '@/constants/ROUTES';
+import { IS_IOS } from '@/constants/PLATFORM';
 
 export default function DebuggerProvider() {
   const router = useRouter();
-  return (
+
+  const content = (
     <FloatingDevTools
       disableHints
-      environment="local"
+      environment="dev"
       userRole="admin"
+      defaultFloatingTools={['query']}
       apps={[
         {
           component: undefined,
@@ -32,4 +36,5 @@ export default function DebuggerProvider() {
       ]}
     />
   );
+  return IS_IOS ? <FullWindowOverlay>{content}</FullWindowOverlay> : content;
 }

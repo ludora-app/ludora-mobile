@@ -1,11 +1,11 @@
-import { useFriendsCreate } from '@generatedApi/friends/friends.api';
+import { useSessionInvitationsCreate } from '@generatedApi/session-invitations/session-invitations.api';
 
-import { CreateFriendDto } from '@/api/generated/model';
+import { CreateSessionInvitationDto } from '@/api/generated/model';
 
 export const useInviteFriend = () => {
-  const mutation = useFriendsCreate();
-  const mutateAsync = async (data: CreateFriendDto) => mutation.mutateAsync({ data });
-  const mutate = async (data: CreateFriendDto) => mutation.mutate({ data });
+  const mutation = useSessionInvitationsCreate();
+  const mutateAsync = async (data: CreateSessionInvitationDto) => mutation.mutateAsync({ data });
+  const mutate = async (data: CreateSessionInvitationDto) => mutation.mutate({ data });
 
   return {
     ...mutation,

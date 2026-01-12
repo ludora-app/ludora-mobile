@@ -8,19 +8,23 @@
 import type { FriendResponseDataStatus } from './friendResponseDataStatus';
 
 export interface FriendResponseData {
-  /** Friend request creation date */
-  readonly createdAt?: string;
-  /** User uid of the friend */
-  readonly friendUid: string;
-  /** Friend request status */
-  readonly status: FriendResponseDataStatus;
-  /** Friend request update date */
-  readonly updatedAt?: string;
-  /** Concatenated firstname and lastname of the friend */
-  readonly userName: string;
   /**
    * Friend request user profile picture
    * @nullable
    */
-  readonly userProfilePicture: string | null;
+  readonly avatarUrl: string | null;
+  /** Friend request creation date */
+  readonly createdAt?: string;
+  /** Firstname of the friend */
+  readonly firstname: string;
+  /** User uid of the friend */
+  readonly friendUid: string;
+  /** If the friend has been invited to a session */
+  readonly isInvited?: boolean;
+  /** Lastname of the friend */
+  readonly lastname: string;
+  /** Friend request status */
+  readonly status: FriendResponseDataStatus;
+  /** Friend request update date */
+  readonly updatedAt?: string;
 }

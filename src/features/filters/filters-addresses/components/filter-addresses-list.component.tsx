@@ -10,8 +10,8 @@ import useGetUserLocation from '@/hooks/user-location.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useSearchPlaces } from '../hooks/search-places.hook';
-import { FiltersAddressesScreenParams } from '../types/filters-addresses.types';
 import FilterAddressesListHeader from './filter-addresses-list-header.component';
+import { FiltersAddressesReturnParams, FiltersAddressesScreenParams } from '../types/filters-addresses.types';
 import FilterAddressesResultItem from './filter-addresses-result-item/filter-addresses-result-item.component';
 import FilterAddressesResultItemSkeleton from './filter-addresses-result-item/filter-addresses-result-item-skeleton.component';
 
@@ -30,7 +30,7 @@ interface FilterAddressesListProps {
 
 export default function FilterAddressesList(props: FilterAddressesListProps) {
   const { inputValue } = props;
-  const { GoBackPath } = useLocalSearchParams<FiltersAddressesScreenParams>();
+  const { goBackPath } = useLocalSearchParams<FiltersAddressesScreenParams>();
   const router = useRouter();
   const { trackError } = useAnalytics();
   const [isFetchingPlaceDetails, setIsFetchingPlaceDetails] = useState(false);
@@ -78,14 +78,15 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
         if (isFetchingPlaceDetails) return;
         setIsFetchingPlaceDetails(true);
         const place = await getPlace(placeId);
-        router.dismissTo({ params: { address: serialize(place) }, pathname: GoBackPath });
+        const params: FiltersAddressesReturnParams = { address: serialize(place) };
+        router.dismissTo({ params, pathname: goBackPath });
       } catch (error) {
         trackError(error);
       } finally {
         setIsFetchingPlaceDetails(false);
       }
     },
-    [getPlace, router, GoBackPath, trackError, isFetchingPlaceDetails],
+    [getPlace, router, goBackPath, trackError, isFetchingPlaceDetails],
   );
 
   const renderItem = useCallback(

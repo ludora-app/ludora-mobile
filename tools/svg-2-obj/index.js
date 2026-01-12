@@ -110,6 +110,45 @@ function elementToStructure(element) {
     return rectObj;
   }
 
+  // --- Ajout pour les Ellipses ---
+  if (tagName === 'ellipse') {
+    const ellipseObj = { type: 'ellipse' };
+    const attrs = extractAttributes(element);
+
+    const relevantAttrs = {};
+    if (attrs.cx) relevantAttrs.cx = attrs.cx;
+    if (attrs.cy) relevantAttrs.cy = attrs.cy;
+    if (attrs.rx) relevantAttrs.rx = attrs.rx;
+    if (attrs.ry) relevantAttrs.ry = attrs.ry;
+    if (attrs.fill) relevantAttrs.fill = attrs.fill;
+    if (attrs.id) relevantAttrs.id = attrs.id;
+
+    if (Object.keys(relevantAttrs).length > 0) {
+      ellipseObj.props = relevantAttrs;
+    }
+
+    return ellipseObj;
+  }
+
+  // --- Ajout pour les Cercles (au cas où) ---
+  if (tagName === 'circle') {
+    const circleObj = { type: 'circle' };
+    const attrs = extractAttributes(element);
+
+    const relevantAttrs = {};
+    if (attrs.cx) relevantAttrs.cx = attrs.cx;
+    if (attrs.cy) relevantAttrs.cy = attrs.cy;
+    if (attrs.r) relevantAttrs.r = attrs.r;
+    if (attrs.fill) relevantAttrs.fill = attrs.fill;
+    if (attrs.id) relevantAttrs.id = attrs.id;
+
+    if (Object.keys(relevantAttrs).length > 0) {
+      circleObj.props = relevantAttrs;
+    }
+
+    return circleObj;
+  }
+
   return null;
 }
 
@@ -119,7 +158,9 @@ function hasComplexStructure(svg) {
     svg.querySelector('g') ||
     svg.querySelector('defs') ||
     svg.querySelector('clipPath') ||
-    svg.querySelector('clippath')
+    svg.querySelector('clippath') ||
+    svg.querySelector('ellipse') ||
+    svg.querySelector('circle')
   );
 }
 

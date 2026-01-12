@@ -12,6 +12,7 @@ import useGetUserLocation from '@/hooks/user-location.hook';
 import { FiltersAddressesReturnParams } from '@/features/filters/filters-addresses/types/filters-addresses.types';
 
 import { useFiltersStore } from '../../store/filters.store';
+import { FiltersAddressesScreenParams } from '../../types/filters.types';
 
 type FilterLocationProps = FiltersAddressesReturnParams;
 
@@ -55,8 +56,9 @@ function FilterLocation(props: FilterLocationProps) {
   }, [incomingNearby, setFilters, router]);
 
   const handlePressSearch = () => {
+    const params: FiltersAddressesScreenParams = { goBackPath: ROUTES.FILTERS.FILTER };
     router.navigate({
-      params: { GoBackPath: ROUTES.FILTERS.FILTER },
+      params,
       pathname: ROUTES.FILTERS.FILTER_ADDRESSES,
     });
   };

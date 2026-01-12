@@ -5,7 +5,7 @@ import { useTranslate } from '@tolgee/react';
 import { TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { FiltersAddressesScreenParams } from '../types/filters-addresses.types';
+import { FiltersAddressesReturnParams, FiltersAddressesScreenParams } from '../types/filters-addresses.types';
 
 interface FilterAddressesListHeaderProps {
   isLoading: boolean;
@@ -13,7 +13,7 @@ interface FilterAddressesListHeaderProps {
 }
 
 function FilterAddressesListHeader(props: FilterAddressesListHeaderProps) {
-  const { GoBackPath } = useLocalSearchParams<FiltersAddressesScreenParams>();
+  const { goBackPath } = useLocalSearchParams<FiltersAddressesScreenParams>();
   const router = useRouter();
   const { getCurrentLocation, isLoading } = props;
   const { t } = useTranslate();
@@ -21,9 +21,10 @@ function FilterAddressesListHeader(props: FilterAddressesListHeaderProps) {
   const handlePress = async () => {
     const { locationFound } = await getCurrentLocation();
     if (locationFound) {
+      const params: FiltersAddressesReturnParams = { getUserLocation: 'true' };
       router.dismissTo({
-        params: { getUserLocation: 'true' },
-        pathname: GoBackPath,
+        params,
+        pathname: goBackPath,
       });
     }
   };

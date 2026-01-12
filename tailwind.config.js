@@ -86,6 +86,7 @@ export default {
         purpleTertiary: '#3C215A',
         ring: '#B4B4B4',
         secondary: '#FCBD1D',
+        warning: '#FF9800',
       },
 
       fontFamily: {

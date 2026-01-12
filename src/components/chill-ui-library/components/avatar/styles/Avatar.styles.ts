@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const avatarTv = tv({
-  base: 'bg-[#7DD3FC] items-center justify-center overflow-hidden',
+  base: 'bg-white border-primary border items-center justify-center overflow-hidden',
   variants: {
     size: {
       '2xl': 'size-[112px]',

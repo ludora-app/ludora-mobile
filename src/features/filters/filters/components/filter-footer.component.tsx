@@ -6,21 +6,28 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { serialize } from '@/utils/json.utils';
 import { mmkvStorage } from '@/utils/mmkvStorage';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 
 import { useFiltersStore } from '../store/filters.store';
-import { FiltersScreenParams } from '../types/filters.types';
+import { FiltersReturnParams, FiltersScreenParams } from '../types/filters.types';
+
+const mmkvStorageKey = MMKV_STORAGE_KEY.FILTERS_SCREEN_GOBACK_PATH;
 
 export default function FilterFooter() {
-  const { goBackPath } = useLocalSearchParams<FiltersScreenParams>();
+  const { goBackPath, source } = useLocalSearchParams<FiltersScreenParams>();
+
   const { t } = useTranslate();
   const numberOfFilters = useFiltersStore(state => state.numberOfFilters);
   const filters = useFiltersStore(state => state.filters);
+
   const router = useRouter();
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     if (!goBackPath || !isString(goBackPath)) return;
-    mmkvStorage.setItem('goBackPath.filtersScreen', goBackPath);
+    mmkvStorage.setItem(mmkvStorageKey, goBackPath);
   }, [goBackPath]);
 
   const handleCancel = () => {
@@ -28,13 +35,17 @@ export default function FilterFooter() {
   };
 
   const handleApply = () => {
-    const backPatchValue = goBackPath ?? mmkvStorage.getString('goBackPath.filtersScreen');
-    router.dismissTo({ params: { selectedFilters: serialize(filters) }, pathname: backPatchValue });
-    mmkvStorage.removeItem('goBackPath.filtersScreen');
+    const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey);
+    trackEvent({ eventName: `${source}_applied`, properties: { filters, numberOfFilters } });
+    const params: FiltersReturnParams = {
+      selectedFilters: serialize(filters),
+    };
+    router.dismissTo({ params, pathname: backPatchValue });
+    mmkvStorage.removeItem(mmkvStorageKey);
   };
 
   return (
-    <FormSheetFooter>
+    <FormSheetFooter hasBottomSafeArea>
       <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={handleCancel} />
       <Button title={t('filters.apply_button', { activeFilters: numberOfFilters })} size="md" onPress={handleApply} />
     </FormSheetFooter>

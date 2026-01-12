@@ -9,12 +9,13 @@ import type { FlattenedSessionPlayer } from './flattenedSessionPlayer';
 
 export interface SessionTeamResponseData {
   /** Session creation date */
-  readonly createdAt: string;
+  readonly createdAt?: string;
+  /** Number of players in the team */
+  readonly numberOfPlayers: number;
   /** Players in the team */
-  readonly Session_players: readonly FlattenedSessionPlayer[];
+  readonly sessionPlayers: readonly FlattenedSessionPlayer[];
   readonly teamLabel: string;
   readonly teamName: string;
-  readonly uid: string;
   /** Session update date */
-  readonly updatedAt: string;
+  readonly updatedAt?: string;
 }

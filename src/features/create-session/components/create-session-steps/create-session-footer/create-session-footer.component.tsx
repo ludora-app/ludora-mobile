@@ -40,9 +40,11 @@ export default function CreateSessionFooter(props: CreateSessionFooterProps) {
       style={[styles.footer, { paddingBottom: bottom }]}
       className="items-center justify-center bg-background py-2"
     >
-      {false && <CreateSessionFooterButtonNextStep activeStep={activeStep} setActiveStep={setActiveStep} />}
-      {false && <CreateSessionFooterButtonCreateSession setActiveStep={setActiveStep} />}
-      {true && <CreatedSessionFooterButtonsCreatedSession />}
+      {showNextStepButton && (
+        <CreateSessionFooterButtonNextStep activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+      {showCreateSessionButton && <CreateSessionFooterButtonCreateSession setActiveStep={setActiveStep} />}
+      {showCreatedSessionButtons && <CreatedSessionFooterButtonsCreatedSession />}
     </Wrapper>
   );
 }

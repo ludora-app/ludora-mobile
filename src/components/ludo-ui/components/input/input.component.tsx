@@ -4,6 +4,7 @@ import { Input as InputChillUi, InputContainer, InputField, InputLabel, InputMes
 import COLORS from '@/constants/COLORS';
 
 import { Icon } from '../icon';
+import { String } from '../string';
 import { InputProps } from '../../types/input.types';
 
 export default function Input(props: InputProps) {
@@ -17,6 +18,7 @@ export default function Input(props: InputProps) {
     inputFieldProps,
     label,
     leftIconAction,
+    rightContentProps,
     rightIconAction,
   } = props;
 
@@ -43,6 +45,8 @@ export default function Input(props: InputProps) {
           {...inputFieldProps}
           secureTextEntry={isSecure}
         />
+
+        {rightContentProps?.content && <String {...rightContentProps}>{rightContentProps.content}</String>}
 
         {rightIconAction?.name && <Icon {...rightIconAction} />}
         {showClearIcon && (

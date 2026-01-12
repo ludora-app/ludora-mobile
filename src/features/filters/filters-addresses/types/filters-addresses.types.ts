@@ -1,10 +1,6 @@
-import { RouteValues } from '@/constants/ROUTES';
+import ROUTES from '@/constants/ROUTES';
+import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 
-export type FiltersAddressesScreenParams = {
-  GoBackPath: RouteValues;
-};
+export type FiltersAddressesScreenParams = RootStackParamList[typeof ROUTES.FILTERS.FILTER_ADDRESSES];
 
-export type FiltersAddressesReturnParams = {
-  address?: string;
-  getUserLocation?: string;
-};
+export type FiltersAddressesReturnParams = ReturnStackParamList[typeof ROUTES.FILTERS.FILTER_ADDRESSES];

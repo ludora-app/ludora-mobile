@@ -30,6 +30,14 @@
           "merchantIdentifier": "merchant.com.ludora",
           "enableGooglePay": true
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/logos/app-icon.png",
+          "color": "#ffffff",
+          "sounds": []
+        }
       ]
     ],
     "name": "ludora",
@@ -37,25 +45,23 @@
     "icon": "./assets/logos/app-icon.png",
     "android": {
       "package": "com.amir398.ludora",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyC8gnCNGajlN7nX9wcsVIXNSGz503Sh_BU"
-        }
-      },
-      "permissions": ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.amir398.ludora",
-      "config": {
-        "googleMapsApiKey": "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
-      }
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "91b4169f-5883-4899-8b2b-eade1e82b68b"
+        "projectId": "f64eb375-d990-44a8-9a85-40fc096e2def"
       }
     }
   }

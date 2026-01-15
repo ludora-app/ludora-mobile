@@ -2892,19 +2892,73 @@
             }
           },
           {
-            "name": "level",
+            "name": "levels",
             "required": false,
             "in": "query",
             "description": "Level for filtering sessions",
             "schema": {
-              "example": 1,
-              "type": "number",
-              "enum": [
-                0,
+              "example": [
                 1,
-                2,
                 3
-              ]
+              ],
+              "type": "array",
+              "items": {
+                "type": "number",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3
+                ]
+              }
+            }
+          },
+          {
+            "name": "gameModes",
+            "required": false,
+            "in": "query",
+            "description": "Game modes (FIVE_V_FIVE, etc.)",
+            "schema": {
+              "example": [
+                "FIVE_V_FIVE",
+                "ONE_V_ONE"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ONE_V_ONE",
+                  "TWO_V_TWO",
+                  "THREE_V_THREE",
+                  "FOUR_V_FOUR",
+                  "FIVE_V_FIVE",
+                  "SIX_V_SIX",
+                  "SEVEN_V_SEVEN",
+                  "EIGHT_V_EIGHT",
+                  "TEN_V_TEN",
+                  "ELEVEN_V_ELEVEN"
+                ]
+              }
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query for filtering sessions",
+            "schema": {
+              "example": "soccer",
+              "type": "string"
+            }
+          },
+          {
+            "name": "duration",
+            "required": false,
+            "in": "query",
+            "description": "Filter sessions by duration in minutes (e.g. 60, 90)",
+            "schema": {
+              "example": 60,
+              "type": "number"
             }
           }
         ],
@@ -3098,6 +3152,28 @@
                 "PUBLIC",
                 "PRIVATE"
               ]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor for pagination",
+            "schema": {
+              "example": "abc123",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "example": 10,
+              "type": "number"
             }
           }
         ],

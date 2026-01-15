@@ -6,28 +6,31 @@ import { Badge, Box, BoxCenter, BoxRow, Icon } from '@ludo/ui';
 
 import { parse } from '@/utils/json.utils';
 import ROUTES, { RouteValues } from '@/constants/ROUTES';
-import { filtersMapper } from '@/features/create-session/utils/filters-mapper.utils';
+import { Filters } from '@/features/filters/filters/store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '@/features/filters/filters/types/filters.types';
 
-import FiltersHeaderInput from './filters-header-input.component';
+import { FiltersHeaderInputSchema } from '../schemas/filters-header-input.schema';
+import FiltersHeaderInput, { FiltersHeaderInputProps } from './filters-header-input.component';
 
-export interface FiltersHeaderProps {
+export type FiltersHeaderProps<T extends FiltersHeaderInputSchema> = FiltersHeaderInputProps<T> & {
   numberOfFilters: number;
   goBackPath?: RouteValues;
   onFilterPress?: () => void;
   selectedDayCarouselDate?: string | null;
-  onFiltersChange?: (filters: any) => void;
+  onFiltersChange?: (filters: Filters) => void;
   source?: 'filter_fields' | 'filter_sessions_all';
-}
+};
 
-export default function FiltersHeader({
-  goBackPath = ROUTES.CREATE_SESSION.INDEX,
-  numberOfFilters,
-  onFilterPress,
-  onFiltersChange,
-  selectedDayCarouselDate = null,
-  source = 'filter_fields',
-}: FiltersHeaderProps) {
+export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props: FiltersHeaderProps<T>) {
+  const {
+    goBackPath = ROUTES.CREATE_SESSION.INDEX,
+    numberOfFilters,
+    onFilterPress,
+    onFiltersChange,
+    selectedDayCarouselDate = null,
+    source = 'filter_fields',
+    ...rest
+  } = props;
   const router = useRouter();
   const { selectedFilters } = useLocalSearchParams<FiltersReturnParams>();
 
@@ -42,10 +45,10 @@ export default function FiltersHeader({
 
   useEffect(() => {
     if (parsedSelectFilters && onFiltersChange) {
-      const filters = filtersMapper(parsedSelectFilters);
-      onFiltersChange(filters);
+      onFiltersChange(parsedSelectFilters);
     }
-  }, [parsedSelectFilters, onFiltersChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilters]);
 
   const handleOpenFilter = () => {
     if (onFilterPress) {
@@ -62,9 +65,9 @@ export default function FiltersHeader({
   };
 
   return (
-    <BoxRow className="items-center gap-2 bg-background py-2">
+    <BoxRow className="items-center gap-2">
       <Box className="flex-1">
-        <FiltersHeaderInput />
+        <FiltersHeaderInput {...rest} />
       </Box>
       <Badge show={numberOfFilters > 0} title={numberOfFilters?.toString() || '0'}>
         <ScalePressable onPress={handleOpenFilter}>

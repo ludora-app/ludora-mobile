@@ -6,7 +6,8 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { SessionsFindAllSportsItem } from './sessionsFindAllSportsItem';
-import type { SessionsFindAllLevel } from './sessionsFindAllLevel';
+import type { SessionsFindAllLevelsItem } from './sessionsFindAllLevelsItem';
+import type { SessionsFindAllGameModesItem } from './sessionsFindAllGameModesItem';
 
 export type SessionsFindAllParams = {
   /**
@@ -48,5 +49,17 @@ export type SessionsFindAllParams = {
   /**
    * Level for filtering sessions
    */
-  level?: SessionsFindAllLevel;
+  levels?: SessionsFindAllLevelsItem[];
+  /**
+   * Game modes (FIVE_V_FIVE, etc.)
+   */
+  gameModes?: SessionsFindAllGameModesItem[];
+  /**
+   * Search query for filtering sessions
+   */
+  search?: string;
+  /**
+   * Filter sessions by duration in minutes (e.g. 60, 90)
+   */
+  duration?: number;
 };

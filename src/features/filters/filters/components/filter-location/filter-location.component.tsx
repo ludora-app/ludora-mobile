@@ -3,7 +3,7 @@ import { Place } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 import { memo, useEffect, useMemo } from 'react';
-import { Box, Button, Icon, Separator, String } from '@ludo/ui';
+import { Box, Button, Icon, Separator, String, BoxRowCenterBetween } from '@ludo/ui';
 
 import ROUTES from '@/constants/ROUTES';
 import COLORS from '@/constants/COLORS';
@@ -80,7 +80,7 @@ function FilterLocation(props: FilterLocationProps) {
   return (
     <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
       {/* Header */}
-      <Box className="flex-row items-center justify-between">
+      <BoxRowCenterBetween>
         <Box className="flex-1 flex-row items-center gap-2">
           <Icon name="football-field-regular" color="#666" />
           <String variant="body-sm" font="primaryBold" colorVariant="muted">
@@ -92,13 +92,13 @@ function FilterLocation(props: FilterLocationProps) {
             {displayLocation}
           </String>
         </Box>
-      </Box>
+      </BoxRowCenterBetween>
 
       <Box className="items-center gap-2">
         <Button
           title={t('filters.location_button_search_address')}
           colorVariant="light"
-          className="flex-1 rounded-md border-ring"
+          className="flex-1 rounded-md border-ring bg-white"
           onPress={handlePressSearch}
           iconProps={{ color: COLORS.muted, name: 'map-regular', position: 'left-outside' }}
           size="sm"
@@ -109,7 +109,7 @@ function FilterLocation(props: FilterLocationProps) {
         <Button
           title={t('filters.location_button_nearby')}
           colorVariant="light"
-          className="flex-1 rounded-md border-ring"
+          className="flex-1 rounded-md border-ring bg-white"
           onPress={handlePressGetCurrentLocation}
           isLoading={isLoadingUserLocation}
           iconProps={{

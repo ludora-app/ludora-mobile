@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 import { Place } from '@chillui/ui';
 
+import { SESSION_LEVEL_TYPE } from '@/constants/session.constants';
+import { CreateSessionFromRequestDtoGameMode, SessionsFindAllSportsItem } from '@/api/generated/model';
+
 export type Filters = {
   fieldType: 'PRIVATE' | 'PUBLIC' | 'ALL';
   sessionDuration: string;
@@ -12,13 +15,16 @@ export type Filters = {
   maxDistance: number;
   address: Place;
   nearby: boolean;
+  sports: SessionsFindAllSportsItem[];
+  levels: SESSION_LEVEL_TYPE['code'][];
+  gameModes: CreateSessionFromRequestDtoGameMode[];
 };
 
 interface FiltersStore {
   numberOfFilters: number;
   resetFilters: () => void;
   filters: Partial<Filters>;
-  setFilters: (filters: Partial<Filters>) => void;
+  setFilters: (filters: Partial<Filters> | ((prev: Partial<Filters>) => Partial<Filters>)) => void;
 }
 
 export const useFiltersStore = create<FiltersStore>((set, get) => ({
@@ -38,7 +44,8 @@ export const useFiltersStore = create<FiltersStore>((set, get) => ({
     });
   },
   setFilters: newFilters => {
-    const updatedFilters = { ...get().filters, ...newFilters };
+    const filtersToApply = typeof newFilters === 'function' ? newFilters(get().filters) : newFilters;
+    const updatedFilters = { ...get().filters, ...filtersToApply };
     const numberOfFilters = Object.keys(updatedFilters).filter(key => {
       const value = updatedFilters[key as keyof Filters];
 

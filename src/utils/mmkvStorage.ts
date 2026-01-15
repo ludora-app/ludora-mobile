@@ -1,14 +1,16 @@
 import { createMMKV } from 'react-native-mmkv';
 
+import { MMKVStorageKeyValue } from '@/constants/mmkv-keys.constants';
+
 export const storage = createMMKV();
 
 type stateMmkvStorage = {
-  getString: (name: string) => string | null;
-  getNumber: (name: string) => number | null;
-  getBoolean: (name: string) => boolean | null;
-  removeItem: (name: string) => void;
+  getString: (name: MMKVStorageKeyValue) => string | null;
+  getNumber: (name: MMKVStorageKeyValue) => number | null;
+  getBoolean: (name: MMKVStorageKeyValue) => boolean | null;
+  removeItem: (name: MMKVStorageKeyValue) => void;
   reset: () => void;
-  setItem: (name: string, value: string | boolean) => void;
+  setItem: (name: MMKVStorageKeyValue, value: string | boolean) => void;
 };
 
 export const mmkvStorage: stateMmkvStorage = {

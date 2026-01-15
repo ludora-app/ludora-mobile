@@ -1,3 +1,5 @@
+import { Flatten } from '@/types';
+
 const ROUTES = {
   AUTH: {
     LOGIN: '/auth/login',
@@ -21,6 +23,9 @@ const ROUTES = {
     FILTER_ADDRESSES: '/filters/filters-addresses',
     FILTER_CALENDAR: '/filters/filters-calendar',
   },
+  HOME: {
+    INDEX: '/',
+  },
   INVITE_PEOPLE: {
     INDEX: '/invite-people',
   },
@@ -31,12 +36,6 @@ const ROUTES = {
   },
 } as const;
 
-export type RouteValues =
-  | (typeof ROUTES.AUTH)[keyof typeof ROUTES.AUTH]
-  | (typeof ROUTES.CREATE_SESSION)[keyof typeof ROUTES.CREATE_SESSION]
-  | (typeof ROUTES.DEV_TOOLS)[keyof typeof ROUTES.DEV_TOOLS]
-  | (typeof ROUTES.SESSION)[keyof typeof ROUTES.SESSION]
-  | (typeof ROUTES.FILTERS)[keyof typeof ROUTES.FILTERS]
-  | (typeof ROUTES.INVITE_PEOPLE)[keyof typeof ROUTES.INVITE_PEOPLE];
+export type RouteValues = Flatten<typeof ROUTES>;
 
 export default ROUTES;

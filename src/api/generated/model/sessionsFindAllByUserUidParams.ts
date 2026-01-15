@@ -54,4 +54,12 @@ export type SessionsFindAllByUserUidParams = {
    * Visibility for filtering sessions
    */
   visibility?: SessionsFindAllByUserUidVisibility;
+  /**
+   * Cursor for pagination
+   */
+  cursor?: string;
+  /**
+   * Number of results to return
+   */
+  limit?: number;
 };

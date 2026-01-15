@@ -1,25 +1,32 @@
 import { list } from 'radash';
-import { cn } from '@chillui/ui';
-import { useCallback, useMemo } from 'react';
-import { FlashList } from '@shopify/flash-list';
+import { LayoutChangeEvent } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
 
+import { Box } from '../box';
+import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
 import { ListProps } from '../../types/list.types';
 
-type SkeletonItem = { type: 'skeleton'; uid: string };
-type ListItem = any[] | SkeletonItem;
+type SkeletonItem = { type: 'skeleton'; id: string };
+type SpecialItem = { type: 'sticky' | 'header_top'; id: string };
+
+type ListItem = SkeletonItem | SpecialItem;
 
 const SKELETON_COUNT = 3;
+
 const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
+  id: `skel-${i}`,
   type: 'skeleton',
-  uid: `skel-${i}`,
 }));
 
 export default function List(props: ListProps) {
   const {
-    contentContainerClassName,
+    contentContainerStyle,
+    data,
     emptyResultTitle,
     fetchNextPage,
     hasNextPage,
@@ -27,59 +34,138 @@ export default function List(props: ListProps) {
     isLoading,
     isRefetching,
     ItemComponent,
-    items,
+    ListHeaderStickyComponent,
+    ListStickyComponent,
+    ListTopComponent,
     SkeletonComponent,
     ...rest
   } = props;
 
-  const isLoadingSessions = isLoading || isRefetching;
-  const showSkeletons = isLoading;
+  const [stickyHeaderHeight, setStickyHeaderHeight] = useState(0);
+  const { top } = useSafeArea();
+
+  const showSkeletons = isLoading && !isRefetching && (!data || data.length === 0);
+
+  const dataToRender = useMemo(() => {
+    const items: ListItem[] = [];
+
+    if (ListStickyComponent) {
+      items.push({ id: 'sticky', type: 'sticky' });
+    }
+    if (ListTopComponent) {
+      items.push({ id: 'header_top', type: 'header_top' });
+    }
+
+    const content = showSkeletons ? SKELETON_DATA : data || [];
+
+    return [...items, ...content];
+  }, [showSkeletons, data, ListTopComponent, ListStickyComponent]);
+
+  const stickyHeaderIndices = useMemo(() => {
+    if (ListStickyComponent) {
+      return [0];
+    }
+    return undefined;
+  }, [ListStickyComponent]);
 
   const onEndReached = useCallback(() => {
-    if (!isLoadingSessions && !isFetchingNextPage && hasNextPage) {
+    if (!isLoading && !isFetchingNextPage && hasNextPage) {
       fetchNextPage();
     }
-  }, [isLoadingSessions, hasNextPage, fetchNextPage, isFetchingNextPage]);
+  }, [isLoading, hasNextPage, fetchNextPage, isFetchingNextPage]);
+
+  const getItemType = useCallback((item: ListItem) => {
+    if (item && typeof item === 'object' && 'type' in item) {
+      return item.type;
+    }
+    return 'row';
+  }, []);
 
   const renderItem = useCallback(
-    ({ item }) => {
-      if ('type' in item && item.type === 'skeleton') {
-        return <SkeletonComponent />;
+    ({ item }: LegendListRenderItemProps<ListItem>) => {
+      if (item && typeof item === 'object' && 'type' in item) {
+        switch (item.type) {
+          case 'skeleton':
+            return <SkeletonComponent />;
+          case 'sticky':
+            return renderComponent(ListStickyComponent);
+          case 'header_top':
+            return renderComponent(ListTopComponent);
+          default:
+            return <ItemComponent item={item} />;
+        }
       }
       return <ItemComponent item={item} />;
     },
-    [ItemComponent, SkeletonComponent],
+    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent],
   );
 
-  const getItemType = useCallback(
-    (item: ListItem) => ('type' in item && item.type === 'skeleton' ? 'skeleton' : 'row'),
-    [],
-  );
-
-  const dataToRender = useMemo(() => (showSkeletons ? SKELETON_DATA : items), [showSkeletons, items]);
-  const keyExtractor = useCallback((item: ListItem) => {
-    if ('type' in item && item.type === 'skeleton') {
-      return (item as SkeletonItem).uid;
+  const keyExtractor = useCallback((item: ListItem, index: number) => {
+    if (item && typeof item === 'object') {
+      if ('type' in item) return item.id;
+      if ('uid' in item) return String((item as any).uid);
+      if ('id' in item) return String((item as any).id);
     }
-    return (item as any)?.uid?.toString();
+    return String(index);
   }, []);
 
+  const listStyle = useMemo(() => {
+    if (ListStickyComponent) {
+      return {
+        marginTop: top,
+      };
+    }
+    return undefined;
+  }, [top, ListStickyComponent]);
+
+  const onStickyHeaderLayout = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    setStickyHeaderHeight(height);
+  };
+
+  const listContentContainerStyle = useMemo(() => {
+    const style = [
+      ListHeaderStickyComponent && {
+        marginTop: stickyHeaderHeight - top,
+      },
+      contentContainerStyle,
+    ];
+    return style;
+  }, [stickyHeaderHeight, top, contentContainerStyle, ListHeaderStickyComponent]);
+
   return (
-    <FlashList
-      keyExtractor={keyExtractor}
-      data={dataToRender}
-      renderItem={renderItem}
-      getItemType={getItemType}
-      showsVerticalScrollIndicator={false}
-      scrollEventThrottle={16}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
-      contentContainerClassName={cn('pb-5', contentContainerClassName)}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="always"
-      ListFooterComponent={<ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />}
-      ListEmptyComponent={<EmptyResult title={emptyResultTitle} />}
-      {...rest}
-    />
+    <>
+      {ListHeaderStickyComponent && (
+        <Box className="absolute w-full" onLayout={onStickyHeaderLayout}>
+          {renderComponent(ListHeaderStickyComponent)}
+        </Box>
+      )}
+      <LegendList
+        keyExtractor={keyExtractor}
+        data={dataToRender}
+        renderItem={renderItem}
+        getItemType={getItemType}
+        recycleItems
+        stickyIndices={stickyHeaderIndices}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.5}
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        style={listStyle}
+        keyboardShouldPersistTaps="always"
+        ListFooterComponent={
+          <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+        }
+        ListEmptyComponent={<EmptyResult title={emptyResultTitle} />}
+        {...(ListHeaderStickyComponent &&
+          stickyHeaderHeight && {
+            stickyHeaderConfig: {
+              offset: -stickyHeaderHeight + top,
+            },
+          })}
+        contentContainerStyle={listContentContainerStyle}
+        {...rest}
+      />
+    </>
   );
 }

@@ -27,7 +27,7 @@ function EmptyResult(props: EmptyResultProps) {
 
   const iconName = getIconName();
   return (
-    <Wrapper className="mt-14 items-center gap-4">
+    <Wrapper className="mt-14 flex-grow items-center gap-4 bg-background">
       <Icon name={iconName} className="size-36" />
       {!!title && <String className="text-center">{t(`${title}_${getRandomNumber()}`)}</String>}
     </Wrapper>

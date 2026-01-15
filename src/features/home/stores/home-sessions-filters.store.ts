@@ -1,37 +1,77 @@
+import dayjs from 'dayjs';
 import { create } from 'zustand';
 
 import { SessionsFindAllParams } from '@/api/generated/model';
 
-interface EventFilterState {
-  clearEventFilter: () => void;
-  numberOfActiveFilter: number;
-  sessionFilter: SessionsFindAllParams | null;
-  setSessionFilter: (user: Partial<SessionsFindAllParams>) => void;
-}
-
-const countActiveFilters = (filter: Partial<SessionsFindAllParams>): number => {
-  const count = 0;
-
-  // if (filter?.date?.startDate || filter?.date?.endDate) count += 1;
-  // if (filter?.location?.latitude && filter?.location?.longitude && filter?.location?.perimeter) count += 1;
-  // if (filter?.amount?.min != null && filter?.amount?.max != null) count += 1;
-  // if (filter?.visibility?.key) count += 1;
-
-  return count;
+export type FiltersProps = Omit<SessionsFindAllParams, 'date'> & {
+  date?: {
+    date: string;
+    source: 'day-carousel' | 'filter';
+  };
 };
 
-export const useSessionsFilterStore = create<EventFilterState>((set, get) => ({
-  clearEventFilter: () => set({ numberOfActiveFilter: 0, sessionFilter: null }),
-  numberOfActiveFilter: 0,
-  sessionFilter: {
-    startDate: new Date().toISOString(),
+const calculateNumberOfFilters = (filters: FiltersProps): number => {
+  const filtersForCount = { ...filters };
+
+  const filterDate = filters.date?.date ? dayjs(filters.date.date).format('YYYY-MM-DD') : null;
+
+  if (filters.date?.source === 'day-carousel' || filterDate === dayjs().format('YYYY-MM-DD')) {
+    delete filtersForCount.date;
+  }
+
+  if (filtersForCount.userLat && filtersForCount.userLon) {
+    delete filtersForCount.userLon;
+  }
+
+  if (filtersForCount.search && filtersForCount.search.length === 0) {
+    delete filtersForCount.search;
+  }
+
+  return Object.values(filtersForCount).filter(value => value != null).length;
+};
+
+interface HomeSessionFiltersStore {
+  reset: () => void;
+
+  filters: FiltersProps;
+
+  numberOfFilters: number;
+
+  setFilters: (filters: FiltersProps) => void;
+}
+const getStartDay = () => {
+  const now = dayjs();
+  if (now.hour() >= 22) {
+    return now.add(1, 'day').toISOString();
+  }
+  return now.toISOString();
+};
+
+export const useHomeSessionFiltersStore = create<HomeSessionFiltersStore>((set, get) => ({
+  filters: {
+    date: {
+      date: getStartDay(),
+      source: 'day-carousel',
+    },
   },
-  setSessionFilter: data =>
+  numberOfFilters: 0,
+  reset: () => {
     set({
-      numberOfActiveFilter: countActiveFilters(data),
-      sessionFilter: {
-        ...get().sessionFilter,
-        ...data,
+      filters: {
+        date: {
+          date: getStartDay(),
+          source: 'day-carousel',
+        },
       },
-    }),
+      numberOfFilters: 0,
+    });
+  },
+
+  setFilters: filters => {
+    const updatedFilters = { ...get().filters, ...filters };
+    set({
+      filters: updatedFilters,
+      numberOfFilters: calculateNumberOfFilters(updatedFilters),
+    });
+  },
 }));

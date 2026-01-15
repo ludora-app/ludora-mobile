@@ -6,10 +6,11 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export type SessionsFindAllLevel = (typeof SessionsFindAllLevel)[keyof typeof SessionsFindAllLevel];
+export type SessionsFindAllLevelsItem =
+  (typeof SessionsFindAllLevelsItem)[keyof typeof SessionsFindAllLevelsItem];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SessionsFindAllLevel = {
+export const SessionsFindAllLevelsItem = {
   NUMBER_0: 0,
   NUMBER_1: 1,
   NUMBER_2: 2,

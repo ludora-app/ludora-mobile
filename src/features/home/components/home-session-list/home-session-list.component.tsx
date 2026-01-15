@@ -1,8 +1,10 @@
-import { ListAnimated } from '@ludo/ui';
+import { List } from '@ludo/ui';
 import { useSharedValue } from 'react-native-reanimated';
 import { RefreshControl, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
-import { useGetAllSessionsByFilter } from '../../../queries/get-sessions-by-filter.query';
+import { useSafeArea } from '@/hooks/safe-area.hook';
+
+import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
 import HomeSessionListItem from './home-session-list-item/home-session-list-item.component';
 import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
 import HomeSessionListItemSkeleton from './home-session-list-item/home-session-list-item-skeleton.component';
@@ -19,6 +21,7 @@ export default function HomeSessionList() {
     items: sessions,
     refetch,
   } = useGetAllSessionsByFilter();
+  const { bottomTab, top } = useSafeArea();
 
   const scrollY = useSharedValue(0);
 
@@ -27,8 +30,8 @@ export default function HomeSessionList() {
   };
 
   return (
-    <ListAnimated
-      items={sessions}
+    <List
+      data={sessions}
       ItemComponent={HomeSessionListItem}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
@@ -36,13 +39,13 @@ export default function HomeSessionList() {
       isLoading={isLoading}
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
-      contentContainerClassName="rounded-t-2xl"
-      HeaderComponent={HomeSessionListHeaderTopList}
-      TopListElementComponent={<HomeSessionListHeader />}
-      StickyElementComponent={<HomeSessionListHeaderSticky scrollY={scrollY} />}
+      ListHeaderStickyComponent={HomeSessionListHeaderTopList}
+      ListTopComponent={<HomeSessionListHeader />}
+      ListStickyComponent={<HomeSessionListHeaderSticky scrollY={scrollY} />}
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
       bounces={false}
-      onScroll={handleScroll}
+      contentContainerClassName="bg-background rounded-t-xl flex-grow"
+      contentContainerStyle={{ paddingBottom: bottomTab }}
     />
   );
 }

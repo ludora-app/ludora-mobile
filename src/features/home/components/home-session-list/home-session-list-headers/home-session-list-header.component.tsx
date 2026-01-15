@@ -5,22 +5,25 @@ import { String, Wrapper, Box } from '@ludo/ui';
 
 import { DaysCarousel } from '@/components/ui/days-carousel';
 
-import { useSessionsFilterStore } from '../../../../stores/home-sessions-filters.store';
+import { useHomeSessionFiltersStore } from '../../../stores/home-sessions-filters.store';
 
 function HomeSessionListHeader() {
   const { t } = useTranslate();
-  const setSessionFilter = useSessionsFilterStore(state => state.setSessionFilter);
+  const setSessionFilter = useHomeSessionFiltersStore(state => state.setFilters);
 
   const handleDateSelect = (date: Dayjs) => {
     setSessionFilter({
-      startDate: date.startOf('day').toISOString(),
+      date: {
+        date: date.startOf('day').toISOString(),
+        source: 'day-carousel',
+      },
     });
   };
 
   return (
-    <Box className="bg-background">
-      <DaysCarousel className="my-5" contentContainerClassName="px-4" onSelect={handleDateSelect} />
-      <Wrapper className="mb-5">
+    <Box className="my-5 gap-5">
+      <DaysCarousel contentContainerClassName="px-4" onSelect={handleDateSelect} />
+      <Wrapper>
         <String font="primaryBold" variant="body-sm">
           {t('home.session_card_header_list_title')}
         </String>

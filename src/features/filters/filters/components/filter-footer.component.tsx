@@ -13,7 +13,10 @@ import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-fo
 import { useFiltersStore } from '../store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '../types/filters.types';
 
-const mmkvStorageKey = MMKV_STORAGE_KEY.FILTERS_SCREEN_GOBACK_PATH;
+const mmkvStorageKey = {
+  goBackPath: MMKV_STORAGE_KEY.FILTERS_SCREEN.GO_BACK_PATH,
+  source: MMKV_STORAGE_KEY.FILTERS_SCREEN.SOURCE,
+};
 
 export default function FilterFooter() {
   const { goBackPath, source } = useLocalSearchParams<FiltersScreenParams>();
@@ -27,21 +30,25 @@ export default function FilterFooter() {
 
   useEffect(() => {
     if (!goBackPath || !isString(goBackPath)) return;
-    mmkvStorage.setItem(mmkvStorageKey, goBackPath);
-  }, [goBackPath]);
+    if (!source || !isString(source)) return;
+    mmkvStorage.setItem(mmkvStorageKey.goBackPath, goBackPath);
+    mmkvStorage.setItem(mmkvStorageKey.source, source);
+  }, [goBackPath, source]);
 
   const handleCancel = () => {
     router.back();
   };
 
   const handleApply = () => {
-    const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey);
-    trackEvent({ eventName: `${source}_applied`, properties: { filters, numberOfFilters } });
+    const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey.goBackPath);
+    const sourceValue = source ?? (mmkvStorage.getString(mmkvStorageKey.source) as FiltersScreenParams['source']);
+    trackEvent({ eventName: `${sourceValue}_applied`, properties: { filters, numberOfFilters } });
     const params: FiltersReturnParams = {
       selectedFilters: serialize(filters),
     };
     router.dismissTo({ params, pathname: backPatchValue });
-    mmkvStorage.removeItem(mmkvStorageKey);
+    mmkvStorage.removeItem(mmkvStorageKey.goBackPath);
+    mmkvStorage.removeItem(mmkvStorageKey.source);
   };
 
   return (

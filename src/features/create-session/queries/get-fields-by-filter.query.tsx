@@ -13,15 +13,17 @@ export const useGetAllFieldsByFilter = () => {
 
   const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
 
-  const location = useUserLocationStore(state => state.location);
+  const userLocation = useUserLocationStore(state => state.location);
 
   const dateValue = filterDate?.date;
 
   const { data, ...rest } = useGetFields({
     date: dateValue,
     limit: LIMIT_RESULTS_FIELDS,
-    userLat: location?.latitude,
-    userLon: location?.longitude,
+    ...(userLocation && {
+      userLat: userLocation.latitude,
+      userLon: userLocation.longitude,
+    }),
     ...restFilters,
   });
 

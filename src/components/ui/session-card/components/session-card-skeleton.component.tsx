@@ -2,17 +2,22 @@ import { memo } from 'react';
 import { cn } from '@chillui/ui';
 import { Skeleton, Box, BoxGrow, BoxRow } from '@ludo/ui';
 
-function SessionCardSkeleton() {
-  const hasImage = true;
+interface SessionCardSkeletonProps {
+  isNextSession?: boolean;
+}
+function SessionCardSkeleton(props: SessionCardSkeletonProps) {
+  const { isNextSession } = props;
 
   return (
     <Box>
-      <Box className="h-16 overflow-hidden rounded-t-xl">
-        <Skeleton className="size-full rounded-none" />
-      </Box>
+      {!isNextSession && (
+        <Box className="h-16 overflow-hidden rounded-t-xl">
+          <Skeleton className="size-full rounded-none" />
+        </Box>
+      )}
       <Box
         className={cn('overflow-hidden rounded-xl border border-black/10 bg-white', {
-          'rounded-t-none border-t-0': hasImage,
+          'rounded-t-none border-t-0': !isNextSession,
         })}
       >
         <BoxRow>

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { create } from 'zustand';
+import { isString } from 'radash';
 
 import { SessionsFindAllParams } from '@/api/generated/model';
 
@@ -23,10 +24,9 @@ const calculateNumberOfFilters = (filters: FiltersProps): number => {
     delete filtersForCount.userLon;
   }
 
-  if (filtersForCount.search && filtersForCount.search.length === 0) {
+  if (filtersForCount.search || isString(filtersForCount.search)) {
     delete filtersForCount.search;
   }
-
   return Object.values(filtersForCount).filter(value => value != null).length;
 };
 

@@ -24,7 +24,7 @@ export default function CreateSessionStep2FieldsListHeaderTopList() {
   return (
     <DaysCarousel
       startDay={dayjs(getStartDay())}
-      className="mb-5 mt-3"
+      className="pb-5 pt-3"
       onSelect={handleSelectDay}
       initialDate={dayjs(dateFilter)}
     />

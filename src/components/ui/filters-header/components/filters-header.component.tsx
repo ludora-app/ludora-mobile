@@ -1,6 +1,6 @@
 import { isString } from 'radash';
 import { useEffect, useMemo } from 'react';
-import { ScalePressable } from '@chillui/ui';
+import { cn, ScalePressable } from '@chillui/ui';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Badge, Box, BoxCenter, BoxRow, Icon } from '@ludo/ui';
 
@@ -23,6 +23,7 @@ export type FiltersHeaderProps<T extends FiltersHeaderInputSchema> = FiltersHead
 
 export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props: FiltersHeaderProps<T>) {
   const {
+    className,
     goBackPath = ROUTES.CREATE_SESSION.INDEX,
     numberOfFilters,
     onFilterPress,
@@ -65,7 +66,7 @@ export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props:
   };
 
   return (
-    <BoxRow className="items-center gap-2">
+    <BoxRow className={cn('items-center gap-2', className)}>
       <Box className="flex-1">
         <FiltersHeaderInput {...rest} />
       </Box>

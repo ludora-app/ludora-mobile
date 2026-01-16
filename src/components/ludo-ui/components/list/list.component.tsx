@@ -1,7 +1,9 @@
 import { list } from 'radash';
-import { LayoutChangeEvent } from 'react-native';
+import { cn } from '@chillui/ui';
 import { useCallback, useMemo, useState } from 'react';
+import { ViewStyle, LayoutChangeEvent, StyleProp } from 'react-native';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
+import Animated, { useAnimatedStyle, interpolate, useSharedValue, Extrapolation } from 'react-native-reanimated';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
@@ -11,20 +13,21 @@ import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
 import { ListProps } from '../../types/list.types';
 
-type SkeletonItem = { type: 'skeleton'; id: string };
-type SpecialItem = { type: 'sticky' | 'header_top'; id: string };
-
-type ListItem = SkeletonItem | SpecialItem;
+type SkeletonItem = { type: 'skeleton'; uid: string };
+type SpecialItem = { type: 'sticky' | 'header_top'; uid: string };
+type EmptyItem = { type: 'empty'; uid: string };
+type ListItem = SkeletonItem | SpecialItem | EmptyItem;
 
 const SKELETON_COUNT = 3;
 
 const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
-  id: `skel-${i}`,
   type: 'skeleton',
+  uid: `skel-${i}`,
 }));
 
 export default function List(props: ListProps) {
   const {
+    contentContainerClassName,
     contentContainerStyle,
     data,
     emptyResultTitle,
@@ -35,31 +38,41 @@ export default function List(props: ListProps) {
     isRefetching,
     ItemComponent,
     ListHeaderStickyComponent,
+    ListHeaderStickyComponentIsAnimated = true,
     ListStickyComponent,
+    ListStickyComponentTopSafeArea,
     ListTopComponent,
     SkeletonComponent,
+    style,
     ...rest
   } = props;
 
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState(0);
+  const scrollY = useSharedValue(0);
   const { top } = useSafeArea();
 
-  const showSkeletons = isLoading && !isRefetching && (!data || data.length === 0);
-
+  const showSkeletons = isLoading && !isRefetching;
+  const isEmptyData = !isLoading && !isRefetching && (!data || data.length === 0);
   const dataToRender = useMemo(() => {
     const items: ListItem[] = [];
 
     if (ListStickyComponent) {
-      items.push({ id: 'sticky', type: 'sticky' });
+      items.push({ type: 'sticky', uid: 'sticky' });
     }
     if (ListTopComponent) {
-      items.push({ id: 'header_top', type: 'header_top' });
+      items.push({ type: 'header_top', uid: 'header_top' });
     }
 
-    const content = showSkeletons ? SKELETON_DATA : data || [];
+    if (showSkeletons) {
+      items.push(...SKELETON_DATA);
+    } else if (isEmptyData) {
+      items.push({ type: 'empty', uid: 'empty_res' });
+    } else {
+      items.push(...(data || []));
+    }
 
-    return [...items, ...content];
-  }, [showSkeletons, data, ListTopComponent, ListStickyComponent]);
+    return items;
+  }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent]);
 
   const stickyHeaderIndices = useMemo(() => {
     if (ListStickyComponent) {
@@ -91,55 +104,76 @@ export default function List(props: ListProps) {
             return renderComponent(ListStickyComponent);
           case 'header_top':
             return renderComponent(ListTopComponent);
+          case 'empty':
+            // ✅ On rend le composant vide ici, comme une cellule normale
+            // Tu peux lui passer une props pour qu'il prenne toute la hauteur restante si besoin (flex-1)
+            return <EmptyResult title={emptyResultTitle} />;
           default:
             return <ItemComponent item={item} />;
         }
       }
       return <ItemComponent item={item} />;
     },
-    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent],
+    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent, emptyResultTitle],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {
     if (item && typeof item === 'object') {
-      if ('type' in item) return item.id;
-      if ('uid' in item) return String((item as any).uid);
-      if ('id' in item) return String((item as any).id);
+      return String((item as any).uid);
     }
     return String(index);
   }, []);
-
-  const listStyle = useMemo(() => {
-    if (ListStickyComponent) {
-      return {
-        marginTop: top,
-      };
-    }
-    return undefined;
-  }, [top, ListStickyComponent]);
 
   const onStickyHeaderLayout = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
     setStickyHeaderHeight(height);
   };
 
-  const listContentContainerStyle = useMemo(() => {
-    const style = [
-      ListHeaderStickyComponent && {
-        marginTop: stickyHeaderHeight - top,
-      },
-      contentContainerStyle,
-    ];
-    return style;
-  }, [stickyHeaderHeight, top, contentContainerStyle, ListHeaderStickyComponent]);
+  const listContentContainerStyle: StyleProp<ViewStyle> | undefined = useMemo(() => {
+    const listContainerStyle = ListHeaderStickyComponent && {
+      marginTop: stickyHeaderHeight - top,
+    };
+
+    return listContainerStyle;
+  }, [stickyHeaderHeight, top, ListHeaderStickyComponent]);
+
+  const listStyle: ViewStyle | undefined = useMemo(() => {
+    if (ListStickyComponent && ListStickyComponentTopSafeArea) {
+      return {
+        marginTop: top,
+      };
+    }
+    return undefined;
+  }, [top, ListStickyComponent, ListStickyComponentTopSafeArea]);
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollY.value, [0, stickyHeaderHeight], [1, 0], Extrapolation.CLAMP);
+    const translateY = interpolate(
+      scrollY.value,
+      [0, stickyHeaderHeight],
+      [0, -stickyHeaderHeight * 0.3],
+      Extrapolation.CLAMP,
+    );
+    const zIndex = interpolate(scrollY.value, [0, stickyHeaderHeight], [50, -1], Extrapolation.CLAMP);
+    return {
+      opacity,
+      transform: [{ translateY }],
+      zIndex,
+    };
+  }, [stickyHeaderHeight]);
 
   return (
     <>
-      {ListHeaderStickyComponent && (
-        <Box className="absolute w-full" onLayout={onStickyHeaderLayout}>
-          {renderComponent(ListHeaderStickyComponent)}
-        </Box>
-      )}
+      {ListHeaderStickyComponent &&
+        (ListHeaderStickyComponentIsAnimated ? (
+          <Animated.View className="absolute w-full" style={headerAnimatedStyle} onLayout={onStickyHeaderLayout}>
+            {renderComponent(ListHeaderStickyComponent)}
+          </Animated.View>
+        ) : (
+          <Box className="absolute w-full" onLayout={onStickyHeaderLayout}>
+            {renderComponent(ListHeaderStickyComponent)}
+          </Box>
+        ))}
       <LegendList
         keyExtractor={keyExtractor}
         data={dataToRender}
@@ -151,19 +185,23 @@ export default function List(props: ListProps) {
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
-        style={listStyle}
+        style={[listStyle, style]}
         keyboardShouldPersistTaps="always"
+        contentContainerClassName={cn('flex-grow', contentContainerClassName)}
         ListFooterComponent={
           <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
         }
-        ListEmptyComponent={<EmptyResult title={emptyResultTitle} />}
+        onScroll={e => {
+          scrollY.value = e.nativeEvent.contentOffset.y;
+        }}
+        scrollEventThrottle={16}
         {...(ListHeaderStickyComponent &&
           stickyHeaderHeight && {
             stickyHeaderConfig: {
               offset: -stickyHeaderHeight + top,
             },
           })}
-        contentContainerStyle={listContentContainerStyle}
+        contentContainerStyle={[listContentContainerStyle, contentContainerStyle]}
         {...rest}
       />
     </>

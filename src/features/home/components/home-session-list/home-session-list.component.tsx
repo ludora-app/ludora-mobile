@@ -1,6 +1,6 @@
 import { List } from '@ludo/ui';
-import { useSharedValue } from 'react-native-reanimated';
-import { RefreshControl, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { useMemo } from 'react';
+import { RefreshControl } from 'react-native';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
@@ -10,6 +10,10 @@ import HomeSessionListHeader from './home-session-list-headers/home-session-list
 import HomeSessionListItemSkeleton from './home-session-list-item/home-session-list-item-skeleton.component';
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
+
+const ESTIMATED_LIST_ITEM_SIZE = 155;
+const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
+const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
 
 export default function HomeSessionList() {
   const {
@@ -21,13 +25,22 @@ export default function HomeSessionList() {
     items: sessions,
     refetch,
   } = useGetAllSessionsByFilter();
-  const { bottomTab, top } = useSafeArea();
 
-  const scrollY = useSharedValue(0);
+  const { bottomTab } = useSafeArea();
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollY.value = event.nativeEvent.contentOffset.y;
-  };
+  const fixedEstimatedItemsSize = useMemo(
+    () => (index: number) => {
+      if (index === 0) {
+        return ESTIMATED_LIST_STICKY_COMPONENT;
+      }
+      if (index === 1) {
+        return ESTIMATED_LIST_TOP_COMPONENT;
+      }
+
+      return ESTIMATED_LIST_ITEM_SIZE;
+    },
+    [],
+  );
 
   return (
     <List
@@ -37,14 +50,17 @@ export default function HomeSessionList() {
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      estimatedItemSize={ESTIMATED_LIST_ITEM_SIZE}
+      getFixedItemSize={index => fixedEstimatedItemsSize(index)}
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
       ListHeaderStickyComponent={HomeSessionListHeaderTopList}
+      ListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
-      ListStickyComponent={<HomeSessionListHeaderSticky scrollY={scrollY} />}
+      ListStickyComponent={<HomeSessionListHeaderSticky />}
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
       bounces={false}
-      contentContainerClassName="bg-background rounded-t-xl flex-grow"
+      contentContainerClassName="bg-background rounded-t-xl"
       contentContainerStyle={{ paddingBottom: bottomTab }}
     />
   );

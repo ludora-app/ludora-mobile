@@ -1,4 +1,4 @@
-import { ListAnimated } from '@ludo/ui';
+import { List } from '@ludo/ui';
 
 import { useGetUserFriendsByFilter } from '../../queries/get-user-friends-by-filter.query';
 import InviteFriendsHeader from '../invite-friends-header/invite-friends-header.component';
@@ -11,8 +11,8 @@ export default function InviteFriendsList() {
     useGetUserFriendsByFilter();
 
   return (
-    <ListAnimated
-      items={items}
+    <List
+      data={items}
       isRefetching={isRefetching}
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
@@ -20,8 +20,8 @@ export default function InviteFriendsList() {
       isFetchingNextPage={isFetchingNextPage}
       ItemComponent={InviteFriendsListItem}
       SkeletonComponent={InviteFriendsListItemSkeleton}
-      HeaderComponent={InviteFriendsHeader}
-      StickyElementComponent={InviteFriendsHeaderInput}
+      ListHeaderComponent={InviteFriendsHeader}
+      ListStickyComponent={InviteFriendsHeaderInput}
       emptyResultTitle="invite-friends.no_result_title_v"
     />
   );

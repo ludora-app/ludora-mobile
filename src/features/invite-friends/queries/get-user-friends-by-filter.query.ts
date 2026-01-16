@@ -7,13 +7,15 @@ import { RootStackParamList } from '@/types/routes-params.types';
 import { useGetUserFriends } from './get-user-friends.query';
 import { useInviteFriendsFilterStore } from '../stores/invite-friends-filter.store';
 
+const LIMIT_USER_FRIENDS_ITEMS = 10;
+
 export const useGetUserFriendsByFilter = () => {
   const { sessionUid } = useLocalSearchParams<RootStackParamList[typeof ROUTES.INVITE_PEOPLE.INDEX]>();
   const userFriendsFilter = useInviteFriendsFilterStore(state => state.filter);
 
   const { data, ...rest } = useGetUserFriends({
     ...filterObjectEntries(userFriendsFilter),
-    limit: 10,
+    limit: LIMIT_USER_FRIENDS_ITEMS,
     sessionUid,
   });
   const items = data?.pages.flatMap(page => page.data.items) ?? [];

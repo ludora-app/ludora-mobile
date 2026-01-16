@@ -9,9 +9,8 @@ import API_ERRORS from '@/api/utils/api.errors';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { RootStackParamList } from '@/types/routes-params.types';
-import { useInvalidateQuery } from '@/hooks/invalidate-query.hook';
 import FooterWrapper from '@/components/ui/footer-wrapper/footer-wrapper.component';
-import { getFriendsFindAllMyFriendsQueryKey } from '@/api/generated/api/friends/friends.api';
+import { useInvalidateFriendsFindAllMyFriends } from '@/api/generated/invalidate-queries';
 
 import { useInviteFriend } from '../queries/invite-friend-query';
 import { useInviteFriendsStore } from '../stores/invite-friends.store';
@@ -30,8 +29,7 @@ export default function InviteFriendsFooter() {
   );
 
   const { isPending: isInvitingFriends, mutateAsync: inviteFriend } = useInviteFriend();
-  const userFriendsQueryKey = getFriendsFindAllMyFriendsQueryKey();
-  const invalidateQueryUserFriends = useInvalidateQuery(userFriendsQueryKey);
+  const invalidateQueryUserFriends = useInvalidateFriendsFindAllMyFriends();
 
   const { toast } = useToast();
   const router = useRouter();

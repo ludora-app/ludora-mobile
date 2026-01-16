@@ -21,7 +21,7 @@ function HomeSessionListHeader() {
   };
 
   return (
-    <Box className="my-5 gap-5">
+    <Box className="gap-5 py-5">
       <DaysCarousel contentContainerClassName="px-4" onSelect={handleDateSelect} />
       <Wrapper>
         <String font="primaryBold" variant="body-sm">

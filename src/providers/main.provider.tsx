@@ -26,7 +26,7 @@ export default function MainProvider({ children }: PropsWithChildren) {
                 <AuthProvider />
                 <PostHogIdentifierProvider />
                 <WebsocketProvider />
-                <KeyboardProvider navigationBarTranslucent>
+                <KeyboardProvider>
                   <DebuggerProvider />
                   <FontProvider>
                     <IconProvider>

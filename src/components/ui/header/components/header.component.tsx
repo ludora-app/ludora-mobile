@@ -15,7 +15,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { children, className, hasNewSession = false, subTitle, title } = props;
 
   return (
-    <WrapperSafeAreaView className={cn('flex-row items-end pt-10', className)} edges={['top']} style={{ height: 210 }}>
+    <WrapperSafeAreaView className={cn('h-72 flex-row items-end', className)} edges={['top']}>
       <Box className="flex-1 flex-row justify-center gap-4">
         <Box className="flex-1 gap-2 pb-3">
           <Box className="-mb-3 w-full">

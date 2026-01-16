@@ -5,7 +5,7 @@ export const useGetIncommingSessionMe = () => {
     {
       limit: 1,
       scope: 'UPCOMING',
-      startDateSortOrder: 'desc',
+      startDateSortOrder: 'asc',
     },
     {
       query: {

@@ -1,4 +1,7 @@
-import { ListAnimated } from '@/components/ludo-ui';
+import { useMemo } from 'react';
+
+import { List } from '@/components/ludo-ui';
+import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
 import { useGetAllFieldsByFilter } from '@/features/create-session/queries/get-fields-by-filter.query';
 
 import CreateSessionStep2FieldCard from '../create-session-step-2-field-card/create-session-step-2-field-card';
@@ -6,6 +9,11 @@ import CreateSessionStep2FieldCardSkeleton from '../create-session-step-2-field-
 import CreateSessionStep2FieldsListHeader from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header.component';
 import CreateSessionStep2FieldsListHeaderSticky from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-sticky.component';
 import CreateSessionStep2FieldsListHeaderTopList from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-top-list.component';
+
+const LIST_TOP_COMPONENT_HEIGHT = 88;
+const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
+const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 203;
+const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 224;
 
 export default function CreateSessionStep2FieldsList() {
   const {
@@ -17,20 +25,38 @@ export default function CreateSessionStep2FieldsList() {
     items: fields,
   } = useGetAllFieldsByFilter();
 
+  const fixedEstimatedItemsSize = useMemo(
+    () => (index: number, item: FieldResponseDto) => {
+      switch (index) {
+        case 0:
+          return LIST_STICKY_COMPONENT_HEIGHT;
+        case 1:
+          return LIST_TOP_COMPONENT_HEIGHT;
+        default:
+          if (item.type === FieldResponseDtoType.PRIVATE) {
+            return LIST_PRIVATE_FIELD_ITEM_HEIGHT;
+          }
+          return LIST_PUBLIC_FIELD_ITEM_HEIGHT;
+      }
+    },
+    [],
+  );
+
   // TODO: fix keyboard issue with flashlist (doesn't clic on item when keyboard is open)
   return (
-    <ListAnimated
-      items={fields}
+    <List
+      data={fields}
       isRefetching={isRefetching}
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      getFixedItemSize={fixedEstimatedItemsSize}
       SkeletonComponent={CreateSessionStep2FieldCardSkeleton}
       ItemComponent={CreateSessionStep2FieldCard}
-      StickyElementComponent={CreateSessionStep2FieldsListHeaderSticky}
-      HeaderComponent={CreateSessionStep2FieldsListHeader}
-      TopListElementComponent={CreateSessionStep2FieldsListHeaderTopList}
+      ListStickyComponent={CreateSessionStep2FieldsListHeaderSticky}
+      ListHeaderComponent={CreateSessionStep2FieldsListHeader}
+      ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
       bounces={false}
       emptyResultTitle="create-session-steps.step-2.no_result_title_v"
     />

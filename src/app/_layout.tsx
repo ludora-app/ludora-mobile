@@ -7,6 +7,7 @@ import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 import { useAuthStore } from '@/stores/auth.store';
 import MainProvider from '@/providers/main.provider';
 import LoadingScreen from '@/features/splash/screens/splash.screen';
+import { usePushNotifications } from '@/hooks/use-push-notifications.hook';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 function StorybookHeader() {
@@ -18,10 +19,22 @@ function RootLayoutNav() {
   const pathname = usePathname();
   const params = useGlobalSearchParams();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  
+  // Initialize push notifications
+  const { fcmToken } = usePushNotifications();
 
   useEffect(() => {
     posthog.screen(pathname, params);
   }, [pathname, params, posthog]);
+
+  // Log FCM token when available (you can send it to your backend here)
+  useEffect(() => {
+    if (fcmToken) {
+      console.log('📱 FCM Token ready:', fcmToken);
+      // TODO: Send token to your backend API
+      // Example: api.post('/users/fcm-token', { token: fcmToken });
+    }
+  }, [fcmToken]);
 
   return (
     <Stack

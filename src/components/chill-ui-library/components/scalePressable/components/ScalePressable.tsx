@@ -42,7 +42,6 @@ export const ScalePressable = forwardRef<any, React.PropsWithChildren<ScalePress
     className,
     duration = scalePressableDefaultProps.duration,
     onPress,
-    pointerEvents = 'auto',
     scaleValue = scalePressableDefaultProps.scaleValue,
     style,
     ...rest

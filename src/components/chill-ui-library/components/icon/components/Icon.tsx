@@ -34,6 +34,7 @@ import { iconSizeTv, iconPressableTv, iconPaddingTv, twStyles } from '../styles/
  * @param size - Icon size variant: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' (default: 'md')
  * @param style - Additional inline styles
  */
+
 export default function Icon<T extends IconConfig>(props: IconProps<T>) {
   const {
     as,

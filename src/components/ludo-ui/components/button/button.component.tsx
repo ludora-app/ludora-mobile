@@ -1,5 +1,5 @@
+import { Image } from '@ludo/ui';
 import { Link } from 'expo-router';
-import { Image } from 'expo-image';
 import { Button as ButtonChillUI, ButtonContent, ButtonIcon, ButtonLoader, ButtonTitle, cn } from '@chillui/ui';
 
 import { ButtonProps } from '../../types/button.types';

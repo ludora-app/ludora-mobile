@@ -34,7 +34,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
           </String>
           {children}
           {hasNewSession && (
-            <Box className="absolute bottom-16 right-0 -z-10">
+            <Box className="absolute right-0 bottom-16 -z-10">
               <Icon name="mascotte-ludora" className="size-36" />
             </Box>
           )}

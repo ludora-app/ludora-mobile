@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
+import { withUniwind } from 'uniwind';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { WrapperSafeAreaViewProps } from '../../../types';
@@ -25,13 +26,15 @@ import { wrapperDefaultProps } from '../utils/defaultProps';
  * @param emulateUnlessSupported - Whether to emulate unless supported
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
+
+const StyledSafeAreaView = withUniwind(SafeAreaView);
 export function WrapperSafeAreaView(props: PropsWithChildren<WrapperSafeAreaViewProps>) {
   const { children, className, fill = wrapperDefaultProps.fill, grow, px, ...rest } = props;
 
   return (
-    <SafeAreaView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
+    <StyledSafeAreaView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
       {children}
-    </SafeAreaView>
+    </StyledSafeAreaView>
   );
 }
 

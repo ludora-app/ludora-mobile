@@ -1,7 +1,6 @@
-import { Image } from 'expo-image';
 import { useTranslate } from '@tolgee/react';
 import Animated, { FadeInRight } from 'react-native-reanimated';
-import { Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
+import { Image, Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
 
 import { formatDate } from '@/utils/date.utils';
 import { getSportImage } from '@/utils/sports.utils';
@@ -34,7 +33,7 @@ export default function CreateSessionStep3() {
               {t('create-session-steps.step-3.session_details_title')}
             </String>
 
-            <BoxRow className="items-center gap-10 rounded-2xl border border-ring bg-white px-8 py-3">
+            <BoxRow className="border-ring items-center gap-10 rounded-2xl border bg-white px-8 py-3">
               <Box className="items-center gap-2">
                 <Image source={sessionImage} className="size-10" />
                 <String font="primaryBold">{t(`common.game_mode_${gameMode}`, { space: ' ' })}</String>

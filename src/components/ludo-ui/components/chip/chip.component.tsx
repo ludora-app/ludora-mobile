@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
-import { Image } from 'expo-image';
 import { Chip as ChipChillUI, ChipContent, ChipIcon, ChipLoader, ChipTitle, cn } from '@chillui/ui';
 
+import { Image } from '../image';
 import { ChipProps } from '../../types/chip.types';
 
 export default function Button(props: ChipProps) {

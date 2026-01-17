@@ -1,26 +1,14 @@
 import type { PropsWithChildren } from 'react';
+
+import { withUniwind } from 'uniwind';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
+
 import type { WrapperKeyboardAvoidingStickyViewProps } from '../../../types';
 
-import { cn, customConsole } from '../../../utils';
-
 import { Wrapper } from './Wrapper';
+import { cn } from '../../../utils';
 import { wrapperTv } from '../styles/Wrapper.styles';
 import { WrapperSafeAreaView } from './WrapperSafeAreaView';
-
-// Optional import with error handling
-let KeyboardStickyView: any;
-
-try {
-  // eslint-disable-next-line
-  const keyboardController = require('react-native-keyboard-controller');
-  if (keyboardController) {
-    KeyboardStickyView = keyboardController.KeyboardStickyView;
-  }
-} catch {
-  customConsole.warn(
-    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAvoidingStickyView, please install it: npm install react-native-keyboard-controller',
-  );
-}
 
 /**
  * The `<WrapperKeyboardAvoidingStickyView />` component provides a KeyboardStickyView wrapper for keyboard avoidance with sticky behavior.
@@ -48,6 +36,8 @@ try {
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
+
+const StyledKeyboardStickyView = withUniwind(KeyboardStickyView);
 export function WrapperKeyboardAvoidingStickyView(props: PropsWithChildren<WrapperKeyboardAvoidingStickyViewProps>) {
   const { children, className, edges, fill, grow, hasSafeArea, px, style, ...rest } = props;
 
@@ -65,9 +55,9 @@ export function WrapperKeyboardAvoidingStickyView(props: PropsWithChildren<Wrapp
   }
 
   const content = (
-    <KeyboardStickyView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
+    <StyledKeyboardStickyView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
       {children}
-    </KeyboardStickyView>
+    </StyledKeyboardStickyView>
   );
 
   if (hasSafeArea) {

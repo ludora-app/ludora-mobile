@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { usePostHog } from 'posthog-react-native';
 
-import '../styles/global.css';
+import '../global.css';
 import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 
 import { useAuthStore } from '@/stores/auth.store';

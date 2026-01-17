@@ -1,27 +1,15 @@
 import type { PropsWithChildren } from 'react';
+
+import { withUniwind } from 'uniwind';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+
 import type { WrapperKeyboardAvoidingViewProps } from '../../../types';
 
-import { cn, customConsole } from '../../../utils';
-
 import { Wrapper } from './Wrapper';
+import { cn } from '../../../utils';
 import { wrapperTv } from '../styles/Wrapper.styles';
 import { wrapperDefaultProps } from '../utils/defaultProps';
 import { WrapperSafeAreaView } from './WrapperSafeAreaView';
-
-// Optional import with error handling
-let KeyboardAvoidingView: any;
-
-try {
-  // eslint-disable-next-line
-  const keyboardController = require('react-native-keyboard-controller');
-  if (keyboardController) {
-    KeyboardAvoidingView = keyboardController.KeyboardAvoidingView;
-  }
-} catch {
-  customConsole.warn(
-    'react-native-keyboard-controller is not installed. To use WrapperKeyboardAvoidingView, please install it: npm install react-native-keyboard-controller',
-  );
-}
 
 /**
  * KeyboardAvoidingView wrapper component for keyboard avoidance.
@@ -49,6 +37,8 @@ try {
  * @param contentContainerStyle - Content container style (The style of the content container (View) when behavior is position.)
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
+
+const StyledKeyboardAvoidingView = withUniwind(KeyboardAvoidingView);
 export function WrapperKeyboardAvoidingView(props: PropsWithChildren<WrapperKeyboardAvoidingViewProps>) {
   const {
     children,
@@ -76,14 +66,14 @@ export function WrapperKeyboardAvoidingView(props: PropsWithChildren<WrapperKeyb
   }
 
   const content = (
-    <KeyboardAvoidingView
+    <StyledKeyboardAvoidingView
       className={cn(wrapperTv({ fill, grow, px }), className)}
-      behavior={wrapperDefaultProps.behavior}
       keyboardVerticalOffset={keyboardVerticalOffset}
+      enabled
       {...rest}
     >
       {children}
-    </KeyboardAvoidingView>
+    </StyledKeyboardAvoidingView>
   );
 
   if (hasSafeArea) {

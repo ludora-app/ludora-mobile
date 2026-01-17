@@ -1,0 +1,64 @@
+@import 'tailwindcss';
+@import 'uniwind';
+
+@theme {
+  /* Colors */
+  --color-accent: #ce3728;
+  --color-background: #f2f4f8;
+  --color-border: #e4e4e4;
+  --color-danger: #ff0000;
+  --color-darkLight: #0000001a;
+  --color-destructive: #a52523;
+  --color-error: #ff3333;
+  --color-gray: #7c7c7c;
+  --color-input: #e4e4e4;
+  --color-muted: #666;
+  --color-primary: #f15924;
+  --color-primaryHover: #f14500;
+  --color-purplePrimary: #864c9e;
+  --color-purpleSecondary: #652f8f;
+  --color-purpleTertiary: #3c215a;
+  --color-ring: #b4b4b4;
+  --color-secondary: #fcbd1d;
+  --color-warning: #ff9800;
+
+  /* Button Colors */
+  --color-button-accent-background: #cbd2d9;
+  --color-button-accent-content: #ff0000;
+  --color-button-danger-background: #ff0000;
+  --color-button-danger-content: #fff;
+  --color-button-dark-background: #000;
+  --color-button-dark-content: #fff;
+  --color-button-disabled-background: #cbd2d9;
+  --color-button-disabled-content: #666;
+  --color-button-error-background: #ff0000;
+  --color-button-error-content: #fff;
+  --color-button-info-background: #6ee7b7;
+  --color-button-info-content: #000;
+  --color-button-inverted-background: #f5f7fa;
+  --color-button-inverted-content: #f15924;
+  --color-button-light-background: #f5f7fa;
+  --color-button-light-content: #000;
+  --color-button-muted-background: #cbd2d9;
+  --color-button-muted-content: #666;
+  --color-button-neutral-background: #00000060;
+  --color-button-neutral-content: #fff;
+  --color-button-primary-background: #f15924;
+  --color-button-primary-content: #fff;
+  --color-button-secondary-background: #cbd2d9;
+  --color-button-secondary-content: #fcd34d;
+  --color-button-warning-background: #fcd34d;
+  --color-button-warning-content: #000;
+  --color-button-white-background: #f5f7fa;
+  --color-button-white-content: #000;
+
+  /* Font Families */
+  --font-primary-bold: 'NunitoSans700Bold';
+  --font-primary-extra-bold: 'NunitoSans800ExtraBold';
+  --font-primary-italic: 'NunitoSans400RegularItalic';
+  --font-primary-light: 'NunitoSans300Light';
+  --font-primary-medium: 'NunitoSans600SemiBold';
+  --font-primary-medium-italic: 'NunitoSans600SemiBoldItalic';
+  --font-primary-regular: 'NunitoSans400Regular';
+  --font-primary-semi-bold: 'NunitoSans600SemiBold';
+}

@@ -1,5 +1,5 @@
 // src/components/ui/navigation/tab-bar-custom.component.tsx
-import { Box, BoxRow } from '@chillui/ui';
+import { Box, BoxRow } from '@ludo/ui';
 import Svg, { Path } from 'react-native-svg';
 import { useState, useCallback } from 'react';
 import { StyleSheet, LayoutChangeEvent } from 'react-native';

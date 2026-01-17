@@ -11,7 +11,7 @@ import HomeSessionListItemSkeleton from './home-session-list-item/home-session-l
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
-const ESTIMATED_LIST_ITEM_SIZE = 155;
+const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
 

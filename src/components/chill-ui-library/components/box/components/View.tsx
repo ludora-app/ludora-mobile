@@ -1,7 +1,7 @@
 import type { ViewProps as NativeViewProps } from 'react-native';
 
-import { ReactElement } from 'react';
-import { createElement, cssInterop } from 'nativewind';
+import { withUniwind } from 'uniwind';
+import { ReactElement, createElement } from 'react';
 import ReanimatedAnimated from 'react-native-reanimated';
 import { Animated, View as NativeView } from 'react-native';
 
@@ -16,6 +16,8 @@ interface ViewProps extends NativeViewProps {
 function FastView(props: NativeViewProps): ReactElement {
   return createElement('RCTView', props);
 }
+
+const StyledFastView = withUniwind(FastView);
 
 const FastAnimatedView = Animated.createAnimatedComponent(FastView);
 
@@ -57,16 +59,11 @@ export function View(props: ViewProps) {
   const { children, useFastView = true, ...rest } = props;
 
   if (useFastView) {
-    return <FastView {...rest}>{children}</FastView>;
+    return <StyledFastView {...rest}>{children}</StyledFastView>;
   }
 
   return <NativeView {...rest}>{children}</NativeView>;
 }
-cssInterop(View, {
-  className: {
-    target: 'style', // map className->style
-  },
-});
 
 /**
  * AnimatedView component that provides animated view capabilities.
@@ -94,12 +91,6 @@ export function AnimatedView(props: AnimatedViewPropsWithClassName) {
 
   return <Animated.View {...rest}>{children}</Animated.View>;
 }
-
-cssInterop(AnimatedView, {
-  className: {
-    target: 'style', // map className->style
-  },
-});
 
 export function ReanimatedView(props: ReanimatedViewPropsWithClassName) {
   const { children, useFastView = true, ...rest } = props;

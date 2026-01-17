@@ -27,7 +27,7 @@ export default function TabBarButton(props: TabBarButtonProps) {
   return (
     <Pressable
       {...props}
-      className="absolute left-1/2 items-center justify-center rounded-full bg-primary"
+      className="bg-primary absolute left-1/2 items-center justify-center rounded-full"
       style={[
         {
           height: TAB_BAR_CONSTANTS.BUTTON_SIZE,

@@ -2,8 +2,8 @@ import type { PropsWithChildren, ReactElement } from 'react';
 import type { TextProps as NativeTextProps } from 'react-native';
 
 import { createElement } from 'react';
-import { cssInterop } from 'nativewind';
-import { Animated, Text as NativeText, Platform } from 'react-native';
+import { withUniwind } from 'uniwind';
+import { Animated, Text as NativeText } from 'react-native';
 
 export interface TextProps extends NativeTextProps {
   className?: string;
@@ -38,11 +38,10 @@ export type FastTextProps = Omit<
  * @returns Optimized text component using RCTText
  */
 export function FastText(props: FastTextProps): ReactElement {
-  if (Platform.OS === 'web') {
-    return <NativeText {...props} />;
-  }
   return createElement('RCTText', props);
 }
+
+const StyledFastText = withUniwind(FastText);
 
 /**
  * Text component that provides optimized text rendering with optional press handling.
@@ -101,14 +100,8 @@ export function Text(props: PropsWithChildren<TextProps>) {
     return <NativeText {...rest}>{children}</NativeText>;
   }
 
-  return <FastText {...rest}>{children}</FastText>;
+  return <StyledFastText {...rest}>{children}</StyledFastText>;
 }
-
-cssInterop(Text, {
-  className: {
-    target: 'style', // map className->style
-  },
-});
 
 /**
  * Animated version of FastText for smooth text animations.
@@ -128,9 +121,3 @@ cssInterop(Text, {
  * ```
  */
 export const AnimatedText = Animated.createAnimatedComponent(FastText);
-
-cssInterop(AnimatedText, {
-  className: {
-    target: 'style', // map className->style
-  },
-});

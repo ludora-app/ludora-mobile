@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
+import { withUniwind } from 'uniwind';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import { cn } from '../../../utils';
@@ -34,6 +35,8 @@ import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
  * @param extraKeyboardSpace - Extra keyboard space
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
+
+const StyledKeyboardAwareScrollView = withUniwind(KeyboardAwareScrollView);
 export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperKeyboardAwareScrollViewProps>) {
   const {
     bottomOffset = wrapperDefaultProps.bottomOffset,
@@ -48,13 +51,13 @@ export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperK
   } = props;
 
   const content = (
-    <KeyboardAwareScrollView
+    <StyledKeyboardAwareScrollView
       className={cn(wrapperTv({ fill, grow, px }), className)}
       bottomOffset={bottomOffset}
       {...rest}
     >
       {children}
-    </KeyboardAwareScrollView>
+    </StyledKeyboardAwareScrollView>
   );
 
   if (hasSafeArea) {

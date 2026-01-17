@@ -1,4 +1,4 @@
-import { Image } from 'expo-image';
+import { Image } from '@ludo/ui';
 import { useRouter } from 'expo-router';
 import { penTool, openBook } from 'assets';
 import { FloatingDevTools } from '@buoy-gg/core';

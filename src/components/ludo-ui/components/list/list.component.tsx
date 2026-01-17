@@ -105,8 +105,6 @@ export default function List(props: ListProps) {
           case 'header_top':
             return renderComponent(ListTopComponent);
           case 'empty':
-            // ✅ On rend le composant vide ici, comme une cellule normale
-            // Tu peux lui passer une props pour qu'il prenne toute la hauteur restante si besoin (flex-1)
             return <EmptyResult title={emptyResultTitle} />;
           default:
             return <ItemComponent item={item} />;
@@ -187,7 +185,7 @@ export default function List(props: ListProps) {
         keyboardDismissMode="on-drag"
         style={[listStyle, style]}
         keyboardShouldPersistTaps="always"
-        contentContainerClassName={cn('flex-grow', contentContainerClassName)}
+        contentContainerClassName={cn('grow', contentContainerClassName)}
         ListFooterComponent={
           <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
         }

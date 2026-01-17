@@ -1,7 +1,8 @@
 import { VariantProps } from 'tailwind-variants';
 import { ComponentType, RefObject } from 'react';
+import { ViewProps, ScrollViewProps, ScrollView } from 'react-native';
 import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
-import { StyleProp, ViewStyle, ViewProps, ScrollViewProps, ScrollView } from 'react-native';
+import { KeyboardAvoidingViewProps, KeyboardStickyViewProps } from 'react-native-keyboard-controller';
 
 import { wrapperTv } from '../components/wrapper/styles/Wrapper.styles';
 
@@ -51,27 +52,12 @@ export type WrapperSafeAreaViewProps = WrapperBaseProps & {
 /**
  * Props for WrapperKeyboardAvoidingView component
  */
-export type WrapperKeyboardAvoidingViewProps = WrapperBaseProps & {
-  /** Keyboard vertical offset */
-  keyboardVerticalOffset?: number;
-  /** Behavior of the keyboard avoiding view */
-  behavior?: 'height' | 'position' | 'padding' | 'translate-with-padding';
-  /** Whether the keyboard avoiding view is enabled */
-  enabled?: boolean;
-  /** Content container style */
-  contentContainerStyle?: StyleProp<ViewStyle>;
-};
+export type WrapperKeyboardAvoidingViewProps = WrapperBaseProps & KeyboardAvoidingViewProps;
 
 /**
  * Props for WrapperKeyboardAvoidingStickyView component
  */
-export type WrapperKeyboardAvoidingStickyViewProps = WrapperBaseProps & {
-  /** Whether the keyboard avoiding sticky view is enabled */
-  enabled?: boolean;
-
-  /** Offset for the keyboard avoiding sticky view */
-  offset?: { close: number; open: number };
-};
+export type WrapperKeyboardAvoidingStickyViewProps = WrapperBaseProps & KeyboardStickyViewProps;
 
 /**
  * Props for WrapperKeyboardAwareScrollView component

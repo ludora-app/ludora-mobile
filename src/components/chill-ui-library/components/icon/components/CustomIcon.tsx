@@ -1,4 +1,4 @@
-import { cssInterop } from 'nativewind';
+import { withUniwind } from 'uniwind';
 import Svg, { ClipPath, Defs, G, Path, Rect, Ellipse, type SvgProps, Circle } from 'react-native-svg';
 
 import { ICONS } from '../../../constants';
@@ -10,6 +10,7 @@ type CustomIconProps<T extends IconConfig = typeof ICONS> = {
   className?: string;
 } & SvgProps;
 
+const StyledSvg = withUniwind(Svg);
 /**
  * CustomIcon component that renders SVG icons with customizable styling.
  *
@@ -76,7 +77,7 @@ export default function CustomIcon<T extends IconConfig = typeof ICONS>({
   const { icons } = useIconContext<T>();
   const iconData = icons?.[name as string] ?? ICONS[name as keyof typeof ICONS];
   const viewBox = iconData?.viewBox;
-  const path = iconData?.path;
+  const path = iconData && 'path' in iconData ? iconData.path : undefined;
   const structure = iconData && 'structure' in iconData ? (iconData as any).structure : undefined;
 
   const svgLevelAttrs: any = {};
@@ -95,11 +96,11 @@ export default function CustomIcon<T extends IconConfig = typeof ICONS>({
   };
 
   if (structure) {
-    return <Svg {...svgProps}>{renderStructure(structure, color)}</Svg>;
+    return <StyledSvg {...svgProps}>{renderStructure(structure, color)}</StyledSvg>;
   }
 
   return (
-    <Svg {...svgProps}>
+    <StyledSvg {...svgProps}>
       {path?.map((pathItem: any, index: number) => {
         // Handle both old format (string) and new format (object with attributes)
         const pathData = typeof pathItem === 'string' ? pathItem : pathItem.d;
@@ -120,12 +121,6 @@ export default function CustomIcon<T extends IconConfig = typeof ICONS>({
           />
         );
       })}
-    </Svg>
+    </StyledSvg>
   );
 }
-
-cssInterop(Svg, {
-  className: {
-    target: 'style',
-  },
-});

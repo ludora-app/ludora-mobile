@@ -1,7 +1,11 @@
 // Register background handler - must be at top level, outside of any component
 try {
-  const messaging = require('@react-native-firebase/messaging').default;
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
+  const firebaseMessaging = require('@react-native-firebase/messaging');
+  const getMessaging = firebaseMessaging.getMessaging;
+  const setBackgroundMessageHandler = firebaseMessaging.setBackgroundMessageHandler;
+  
+  const messaging = getMessaging();
+  setBackgroundMessageHandler(messaging, async (remoteMessage: any) => {
     console.log('🔔 Message handled in the background!', remoteMessage);
   });
 } catch (e) {

@@ -1,10 +1,27 @@
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
-// Import conditionally to avoid iOS crashes if not configured
-let messaging: any = null;
+// Import Firebase Messaging modular API
+let getMessaging: any = null;
+let getToken: any = null;
+let onMessage: any = null;
+let getInitialNotification: any = null;
+let onNotificationOpenedApp: any = null;
+let deleteToken: any = null;
+let AuthorizationStatus: any = null;
+let requestPermission: any = null;
+
 try {
-  messaging = require('@react-native-firebase/messaging').default;
+  const firebaseMessaging = require('@react-native-firebase/messaging');
+  // Import modular functions
+  getMessaging = firebaseMessaging.getMessaging;
+  getToken = firebaseMessaging.getToken;
+  onMessage = firebaseMessaging.onMessage;
+  getInitialNotification = firebaseMessaging.getInitialNotification;
+  onNotificationOpenedApp = firebaseMessaging.onNotificationOpenedApp;
+  deleteToken = firebaseMessaging.deleteToken;
+  AuthorizationStatus = firebaseMessaging.AuthorizationStatus;
+  requestPermission = firebaseMessaging.requestPermission;
 } catch (e) {
   console.warn('Firebase messaging not available:', e);
 }
@@ -32,7 +49,6 @@ class PushNotificationService {
         handleNotification: async () => ({
           shouldPlaySound: true,
           shouldSetBadge: true,
-          shouldShowAlert: true,
           shouldShowBanner: true,
           shouldShowList: true,
         }),
@@ -74,7 +90,7 @@ class PushNotificationService {
    */
   async requestPermission(): Promise<boolean> {
     try {
-      if (!messaging) {
+      if (!getMessaging) {
         // Fallback to expo-notifications for iOS
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
@@ -87,10 +103,11 @@ class PushNotificationService {
         return finalStatus === 'granted';
       }
 
-      const authStatus = await messaging().requestPermission();
+      const messaging = getMessaging();
+      const authStatus = await requestPermission(messaging);
       const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        authStatus === AuthorizationStatus.AUTHORIZED ||
+        authStatus === AuthorizationStatus.PROVISIONAL;
 
       if (!enabled) {
         console.warn('⚠️ Notification permission not granted:', authStatus);
@@ -146,7 +163,7 @@ class PushNotificationService {
         return this.fcmToken;
       }
 
-      if (!messaging) {
+      if (!getMessaging) {
         // Use Expo Push Token for iOS if Firebase not available
         const token = (await Notifications.getExpoPushTokenAsync()).data;
         this.fcmToken = token;
@@ -154,12 +171,13 @@ class PushNotificationService {
         return token;
       }
 
-      const token = await messaging().getToken();
+      const messaging = getMessaging();
+      const token = await getToken(messaging);
       this.fcmToken = token;
       console.log('🔥 FCM Token obtained:', token);
 
       // Listen for token refresh
-      messaging().onTokenRefresh(newToken => {
+      const unsubscribe = messaging.onTokenRefresh((newToken: string) => {
         console.log('🔄 FCM Token refreshed:', newToken);
         this.fcmToken = newToken;
         this.onTokenRefresh?.(newToken);
@@ -176,7 +194,7 @@ class PushNotificationService {
    * Setup message handlers for different app states
    */
   setupMessageHandlers() {
-    if (!messaging) {
+    if (!getMessaging) {
       // Use Expo notifications listeners for iOS
       const notificationListener = Notifications.addNotificationReceivedListener(notification => {
         console.log('📩 Notification received (foreground):', notification);
@@ -193,8 +211,10 @@ class PushNotificationService {
       return;
     }
 
+    const messaging = getMessaging();
+
     // Handle foreground messages (when app is open)
-    this.unsubscribeOnMessage = messaging().onMessage(async remoteMessage => {
+    this.unsubscribeOnMessage = onMessage(messaging, async (remoteMessage: any) => {
       console.log('📩 FCM Message received (foreground):', remoteMessage);
 
       // Show local notification when app is in foreground
@@ -216,7 +236,7 @@ class PushNotificationService {
     });
 
     // Handle notification tap when app is in background
-    this.unsubscribeOnNotificationOpenedApp = messaging().onNotificationOpenedApp(remoteMessage => {
+    this.unsubscribeOnNotificationOpenedApp = onNotificationOpenedApp(messaging, (remoteMessage: any) => {
       console.log('👆 Notification opened app from background:', remoteMessage);
       this.onNotificationTap?.(remoteMessage);
     });
@@ -226,7 +246,7 @@ class PushNotificationService {
    * Check if app was opened from a notification
    */
   async checkInitialNotification() {
-    if (!messaging) {
+    if (!getMessaging) {
       const response = await Notifications.getLastNotificationResponseAsync();
       if (response) {
         console.log('🚀 App opened from notification (killed state):', response);
@@ -235,7 +255,8 @@ class PushNotificationService {
       return;
     }
 
-    const remoteMessage = await messaging().getInitialNotification();
+    const messaging = getMessaging();
+    const remoteMessage = await getInitialNotification(messaging);
     if (remoteMessage) {
       console.log('🚀 App opened from notification (killed state):', remoteMessage);
       this.onNotificationTap?.(remoteMessage);
@@ -254,8 +275,9 @@ class PushNotificationService {
    */
   async deleteToken() {
     try {
-      if (messaging) {
-        await messaging().deleteToken();
+      if (getMessaging && deleteToken) {
+        const messaging = getMessaging();
+        await deleteToken(messaging);
       }
       this.fcmToken = null;
       console.log('🗑️ Token deleted');

@@ -21,7 +21,7 @@ export default function Input(props: InputProps) {
     rightContentProps,
     rightIconAction,
   } = props;
-
+  const [isFocused, setIsFocused] = useState(false);
   const showError = hasError && !!error;
   const showMessageError = !!error && hasMessageError;
 
@@ -31,10 +31,11 @@ export default function Input(props: InputProps) {
 
   const showClearIcon = hasClearIcon && inputFieldProps?.value;
 
+
   return (
     <InputChillUi className={className}>
       {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
-      <InputContainer className={cn({ 'border-error': showError }, inputContainerClassName)}>
+      <InputContainer className={cn({ 'border-error': showError, "border-primary": isFocused }, inputContainerClassName)}>
         {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
@@ -44,6 +45,8 @@ export default function Input(props: InputProps) {
           style={{ color: '#000' }}
           {...inputFieldProps}
           secureTextEntry={isSecure}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
 
         {rightContentProps?.content && <String {...rightContentProps}>{rightContentProps.content}</String>}
@@ -65,6 +68,7 @@ export default function Input(props: InputProps) {
             onPress={() => setShowPassword(prev => !prev)}
             size="sm"
             pressEffectSize="xs"
+            className={cn({ 'ml-1': showClearIcon })}
           />
         )}
       </InputContainer>

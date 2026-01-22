@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
+
 import { filterObjectEntries } from '@/utils/filters.utils';
 import { SessionsFindAllParams } from '@/api/generated/model';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
+import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
 import { useGetAllSessions } from './get-sessions.query';
 import { FiltersProps, useHomeSessionFiltersStore } from '../stores/home-sessions-filters.store';
@@ -16,20 +19,25 @@ export const useGetAllSessionsByFilter = () => {
 
   const startDate = filterDate?.date;
 
-  const params: SessionsFindAllParams = {
-    limit: LIMIT_RESULTS_SESSIONS,
-    ...(startDate && { startDate }),
-    ...(userLocation && {
-      userLat: userLocation.latitude,
-      userLon: userLocation.longitude,
+  const params = useMemo(
+    (): SessionsFindAllParams => ({
+      limit: LIMIT_RESULTS_SESSIONS,
+      ...(startDate && { startDate }),
+      ...(userLocation && {
+        userLat: userLocation.latitude,
+        userLon: userLocation.longitude,
+      }),
+      ...restFilters,
     }),
-    ...restFilters,
-  };
+    [startDate, userLocation, restFilters],
+  );
 
-  const { data, ...rest } = useGetAllSessions(params);
+  const { data, error, isError, ...rest } = useGetAllSessions(params);
+
+  useGetMethodErrorTracking({ error, extra: { context: 'useGetAllSessionsByFilter' }, isError });
 
   const items = data?.pages.flatMap(page => page.data.items) ?? [];
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 
-  return { items, totalCount, ...rest };
+  return { error, isError, items, totalCount, ...rest };
 };

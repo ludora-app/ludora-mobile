@@ -1,1 +1,1 @@
-export { Image, AnimatedImage } from './Image';
+export { Image, ImageBackground } from './Image';

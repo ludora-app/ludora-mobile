@@ -3,7 +3,7 @@ import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ErrorResponse } from '@/api/orval.instance';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useSendVerificationCodeByEmail } from '../../reset-password/queries/send-verification-code.query';
 
@@ -21,6 +21,7 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
   const { t } = useTranslate();
   const { isPending: isSendingVerificationCode, mutateAsync: sendVerificationCode } = useSendVerificationCodeByEmail();
   const { toast } = useToast();
+  const { trackError, trackEvent } = useAnalytics();
 
   const [resendCodeTime, setResendCodeTime] = useState(WAITING_TIME_TO_RESEND_CODE);
 
@@ -66,8 +67,7 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
         variant: 'success',
       });
     } catch (error) {
-      const errorResponse = error as ErrorResponse;
-      console.log('error', errorResponse);
+      trackError({ error });
     }
   };
 
@@ -82,16 +82,12 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
   };
 
   return (
-    <>
-      <Button title={buttonMessage} onPress={handleSendVerificationCode} className="w-full" size="lg" />
-      <Button
-        title={buttonMessage}
-        isDisabled={isButtonDisabled}
-        onPress={handleSubmit}
-        className="w-full"
-        size="lg"
-        isLoading={isLoading || isSendingVerificationCode}
-      />
-    </>
+    <Button
+      title={buttonMessage}
+      isDisabled={isButtonDisabled}
+      onPress={handleSubmit}
+      className="w-full"
+      isLoading={isLoading || isSendingVerificationCode}
+    />
   );
 }

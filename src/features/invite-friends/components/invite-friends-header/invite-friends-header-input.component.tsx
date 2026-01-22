@@ -39,7 +39,7 @@ export default function InviteFriendsHeaderInput() {
 
   return (
     <>
-      <Wrapper fill={false} className="gap-3 bg-white pb-3 pt-2">
+      <Wrapper fill={false} className="gap-3 bg-white pt-2 pb-3">
         <FormInput
           control={control}
           name="search"

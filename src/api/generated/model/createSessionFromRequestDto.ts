@@ -24,6 +24,18 @@ export interface CreateSessionFromRequestDto {
   slotUid?: string;
   /** The start date of the session */
   startDate: string;
+  /**
+   * The name of the team A
+   * @minLength 3
+   * @maxLength 15
+   */
+  teamAName?: string;
+  /**
+   * The name of the team B
+   * @minLength 3
+   * @maxLength 15
+   */
+  teamBName?: string;
   /** The title of the session */
   title?: string;
   /** The visibility of the session */

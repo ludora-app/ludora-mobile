@@ -1,0 +1,34 @@
+import { useLocalSearchParams } from 'expo-router';
+import { FlatList } from 'react-native-gesture-handler';
+
+import { useSafeArea } from '@/hooks/safe-area.hook';
+import Loading from '@/components/ui/loading/loading.component';
+import { SessionScreenLocalSearchParams } from '@/features/session/types/session.types';
+import { useGetSessionTeams } from '@/features/session/queries/get-session-teams.query';
+
+import SessionTeamsListSection from './session-teams-list-section.component';
+import SessionTeamsListSectionSeparator from './session-teams-list-section-separator.component';
+
+export default function SessionTeamsList() {
+  const { bottom } = useSafeArea();
+  const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
+
+  const { data: sessionTeams, isLoading: isLoadingSessionTeams } = useGetSessionTeams(sessionUid);
+
+  const hasUserJoinedATeam = sessionTeams?.some(team => team.isJoined);
+
+  if (isLoadingSessionTeams) {
+    return <Loading />;
+  }
+
+  return (
+    <FlatList
+      data={sessionTeams}
+      renderItem={({ item }) => <SessionTeamsListSection item={item} hasUserJoinedATeam={hasUserJoinedATeam} />}
+      ItemSeparatorComponent={SessionTeamsListSectionSeparator}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: bottom }}
+      contentContainerClassName="mt-4"
+    />
+  );
+}

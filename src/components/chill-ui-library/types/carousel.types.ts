@@ -1,6 +1,8 @@
+import { VariantProps } from 'tailwind-variants';
 import { FlatListProps, StyleProp, ViewProps, ViewStyle } from 'react-native';
 
 import { IconProps } from './icon.types';
+import { IconTv } from '../components/carousel/styles/Carousel.styles';
 
 export type CarouselProps = {
   className?: string;
@@ -27,8 +29,9 @@ export type CarouselDotsProps = {
   className?: string;
   activeColor?: string;
   inactiveColor?: string;
-  size?: IconProps['size'];
+  size?: VariantProps<typeof IconTv>['size'];
   style?: StyleProp<ViewStyle>;
+  dotsClassName?: string;
 };
 
 export type CarouselButtonProps = {

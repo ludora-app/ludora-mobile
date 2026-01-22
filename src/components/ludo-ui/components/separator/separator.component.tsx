@@ -5,14 +5,14 @@ import { String } from '../string';
 import { SeparatorProps } from '../../types';
 
 export default function Separator(props: SeparatorProps) {
-  const { className, deviderClassName, title } = props;
+  const { className, deviderClassName, title, titleProps } = props;
 
   return (
     <SeparatorChillUi className={cn('gap-2', className)}>
       <SeparatorDivider className={cn('bg-[#D8DADC]', deviderClassName)} />
       {!!title && (
         <SeparatorContent>
-          <String variant="body-xs" colorVariant="muted">
+          <String variant="body-xs" colorVariant="muted" {...titleProps}>
             {title}
           </String>
         </SeparatorContent>

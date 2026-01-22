@@ -1,10 +1,8 @@
-import { cn } from '../../../utils';
 import { Box } from '../../box';
-import { Icon } from '../../icon';
-import { CarouselDotsProps } from '../../../types';
-
+import { cn } from '../../../utils';
 import { useCarousel } from './CarouselContext';
-import { twStyles } from '../styles/Carousel.styles';
+import { CarouselDotsProps } from '../../../types';
+import { IconTv, twStyles } from '../styles/Carousel.styles';
 import { carouselDefaultProps } from '../utils/defaultProps';
 
 /**
@@ -42,6 +40,7 @@ function CarouselDots(props: CarouselDotsProps) {
   const {
     activeColor = carouselDefaultProps.dotActiveColor,
     className,
+    dotsClassName,
     inactiveColor = carouselDefaultProps.dotInactiveColor,
     size = carouselDefaultProps.dotSize,
     style,
@@ -51,11 +50,10 @@ function CarouselDots(props: CarouselDotsProps) {
   return (
     <Box className={cn(twStyles.carouselDots, className)} style={style}>
       {Array.from({ length: totalItems }).map((_, index) => (
-        <Icon
+        <Box
           key={`dot-${index}`}
-          name={carouselDefaultProps.dotName}
-          size={size}
-          color={currentIndex === index ? activeColor : inactiveColor}
+          className={cn('size-3 rounded-full', IconTv({ size }), dotsClassName)}
+          style={{ backgroundColor: currentIndex === index ? activeColor : inactiveColor }}
         />
       ))}
     </Box>

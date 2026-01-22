@@ -9,4 +9,19 @@
 /**
  * Session game mode
  */
-export type SessionCollectionItemDtoGameMode = { [key: string]: unknown };
+export type SessionCollectionItemDtoGameMode =
+  (typeof SessionCollectionItemDtoGameMode)[keyof typeof SessionCollectionItemDtoGameMode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SessionCollectionItemDtoGameMode = {
+  ONE_V_ONE: 'ONE_V_ONE',
+  TWO_V_TWO: 'TWO_V_TWO',
+  THREE_V_THREE: 'THREE_V_THREE',
+  FOUR_V_FOUR: 'FOUR_V_FOUR',
+  FIVE_V_FIVE: 'FIVE_V_FIVE',
+  SIX_V_SIX: 'SIX_V_SIX',
+  SEVEN_V_SEVEN: 'SEVEN_V_SEVEN',
+  EIGHT_V_EIGHT: 'EIGHT_V_EIGHT',
+  TEN_V_TEN: 'TEN_V_TEN',
+  ELEVEN_V_ELEVEN: 'ELEVEN_V_ELEVEN',
+} as const;

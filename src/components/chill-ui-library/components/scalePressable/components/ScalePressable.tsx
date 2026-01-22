@@ -47,15 +47,12 @@ export const ScalePressable = forwardRef<any, React.PropsWithChildren<ScalePress
     ...rest
   } = props;
 
-  // 1. On remplace useRef par useSharedValue
   const scale = useSharedValue(1);
 
-  // 2. Définition du style animé (UI Thread)
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  // 3. Gestionnaires de pression avec withTiming
   const handlePressIn = () => {
     scale.value = withTiming(scaleValue, { duration });
   };

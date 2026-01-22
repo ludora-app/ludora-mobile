@@ -1,6 +1,7 @@
 import { LegendListProps } from '@legendapp/list';
 
 import { StrictOmit } from '@/components/chill-ui-library';
+import { EmptyResultProps } from '@/components/ui/empty-resulat/empty-result.component';
 
 export type ListProps = {
   fetchNextPage: () => void;
@@ -11,7 +12,7 @@ export type ListProps = {
   data: any[];
   SkeletonComponent?: React.ComponentType;
   hasNextPage: boolean;
-  emptyResultTitle?: string;
+  emptyResultProps?: EmptyResultProps;
   ListStickyComponent?: React.ComponentType | React.ReactElement;
   ListTopComponent?: React.ComponentType | React.ReactElement;
   ListHeaderStickyComponent?: React.ComponentType | React.ReactElement;

@@ -1,4 +1,5 @@
-import { IconProps } from '../../../types';
+import { CarouselDotsProps } from '@/components/chill-ui-library/types';
+
 import { TIcons } from '../../../constants';
 
 export const carouselDefaultProps = {
@@ -10,7 +11,7 @@ export const carouselDefaultProps = {
   dotInactiveColor: '#a1a1a1',
   dotName: 'dot-solid' as keyof TIcons,
   dotPosition: 'bottom',
-  dotSize: '2xs' as IconProps['size'],
+  dotSize: 'md' as CarouselDotsProps['size'],
   elementOffset: 16,
   elementPosition: 'bottom',
   initialIndex: 0,

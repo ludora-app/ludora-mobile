@@ -1,15 +1,16 @@
 import { z } from 'zod';
 import { useToast } from '@chillui/ui';
+import { Pressable } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, FormInput, String, Box } from '@ludo/ui';
+import { Button, FormInput, String, Box, Link } from '@ludo/ui';
 
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
-import { useLogin } from '../queries/login.hook';
+import { useLogin } from '../queries/login.query';
 import { formSchema } from '../schemas/login.schema';
 import { LOGIN_ERRORS } from '../constants/login-errors.constants';
 
@@ -27,8 +28,8 @@ export default function LoginEmailForm() {
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     trackEvent({
+      data: { method: 'email' },
       eventName: 'login_requested',
-      properties: { method: 'email' },
     });
     try {
       const response = await loginMutation({
@@ -45,14 +46,14 @@ export default function LoginEmailForm() {
         refreshToken: response.data.refreshToken,
       });
       trackEvent({
+        data: { method: 'email' },
         eventName: 'login_success',
-        properties: { method: 'email' },
       });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
+        data: { error_message: errorResponse.api_error_detail, method: 'email' },
         eventName: 'login_failed',
-        properties: { error_message: errorResponse.api_error_detail, method: 'email' },
       });
       if (Object.values(LOGIN_ERRORS).includes(errorResponse.api_error_detail)) {
         toast({
@@ -81,9 +82,13 @@ export default function LoginEmailForm() {
           name="password"
           placeholder="••••••••"
         />
-        <String size="sm" className="text-right" redirect="/auth/reset-password">
-          {t('auth.login.forgot_password')}
-        </String>
+        <Link href="/auth/reset-password" asChild>
+          <Pressable>
+            <String size="sm" className="text-right mt-0.5">
+              {t('auth.login.forgot_password')}
+            </String>
+          </Pressable>
+        </Link>
       </Box>
       <Button
         isLoading={loginIsPending}

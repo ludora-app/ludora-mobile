@@ -40,7 +40,7 @@ export default function CreateSessionStep1() {
   }, [showPart3, showPart4]);
 
   return (
-    <WrapperScrollView ref={scrollViewRef} contentContainerClassName="gap-8 pb-10">
+    <WrapperScrollView grow ref={scrollViewRef} contentContainerClassName="gap-8 pb-10">
       <Box>
         <CreateSessionTitle title={t('create-session-steps.step_1.title')} />
         <CreateSessionStep1Part1 />

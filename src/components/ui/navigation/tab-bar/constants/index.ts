@@ -1,5 +1,5 @@
 // --- CONSTANTES PARTAGÉES ---
-export const BAR_HEIGHT = 90;
+export const BAR_HEIGHT = 80;
 
 // hauteur du bord blanc aux extrémités
 const EDGE_Y = 35;

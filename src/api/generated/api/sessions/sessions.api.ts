@@ -26,11 +26,14 @@ import type {
 import type {
   BadRequestResponseDto,
   CreateSessionFromRequestDto,
+  FindOneSessionResponseDto,
+  FindOneSessionWithDistanceResponseDto,
   NotFoundResponseDto,
   PaginationResponseSessionCollectionItemDto,
   SessionResponseDto,
   SessionsFindAllByUserUidParams,
   SessionsFindAllParams,
+  SessionsFindOneWithDistanceParams,
   UnauthorizedResponseDto,
   UpdateSessionDto,
 } from '../../model';
@@ -454,7 +457,7 @@ export function useSessionsFindAllByUserUidInfinite<
  * @summary Get a session by uid
  */
 export const sessionsFindOne = (uid: string, signal?: AbortSignal) => {
-  return customInstance<SessionResponseDto>({ url: `/sessions/${uid}`, method: 'GET', signal });
+  return customInstance<FindOneSessionResponseDto>({ url: `/sessions/${uid}`, method: 'GET', signal });
 };
 
 export const getSessionsFindOneQueryKey = (uid: string) => {
@@ -649,3 +652,118 @@ export const useSessionsRemove = <TError = unknown, TContext = unknown>(options?
 
   return useMutation(mutationOptions);
 };
+/**
+ * @summary Get a session by uid with the connected users distance to the session
+ */
+export const sessionsFindOneWithDistance = (
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<FindOneSessionWithDistanceResponseDto>({
+    url: `/sessions/${uid}/distance`,
+    method: 'GET',
+    params,
+    signal,
+  });
+};
+
+export const getSessionsFindOneWithDistanceQueryKey = (
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+) => {
+  return [`/sessions/${uid}/distance`, ...(params ? [params] : [])] as const;
+};
+
+export const getSessionsFindOneWithDistanceQueryOptions = <
+  TData = Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>>;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getSessionsFindOneWithDistanceQueryKey(uid, params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>> = ({ signal }) =>
+    sessionsFindOneWithDistance(uid, params, signal);
+
+  return { queryKey, queryFn, enabled: !!uid, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type SessionsFindOneWithDistanceQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sessionsFindOneWithDistance>>
+>;
+export type SessionsFindOneWithDistanceQueryError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | NotFoundResponseDto;
+
+export function useSessionsFindOneWithDistance<
+  TData = Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsFindOneWithDistance<
+  TData = Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsFindOneWithDistance<
+  TData = Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get a session by uid with the connected users distance to the session
+ */
+
+export function useSessionsFindOneWithDistance<
+  TData = Awaited<ReturnType<typeof sessionsFindOneWithDistance>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: SessionsFindOneWithDistanceParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsFindOneWithDistance>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getSessionsFindOneWithDistanceQueryOptions(uid, params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}

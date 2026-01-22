@@ -2,13 +2,16 @@ import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
 import { ErrorResponse } from '@/api/orval.instance';
-import useLoginGoogle from '@/queries/login-google.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import configureGoogleSignIn from '@/configs/google-auth.config';
+import useLoginGoogle from '@/features/auth/login/queries/login-google.query';
 
 type LoginSocialGoogleProps = {
   flow: 'login' | 'register';
 };
+
+
+const GOOGLE_ERROR_MESSAGE = "Cannot read property 'user' of null";
 
 configureGoogleSignIn();
 export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
@@ -19,30 +22,33 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
   const handleSubmit = async () => {
     try {
       trackEvent({
+        data: { method: 'google' },
         eventName: flow === 'login' ? 'login_requested' : 'signup_requested',
-        properties: { method: 'google' },
       });
-      await googleSignInMutation();
-      const isNewUser = true;
+      const response = await googleSignInMutation();
+      const isNewUser = response?.data?.isNewUser;
       if (isNewUser) {
         trackEvent({
+          data: { auto_register_from_login: flow === 'login', method: 'google' },
           eventName: 'signup_success',
-          properties: { auto_register_from_login: flow === 'login', method: 'google' },
         });
       } else {
         trackEvent({
+          data: { auto_login_from_signup: flow === 'register', method: 'google' },
           eventName: 'login_success',
-          properties: { auto_login_from_signup: flow === 'register', method: 'google' },
         });
       }
     } catch (error) {
+      if (error.message === GOOGLE_ERROR_MESSAGE) {
+        return
+      }
       const responseError = error as ErrorResponse;
       trackEvent({
-        eventName: flow === 'login' ? 'login_failed' : 'signup_failed',
-        properties: {
+        data: {
           error_message: responseError?.api_error_detail || 'Unknown error',
           method: 'google',
         },
+        eventName: flow === 'login' ? 'login_failed' : 'signup_failed',
       });
       trackError({ error });
     }
@@ -52,13 +58,20 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
     <Button
       iconProps={{
         name: 'google-colored',
-        position: 'left',
+        position: "left-outside",
       }}
       onPress={handleSubmit}
+      variant="outlined"
       isLoading={googleSignInPending}
-      title={t('auth.login.button_google_title')}
-      className="w-full"
-      size="lg"
+      title={t(`auth.${flow}.button_google_title`)}
+      className="w-full border-[#747775] border bg-white"
+      titleProps={{
+        className: "text-[#1F1F1F]"
+      }}
+      loaderProps={{
+        color: "#1F1F1F",
+      }}
     />
+
   );
 }

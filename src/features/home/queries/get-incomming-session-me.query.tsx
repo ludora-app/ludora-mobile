@@ -1,7 +1,9 @@
 import { useSessionsFindAllByUserUidInfinite } from '@generatedApi/sessions/sessions.api';
 
+import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
+
 export const useGetIncommingSessionMe = () => {
-  const { data, ...rest } = useSessionsFindAllByUserUidInfinite(
+  const { data, error, isError, ...rest } = useSessionsFindAllByUserUidInfinite(
     {
       limit: 1,
       scope: 'UPCOMING',
@@ -13,8 +15,11 @@ export const useGetIncommingSessionMe = () => {
       },
     },
   );
+
+  useGetMethodErrorTracking({ error, extra: { context: 'useGetIncommingSessionMe' }, isError });
+
   const items = data?.pages.flatMap(page => page.data.items) ?? [];
   const item = items.length > 0 ? items[0] : null;
 
-  return { data: item, ...rest };
+  return { data: item, error, isError, ...rest };
 };

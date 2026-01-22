@@ -1,7 +1,6 @@
 import { withUniwind } from 'uniwind';
-import Animated from 'react-native-reanimated';
-import { Image as NativeImage } from 'expo-image';
+import { Image as NativeImage, ImageBackground as NativeImageBackground } from 'expo-image';
 
 export const Image = withUniwind(NativeImage);
 
-export const AnimatedImage = Animated.createAnimatedComponent(Image);
+export const ImageBackground = withUniwind(NativeImageBackground);

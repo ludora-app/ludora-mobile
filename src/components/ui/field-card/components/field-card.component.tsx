@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { ImageBackground } from 'expo-image';
 import { cn, ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
-import { Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
+import { ImageBackground, Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { getSportImage } from '@/utils/sports.utils';
@@ -41,7 +40,7 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
           {type === FieldResponseDtoType.PUBLIC && (
-            <Chip title="Terrain publique" size="2xs" className="ml-auto mr-2 mt-2" />
+            <Chip title="Terrain publique" size="2xs" className="mt-2 mr-2 ml-auto" />
           )}
         </ImageBackground>
       </Box>

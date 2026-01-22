@@ -1,11 +1,11 @@
-import { Image } from '@ludo/ui';
 import { Link } from 'expo-router';
 import { Button as ButtonChillUI, ButtonContent, ButtonIcon, ButtonLoader, ButtonTitle, cn } from '@chillui/ui';
 
+import { Image } from '../image';
 import { ButtonProps } from '../../types/button.types';
 
 export default function Button(props: ButtonProps) {
-  const { className, contentProps, iconProps, image, isDisabled, isLoading, redirect, title, titleProps, ...rest } =
+  const { className, contentProps, iconProps, image, isDisabled, isLoading, loaderProps, redirect, title, titleProps, ...rest } =
     props;
 
   const buttonContent = (
@@ -25,7 +25,7 @@ export default function Button(props: ButtonProps) {
             {title}
           </ButtonTitle>
         )}
-        {isLoading && <ButtonLoader name="swing" color="#FFF" />}
+        {isLoading && <ButtonLoader name="swing" color="#FFF" {...loaderProps} />}
         {!isLoading && iconProps && iconProps.position === 'right' && <ButtonIcon {...iconProps} />}
       </ButtonContent>
     </ButtonChillUI>

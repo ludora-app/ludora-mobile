@@ -49,7 +49,7 @@ export default function Icon<T extends IconConfig>(props: IconProps<T>) {
   } = props;
 
   const iconContent = (
-    <CustomIcon name={name} className={cn(iconSizeTv({ size }), className)} style={style} color={color} />
+    <CustomIcon name={name} className={cn(iconSizeTv({ size }), !onPress && className)} style={style} color={color} />
   );
 
   if (!onPress) {

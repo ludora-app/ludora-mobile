@@ -1,0 +1,96 @@
+import { useMemo } from 'react';
+import { Button, String } from '@ludo/ui';
+import { ScrollView } from 'react-native';
+import { useTranslate } from '@tolgee/react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+
+import ROUTES from '@/constants/ROUTES';
+import { ErrorResponse } from '@/api/orval.instance';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { FindOneSessionResponseData } from '@/api/generated/model';
+import { useInvalidateSessionsFindOne } from '@/api/generated/invalidate-queries';
+import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+
+import { useJoinSession } from '../queries/join-session.query';
+import { useSessionTeamStore } from '../stores/session-team.store';
+import { SessionScreenLocalSearchParams } from '../types/session.types';
+
+type SessionFooterProps = {
+  session: FindOneSessionResponseData;
+  scrollViewRef: React.RefObject<ScrollView>;
+};
+
+export default function SessionFooter({ scrollViewRef, session }: SessionFooterProps) {
+  const router = useRouter();
+  const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
+  const invalidateSessionById = useInvalidateSessionsFindOne(sessionUid);
+  const { t } = useTranslate();
+  const { isJoined, remainingPlayers, sessionTeams } = session || {};
+
+  const isSessionFull = remainingPlayers === 0;
+
+  const canJoinSession = !isSessionFull && !isJoined;
+
+  const teamUid = useSessionTeamStore(state => state.teamUid);
+
+  const { isPending: isJoiningSession, mutateAsync: joinSession } = useJoinSession(sessionUid);
+
+  const { trackError, trackEvent } = useAnalytics();
+
+  const handleButtonTitle = useMemo(() => {
+    if (teamUid) {
+      const selectedTeamName = sessionTeams?.find(team => team.teamUid === teamUid)?.teamName;
+      return t('session.footer_button_join_team', { teamName: selectedTeamName });
+    }
+    return t('session.footer_button_select_team');
+  }, [teamUid, sessionTeams, t]);
+
+  const handleJoinSession = async () => {
+    if (!teamUid) {
+      scrollViewRef.current?.scrollTo({ animated: true, y: 0 });
+    }
+    try {
+      await joinSession(teamUid);
+      router.replace(ROUTES.SESSION.JOINED_UID(sessionUid));
+      trackEvent({ data: { session_uid: sessionUid, team_uid: teamUid }, eventName: 'session_joined' });
+    } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackEvent({
+        data: { error_message: errorResponse.api_error_detail },
+        eventName: 'session_joined_failed',
+      });
+      invalidateSessionById();
+      trackError(error);
+    }
+  };
+
+  const handleCantJoinSession = () => {
+    if (isJoined) {
+      return t('session.footer_button_already_joined');
+    }
+
+    return t('session.footer_button_session_full');
+  };
+
+  return (
+    <FormSheetFooter hasBottomSafeArea>
+      {canJoinSession && (
+        <Button
+          title={handleButtonTitle}
+          iconProps={{
+            className: 'ml-2',
+            name: 'flash-solid',
+            position: 'right',
+          }}
+          onPress={handleJoinSession}
+          isLoading={isJoiningSession}
+        />
+      )}
+      {!canJoinSession && (
+        <String className="text-center" colorVariant="primary" variant="body-3" font="primaryBold">
+          {handleCantJoinSession()}
+        </String>
+      )}
+    </FormSheetFooter>
+  );
+}

@@ -2,7 +2,7 @@
 import { HTTPError, TimeoutError } from 'ky';
 
 import { posthog } from '@/services/posthog.service';
-import { ANALYTICS_EVENTS } from '@/constants/ANALYTICS_EVENTS';
+import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 
 import { kyApi } from './api.instance';
 

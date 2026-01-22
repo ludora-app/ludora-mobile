@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 
 type AuthHeaderProps = {
   description?: string;
-  title: string;
+  title?: string;
 };
 
 export default function AuthHeader(props: PropsWithChildren<AuthHeaderProps>) {
@@ -12,12 +12,12 @@ export default function AuthHeader(props: PropsWithChildren<AuthHeaderProps>) {
   const { t } = useTranslate();
 
   return (
-    <Box className="gap-3">
-      <String variant="title-2" font="primaryExtraBold">
+    <Box className="gap-3 mt-5">
+      {!!title && <String variant="title-1" font="primaryExtraBold" className='text-center'>
         {t(title)}
-      </String>
+      </String>}
 
-      {description && <String>{t(description)}</String>}
+      {description && <String className='text-center'>{t(description)}</String>}
       {children}
     </Box>
   );

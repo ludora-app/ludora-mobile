@@ -41,7 +41,7 @@ export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperK
   const {
     bottomOffset = wrapperDefaultProps.bottomOffset,
     children,
-    className,
+    contentContainerClassName,
     edges,
     fill,
     grow,
@@ -52,7 +52,7 @@ export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperK
 
   const content = (
     <StyledKeyboardAwareScrollView
-      className={cn(wrapperTv({ fill, grow, px }), className)}
+      contentContainerClassName={cn(wrapperTv({ fill, grow, px }), contentContainerClassName)}
       bottomOffset={bottomOffset}
       {...rest}
     >

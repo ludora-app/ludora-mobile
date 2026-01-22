@@ -30,7 +30,7 @@ export default function List(props: ListProps) {
     contentContainerClassName,
     contentContainerStyle,
     data,
-    emptyResultTitle,
+    emptyResultProps,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -105,14 +105,14 @@ export default function List(props: ListProps) {
           case 'header_top':
             return renderComponent(ListTopComponent);
           case 'empty':
-            return <EmptyResult title={emptyResultTitle} />;
+            return <EmptyResult {...emptyResultProps} />;
           default:
             return <ItemComponent item={item} />;
         }
       }
       return <ItemComponent item={item} />;
     },
-    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent, emptyResultTitle],
+    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent, emptyResultProps],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {

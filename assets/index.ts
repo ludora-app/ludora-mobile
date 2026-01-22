@@ -24,3 +24,6 @@ export { default as footballBall } from './sports-balls/football-ball.png';
 export { default as backgroundImg } from './images/background-img.png';
 export { default as penTool } from './images/pen-tool.png';
 export { default as openBook } from './images/open-book.png';
+export { default as basketPlayer } from './images/welcome/basket-player.png';
+export { default as footballPlayer } from './images/welcome/football-player.png';
+export { default as tennisPlayer } from './images/welcome/tennis-player.png';

@@ -73,6 +73,7 @@ function CarouselContent(props: CarouselContentProps) {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       className={className}
+      bounces={false}
       {...rest}
       onViewableItemsChanged={onViewableItemsChanged}
       horizontal={orientation === 'horizontal'}

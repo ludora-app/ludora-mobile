@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { useUserMe } from '@/queries/user-me.query';
 import { useToast } from '@/components/chill-ui-library';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
-import { useLogin } from '@/features/auth/login/queries/login.hook';
+import { useLogin } from '@/features/auth/login/queries/login.query';
 
 const MOCK_USERS = [
   { email: 'seto.kaiba@hotmail.fr', password: 'Seto398!' },

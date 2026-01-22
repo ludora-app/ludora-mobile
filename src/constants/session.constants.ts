@@ -2,8 +2,8 @@ import { basketballBall, tennisBall, footballBall } from 'assets';
 
 import {
   CreateSessionFromRequestDtoLevel,
-  SessionCollectionItemGameMode,
-  SessionCollectionItemSport,
+  SessionCollectionItemDtoGameMode,
+  SessionCollectionItemDtoSport,
 } from '@/api/generated/model';
 
 import { TIconsAll } from './ICONS';
@@ -33,31 +33,31 @@ export const SESSION_LEVELS: SESSION_LEVEL_TYPE[] = [
 ];
 
 export const GAMEMODES_BY_SPORT = {
-  [SessionCollectionItemSport.BASKETBALL]: [
-    SessionCollectionItemGameMode.ONE_V_ONE,
-    SessionCollectionItemGameMode.THREE_V_THREE,
-    SessionCollectionItemGameMode.FIVE_V_FIVE,
+  [SessionCollectionItemDtoSport.BASKETBALL]: [
+    SessionCollectionItemDtoGameMode.ONE_V_ONE,
+    SessionCollectionItemDtoGameMode.THREE_V_THREE,
+    SessionCollectionItemDtoGameMode.FIVE_V_FIVE,
   ],
-  [SessionCollectionItemSport.FOOTBALL]: [
-    SessionCollectionItemGameMode.ONE_V_ONE,
-    SessionCollectionItemGameMode.TWO_V_TWO,
-    SessionCollectionItemGameMode.FIVE_V_FIVE,
-    SessionCollectionItemGameMode.SEVEN_V_SEVEN,
-    SessionCollectionItemGameMode.ELEVEN_V_ELEVEN,
+  [SessionCollectionItemDtoSport.FOOTBALL]: [
+    SessionCollectionItemDtoGameMode.ONE_V_ONE,
+    SessionCollectionItemDtoGameMode.TWO_V_TWO,
+    SessionCollectionItemDtoGameMode.FIVE_V_FIVE,
+    SessionCollectionItemDtoGameMode.SEVEN_V_SEVEN,
+    SessionCollectionItemDtoGameMode.ELEVEN_V_ELEVEN,
   ],
-  [SessionCollectionItemSport.PADDEL]: [
-    SessionCollectionItemGameMode.ONE_V_ONE,
-    SessionCollectionItemGameMode.TWO_V_TWO,
+  [SessionCollectionItemDtoSport.PADDEL]: [
+    SessionCollectionItemDtoGameMode.ONE_V_ONE,
+    SessionCollectionItemDtoGameMode.TWO_V_TWO,
   ],
-  [SessionCollectionItemSport.TENNIS]: [
-    SessionCollectionItemGameMode.ONE_V_ONE,
-    SessionCollectionItemGameMode.TWO_V_TWO,
+  [SessionCollectionItemDtoSport.TENNIS]: [
+    SessionCollectionItemDtoGameMode.ONE_V_ONE,
+    SessionCollectionItemDtoGameMode.TWO_V_TWO,
   ],
 };
 
 export const SPORT_IMAGES = {
-  [SessionCollectionItemSport.BASKETBALL]: basketballBall,
-  [SessionCollectionItemSport.FOOTBALL]: footballBall,
-  [SessionCollectionItemSport.PADDEL]: tennisBall,
-  [SessionCollectionItemSport.TENNIS]: tennisBall,
+  [SessionCollectionItemDtoSport.BASKETBALL]: basketballBall,
+  [SessionCollectionItemDtoSport.FOOTBALL]: footballBall,
+  [SessionCollectionItemDtoSport.PADDEL]: tennisBall,
+  [SessionCollectionItemDtoSport.TENNIS]: tennisBall,
 } as const;

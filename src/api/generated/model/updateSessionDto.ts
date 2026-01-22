@@ -28,6 +28,18 @@ export interface UpdateSessionDto {
   slotUid?: string;
   /** The start date of the session */
   startDate: string;
+  /**
+   * The name of the team A
+   * @minLength 3
+   * @maxLength 15
+   */
+  teamAName?: string;
+  /**
+   * The name of the team B
+   * @minLength 3
+   * @maxLength 15
+   */
+  teamBName?: string;
   /** The number of teams per game */
   teamsPerGame: number;
   /** The title of the session */

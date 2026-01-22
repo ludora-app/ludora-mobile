@@ -3239,7 +3239,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SessionResponseDto"
+                  "$ref": "#/components/schemas/FindOneSessionResponseDto"
                 }
               }
             }
@@ -3381,6 +3381,88 @@
             "JWT-auth": []
           }
         ],
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/sessions/{uid}/distance": {
+      "get": {
+        "operationId": "SessionsController_findOneWithDistance",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "latitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindOneSessionWithDistanceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a session by uid with the connected users distance to the session",
         "tags": [
           "Sessions"
         ]
@@ -4444,6 +4526,341 @@
         ]
       }
     },
+    "/notifications": {
+      "get": {
+        "operationId": "NotificationsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResponseNotificationResponseData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all notifications for the current user",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/notifications/unread-count": {
+      "get": {
+        "operationId": "NotificationsController_getUnreadCount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched unread count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get the unread count for the current user",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/notifications/{uid}/read": {
+      "patch": {
+        "operationId": "NotificationsController_markAsRead",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": "Notification marked as read"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Mark a notification as read",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/notifications/read-all": {
+      "patch": {
+        "operationId": "NotificationsController_markAllAsRead",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "All notifications marked as read"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Mark all notifications as read",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/notifications/{uid}": {
+      "delete": {
+        "operationId": "NotificationsController_deleteNotification",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Notification deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete a notification",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/notifications/send-push": {
+      "post": {
+        "operationId": "NotificationsController_sendPushNotification",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendPushNotificationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Push notification sent successfully"
+          },
+          "201": {
+            "description": ""
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Send a push notification to a specific FCM token",
+        "tags": [
+          "Notifications"
+        ]
+      }
+    },
+    "/devices/register": {
+      "post": {
+        "operationId": "DevicesController_registerDevice",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDeviceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Register a new device",
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/devices/unregister": {
+      "delete": {
+        "operationId": "DevicesController_unregister",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnregisterDeviceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Device unregistered successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Unregister a device, used when logging out are deleting the account",
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
     "/payment/connect": {
       "post": {
         "operationId": "PaymentController_createStripeConnectAccount",
@@ -5087,6 +5504,14 @@
     {
       "name": "UserSportPreferences",
       "description": "UserSportPreferences operations"
+    },
+    {
+      "name": "Notifications",
+      "description": "Notifications operations"
+    },
+    {
+      "name": "Devices",
+      "description": "Devices operations"
     },
     {
       "name": "Payment",
@@ -7150,6 +7575,20 @@
               "PRIVATE"
             ],
             "example": "PUBLIC"
+          },
+          "teamAName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "description": "The name of the team A",
+            "example": "Equipe A"
+          },
+          "teamBName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "description": "The name of the team B",
+            "example": "Equipe B"
           }
         },
         "required": [
@@ -7242,8 +7681,20 @@
             "readOnly": true
           },
           "gameMode": {
-            "type": "object",
+            "type": "string",
             "description": "Session game mode",
+            "enum": [
+              "ONE_V_ONE",
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
             "example": "THREE_VS_THREE",
             "readOnly": true
           },
@@ -7366,8 +7817,20 @@
             "readOnly": true
           },
           "gameMode": {
-            "type": "object",
+            "type": "string",
             "description": "Session game mode",
+            "enum": [
+              "ONE_V_ONE",
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
             "example": "THREE_VS_THREE",
             "readOnly": true
           },
@@ -7501,6 +7964,540 @@
           "data"
         ]
       },
+      "FlattenedSessionPlayer": {
+        "type": "object",
+        "properties": {
+          "userUid": {
+            "type": "string",
+            "example": "cmgoxfs3t002hob8arwdna80g",
+            "readOnly": true
+          },
+          "teamUid": {
+            "type": "string",
+            "example": "cmgoxfs47002zob8a42uq1u8z",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Seto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Kaiba",
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "1738433236109explore2.png",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "userUid",
+          "teamUid",
+          "firstname",
+          "lastname",
+          "imageUrl"
+        ]
+      },
+      "SessionTeamResponseData": {
+        "type": "object",
+        "properties": {
+          "teamUid": {
+            "type": "string",
+            "example": "cm7hvgonx0000to0mh5maqajc",
+            "readOnly": true
+          },
+          "teamName": {
+            "type": "string",
+            "example": "Team A",
+            "readOnly": true
+          },
+          "teamLabel": {
+            "type": "string",
+            "example": "A",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session update date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session creation date",
+            "example": "2025-05-10T22:30:32.525Z",
+            "readOnly": true
+          },
+          "sessionPlayers": {
+            "description": "Players in the team",
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlattenedSessionPlayer"
+            }
+          },
+          "numberOfPlayers": {
+            "type": "number",
+            "description": "Number of players in the team",
+            "example": 1,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "teamUid",
+          "teamName",
+          "teamLabel",
+          "sessionPlayers",
+          "numberOfPlayers"
+        ]
+      },
+      "ImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "number",
+            "nullable": true,
+            "description": "Order of the image",
+            "example": 1,
+            "readOnly": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the image",
+            "example": "https://example.com/image.jpg",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "FindOneSessionResponseData": {
+        "type": "object",
+        "properties": {
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "Sport played during the session",
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "Session game mode",
+            "enum": [
+              "ONE_V_ONE",
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Session visibility",
+            "example": "PUBLIC",
+            "readOnly": true
+          },
+          "fieldShortAddress": {
+            "type": "string",
+            "description": "Session field short address",
+            "example": "38 Rue du Ballon, Noisy-le-Grand",
+            "readOnly": true
+          },
+          "fieldLatitude": {
+            "type": "number",
+            "description": "Field latitude",
+            "example": 48.8566,
+            "readOnly": true
+          },
+          "fieldLongitude": {
+            "type": "number",
+            "description": "Field longitude",
+            "example": 2.3522,
+            "readOnly": true
+          },
+          "userDistance": {
+            "type": "number",
+            "description": "Distance to the session in meters",
+            "example": 1200,
+            "readOnly": true
+          },
+          "level": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "number",
+            "description": "Session level",
+            "example": 1,
+            "readOnly": true
+          },
+          "sessionTeams": {
+            "example": [
+              {
+                "teamName": "Team A"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionTeamResponseData"
+            }
+          },
+          "fieldUid": {
+            "type": "string",
+            "description": "The uid of the field",
+            "example": "cmkiwtv9r02d65pmp40klxt2i"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the session",
+            "example": "Session 1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Session description",
+            "example": "Test session"
+          },
+          "fieldType": {
+            "type": "string",
+            "description": "The type of the field",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PUBLIC"
+          },
+          "isJoined": {
+            "type": "boolean",
+            "description": "Whether the user is joined to the session",
+            "example": false
+          },
+          "fieldImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseDto"
+            }
+          }
+        },
+        "required": [
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "sport",
+          "startDate",
+          "gameMode",
+          "creatorUid",
+          "fieldShortAddress",
+          "fieldLatitude",
+          "fieldLongitude",
+          "level",
+          "sessionTeams",
+          "fieldUid",
+          "title",
+          "description",
+          "fieldType",
+          "isJoined",
+          "fieldImages"
+        ]
+      },
+      "FindOneSessionResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindOneSessionResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FindOneSessionWithDistanceResponseData": {
+        "type": "object",
+        "properties": {
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session end date",
+            "example": "2025-01-01T11:00:00.000Z",
+            "readOnly": true
+          },
+          "uid": {
+            "type": "string",
+            "description": "Session ID",
+            "example": "cmaistjrg001yob7oe0mqu3ws",
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "teamsPerGame": {
+            "type": "number",
+            "description": "Number of teams per game",
+            "example": 2,
+            "readOnly": true
+          },
+          "minPlayersPerTeam": {
+            "type": "number",
+            "description": "Minimum number of players per team",
+            "example": 3,
+            "readOnly": true
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "Sport played during the session",
+            "example": "FOOTBALL",
+            "readOnly": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Session start date",
+            "example": "2025-01-01T10:00:00.000Z",
+            "readOnly": true
+          },
+          "gameMode": {
+            "type": "string",
+            "description": "Session game mode",
+            "enum": [
+              "ONE_V_ONE",
+              "TWO_V_TWO",
+              "THREE_V_THREE",
+              "FOUR_V_FOUR",
+              "FIVE_V_FIVE",
+              "SIX_V_SIX",
+              "SEVEN_V_SEVEN",
+              "EIGHT_V_EIGHT",
+              "TEN_V_TEN",
+              "ELEVEN_V_ELEVEN"
+            ],
+            "example": "THREE_VS_THREE",
+            "readOnly": true
+          },
+          "creatorUid": {
+            "type": "string",
+            "description": "Session creator",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "visibility": {
+            "type": "object",
+            "description": "Session visibility",
+            "example": "PUBLIC",
+            "readOnly": true
+          },
+          "fieldShortAddress": {
+            "type": "string",
+            "description": "Session field short address",
+            "example": "38 Rue du Ballon, Noisy-le-Grand",
+            "readOnly": true
+          },
+          "fieldLatitude": {
+            "type": "number",
+            "description": "Field latitude",
+            "example": 48.8566,
+            "readOnly": true
+          },
+          "fieldLongitude": {
+            "type": "number",
+            "description": "Field longitude",
+            "example": 2.3522,
+            "readOnly": true
+          },
+          "userDistance": {
+            "type": "number",
+            "description": "Distance to the session in kilometers",
+            "example": 1.2,
+            "readOnly": true
+          },
+          "level": {
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "type": "number",
+            "description": "Session level",
+            "example": 1,
+            "readOnly": true
+          },
+          "sessionTeams": {
+            "example": [
+              {
+                "teamName": "Team A"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionTeamResponseData"
+            }
+          },
+          "fieldUid": {
+            "type": "string",
+            "description": "The uid of the field",
+            "example": "cmkiwtv9r02d65pmp40klxt2i"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the session",
+            "example": "Session 1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Session description",
+            "example": "Test session"
+          },
+          "fieldType": {
+            "type": "string",
+            "description": "The type of the field",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PUBLIC"
+          },
+          "isJoined": {
+            "type": "boolean",
+            "description": "Whether the user is joined to the session",
+            "example": false
+          },
+          "fieldImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseDto"
+            }
+          }
+        },
+        "required": [
+          "endDate",
+          "uid",
+          "maxPlayersPerTeam",
+          "sport",
+          "startDate",
+          "gameMode",
+          "creatorUid",
+          "fieldShortAddress",
+          "fieldLatitude",
+          "fieldLongitude",
+          "userDistance",
+          "level",
+          "sessionTeams",
+          "fieldUid",
+          "title",
+          "description",
+          "fieldType",
+          "isJoined",
+          "fieldImages"
+        ]
+      },
+      "FindOneSessionWithDistanceResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FindOneSessionWithDistanceResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "UpdateSessionDto": {
         "type": "object",
         "properties": {
@@ -7576,6 +8573,20 @@
               "PRIVATE"
             ],
             "example": "PUBLIC"
+          },
+          "teamAName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "description": "The name of the team A",
+            "example": "Equipe A"
+          },
+          "teamBName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "description": "The name of the team B",
+            "example": "Equipe B"
           },
           "maxPlayersPerTeam": {
             "type": "number",
@@ -7763,92 +8774,6 @@
         "required": [
           "teamUid",
           "sessionUid"
-        ]
-      },
-      "FlattenedSessionPlayer": {
-        "type": "object",
-        "properties": {
-          "userUid": {
-            "type": "string",
-            "example": "cmgoxfs3t002hob8arwdna80g",
-            "readOnly": true
-          },
-          "teamUid": {
-            "type": "string",
-            "example": "cmgoxfs47002zob8a42uq1u8z",
-            "readOnly": true
-          },
-          "firstname": {
-            "type": "string",
-            "example": "Seto",
-            "readOnly": true
-          },
-          "lastname": {
-            "type": "string",
-            "example": "Kaiba",
-            "readOnly": true
-          },
-          "imageUrl": {
-            "type": "string",
-            "example": "1738433236109explore2.png",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "userUid",
-          "teamUid",
-          "firstname",
-          "lastname",
-          "imageUrl"
-        ]
-      },
-      "SessionTeamResponseData": {
-        "type": "object",
-        "properties": {
-          "teamName": {
-            "type": "string",
-            "example": "Team A",
-            "readOnly": true
-          },
-          "teamLabel": {
-            "type": "string",
-            "example": "A",
-            "readOnly": true
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session update date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Session creation date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "sessionPlayers": {
-            "description": "Players in the team",
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FlattenedSessionPlayer"
-            }
-          },
-          "numberOfPlayers": {
-            "type": "number",
-            "description": "Number of players in the team",
-            "example": 1,
-            "readOnly": true
-          }
-        },
-        "required": [
-          "teamName",
-          "teamLabel",
-          "sessionPlayers",
-          "numberOfPlayers"
         ]
       },
       "PaginationDataSessionTeamResponseData": {
@@ -8185,6 +9110,297 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "NotificationResponseData": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the notification",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "title": {
+            "type": "string",
+            "description": "title of the notification",
+            "example": "Notification Title"
+          },
+          "body": {
+            "type": "string",
+            "description": "body of the notification",
+            "example": "Notification Body"
+          },
+          "data": {
+            "type": "object",
+            "description": "data of the notification",
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "created at of the notification",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "readAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "read at of the notification",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "is read of the notification",
+            "example": true
+          },
+          "sentViaPush": {
+            "type": "boolean",
+            "description": "is sent via push of the notification",
+            "example": true
+          },
+          "type": {
+            "type": "object",
+            "description": "type of the notification",
+            "example": "FRIEND_REQUEST"
+          }
+        },
+        "required": [
+          "uid",
+          "title",
+          "body",
+          "data",
+          "createdAt",
+          "readAt",
+          "isRead",
+          "sentViaPush",
+          "type"
+        ]
+      },
+      "PaginationDataNotificationResponseData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationResponseData"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseNotificationResponseData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataNotificationResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendPushNotificationDto": {
+        "type": "object",
+        "properties": {
+          "fcmToken": {
+            "type": "string",
+            "description": "FCM token of the device to send the notification to",
+            "example": "dGhpc2lzYWZha2V0b2tlbmZvcnRlc3Rpbmc..."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the notification",
+            "example": "New Notification"
+          },
+          "body": {
+            "type": "string",
+            "description": "Body/message of the notification",
+            "example": "You have a new message!"
+          },
+          "data": {
+            "type": "object",
+            "description": "Optional data payload to send with the notification",
+            "example": {
+              "id": "123",
+              "type": "message"
+            }
+          }
+        },
+        "required": [
+          "fcmToken",
+          "title",
+          "body"
+        ]
+      },
+      "RegisterDeviceDto": {
+        "type": "object",
+        "properties": {
+          "fcmToken": {
+            "type": "string",
+            "description": "FCM token of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "platform": {
+            "type": "string",
+            "description": "Platform of the device",
+            "enum": [
+              "IOS",
+              "ANDROID",
+              "WEB"
+            ],
+            "example": "ANDROID"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Device ID of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "appVersion": {
+            "type": "string",
+            "description": "App version of the device",
+            "example": "1.0.0"
+          },
+          "osVersion": {
+            "type": "string",
+            "description": "OS version of the device",
+            "example": "1.0.0"
+          }
+        },
+        "required": [
+          "fcmToken",
+          "platform",
+          "deviceId"
+        ]
+      },
+      "DeviceResponseData": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "uid of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "fcmToken": {
+            "type": "string",
+            "description": "fcm token of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "device id of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "appVersion": {
+            "type": "string",
+            "description": "app version of the device",
+            "example": "1.0.0"
+          },
+          "osVersion": {
+            "type": "string",
+            "description": "os version of the device",
+            "example": "1.0.0"
+          },
+          "platform": {
+            "type": "string",
+            "description": "platform of the device",
+            "enum": [
+              "IOS",
+              "ANDROID",
+              "WEB"
+            ],
+            "example": "ANDROID"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "is active of the device",
+            "example": true
+          },
+          "lastSeenAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "last seen at of the device",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "created at of the device",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "updated at of the device",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "user uid of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          }
+        },
+        "required": [
+          "uid",
+          "fcmToken",
+          "deviceId",
+          "platform"
+        ]
+      },
+      "DeviceResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeviceResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UnregisterDeviceDto": {
+        "type": "object",
+        "properties": {
+          "fcmToken": {
+            "type": "string",
+            "description": "FCM token of the device",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          }
+        },
+        "required": [
+          "fcmToken"
         ]
       },
       "CreateStripeAccountDto": {

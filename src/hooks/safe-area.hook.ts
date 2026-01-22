@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IS_ANDROID } from '@/constants/PLATFORM';
 import { TAB_BAR_CONSTANTS } from '@/components/ui/navigation/tab-bar/constants';
 
-const BOTTOM_CUSTOM_SAFE_AREA = 15;
+const BOTTOM_CUSTOM_SAFE_AREA = 20;
 
 export const useSafeArea = () => {
   const insets = useSafeAreaInsets();

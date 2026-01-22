@@ -1,7 +1,6 @@
 {
   "auth.login.button_form_title": "Log in",
   "auth.login.button_google_title": "Sign in with Google",
-  "auth.login.divider_title": "Connect with",
   "auth.login.dont_have_an_account": "Not registered yet?",
   "auth.login.dont_have_an_account_create_account": "Create an account",
   "auth.login.forgot_password": "Forgot your password?",
@@ -166,9 +165,9 @@
   "location.description_SESSIONS": "We need your location to display sessions near you. Enable it in your phone settings.",
   "location.title": "Location disabled",
   "session-card.session_time": "{start_time} to {end_time} ",
-  "tab.matches": "Matches",
   "tab.messages": "Messages",
   "tab.planning": "planning",
+  "tab.players": "Players",
   "tab.profile": "Profile",
   "zod.password.caractere_special": "The password must contain at least one special character.",
   "zod.password.min_length": "The password must contain at least {length} characters.",

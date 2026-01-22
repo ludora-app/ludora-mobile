@@ -62,6 +62,12 @@ export default function HomeSessionList() {
       bounces={false}
       contentContainerClassName="bg-background rounded-t-xl"
       contentContainerStyle={{ paddingBottom: bottomTab }}
+      emptyResultProps={{
+        className: 'mt-4',
+        hasRandomTitle: true,
+        randomOptions: 5,
+        title: 'home.sessions_empty_result_v',
+      }}
     />
   );
 }

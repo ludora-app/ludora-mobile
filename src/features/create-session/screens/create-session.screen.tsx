@@ -13,6 +13,7 @@ import CreateSessionStep4 from '../components/create-session-steps/create-sessio
 import CreateSessionFooter from '../components/create-session-steps/create-session-footer/create-session-footer.component';
 
 export default function CreateSessionScreen() {
+
   const resetCreateSession = useCreateSessionStore(state => state.reset);
   const resetFieldsFilter = useCreateSessionFiltersFieldsStore(state => state.reset);
   const [activeStep, setActiveStep] = useState(1);
@@ -35,11 +36,15 @@ export default function CreateSessionScreen() {
   return (
     <>
       <CreateSessionHeader setActiveStep={setActiveStep} activeStep={activeStep} />
+
       <CreateSessionProgressStepper activeStep={activeStep} />
+
       {showStep1 && <CreateSessionStep1 />}
       {showStep2 && <CreateSessionStep2 />}
       {showStep3 && <CreateSessionStep3 />}
+
       {showStep4 && <CreateSessionStep4 />}
+
       <CreateSessionFooter activeStep={activeStep} setActiveStep={setActiveStep} />
     </>
   );

@@ -14,6 +14,7 @@ import type {
   SessionInvitationsFindAllByUserIdParams,
   SessionsFindAllByUserUidParams,
   SessionsFindAllParams,
+  SessionsFindOneWithDistanceParams,
   StorageGetSignedUrlParams,
   UsersFindAllParams,
 } from './model';
@@ -48,6 +49,10 @@ import {
     getMetricsIndexQueryKey,
 } from './api/metrics/metrics.api';
 import {
+    getNotificationsFindAllQueryKey,
+    getNotificationsGetUnreadCountQueryKey,
+} from './api/notifications/notifications.api';
+import {
     getPaymentGetStripeConnectAccountQueryKey,
     getPaymentGetBankAccountsListQueryKey,
     getPaymentGetBankAccountQueryKey,
@@ -65,6 +70,7 @@ import {
     getSessionsFindAllQueryKey,
     getSessionsFindAllByUserUidQueryKey,
     getSessionsFindOneQueryKey,
+    getSessionsFindOneWithDistanceQueryKey,
 } from './api/sessions/sessions.api';
 import {
     getStorageGetSignedUrlQueryKey,
@@ -204,6 +210,22 @@ export const useInvalidateMetricsIndex = () => {
     });
 };
 
+export const useInvalidateNotificationsFindAll = () => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getNotificationsFindAllQueryKey(),
+    });
+};
+
+export const useInvalidateNotificationsGetUnreadCount = () => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getNotificationsGetUnreadCountQueryKey(),
+    });
+};
+
 export const useInvalidatePaymentGetStripeConnectAccount = () => {
   const queryClient = useQueryClient();
   return () =>
@@ -289,6 +311,14 @@ export const useInvalidateSessionsFindOne = (uid: string) => {
   return () =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindOneQueryKey(uid),
+    });
+};
+
+export const useInvalidateSessionsFindOneWithDistance = (uid: string, params: SessionsFindOneWithDistanceParams) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSessionsFindOneWithDistanceQueryKey(uid, params),
     });
 };
 

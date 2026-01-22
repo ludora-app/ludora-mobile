@@ -12,8 +12,8 @@ import CreateSessionStep2FieldsListHeaderTopList from './create-session-step-2-f
 
 const LIST_TOP_COMPONENT_HEIGHT = 88;
 const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
-const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 203;
-const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 224;
+const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 227;
+const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;
 
 export default function CreateSessionStep2FieldsList() {
   const {
@@ -58,7 +58,10 @@ export default function CreateSessionStep2FieldsList() {
       ListHeaderComponent={CreateSessionStep2FieldsListHeader}
       ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
       bounces={false}
-      emptyResultTitle="create-session-steps.step-2.no_result_title_v"
+      emptyResultProps={{
+        hasRandomTitle: true,
+        title: 'create-session-steps.step-2.no_result_title_v',
+      }}
     />
   );
 }

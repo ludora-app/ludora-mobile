@@ -2,7 +2,7 @@ import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
-import { SessionCollectionItemGameMode } from '@/api/generated/model';
+import { SessionCollectionItemDtoGameMode } from '@/api/generated/model';
 
 import FilterModesItem from './filter-modes-item.component';
 import { useFiltersStore } from '../../store/filters.store';
@@ -23,15 +23,15 @@ export default function FilterModes() {
           <String variant="body-sm" font="primaryBold" truncate>
             {selectedGameModes?.length > 0
               ? selectedGameModes?.map(
-                  (gameMode: SessionCollectionItemGameMode, index: number) =>
-                    `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
-                )
+                (gameMode: SessionCollectionItemDtoGameMode, index: number) =>
+                  `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
+              )
               : '-'}
           </String>
         </BoxRow>
       </BoxRowCenterBetween>
       <Box className="flex flex-row flex-wrap gap-2">
-        {Object.values(SessionCollectionItemGameMode).map((gameMode: SessionCollectionItemGameMode, index: number) => (
+        {Object.values(SessionCollectionItemDtoGameMode).map((gameMode: SessionCollectionItemDtoGameMode, index: number) => (
           <FilterModesItem key={index} gameMode={gameMode} />
         ))}
       </Box>

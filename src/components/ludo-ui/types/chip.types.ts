@@ -13,8 +13,8 @@ export type ChipProps = ChillUiChipProps & {
   title?: string;
   titleProps?: ChipTitleProps;
   contentProps?: ChipContentProps;
-  iconProps?: Omit<ChipIconProps, 'name'> & {
-    position?: 'left' | 'right';
+  iconProps?: Omit<ChipIconProps, 'name' | 'position'> & {
+    position?: 'left' | 'right' | 'left-outside' | 'right-outside';
     name: TIconsAll;
   };
   isLoading?: boolean;

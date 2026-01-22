@@ -22,6 +22,9 @@ export type RootStackParamList = {
   [ROUTES.FILTERS.FILTER_ADDRESSES]: {
     goBackPath: RouteValues;
   };
+  [ROUTES.SESSION.INDEX]: {
+    id: string;
+  };
 };
 
 export type ReturnStackParamList = {

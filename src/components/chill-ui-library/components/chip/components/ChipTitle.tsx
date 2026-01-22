@@ -22,7 +22,13 @@ export default function ChipTitle({ children, className, ...props }: PropsWithCh
   const { colorVariant, sizingVariant, variant } = useChipContext();
 
   return (
-    <String size={sizingVariant} className={cn(ChipStringTv({ colorVariant, variant }), className)} {...props}>
+    <String
+      size={sizingVariant}
+      className={cn(ChipStringTv({ colorVariant, variant }), className)}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      {...props}
+    >
       {children}
     </String>
   );

@@ -3,5 +3,5 @@ import { PropsWithChildren } from 'react';
 
 export default function ContentWapper(props: PropsWithChildren) {
   const { children } = props;
-  return <Box className="my-10">{children}</Box>;
+  return <Box className="my-5">{children}</Box>;
 }

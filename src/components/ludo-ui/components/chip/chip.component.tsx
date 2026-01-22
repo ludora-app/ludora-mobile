@@ -8,6 +8,8 @@ export default function Button(props: ChipProps) {
   const { className, contentProps, iconProps, image, isDisabled, isLoading, redirect, title, titleProps, ...rest } =
     props;
 
+  const { position: iconPosition, ...iconPropsRest } = iconProps || {};
+
   const buttonContent = (
     <ChipChillUI
       as="scale-pressable"
@@ -15,17 +17,19 @@ export default function Button(props: ChipProps) {
       isDisabled={isLoading || isDisabled}
       {...rest}
     >
+      {!isLoading && iconProps && iconPosition === 'left-outside' && <ChipIcon {...iconPropsRest} />}
       <ChipContent {...contentProps}>
         {image?.source && <Image source={image?.source} contentFit={image.contentFit} className={image.className} />}
-        {!isLoading && iconProps && iconProps.position === 'left' && <ChipIcon {...iconProps} />}
+        {!isLoading && iconProps && iconPosition === 'left' && <ChipIcon {...iconPropsRest} />}
         {!isLoading && (
           <ChipTitle font="primaryBold" {...titleProps}>
             {title}
           </ChipTitle>
         )}
         {isLoading && <ChipLoader name="swing" color="#FFF" />}
-        {!isLoading && iconProps && iconProps.position !== 'left' && <ChipIcon {...iconProps} />}
+        {!isLoading && iconProps && iconPosition === 'right' && <ChipIcon {...iconPropsRest} />}
       </ChipContent>
+      {!isLoading && iconProps && iconPosition === 'right-outside' && <ChipIcon {...iconPropsRest} />}
     </ChipChillUI>
   );
 

@@ -4,11 +4,11 @@ export interface OutlinedStringProps {
   x?: number;
   y?: number;
   text: string;
-  width: number;
   height?: number;
   opacity?: number;
   fontSize?: number;
   fillColor?: string;
+  className?: string;
   shadowBlur?: number;
   fontFamily?: string; // Font family name. If not provided, uses platform-specific defaults with fallbacks
   strokeColor?: string;
@@ -18,6 +18,7 @@ export interface OutlinedStringProps {
   shadowOffsetY?: number;
   shadowOpacity?: number;
   letterSpacing?: number;
+  width?: number | 'auto';
   fontStyle?: keyof typeof fontStyles; // Font style ('normal', 'italic')
   textAnchor?: 'start' | 'middle' | 'end';
   fontWeight?: keyof typeof fontWeights | string; // Font weight (100-900, 'normal', 'bold', etc.)

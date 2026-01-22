@@ -8,6 +8,7 @@ import ROUTES from '@/constants/ROUTES';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useDisableBack } from '@/hooks/navigation.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 import AuthHeader from '../../components/auth-header/ auth-header.component';
 import { formSchema, ResetPasswordFormData } from '../schemas/reset-password.schema';
@@ -31,47 +32,48 @@ export default function ResetPasswordScreen() {
   });
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    trackEvent({
-      eventName: 'reset_password_send_code_with_email_requested',
-    });
     try {
       await sendVerificationCode({ data: { email: data.email } });
       trackEvent({
         eventName: 'reset_password_send_code_with_email_success',
       });
       router.push({ params: { email: data.email.toLowerCase() }, pathname: ROUTES.AUTH.VERIFY_CODE });
+      // TODO : ADD ERROR HANDLING WHEN USER HAD ATTEMPS TOO MANY TIMES
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackError({
         error,
       });
       trackEvent({
+        data: { error_message: errorResponse?.api_error_detail || 'unknow error' },
         eventName: 'reset_password_send_code_with_email_failed',
-        properties: { error_message: errorResponse?.api_error_detail || 'unknow error' },
       });
     }
   };
 
   return (
-    <WrapperSafeAreaView edges={['bottom']}>
-      <AuthHeader title="auth.reset-password.title" description="auth.reset-password.description" />
-      <ContentWapper>
-        <FormInput
-          control={control}
-          name="email"
-          label={t('common.input_email_label')}
-          placeholder={t('auth.reset-password.input_email_placeholder')}
-          keyboardType="email-address"
+    <>
+      <HeaderGoBack title={t('auth.reset-password.title')} />
+      <WrapperSafeAreaView edges={['bottom']}>
+        <AuthHeader description="auth.reset-password.description" />
+        <ContentWapper>
+          <FormInput
+            control={control}
+            name="email"
+            label={t('common.input_email_label')}
+            placeholder={t('common.input_email_placeholder')}
+            keyboardType="email-address"
+          />
+        </ContentWapper>
+        <Button
+          title={t('common.send')}
+          onPress={handleSubmit(onSubmit)}
+          className="w-full"
+          size="lg"
+          isLoading={isSendingVerificationCode}
+          isDisabled={!isValid}
         />
-      </ContentWapper>
-      <Button
-        title={t('common.send')}
-        onPress={handleSubmit(onSubmit)}
-        className="w-full"
-        size="lg"
-        isLoading={isSendingVerificationCode}
-        isDisabled={!isValid}
-      />
-    </WrapperSafeAreaView>
+      </WrapperSafeAreaView>
+    </>
   );
 }

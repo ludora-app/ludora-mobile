@@ -90,6 +90,19 @@ function AppLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
+      <Stack.Screen
+        name="session/[id]/session-teams"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.93],
+          sheetCornerRadius: 12,
+        }}
+      />
     </Stack>
   );
 }

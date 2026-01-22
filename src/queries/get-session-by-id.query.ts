@@ -7,6 +7,5 @@ export const useGetSessionById = (id: string) => {
     },
   });
   const sessionData = query?.data?.data;
-
   return { ...query, data: sessionData };
 };

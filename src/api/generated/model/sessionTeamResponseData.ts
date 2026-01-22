@@ -16,6 +16,7 @@ export interface SessionTeamResponseData {
   readonly sessionPlayers: readonly FlattenedSessionPlayer[];
   readonly teamLabel: string;
   readonly teamName: string;
+  readonly teamUid: string;
   /** Session update date */
   readonly updatedAt?: string;
 }

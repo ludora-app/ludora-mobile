@@ -13,7 +13,12 @@ function AppLayoutNav() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="create-session/index" />
+      <Stack.Screen
+        name="create-session/index"
+        options={{
+          animation: 'slide_from_bottom',
+        }}
+      />
       <Stack.Screen
         name="create-session/create-session-duration"
         options={{
@@ -83,6 +88,17 @@ function AppLayoutNav() {
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="session/[id]/session-teams"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'modal',
         }}
       />
     </Stack>

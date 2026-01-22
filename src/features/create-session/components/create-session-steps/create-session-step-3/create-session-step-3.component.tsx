@@ -4,8 +4,8 @@ import { Image, Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
 
 import { formatDate } from '@/utils/date.utils';
 import { getSportImage } from '@/utils/sports.utils';
+import { useGetField } from '@/queries/get-field.query';
 import { SESSION_LEVELS } from '@/constants/session.constants';
-import { useGetField } from '@/features/create-session/queries/get-field.query';
 import FieldCard from '@/components/ui/field-card/components/field-card.component';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import FieldCardSkeleton from '@/components/ui/field-card/components/field-card-skeleton.component';

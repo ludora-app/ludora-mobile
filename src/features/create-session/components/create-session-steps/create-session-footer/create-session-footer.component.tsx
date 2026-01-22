@@ -38,7 +38,7 @@ export default function CreateSessionFooter(props: CreateSessionFooterProps) {
   return (
     <Wrapper
       style={[styles.footer, { paddingBottom: bottom }]}
-      className="items-center justify-center bg-background py-2"
+      className="bg-background items-center justify-center py-2"
     >
       {showNextStepButton && (
         <CreateSessionFooterButtonNextStep activeStep={activeStep} setActiveStep={setActiveStep} />

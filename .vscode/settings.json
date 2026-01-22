@@ -40,5 +40,8 @@
     "ListFooterComponentClassName",
     "ListHeaderComponentClassName"
   ],
-  "tailwindCSS.classFunctions": ["useResolveClassNames"]
+  "tailwindCSS.classFunctions": [
+    "useResolveClassNames"
+  ],
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

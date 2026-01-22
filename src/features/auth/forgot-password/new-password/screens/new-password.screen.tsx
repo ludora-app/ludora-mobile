@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { useLocalSearchParams } from 'expo-router';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { WrapperSafeAreaView, FormInput, Button } from '@ludo/ui';
+import { FormInput, Button, WrapperKeyboardAwareScrollView } from '@ludo/ui';
 
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
@@ -28,9 +28,6 @@ export default function NewPasswordScreen() {
   });
 
   const onSubmit = async (data: z.infer<typeof newPasswordFormSchema>) => {
-    trackEvent({
-      eventName: 'reset_password_new_password_requested',
-    });
     const { newPassword } = data;
     try {
       const response = await addNewPassword({ newPassword, resetToken: resetToken.toString() });
@@ -41,10 +38,10 @@ export default function NewPasswordScreen() {
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        eventName: 'reset_password_new_password_failed',
-        properties: {
+        data: {
           error_message: errorResponse.api_error_detail,
         },
+        eventName: 'reset_password_new_password_failed',
       });
       trackError({
         error,
@@ -53,7 +50,7 @@ export default function NewPasswordScreen() {
   };
 
   return (
-    <WrapperSafeAreaView className="pt-24">
+    <WrapperKeyboardAwareScrollView hasSafeArea className='mt-4'>
       <AuthHeader title="auth.new-password.title" description="auth.new-password.description" />
       <ContentWapper>
         <Box className="gap-4">
@@ -82,6 +79,6 @@ export default function NewPasswordScreen() {
         size="lg"
         isLoading={isAddingNewPassword}
       />
-    </WrapperSafeAreaView>
+    </WrapperKeyboardAwareScrollView>
   );
 }

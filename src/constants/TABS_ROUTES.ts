@@ -2,7 +2,7 @@ import { Href } from 'expo-router';
 
 import { TIconsAll } from './ICONS';
 
-export type TabRouteNames = 'index' | 'messages' | 'favoris' | 'match' | 'planning' | 'profil';
+export type TabRouteNames = 'index' | 'messages' | 'players' | 'profil' | 'create-session';
 
 export interface TabRoutes {
   href: Href;
@@ -14,38 +14,38 @@ export interface TabRoutes {
 
 export const TAB_ROUTES: TabRoutes[] = [
   {
-    href: '/(root)/(tabs)/',
+    href: '/(root)/(tabs)/create-session',
     iconName: 'flash-regular',
     iconNameActive: 'flash-solid',
-    name: 'index',
+    name: 'create-session',
     text: '',
   },
   {
+    href: '/(root)/(tabs)/',
+    iconName: 'search-regular',
+    iconNameActive: 'search-regular',
+    name: 'index',
+    text: 'tab.explore',
+  },
+  {
+    href: '/(root)/(tabs)/players',
+    iconName: 'user-search',
+    iconNameActive: 'user-search',
+    name: 'players',
+    text: 'tab.players',
+  },
+
+  {
     href: '/(root)/(tabs)/messages',
-    iconName: 'conversation-box-regular',
-    iconNameActive: 'conversation-box-solid',
+    iconName: 'chatbot-regular',
+    iconNameActive: 'chatbot-regular',
     name: 'messages',
     text: 'tab.messages',
   },
   {
-    href: '/(root)/(tabs)/match',
-    iconName: 'search-regular',
-    iconNameActive: 'search-solid',
-    name: 'match',
-    text: 'tab.matches',
-  },
-
-  {
-    href: '/(root)/(tabs)/planning',
-    iconName: 'calendar-regular',
-    iconNameActive: 'calendar-solid',
-    name: 'planning',
-    text: 'tab.planning',
-  },
-  {
     href: '/(root)/(tabs)/profil',
-    iconName: 'ludo-regular',
-    iconNameActive: 'ludo-solid',
+    iconName: 'ludo-tab',
+    iconNameActive: 'ludo-tab',
     name: 'profil',
     text: 'tab.profile',
   },

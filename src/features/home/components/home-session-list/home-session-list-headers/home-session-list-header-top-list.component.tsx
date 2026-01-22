@@ -24,7 +24,7 @@ export default function HomeSessionListHeaderTopList() {
       hasNewSession={showSessionCard}
     >
       {showSessionCard && <SessionCard session={IncommingSessionMe} isNextSession />}
-      {true && (
+      {!showSessionCard && (
         <Button
           title={t('home.header.button_create_match')}
           colorVariant="inverted"

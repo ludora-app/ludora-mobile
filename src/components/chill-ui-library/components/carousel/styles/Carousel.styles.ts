@@ -1,3 +1,5 @@
+import { tv } from 'tailwind-variants';
+
 export const twStyles = {
   carousel: 'relative',
   carouselButtonDisabled: 'opacity-50',
@@ -9,3 +11,15 @@ export const twStyles = {
   carouselPrevButton: 'absolute left-4 top-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#fff]',
   padding2: 'p-2',
 };
+
+export const IconTv = tv({
+  variants: {
+    size: {
+      lg: 'size-4',
+      md: 'size-3',
+      sm: 'size-2',
+      xl: 'size-5',
+      xs: 'size-1.5',
+    },
+  },
+});

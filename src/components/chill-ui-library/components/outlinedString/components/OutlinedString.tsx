@@ -1,10 +1,14 @@
 import React, { memo } from 'react';
+import { withUniwind } from 'uniwind';
 import { Platform } from 'react-native';
 import Svg, { Text as SvgText } from 'react-native-svg';
 
 import { Box } from '../../box';
+import { cn } from '../../../utils';
 import { fontWeights } from '../styles/OutlinedString.styles';
 import { OutlinedStringProps } from '../../../types/outlineString.types';
+
+const StyledSvg = withUniwind(Svg);
 
 // Helper function to create font fallback chain
 const createFontFallback = (fontFamily?: string): string => {
@@ -35,15 +39,15 @@ const estimateTextWidth = (
   fontStyle?: string,
 ): number => {
   // More accurate estimation based on font characteristics
-  let charWidth = 0.6; // Default character width ratio
+  let charWidth = 0.52; // Default character width ratio - slightly increased to prevent clipping
 
   // Adjust based on font weight
   if (fontWeight) {
     const weight = parseInt(fontWeight, 10);
     if (weight >= 700) {
-      charWidth = 0.65; // Bold fonts are wider
+      charWidth = 0.57; // Bold fonts are wider
     } else if (weight <= 300) {
-      charWidth = 0.55; // Light fonts are narrower
+      charWidth = 0.47; // Light fonts are narrower
     }
   }
 
@@ -56,7 +60,7 @@ const estimateTextWidth = (
   if (fontFamily) {
     const family = fontFamily.toLowerCase();
     if (family.includes('mono') || family.includes('courier')) {
-      charWidth = 0.7; // Monospace fonts have consistent width
+      charWidth = 0.6; // Monospace fonts have consistent width
     } else if (family.includes('condensed') || family.includes('narrow')) {
       charWidth *= 0.85; // Condensed fonts are narrower
     } else if (family.includes('wide') || family.includes('extended')) {
@@ -67,9 +71,9 @@ const estimateTextWidth = (
   // Calculate total width
   const baseWidth = text.length * fontSize * charWidth;
 
-  // Add extra space for word spacing
+  // Add extra space for word spacing - reduced for tighter fit
   const wordCount = text.split(' ').length - 1;
-  const wordSpacing = wordCount * fontSize * 0.1;
+  const wordSpacing = wordCount * fontSize * 0.05;
 
   return baseWidth + wordSpacing;
 };
@@ -133,6 +137,7 @@ const generateBlurLayers = (shadowBlur: number): { offsetX: number; offsetY: num
 };
 
 export function SvgTextOutlined({
+  className,
   fillColor = '#FFFFFF',
   fontFamily,
   fontSize = 16,
@@ -187,10 +192,25 @@ export function SvgTextOutlined({
     return result;
   }, [text, textTransform]);
 
+  // Calculate actual width - if 'auto', calculate from text content
+  const actualWidth = React.useMemo(() => {
+    if (width === 'auto' || width === undefined) {
+      // Calculate width based on the longest line
+      const textLines = processedText.split('\n');
+      const maxLineWidth = Math.max(
+        ...textLines.map(line =>
+          estimateTextWidth(line, fontSize, finalFontFamily, finalFontWeight, finalFontStyle),
+        ),
+      );
+      return maxLineWidth;
+    }
+    return width;
+  }, [width, processedText, fontSize, finalFontFamily, finalFontWeight, finalFontStyle]);
+
   // Wrap text into lines
   const lines = React.useMemo(
-    () => wrapText(processedText, width, fontSize, finalFontFamily, finalFontWeight, finalFontStyle),
-    [processedText, width, fontSize, finalFontFamily, finalFontWeight, finalFontStyle],
+    () => wrapText(processedText, actualWidth, fontSize, finalFontFamily, finalFontWeight, finalFontStyle),
+    [processedText, actualWidth, fontSize, finalFontFamily, finalFontWeight, finalFontStyle],
   );
 
   // Calculate total height needed for all lines
@@ -198,7 +218,7 @@ export function SvgTextOutlined({
   const totalHeight = lines.length * totalLineHeight;
 
   // Calculate center position if x and y are not provided
-  const centerX = x ?? width / 2;
+  const centerX = x ?? actualWidth / 2;
   const centerY = y ?? (height ? height / 2 : totalHeight / 2);
 
   // Calculate starting Y position to center all lines vertically
@@ -209,17 +229,49 @@ export function SvgTextOutlined({
   // Generate blur layers only when needed
   const blurLayers = React.useMemo(() => generateBlurLayers(shadowBlur), [shadowBlur]);
 
+  // Calculate padding needed to prevent stroke from being cut off
+  // The stroke can extend beyond the text bounds, especially on the left for 'start' anchor
+  // We need to account for: strokeWidth (multiplied by 2), shadowOffsetX (can be negative), and shadowBlur
+  const strokePaddingLeft = React.useMemo(() => {
+    const maxStrokeExtent = strokeWidth * 2; // strokeWidth is multiplied by 2 in the component
+    // For left padding, account for negative shadowOffsetX and shadowBlur
+    const leftShadowExtent = Math.max(
+      (shadowOffsetX < 0 ? Math.abs(shadowOffsetX) : 0) + (shadowBlur > 0 ? shadowBlur / 2 : 0),
+      0
+    );
+    // Minimal padding - just enough to prevent clipping of stroke and characters that extend left (like J, P, etc.)
+    return Math.ceil(maxStrokeExtent + leftShadowExtent);
+  }, [strokeWidth, shadowOffsetX, shadowBlur]);
+
+  // Small padding on the right for stroke and potential character overflow
+  const strokePaddingRight = React.useMemo(() =>
+    Math.ceil(strokeWidth * 2 + fontSize * 0.15) // Stroke + small buffer for character overflow
+    , [strokeWidth, fontSize]);
+
+  // SVG dimensions - padding on left and minimal on right
+  const svgWidth = actualWidth + strokePaddingLeft + strokePaddingRight;
+  const svgHeight = Math.max(height ?? 0, totalHeight);
+
   return (
-    <Box className="items-start justify-start" accessible accessibilityLabel={text}>
-      <Svg height={Math.max(height ?? 0, totalHeight)} className="w-full">
+    <Box
+      className={cn("items-start justify-start", className)}
+      accessible
+      accessibilityLabel={text}
+    >
+      <StyledSvg
+        height={svgHeight}
+        width={svgWidth}
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      >
         {lines.map((line, index) => {
           const lineY = startY + index * totalLineHeight;
 
           // Calculate the actual x position based on textAnchor
+          // Text starts at strokePaddingLeft to prevent left clipping
           const getTextX = () => {
-            if (textAnchor === 'start') return 0;
-            if (textAnchor === 'end') return width;
-            return centerX;
+            if (textAnchor === 'start') return strokePaddingLeft;
+            if (textAnchor === 'end') return actualWidth + strokePaddingLeft;
+            return centerX + strokePaddingLeft;
           };
           const textX = getTextX();
 
@@ -287,7 +339,7 @@ export function SvgTextOutlined({
             </React.Fragment>
           );
         })}
-      </Svg>
+      </StyledSvg>
     </Box>
   );
 }

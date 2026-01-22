@@ -48,8 +48,8 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
   const isFriendAlreadlyInvited = isFriendInvited || isFriendSelected;
 
   return (
-    <Wrapper fill={false}>
-      <BoxRowCenterBetween className="mb-3 gap-3 rounded-2xl border border-primary bg-primary/10 px-4 py-3">
+    <Wrapper fill={false} className="pb-3">
+      <BoxRowCenterBetween className="border-primary bg-primary/10 gap-3 rounded-2xl border px-4 py-3">
         <BoxRow className="flex-1 items-center gap-3">
           <Avatar
             data={{

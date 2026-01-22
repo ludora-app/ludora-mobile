@@ -30,9 +30,10 @@ const ROUTES = {
     INDEX: '/invite-people',
   },
   SESSION: {
-    DETAILS: '/session',
-    FILTER: '(root)/(modals)/session-filter',
-    TEAM: '/session/team',
+    INDEX: '/session',
+    INDEX_UID: (uid: string) => `/session/${uid}`,
+    JOINED_UID: (uid: string) => `session/${uid}/session-joined`,
+    TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
   },
 } as const;
 

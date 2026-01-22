@@ -1,10 +1,11 @@
 // hooks/useErrorHandler.ts
+import { useEffect } from 'react';
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { HTTPError, TimeoutError } from 'ky';
 import { usePostHog } from 'posthog-react-native';
 
-import { AnalyticsEvent } from '@/constants/ANALYTICS_EVENTS';
+import { AnalyticsEvent, AnalyticsEventWithDataType } from '@/constants/analytics-events.constants';
 
 export const useAnalytics = () => {
   const posthog = usePostHog();
@@ -44,11 +45,34 @@ export const useAnalytics = () => {
     }
   };
 
-  const trackEvent = ({ eventName, properties }: { eventName: AnalyticsEvent; properties?: Record<string, any> }) => {
-    posthog.capture(eventName, {
-      ...properties,
-    });
+  const trackEvent = <T extends AnalyticsEvent>({ data, eventName }: AnalyticsEventWithDataType<T>) => {
+    posthog.capture(eventName, data);
   };
 
   return { trackError, trackEvent };
+};
+
+export const useGetMethodErrorTracking = ({
+  error,
+  extra,
+  isError,
+  showToast = false,
+}: {
+  error?: any;
+  isError: boolean;
+  extra?: Record<string, any>;
+  showToast?: boolean;
+}) => {
+  const { trackError } = useAnalytics();
+
+  useEffect(() => {
+    if (isError && error) {
+      trackError({
+        error,
+        extra,
+        showToast,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, error]);
 };

@@ -112,7 +112,7 @@ export default function CustomIcon<T extends IconConfig = typeof ICONS>({
             d={pathData}
             {...(pathAttrs.fill && { fill: color || (pathAttrs.fill !== undefined && pathAttrs.fill) })}
             {...(pathAttrs.stroke && { stroke: color || (pathAttrs.stroke !== undefined && pathAttrs.stroke) })}
-            strokeWidth={pathAttrs.strokeWidth}
+            strokeWidth={2}
             strokeLinecap={pathAttrs.strokeLinecap}
             strokeLinejoin={pathAttrs.strokeLinejoin}
             opacity={pathAttrs.opacity}

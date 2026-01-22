@@ -1,11 +1,6 @@
-import {
-  ButtonContentProps,
-  ButtonTitleProps,
-  ButtonProps as ChillUiButtonProps,
-  TIconName as TIconNameChillUi,
-} from '@chillui/ui';
+import { ButtonContentProps, ButtonLoaderProps, ButtonTitleProps, ButtonProps as ChillUiButtonProps } from '@chillui/ui';
 
-import { TIconName } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/ICONS';
 import { RouteValues } from '@/constants/ROUTES';
 
 import { IconProps } from './icon.types';
@@ -22,7 +17,8 @@ export type ButtonProps = ChillUiButtonProps & {
   contentProps?: ButtonContentProps;
   iconProps?: Omit<IconProps, 'name'> & {
     position?: 'left' | 'right' | 'left-outside' | 'right-outside';
-    name: TIconNameChillUi | TIconName;
+    name: TIconsAll;
   };
   isLoading?: boolean;
+  loaderProps?: Omit<ButtonLoaderProps, 'name'>;
 };

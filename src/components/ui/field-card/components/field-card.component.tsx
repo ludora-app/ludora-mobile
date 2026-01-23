@@ -9,23 +9,25 @@ import { convertMToKm } from '@/utils/distance.utils';
 import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { height: 2, width: 0 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2.84,
+  shadowBlack: {
+    boxShadow: '0px 0px 10px #00000040',
+  },
+  shadowPrimary: {
+    boxShadow: '0px 0px 10px #F1450040',
+  },
+  shadowSecondary: {
+    boxShadow: '0px 0px 10px #864C9E40',
   },
 });
 
 interface FieldCardProps {
   onPress?: () => void;
   field: FieldResponseDto;
+  shadowVariant?: 'primary' | "black" | "secondary";
 }
 
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
-  const { children, field, onPress } = props;
+  const { children, field, onPress, shadowVariant = 'black' } = props;
 
   const { fieldImages, name, shortAddress, sport, type, userDistance = 0 } = field || {};
 
@@ -35,8 +37,32 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
     return getSportImage(sport);
   }, [fieldImages, sport]);
 
+  const handleShadow = useMemo(() => {
+    if (shadowVariant === 'black') {
+      return styles.shadowBlack;
+    }
+    if (shadowVariant === 'primary') {
+      return styles.shadowPrimary;
+    }
+    return styles.shadowSecondary;
+  }, [shadowVariant]);
+
+  const handleIconColor = useMemo(() => {
+    if (shadowVariant === 'black') {
+      return COLORS.muted;
+    }
+    if (shadowVariant === 'primary') {
+      return COLORS.primary;
+    }
+    if (shadowVariant === 'secondary') {
+      return COLORS.secondary;
+    }
+    return COLORS.primary;
+  }, [shadowVariant]);
+
+
   const content = (
-    <Box style={styles.container}>
+    <Box style={handleShadow} className='rounded-xl'>
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
           {type === FieldResponseDtoType.PUBLIC && (
@@ -44,24 +70,22 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
           )}
         </ImageBackground>
       </Box>
-
-      <Box className={cn('overflow-hidden rounded-b-xl border border-black/10 bg-white')}>
+      <Box className={cn('overflow-hidden rounded-b-xl bg-white')}>
         <Box>
           {/* top card content */}
           <Box className="gap-2 bg-white px-3 py-2">
             <String font="primaryExtraBold">{name}</String>
             <BoxRow className="items-center gap-1">
-              <Icon name="location-solid" color={COLORS.primary} size="xs" />
+              <Icon name="location-solid" color={handleIconColor} size="xs" />
               <Box className="no-wrap flex-1 flex-row items-center gap-2">
                 <String variant="body-xs" numberOfLines={1} ellipsizeMode="tail">
-                  {shortAddress}s
+                  {shortAddress}
                 </String>
                 <Box>
                   <String variant="body-xs">{userDistance ? `(${convertMToKm(userDistance)} km)` : ''}</String>
                 </Box>
               </Box>
             </BoxRow>
-
             {children}
           </Box>
         </Box>

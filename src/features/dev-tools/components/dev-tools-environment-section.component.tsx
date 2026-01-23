@@ -2,7 +2,7 @@ import * as Updates from 'expo-updates';
 import { useEffect, useState } from 'react';
 import { Box, BoxRow, BoxRowCenterBetween, Chip, Separator, String, Toggle } from '@ludo/ui';
 
-import { mmkvStorage } from '@/utils/mmkvStorage';
+import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 import { runBunScript } from '../queries/run-script.query';

@@ -10,7 +10,7 @@ import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/ROUTES';
 import { getSportImage } from '@/utils/sports.utils';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
-import { FindOneSessionResponseData, SessionCollectionItem, SessionCollectionItemDto } from '@/api/generated/model';
+import { FindOneSessionResponseData, SessionCollectionItemDto } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   shadow: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 interface SessionCardProps {
   isNextSession?: boolean;
-  session: SessionCollectionItem | SessionCollectionItemDto | FindOneSessionResponseData;
+  session: SessionCollectionItemDto | FindOneSessionResponseData;
 }
 
 export default function SessionCard(props: SessionCardProps) {
@@ -43,7 +43,7 @@ export default function SessionCard(props: SessionCardProps) {
 
   return (
     <Link href={ROUTES.SESSION.INDEX_UID(id)} asChild>
-      <Pressable style={styles.shadow} className="rounded-xl">
+      <Pressable style={styles.shadow} className="rounded-xl z-10">
         {!isNextSession && (
           <Box className="h-16 overflow-hidden rounded-t-xl">
             <Image source={sessionImage} contentFit="cover" className="size-full" />

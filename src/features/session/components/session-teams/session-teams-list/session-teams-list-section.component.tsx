@@ -8,10 +8,11 @@ import SessionTeamsListSectionHeader from './session-teams-list-section-header.c
 type SessionTeamsListItemProps = {
   item: SessionTeamResponseData;
   hasUserJoinedATeam: boolean;
+  teamSide: 'left' | 'right';
 };
 
 export default function SessionTeamsListSection(props: SessionTeamsListItemProps) {
-  const { hasUserJoinedATeam, item: sessionTeam } = props;
+  const { hasUserJoinedATeam, item: sessionTeam, teamSide } = props;
 
   const { sessionPlayers } = sessionTeam || {};
 
@@ -19,9 +20,9 @@ export default function SessionTeamsListSection(props: SessionTeamsListItemProps
 
   return (
     <>
-      <SessionTeamsListSectionHeader team={sessionTeam} />
+      <SessionTeamsListSectionHeader team={sessionTeam} teamSide={teamSide} />
       {sessionPlayers?.map(player => (
-        <SessionTeamsListItem key={player.userUid} data={player} />
+        <SessionTeamsListItem key={player.userUid} data={player} teamSide={teamSide} />
       ))}
       {showEmptyComponent && (
         <EmptyResult
@@ -31,7 +32,7 @@ export default function SessionTeamsListSection(props: SessionTeamsListItemProps
           hasRandomTitle
         />
       )}
-      {!hasUserJoinedATeam && <SessionTeamsListItemJoin teams={sessionTeam} />}
+      {!hasUserJoinedATeam && <SessionTeamsListItemJoin teams={sessionTeam} teamSide={teamSide} />}
     </>
   );
 }

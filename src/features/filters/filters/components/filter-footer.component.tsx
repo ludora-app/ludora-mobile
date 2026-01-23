@@ -5,7 +5,7 @@ import { useTranslate } from '@tolgee/react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { serialize } from '@/utils/json.utils';
-import { mmkvStorage } from '@/utils/mmkvStorage';
+import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';

@@ -2,7 +2,7 @@ export const twStyles = {
   animatedContainer: 'absolute left-[10px] right-[10px]',
   background: 'absolute inset-0',
   container: 'absolute left-[10px] right-[10px] z-50 overflow-hidden rounded-[12px]',
-  containerWithPadding: 'p-[16px] shadow-lg',
+  containerWithPadding: 'p-[16px]',
   content: 'z-10 flex-1',
   contentRow: 'z-10 flex-1 flex-row items-center gap-[12px]',
   customContent: 'z-10 flex-1',

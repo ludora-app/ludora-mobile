@@ -14,8 +14,8 @@ export default function ListFooter(props: ListFooterProps) {
     <Box>
       {isFetchingNextPage &&
         list(SKELETON_COUNT).map((_, index) => (
-          <Box className="mb-5">
-            <SkeletonComponent key={index} />
+          <Box className="mb-5" key={index}>
+            <SkeletonComponent />
           </Box>
         ))}
     </Box>

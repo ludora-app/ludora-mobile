@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import * as SplashScreenNative from 'expo-splash-screen';
 
 import { useAuthStore } from '@/stores/auth.store';
@@ -10,10 +11,18 @@ SplashScreenNative.setOptions({
 
 export default function SplashScreen() {
   const isLoading = useAuthStore(state => state.isLoading);
+  console.log('isLoading', isLoading);
+  useEffect(() => {
+    if (false) {
+      SplashScreenNative.hideAsync();
+    }
+  }, [isLoading]);
 
-  if (!isLoading) {
-    SplashScreenNative.hideAsync();
-  }
+  // if (!isLoading) {
+  //   return null;
+  // }
 
-  return null;
+
+
+  return null
 }

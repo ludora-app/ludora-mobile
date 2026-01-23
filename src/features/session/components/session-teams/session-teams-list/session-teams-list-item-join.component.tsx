@@ -10,9 +10,11 @@ import { useSessionTeamStore } from '@/features/session/stores/session-team.stor
 
 type SessionTeamsListItemJoinProps = {
   teams: SessionTeamResponseData;
+  teamSide: 'left' | 'right';
 };
 
-export default function SessionTeamsListItemJoin({ teams }: SessionTeamsListItemJoinProps) {
+export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoinProps) {
+  const { teams, teamSide } = props;
   const { t } = useTranslate();
   const { isComplete, isJoined, teamUid } = teams || {};
   const { trackEvent } = useAnalytics();
@@ -31,10 +33,18 @@ export default function SessionTeamsListItemJoin({ teams }: SessionTeamsListItem
     trackEvent({ data: { source_screen: '/session/[id]/session-teams' }, eventName: 'session_team_selected' });
   };
 
+  const buttonColorVariant = teamSide === 'left' ? 'primary' : 'secondary';
+
+  const avatarColor = teamSide === 'left' ? 'border-primary' : 'border-secondary';
+  const avatarContentColorVariant = teamSide === 'left' ? 'primary' : 'secondary';
+
   return (
     <Pressable onPress={handleJoinTeam}>
       <BoxRowCenterBetween
-        className={cn('border-ring rounded-xl border p-2 opacity-50', selectedTeamUid && 'opacity-100')}
+        className={cn('border-ring rounded-xl border p-2 opacity-50', {
+          'border-primary opacity-100': isSelectedTeam && teamSide === 'left',
+          'border-secondary opacity-100': isSelectedTeam && teamSide === 'right',
+        })}
       >
         <BoxRow className="items-center gap-2">
           {!isSelectedTeam && (
@@ -44,7 +54,15 @@ export default function SessionTeamsListItemJoin({ teams }: SessionTeamsListItem
               </String>
             </BoxCenter>
           )}
-          {isSelectedTeam && <Avatar data={{ ...userMe, imageUrl: userMe?.imageUrl }} />}
+          {isSelectedTeam && (
+            <Avatar
+              data={{ ...userMe, imageUrl: userMe?.imageUrl }}
+              className={cn(avatarColor)}
+              contentProps={{
+                colorVariant: avatarContentColorVariant,
+              }}
+            />
+          )}
           {!isSelectedTeam && (
             <Box>
               <String colorVariant="muted">{t('session.teams_list_join_available_place')}</String>
@@ -58,7 +76,14 @@ export default function SessionTeamsListItemJoin({ teams }: SessionTeamsListItem
       </BoxRowCenterBetween>
       {!isSelectedTeam && (
         <Box className="absolute top-1/2 right-2 z-50 -translate-y-1/2">
-          <Button title="Rejoindre" variant="outlined" fit size="xs" onPress={handleJoinTeam} />
+          <Button
+            title={t('common.join')}
+            variant="outlined"
+            fit
+            size="xs"
+            onPress={handleJoinTeam}
+            colorVariant={buttonColorVariant}
+          />
         </Box>
       )}
     </Pressable>

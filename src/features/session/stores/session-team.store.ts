@@ -1,13 +1,17 @@
 import { create } from 'zustand';
 
 interface SessionTeamStore {
-  teamUid: string;
   reset: () => void;
+  teamUid: string | undefined;
   setTeamUid: (teamUid: string) => void;
+  sideTeam: 'left' | 'right' | undefined;
+  setSideTeam: (sideTeam: 'left' | 'right') => void;
 }
 
 export const useSessionTeamStore = create<SessionTeamStore>(set => ({
-  reset: () => set({ teamUid: null }),
+  reset: () => set({ sideTeam: undefined, teamUid: undefined }),
+  setSideTeam: sideTeam => set({ sideTeam }),
   setTeamUid: teamUid => set({ teamUid }),
-  teamUid: null,
+  sideTeam: undefined,
+  teamUid: undefined,
 }));

@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import { WrapperGestureHandlerScrollView } from '@ludo/ui';
 
-import { mmkvStorage } from '@/utils/mmkvStorage';
+import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 import { FiltersScreenParams } from '../types/filters.types';

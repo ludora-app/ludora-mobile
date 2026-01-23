@@ -2,22 +2,29 @@ import { useEffect } from 'react';
 import { usePostHog } from 'posthog-react-native';
 
 import '../global.css';
+import * as SplashScreen from 'expo-splash-screen';
 import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 
 import { useAuthStore } from '@/stores/auth.store';
 import MainProvider from '@/providers/main.provider';
-import LoadingScreen from '@/features/splash/screens/splash.screen';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
+
 
 function StorybookHeader() {
   return <HeaderGoBack className="bg-white pb-3" />;
 }
+
+SplashScreen.setOptions({
+  fade: true,
+});
+
 
 function RootLayoutNav() {
   const posthog = usePostHog();
   const pathname = usePathname();
   const params = useGlobalSearchParams();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
 
   useEffect(() => {
     posthog.screen(pathname, params);
@@ -65,10 +72,15 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+
+
   return (
     <MainProvider>
-      <LoadingScreen />
+
+      {/* <LoadingScreen /> */}
+
       <RootLayoutNav />
+
     </MainProvider>
   );
 }

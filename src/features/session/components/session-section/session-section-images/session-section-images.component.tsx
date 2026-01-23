@@ -6,13 +6,13 @@ import { getSportImage } from '@/utils/sports.utils';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
 
-import SessionImagesSectionHeader from './sessionImages-section-header.component';
+import SessionSectionImagesHeader from './session-images-section-header.component';
 
-type SessionCarouselImagesProps = {
+type SessionSectionImagesProps = {
   session: FindOneSessionResponseData;
 };
 
-export default function SessionImagesSection(props: SessionCarouselImagesProps) {
+export default function SessionSectionImages(props: SessionSectionImagesProps) {
   const { top } = useSafeArea();
   const { session } = props;
 
@@ -38,7 +38,7 @@ export default function SessionImagesSection(props: SessionCarouselImagesProps) 
         </CarouselElement>
       )}
       <CarouselElement position="top" style={{ paddingTop: top }}>
-        <SessionImagesSectionHeader />
+        <SessionSectionImagesHeader />
       </CarouselElement>
     </Carousel>
   );

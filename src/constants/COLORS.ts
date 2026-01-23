@@ -11,11 +11,10 @@ const COLORS = {
   muted: '#666',
   primary: '#F15924',
   primaryHover: '#F14500',
-  purplePrimary: '#864C9E',
   purpleSecondary: '#652F8F',
   purpleTertiary: '#3C215A',
   ring: '#9e9e9e',
-  secondary: '#FCBD1D',
+  secondary: '#864C9E',
 };
 
 export default COLORS;

@@ -46,8 +46,8 @@ function StepCircle({ activeStep, step }: StepCircleProps) {
   }));
 
   return (
-    <AnimatedBox style={animatedBorderStyle} className="size-14 items-center justify-center rounded-full">
-      <AnimatedString style={animatedTextStyle} font="primaryBold">
+    <AnimatedBox style={animatedBorderStyle} className="size-8 items-center justify-center rounded-full">
+      <AnimatedString style={animatedTextStyle} font="primaryBold" variant="body-sm">
         {step}
       </AnimatedString>
     </AnimatedBox>
@@ -82,7 +82,7 @@ function StepConnector({ activeStep, step }: StepConnectorProps) {
 
 export default function CreateSessionProgressStepper({ activeStep = 1 }: CreateSessionStepsProps) {
   return (
-    <Box className="relative z-50 flex-row items-center justify-center bg-background pb-2">
+    <Box className="bg-background relative z-50 flex-row items-center justify-center pb-2">
       {list(1, 4).map((step, index) => (
         <React.Fragment key={step}>
           <StepCircle step={step} activeStep={activeStep} />

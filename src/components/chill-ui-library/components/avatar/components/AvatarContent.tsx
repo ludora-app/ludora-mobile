@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AvatarContentProps } from '@/components/chill-ui-library/types';
 
 import { String } from '../../string';

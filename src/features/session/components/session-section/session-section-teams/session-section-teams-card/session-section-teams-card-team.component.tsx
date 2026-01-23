@@ -1,21 +1,31 @@
 import { cn } from '@chillui/ui';
-import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { String, BoxCenter, Chip, Avatar, Box, BoxRow, Icon } from '@ludo/ui';
+import { Pressable, StyleSheet } from 'react-native';
+import { String, BoxCenter, Chip, Box, BoxRow, Icon } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { FindOneSessionResponseData, SessionTeamResponseData } from '@/api/generated/model';
 
-type SessionTeamsSectionCardTeamProps = {
+import SessionSectionAvatar from '../../session-section-avatar.component';
+
+type SessionSectionTeamsCardTeamProps = {
   team: SessionTeamResponseData;
   session: FindOneSessionResponseData;
   index: number;
 };
 
-export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCardTeamProps) {
+const styles = StyleSheet.create({
+  leftShadow: {
+    boxShadow: '0px 0px 10px #F1592440',
+  },
+  rightShadow: {
+    boxShadow: '0px 0px 10px #864C9E40',
+  },
+});
+
+export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCardTeamProps) {
   const { index: itemIndex, session, team } = props;
   const { isComplete, numberOfPlayers, teamUid } = team || {};
   const { isJoined: isJoinedSession, maxPlayersPerTeam } = session || {};
@@ -23,6 +33,7 @@ export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCa
   const { trackEvent } = useAnalytics();
   const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
   const setTeamUid = useSessionTeamStore(state => state.setTeamUid);
+  const setSideTeam = useSessionTeamStore(state => state.setSideTeam);
   const isSelectedTeam = (uid: string) => selectedTeamUid === uid;
 
   const getTeamSide = (index: number) => (index === 0 ? 'left' : 'right');
@@ -39,21 +50,27 @@ export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCa
 
   const showAddIcon = (!isCompleteTeam && !isJoinedSession && !isTeamSelected) || isTeamEmpty;
 
+  const isSideSelected = isTeamSelected || isJoinedTeam;
+
   const pushAvatarToLeft = (sessionPlayersIndex: number) =>
     sessionPlayersIndex > 0 || isTeamSelected || (!isCompleteTeam && !isJoinedSession);
 
   const handleSelectTeam = (teamUidToSelect: string) => {
     setTeamUid(teamUidToSelect);
+    setSideTeam(side);
     trackEvent({ data: { source_screen: '/session/[id]' }, eventName: 'session_team_selected' });
   };
 
   return (
     <Pressable
       key={team.teamUid}
-      className="relative flex-1"
+      className="relative flex-1 rounded-lg"
       onPress={() => handleSelectTeam(team.teamUid)}
       disabled={isCompleteTeam || isJoinedSession}
-      style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}
+      style={({ pressed }) => [
+        { opacity: pressed ? 0.9 : 1 },
+        side === 'left' ? styles.leftShadow : styles.rightShadow,
+      ]}
     >
       {isCompleteTeam && (
         <BoxCenter
@@ -70,7 +87,8 @@ export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCa
 
       <Chip
         title={team.teamName}
-        variant={isTeamSelected || isJoinedTeam ? 'contained' : 'outlined'}
+        variant={isSideSelected ? 'contained' : 'outlined'}
+        colorVariant={side === 'left' ? 'primary' : 'secondary'}
         className={cn('absolute left-1/2 z-60 max-w-[90%] -translate-x-1/2 -translate-y-1/2 transform self-start', {
           'bg-white': !isTeamSelected && !isJoinedTeam,
         })}
@@ -79,8 +97,9 @@ export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCa
 
       <Chip
         title={`${displayCount}/${maxPlayersPerTeam}`}
-        variant="outlined"
-        className={cn('absolute bottom-0 z-50 transform self-start rounded-lg bg-white', {
+        variant="text"
+        colorVariant={side === 'left' ? 'primary' : 'secondary'}
+        className={cn('absolute bottom-0 z-50 transform self-start rounded-lg', {
           'left-0': side === 'left',
           'right-0': side === 'right',
         })}
@@ -88,34 +107,35 @@ export default function SessionTeamsSectionCardTeam(props: SessionTeamsSectionCa
       />
 
       <BoxCenter
-        className={cn('flex-1 border-2 border-transparent bg-white px-2 py-5', {
-          'bg-ring/10': side === 'left',
-          'border-primary bg-primary/20': isTeamSelected || isJoinedTeam,
-          'rounded-l-lg': side === 'left',
-          'rounded-r-lg': side === 'right',
+        className={cn('flex-1 border bg-white px-2 py-5', {
+          'bg-primary/20': isSideSelected && side === 'left',
+          'bg-secondary/20': isSideSelected && side === 'right',
+          'border-primary rounded-l-lg': side === 'left',
+          'border-secondary rounded-r-lg': side === 'right',
         })}
       >
         <BoxRow className="h-16 items-center justify-center">
           <Box className="z-50 flex-row items-center">
-            {isTeamSelected && <AvatarMe size="sm" className="z-50" />}
+            {isTeamSelected && <SessionSectionAvatar me size="sm" sideTeam={side} className="z-60" />}
             {showAddIcon && (
               <Icon
                 name="add-circle-regular"
                 className={cn('z-50 size-14', { 'opacity-50': isJoinedSession })}
-                color={COLORS.primary}
+                color={side === 'right' ? COLORS.secondary : COLORS.primary}
               />
             )}
             {team.sessionPlayers?.map((player, sessionPlayersIndex) => (
-              <Avatar
+              <SessionSectionAvatar
                 key={player.userUid}
                 data={player}
-                className={cn({
-                  '-ml-6': pushAvatarToLeft(sessionPlayersIndex),
-                })}
+                sideTeam={side}
                 size="sm"
                 style={{
                   zIndex: 40 - sessionPlayersIndex,
                 }}
+                className={cn({
+                  '-ml-6': pushAvatarToLeft(sessionPlayersIndex),
+                })}
               />
             ))}
             {team.numberOfPlayers > team.sessionPlayers.length && (

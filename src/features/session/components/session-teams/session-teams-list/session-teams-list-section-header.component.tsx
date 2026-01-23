@@ -3,12 +3,15 @@ import { Box, BoxRowCenterBetween, BoxRowCenter, Avatar, Chip, String } from '@l
 
 import { SessionTeamResponseData } from '@/api/generated/model';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
+import { BoxGrow, cn } from '@chillui/ui';
 
 type SessionTeamsListHeaderProps = {
   team: SessionTeamResponseData;
+  teamSide: 'left' | 'right';
 };
 
-export default function SessionTeamsListSectionHeader({ team }: SessionTeamsListHeaderProps) {
+export default function SessionTeamsListSectionHeader(props: SessionTeamsListHeaderProps) {
+  const { team, teamSide } = props;
   const { t } = useTranslate();
   const { isComplete, maxPlayersPerTeam, numberOfPlayers, remainingPlayers, teamName, teamUid } = team || {};
   const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
@@ -36,12 +39,17 @@ export default function SessionTeamsListSectionHeader({ team }: SessionTeamsList
       value: handleRemaningPlayers(),
     });
   };
+
+  const avatarColor = teamSide === 'left' ? 'bg-primary' : 'bg-secondary border-secondary';
+
+  const chipColorVariant = teamSide === 'left' ? 'primary' : 'secondary';
+
   return (
-    <BoxRowCenterBetween className="mb-4">
-      <BoxRowCenter className="gap-2">
+    <BoxRowCenterBetween className="mb-4 gap-2">
+      <BoxRowCenter className="flex-1 gap-2">
         <Avatar
           data={{ firstname: teamName, imageUrl: '' }}
-          className="bg-primary rounded-lg"
+          className={cn('rounded-lg', avatarColor)}
           contentProps={{
             color: '#FFF',
             font: 'primaryExtraBold',
@@ -49,14 +57,16 @@ export default function SessionTeamsListSectionHeader({ team }: SessionTeamsList
           }}
           size="sm"
         />
-        <Box>
-          <String font="primaryBold">{teamName}</String>
+        <BoxGrow>
+          <String font="primaryBold" truncate>
+            {teamName}
+          </String>
           <String colorVariant="muted">
             {t('session.teams_list_header_team_players', { count: `${handleNumberOfPlayers()}/${maxPlayersPerTeam}` })}
           </String>
-        </Box>
+        </BoxGrow>
       </BoxRowCenter>
-      <Chip title={handleChipTitle()} size="2xs" />
+      <Chip title={handleChipTitle()} size="2xs" colorVariant={chipColorVariant} />
     </BoxRowCenterBetween>
   );
 }

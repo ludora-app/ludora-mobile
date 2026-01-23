@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import { Button, String } from '@ludo/ui';
 import { ScrollView } from 'react-native';
 import { useTranslate } from '@tolgee/react';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import ROUTES from '@/constants/ROUTES';
+import COLORS from '@/constants/COLORS';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
@@ -20,12 +22,15 @@ type SessionFooterProps = {
   scrollViewRef: React.RefObject<ScrollView>;
 };
 
+const AnimatedButton = Animated.createAnimatedComponent(Button);
+
 export default function SessionFooter({ scrollViewRef, session }: SessionFooterProps) {
   const router = useRouter();
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const invalidateSessionById = useInvalidateSessionsFindOne(sessionUid);
   const { t } = useTranslate();
   const { isJoined, remainingPlayers, sessionTeams } = session || {};
+  const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const isSessionFull = remainingPlayers === 0;
 
@@ -48,6 +53,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   const handleJoinSession = async () => {
     if (!teamUid) {
       scrollViewRef.current?.scrollTo({ animated: true, y: 0 });
+      return;
     }
     try {
       await joinSession(teamUid);
@@ -72,18 +78,35 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
     return t('session.footer_button_session_full');
   };
 
+  const handleButtonColorVariant = useMemo(() => {
+    if (!sideTeam) {
+      return 'muted';
+    }
+    return sideTeam === 'left' ? 'primary' : 'secondary';
+  }, [sideTeam]);
+
+  const handleIconColor = useMemo(() => {
+    if (!sideTeam) {
+      return COLORS.muted;
+    }
+    return "#fff"
+  }, [sideTeam]);
+
   return (
     <FormSheetFooter hasBottomSafeArea>
       {canJoinSession && (
-        <Button
+        <AnimatedButton
+          entering={FadeIn}
           title={handleButtonTitle}
           iconProps={{
             className: 'ml-2',
+            color: handleIconColor,
             name: 'flash-solid',
-            position: 'right',
+            position: 'right'
           }}
           onPress={handleJoinSession}
           isLoading={isJoiningSession}
+          colorVariant={handleButtonColorVariant}
         />
       )}
       {!canJoinSession && (

@@ -63,9 +63,8 @@ export default function VerifyCodeScreen() {
         eventName: 'reset_password_verify_code_success',
       });
       return router.replace({ params: { resetToken: response.resetToken }, pathname: ROUTES.AUTH.NEW_PASSWORD });
-      // TODO : TYPE ERRORS IF USER NOT FOUND AND INCORRECT CODE AND EXPIRED CODE MUST HAVE THE SAME ERROR MESSAGE
+      // TODO : TYPE ERRORS IF USER NOT FOUND add to code incorrect
     } catch (error) {
-      console.log('error', error);
       const errorResponse = error as ErrorResponse;
       trackEvent({
         data: {
@@ -78,7 +77,6 @@ export default function VerifyCodeScreen() {
         errorMessage = 'auth.verify-code.incorrect_code';
       } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXPIRED_CODE) {
         errorMessage = 'auth.verify-code.expired_code';
-        // TODO : ADD TRANSLATION OF THE ABOVE ERROR
       } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXCEEDED_ATTEMPTS) {
         errorMessage = 'auth.verify-code.exceeded_attempts';
       } else {

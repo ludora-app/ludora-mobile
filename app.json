@@ -30,6 +30,18 @@
           "merchantIdentifier": "merchant.com.ludora",
           "enableGooglePay": true
         }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFEEE5",
+          "image": "./assets/logos/big-logo.png",
+          "dark": {
+            "image": "./assets/logos/big-logo.png",
+            "backgroundColor": "#FFEEE5"
+          },
+          "imageWidth": 100
+        }
       ]
     ],
     "name": "ludora",

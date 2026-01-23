@@ -1,7 +1,8 @@
 import { backgroundImg } from 'assets';
 import { StyleSheet } from 'react-native';
 import { PropsWithChildren } from 'react';
-import { ImageBackground } from 'expo-image';
+
+import { ImageBackground } from '../image';
 
 export default function ScreenLayout(props: PropsWithChildren) {
   const { children } = props;

@@ -15,11 +15,10 @@
   --color-muted: #666;
   --color-primary: #f15924;
   --color-primaryHover: #f14500;
-  --color-purplePrimary: #864c9e;
+  --color-secondary: #864c9e;
   --color-purpleSecondary: #652f8f;
   --color-purpleTertiary: #3c215a;
   --color-ring: #b4b4b4;
-  --color-secondary: #fcbd1d;
   --color-warning: #ff9800;
 
   /* Button Colors */
@@ -45,8 +44,8 @@
   --color-button-neutral-content: #fff;
   --color-button-primary-background: #f15924;
   --color-button-primary-content: #fff;
-  --color-button-secondary-background: #cbd2d9;
-  --color-button-secondary-content: #fcd34d;
+  --color-button-secondary-background: #864c9e;
+  --color-button-secondary-content: #fff;
   --color-button-warning-background: #fcd34d;
   --color-button-warning-content: #000;
   --color-button-white-background: #f5f7fa;

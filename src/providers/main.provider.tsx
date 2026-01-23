@@ -5,7 +5,6 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import FontProvider from './font-provider';
-import AuthProvider from './auth.provider';
 import IconProvider from './icon.provider';
 import QueryProvider from './query.provider';
 import ToastProvider from './toast.provider';
@@ -23,7 +22,6 @@ export default function MainProvider({ children }: PropsWithChildren) {
           <SafeAreaProvider>
             <TolgeeProvider>
               <QueryProvider>
-                <AuthProvider />
                 <PostHogIdentifierProvider />
                 <WebsocketProvider />
                 <KeyboardProvider>

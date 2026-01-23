@@ -24,7 +24,13 @@ export default function SessionTeamsList() {
   return (
     <FlatList
       data={sessionTeams}
-      renderItem={({ item }) => <SessionTeamsListSection item={item} hasUserJoinedATeam={hasUserJoinedATeam} />}
+      renderItem={({ item, index }) => (
+        <SessionTeamsListSection
+          item={item}
+          hasUserJoinedATeam={hasUserJoinedATeam}
+          teamSide={index === 0 ? 'left' : 'right'}
+        />
+      )}
       ItemSeparatorComponent={SessionTeamsListSectionSeparator}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: bottom }}

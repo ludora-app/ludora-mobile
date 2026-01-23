@@ -1,6 +1,7 @@
+import { backgroundImg } from 'assets';
 import { PropsWithChildren } from 'react';
-import { Box, Icon, String } from '@ludo/ui';
-import { cn, OutlinedString, WrapperSafeAreaView } from '@chillui/ui';
+import { cn, OutlinedString, } from '@chillui/ui';
+import { Box, Icon, String, Image, Wrapper } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -15,7 +16,12 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const { children, className, hasNewSession = false, subTitle, title } = props;
 
   return (
-    <WrapperSafeAreaView className={cn('h-72 flex-row items-end', className)} edges={['top']}>
+    <Wrapper className={cn('h-56 flex-row items-end overflow-hidden', className)}>
+      <Image
+        source={backgroundImg}
+        className="w-screen h-screen absolute top-0 left-0"
+
+      />
       <Box className="flex-1 flex-row justify-center gap-4">
         <Box className="flex-1 gap-2 pb-3">
           <Box className="-mb-3 w-full">
@@ -34,7 +40,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
           </String>
           {children}
           {hasNewSession && (
-            <Box className="absolute right-0 bottom-16 -z-10">
+            <Box className="absolute right-0 bottom-16">
               <Icon name="mascotte-ludora" className="size-36" />
             </Box>
           )}
@@ -45,6 +51,6 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
           </Box>
         )}
       </Box>
-    </WrapperSafeAreaView>
+    </Wrapper>
   );
 }

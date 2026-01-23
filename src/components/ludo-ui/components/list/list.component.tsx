@@ -152,11 +152,11 @@ export default function List(props: ListProps) {
       [0, -stickyHeaderHeight * 0.3],
       Extrapolation.CLAMP,
     );
-    const zIndex = interpolate(scrollY.value, [0, stickyHeaderHeight], [50, -1], Extrapolation.CLAMP);
+    // const zIndex = interpolate(scrollY.value, [0, stickyHeaderHeight], [50, -1], Extrapolation.CLAMP);
     return {
       opacity,
       transform: [{ translateY }],
-      zIndex,
+      // zIndex,
     };
   }, [stickyHeaderHeight]);
 
@@ -195,10 +195,10 @@ export default function List(props: ListProps) {
         scrollEventThrottle={16}
         {...(ListHeaderStickyComponent &&
           stickyHeaderHeight && {
-            stickyHeaderConfig: {
-              offset: -stickyHeaderHeight + top,
-            },
-          })}
+          stickyHeaderConfig: {
+            offset: -stickyHeaderHeight + top,
+          },
+        })}
         contentContainerStyle={[listContentContainerStyle, contentContainerStyle]}
         {...rest}
       />

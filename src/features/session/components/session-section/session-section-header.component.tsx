@@ -1,8 +1,10 @@
+import { String, BoxRow } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
-import { String, BoxRow, Icon } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
 import { TIconsAll } from '@/constants/ICONS';
+
+import SessionSectionIcon from './session-section-icon.component';
+import { useSessionTeamStore } from '../../stores/session-team.store';
 
 type SessionSectionsHeaderProps = {
   title: string;
@@ -10,12 +12,13 @@ type SessionSectionsHeaderProps = {
 };
 
 export default function SessionSectionHeader(props: SessionSectionsHeaderProps) {
+  const sideTeam = useSessionTeamStore(state => state.sideTeam);
   const { t } = useTranslate();
   const { iconName, title } = props;
 
   return (
     <BoxRow className="items-center gap-1">
-      <Icon name={iconName} color={COLORS.primary} />
+      <SessionSectionIcon sideTeam={sideTeam} name={iconName} size='md' />
       <String font="primaryBold" variant="body-3" useFastText={false}>
         {t(title)}
       </String>

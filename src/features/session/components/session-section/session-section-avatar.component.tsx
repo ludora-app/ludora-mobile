@@ -26,8 +26,6 @@ export default function SessionSectionAvatar(props: SessionSectionAvatarProps) {
     return sideTeam === 'left' ? 'primary' : 'secondary';
   }, [sideTeam]);
 
-  console.log('sideTeam', sideTeam);
-
   return me ? (
     <AvatarMe
       {...rest}

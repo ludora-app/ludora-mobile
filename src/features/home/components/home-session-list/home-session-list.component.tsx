@@ -50,11 +50,9 @@ export default function HomeSessionList() {
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
-      estimatedItemSize={ESTIMATED_LIST_ITEM_SIZE}
       getFixedItemSize={index => fixedEstimatedItemsSize(index)}
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
-
       ListHeaderComponent={HomeSessionListHeaderTopList}
       ListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}

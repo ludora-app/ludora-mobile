@@ -5,9 +5,9 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import type { CreateOrConnectGoogleResponseDtoData } from './createOrConnectGoogleResponseDtoData';
+import type { CreateOrConnectGoogleResponseData } from './createOrConnectGoogleResponseData';
 
 export interface CreateOrConnectGoogleResponseDto {
-  readonly data: CreateOrConnectGoogleResponseDtoData;
+  readonly data: CreateOrConnectGoogleResponseData;
   readonly message?: string;
 }

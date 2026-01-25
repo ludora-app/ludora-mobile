@@ -10,7 +10,7 @@ import COLORS from '@/constants/COLORS';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
-import { useInvalidateSessionsFindOne } from '@/api/generated/invalidate-queries';
+import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 
 import { useJoinSession } from '../queries/join-session.query';
@@ -89,7 +89,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
     if (!sideTeam) {
       return COLORS.muted;
     }
-    return "#fff"
+    return '#fff';
   }, [sideTeam]);
 
   return (
@@ -102,7 +102,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
             className: 'ml-2',
             color: handleIconColor,
             name: 'flash-solid',
-            position: 'right'
+            position: 'right',
           }}
           onPress={handleJoinSession}
           isLoading={isJoiningSession}

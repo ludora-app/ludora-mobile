@@ -5,6 +5,7 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { CreatorInfoResponseData } from './creatorInfoResponseData';
 import type { ImageResponseDto } from './imageResponseDto';
 import type { FindOneSessionWithDistanceResponseDataFieldType } from './findOneSessionWithDistanceResponseDataFieldType';
 import type { FindOneSessionWithDistanceResponseDataGameMode } from './findOneSessionWithDistanceResponseDataGameMode';
@@ -14,6 +15,8 @@ import type { FindOneSessionWithDistanceResponseDataSport } from './findOneSessi
 import type { FindOneSessionWithDistanceResponseDataVisibility } from './findOneSessionWithDistanceResponseDataVisibility';
 
 export interface FindOneSessionWithDistanceResponseData {
+  /** Creator information */
+  creator?: CreatorInfoResponseData;
   /** Session creator */
   readonly creatorUid: string;
   /** Session description */
@@ -41,6 +44,8 @@ export interface FindOneSessionWithDistanceResponseData {
   readonly maxPlayersPerTeam: number;
   /** Minimum number of players per team */
   readonly minPlayersPerTeam?: number;
+  /** Total number of remaining available spots across all teams */
+  remainingPlayers?: number;
   sessionTeams: SessionTeamResponseData[];
   /** Sport played during the session */
   readonly sport: FindOneSessionWithDistanceResponseDataSport;

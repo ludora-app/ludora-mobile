@@ -32,6 +32,8 @@ export const useGetAllSessionsByFilter = () => {
     [startDate, userLocation, restFilters],
   );
 
+  console.log(params);
+
   const { data, error, isError, ...rest } = useGetAllSessions(params);
 
   useGetMethodErrorTracking({ error, extra: { context: 'useGetAllSessionsByFilter' }, isError });

@@ -8,7 +8,7 @@ import { Box, BoxRowCenter, Icon, String } from '@ludo/ui';
 import ROUTES from '@/constants/ROUTES';
 import COLORS from '@/constants/COLORS';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import {
   FiltersCalendarReturnParams,
   FiltersCalendarScreenParams,
@@ -26,7 +26,7 @@ function FilterSessionDate(props: FilterSessionDateProps) {
   const router = useRouter();
   const { t } = useTranslate();
   const setFilters = useFiltersStore(state => state.setFilters);
-  const selectedDate = useFiltersStore(state => state.filters.date?.date);
+  const selectedDate = useFiltersStore(state => selectFilters(state).date?.date);
 
   const formatedDate = dayjs(selectedDate).format('DD/MM/YYYY');
 
@@ -66,7 +66,7 @@ function FilterSessionDate(props: FilterSessionDateProps) {
 
   return (
     <Pressable onPress={handlePress}>
-      <Box className="flex-row items-center justify-between gap-2 rounded-xl border border-ring bg-white p-3 py-4">
+      <Box className="border-ring flex-row items-center justify-between gap-2 rounded-xl border bg-white p-3 py-4">
         <Box className="flex-row items-center gap-2">
           <Icon name="calendar-date-regular" color={COLORS.muted} />
           <String variant="body-sm" font="primaryBold" colorVariant="muted">

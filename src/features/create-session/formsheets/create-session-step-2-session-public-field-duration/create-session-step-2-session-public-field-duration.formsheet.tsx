@@ -83,6 +83,7 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
         pricePerPlayer: null,
         publicFieldSlotUid: slotUid,
         sport,
+        autoGoToNextStep: true,
       },
       endDate: matchDetails.endIso,
       fieldUid,
@@ -118,11 +119,11 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
           </BoxCenter>
         </Box>
 
-        <String font="primaryBold" variant="body-3" className="mb-3 mt-4 text-center">
+        <String font="primaryBold" variant="body-3" className="mt-4 mb-3 text-center">
           {t('create-session-step-2.public-availabilities-form-sheet.warning_title')}
         </String>
 
-        <BoxRow className="mb-6 items-center gap-3 rounded-lg bg-primary/10 p-3">
+        <BoxRow className="bg-primary/10 mb-6 items-center gap-3 rounded-lg p-3">
           <Icon name="warning-solid" size="md" color={COLORS.primary} />
           <String className="flex-1">
             {t('create-session-step-2.public-availabilities-form-sheet.warning_description')}
@@ -134,7 +135,7 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
             {t('create-session-step-2.public-availabilities-form-sheet.match_details')}
           </String>
 
-          <BoxRowBetween className="border-b border-ring pb-3">
+          <BoxRowBetween className="border-ring border-b pb-3">
             <String font="primaryBold">{t('common.date')}</String>
             <String font="primaryBold">{matchDetails.date}</String>
           </BoxRowBetween>
@@ -151,7 +152,11 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
       </WrapperGestureHandlerScrollView>
       <FormSheetFooter>
         <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={() => router.back()} />
-        <Button title={t('common.button_confirm')} size="md" onPress={handleSubmit(handleConfirm)} />
+        <Button
+          title={t('create-session-step-2.public-availabilities-form-sheet.button_confirm')}
+          size="md"
+          onPress={handleSubmit(handleConfirm)}
+        />
       </FormSheetFooter>
     </Box>
   );

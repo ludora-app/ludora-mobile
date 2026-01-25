@@ -17,4 +17,5 @@ export type FormInputProps<T extends FieldValues = FieldValues> = Omit<UseContro
     rightIconAction?: IconProps;
     hasClearIcon?: boolean;
     rightContentProps?: InputProps['rightContentProps'];
+    hasLengthCounter?: boolean;
   };

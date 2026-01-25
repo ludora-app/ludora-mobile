@@ -29,16 +29,15 @@ const carouselItems = [
   },
 ];
 
-
 export default function WelcomeCarousel() {
   const { t } = useTranslate();
   return (
     <Carousel className="flex-1" autoPlay autoPlayLoop>
-      <CarouselContent >
+      <CarouselContent>
         {carouselItems.map(item => (
           <CarouselItem key={item.id} className="items-center justify-center px-5 pb-10">
             <Box className="items-center justify-center gap-3">
-              <Box className='h-1/2 w-screen '>
+              <Box className="h-1/2 w-screen">
                 <Image source={item.image} contentFit="contain" className="size-full" />
               </Box>
               <OutlinedString
@@ -50,7 +49,7 @@ export default function WelcomeCarousel() {
                 fontFamily="NunitoSans700Bold"
                 className={item.className}
               />
-              <String className="text-center px-3" variant="body-3" font="primaryBold">
+              <String className="px-3 text-center" variant="body-3" font="primaryBold">
                 {t(item.content)}
               </String>
             </Box>

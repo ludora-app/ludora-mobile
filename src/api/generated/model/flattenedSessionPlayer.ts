@@ -5,11 +5,30 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { FlattenedSessionPlayerSportLevel } from './flattenedSessionPlayerSportLevel';
 
 export interface FlattenedSessionPlayer {
+  /**
+   * User bio
+   * @nullable
+   */
+  readonly bio?: string | null;
+  /** User first name */
   readonly firstname: string;
-  readonly imageUrl: string;
+  /**
+   * User image URL
+   * @nullable
+   */
+  readonly imageUrl?: string | null;
+  /** User last name */
   readonly lastname: string;
+  /**
+   * User sport level for this session sport (1-3)
+   * @nullable
+   */
+  readonly sportLevel?: FlattenedSessionPlayerSportLevel;
+  /** Team unique identifier */
   readonly teamUid: string;
+  /** User unique identifier */
   readonly userUid: string;
 }

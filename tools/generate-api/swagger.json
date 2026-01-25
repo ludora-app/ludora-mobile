@@ -5693,6 +5693,32 @@
           "firstname"
         ]
       },
+      "CreateOrConnectGoogleResponseData": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "readOnly": true
+          },
+          "isNewUser": {
+            "type": "boolean",
+            "description": "True if the user was just created, false if the user already existed and was connected to the Google account",
+            "example": true,
+            "readOnly": true
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "isNewUser"
+        ]
+      },
       "CreateOrConnectGoogleResponseDto": {
         "type": "object",
         "properties": {
@@ -5702,8 +5728,12 @@
             "example": "User created or connected successfully"
           },
           "data": {
-            "type": "object",
-            "readOnly": true
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOrConnectGoogleResponseData"
+              }
+            ]
           }
         },
         "required": [
@@ -7695,7 +7725,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE",
+            "example": "THREE_V_THREE",
             "readOnly": true
           },
           "creatorUid": {
@@ -7831,7 +7861,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE",
+            "example": "THREE_V_THREE",
             "readOnly": true
           },
           "creatorUid": {
@@ -7969,27 +7999,53 @@
         "properties": {
           "userUid": {
             "type": "string",
+            "description": "User unique identifier",
             "example": "cmgoxfs3t002hob8arwdna80g",
             "readOnly": true
           },
           "teamUid": {
             "type": "string",
+            "description": "Team unique identifier",
             "example": "cmgoxfs47002zob8a42uq1u8z",
             "readOnly": true
           },
           "firstname": {
             "type": "string",
+            "description": "User first name",
             "example": "Seto",
             "readOnly": true
           },
           "lastname": {
             "type": "string",
+            "description": "User last name",
             "example": "Kaiba",
             "readOnly": true
           },
           "imageUrl": {
             "type": "string",
+            "description": "User image URL",
             "example": "1738433236109explore2.png",
+            "nullable": true,
+            "readOnly": true
+          },
+          "bio": {
+            "type": "string",
+            "description": "User bio",
+            "example": "Passionate football player",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sportLevel": {
+            "type": "number",
+            "description": "User sport level for this session sport (1-3)",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "example": 1,
+            "nullable": true,
             "readOnly": true
           }
         },
@@ -7997,8 +8053,7 @@
           "userUid",
           "teamUid",
           "firstname",
-          "lastname",
-          "imageUrl"
+          "lastname"
         ]
       },
       "SessionTeamResponseData": {
@@ -8006,30 +8061,37 @@
         "properties": {
           "teamUid": {
             "type": "string",
+            "description": "Team unique identifier",
             "example": "cm7hvgonx0000to0mh5maqajc",
             "readOnly": true
           },
           "teamName": {
             "type": "string",
+            "description": "Team name",
             "example": "Team A",
             "readOnly": true
           },
           "teamLabel": {
             "type": "string",
+            "description": "Team label",
+            "enum": [
+              "A",
+              "B"
+            ],
             "example": "A",
             "readOnly": true
           },
           "updatedAt": {
             "format": "date-time",
             "type": "string",
-            "description": "Session update date",
+            "description": "Team update date",
             "example": "2025-05-10T22:30:32.525Z",
             "readOnly": true
           },
           "createdAt": {
             "format": "date-time",
             "type": "string",
-            "description": "Session creation date",
+            "description": "Team creation date",
             "example": "2025-05-10T22:30:32.525Z",
             "readOnly": true
           },
@@ -8046,6 +8108,30 @@
             "description": "Number of players in the team",
             "example": 1,
             "readOnly": true
+          },
+          "isComplete": {
+            "type": "boolean",
+            "description": "Whether the team is complete (full)",
+            "example": false,
+            "readOnly": true
+          },
+          "remainingPlayers": {
+            "type": "number",
+            "description": "Number of remaining available spots in the team",
+            "example": 2,
+            "readOnly": true
+          },
+          "maxPlayersPerTeam": {
+            "type": "number",
+            "description": "Maximum number of players allowed per team",
+            "example": 5,
+            "readOnly": true
+          },
+          "isJoined": {
+            "type": "boolean",
+            "description": "Whether the current user has joined this team",
+            "example": false,
+            "readOnly": true
           }
         },
         "required": [
@@ -8054,6 +8140,38 @@
           "teamLabel",
           "sessionPlayers",
           "numberOfPlayers"
+        ]
+      },
+      "CreatorInfoResponseData": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "User first name",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "User last name",
+            "example": "Doe"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "User profile image URL",
+            "example": "1738433236109explore2.png"
+          },
+          "sessionsCount": {
+            "type": "number",
+            "description": "Number of sessions organized by the creator",
+            "example": 5
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "imageUrl",
+          "sessionsCount"
         ]
       },
       "ImageResponseDto": {
@@ -8148,7 +8266,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE",
+            "example": "THREE_V_THREE",
             "readOnly": true
           },
           "creatorUid": {
@@ -8238,6 +8356,19 @@
             "type": "boolean",
             "description": "Whether the user is joined to the session",
             "example": false
+          },
+          "creator": {
+            "description": "Creator information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreatorInfoResponseData"
+              }
+            ]
+          },
+          "remainingPlayers": {
+            "type": "number",
+            "description": "Total number of remaining available spots across all teams",
+            "example": 5
           },
           "fieldImages": {
             "type": "array",
@@ -8358,7 +8489,7 @@
               "TEN_V_TEN",
               "ELEVEN_V_ELEVEN"
             ],
-            "example": "THREE_VS_THREE",
+            "example": "THREE_V_THREE",
             "readOnly": true
           },
           "creatorUid": {
@@ -8448,6 +8579,19 @@
             "type": "boolean",
             "description": "Whether the user is joined to the session",
             "example": false
+          },
+          "creator": {
+            "description": "Creator information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreatorInfoResponseData"
+              }
+            ]
+          },
+          "remainingPlayers": {
+            "type": "number",
+            "description": "Total number of remaining available spots across all teams",
+            "example": 5
           },
           "fieldImages": {
             "type": "array",

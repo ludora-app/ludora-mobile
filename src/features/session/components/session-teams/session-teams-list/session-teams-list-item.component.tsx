@@ -1,11 +1,12 @@
 import { cn } from '@chillui/ui';
 import { StyleSheet } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { Avatar, Box, BoxGrow, BoxRow, IconButton, String } from '@ludo/ui';
+import { Avatar, Box, BoxGrow, BoxRow, Chip, IconButton, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { FlattenedSessionPlayer } from '@/api/generated/model';
 import { useMemo } from 'react';
+import { SESSION_LEVELS } from '@/constants/session.constants';
 
 type SessionTeamsListItemProps = {
   data: FlattenedSessionPlayer;
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
   const { t } = useTranslate();
   const { data: sessionPlayer, teamSide } = props;
-  const { bio, firstname, lastname, sessionsCount } = sessionPlayer || {};
+  const { bio, firstname, lastname, sportLevel, imageUrl } = sessionPlayer || {};
 
   const avatarColor = useMemo(() => (teamSide === 'left' ? 'border-primary' : 'border-secondary'), [teamSide]);
   const colorVariant = useMemo(() => (teamSide === 'left' ? 'primary' : 'secondary'), [teamSide]);
@@ -40,7 +41,11 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
       style={teamSide === 'left' ? styles.leftShadow : styles.rightShadow}
     >
       <BoxRow className="items-center gap-2">
-        <Avatar data={sessionPlayer} className={avatarColor} contentProps={{ colorVariant: colorVariant }} />
+        <Avatar
+          data={{ firstname, lastname, imageUrl }}
+          className={avatarColor}
+          contentProps={{ colorVariant: colorVariant }}
+        />
         <BoxGrow className="gap-0.5">
           <String font="primarySemiBold" truncate>
             {firstname} {lastname}
@@ -50,9 +55,11 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
               {bio}
             </String>
           )}
-          <String variant="body-xs" className="text-ring">
-            {t('session.teams_list_user_sessions_count', { count: sessionsCount })}
-          </String>
+          {!!sportLevel && (
+            <Box className="mt-1 items-start">
+              <Chip title={t(`common.user_level_${sportLevel}`)} size="2xs" />
+            </Box>
+          )}
         </BoxGrow>
         <IconButton
           iconName="chatbot-regular"

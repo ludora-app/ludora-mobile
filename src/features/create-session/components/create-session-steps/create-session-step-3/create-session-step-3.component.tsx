@@ -1,95 +1,212 @@
-import { useTranslate } from '@tolgee/react';
+import {
+  WrapperScrollView,
+  String,
+  FormInput,
+  Box,
+  BoxRowCenterBetween,
+  Chip,
+  BoxRow,
+  Icon,
+  BoxGrow,
+  WrapperKeyboardAwareScrollView,
+} from '@ludo/ui';
+
 import Animated, { FadeInRight } from 'react-native-reanimated';
-import { Image, Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
-
-import { formatDate } from '@/utils/date.utils';
-import { getSportImage } from '@/utils/sports.utils';
-import { useGetField } from '@/queries/get-field.query';
-import { SESSION_LEVELS } from '@/constants/session.constants';
-import FieldCard from '@/components/ui/field-card/components/field-card.component';
-import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
-import FieldCardSkeleton from '@/components/ui/field-card/components/field-card-skeleton.component';
-
 import CreateSessionTitle from '../../create-session-title-component';
+import { useTranslate } from '@tolgee/react';
+import { useForm } from 'react-hook-form';
+import CreateSessionStep3SectionTitle from './create-session-step-3-section-title.component';
+import {
+  CreateSessionStep3Schema,
+  createSessionStep3Schema,
+  DESCRIPTION_MAX_LENGTH,
+  TEAM_NAME_MAX_LENGTH,
+  TITLE_MAX_LENGTH,
+} from '../../../schemas/create-session-step-3.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FlatList } from 'react-native';
+import { list, shuffle } from 'radash';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
+import CreateSessionFooter from '../create-session-footer/create-session-footer.component';
+import CreateSessionFooterStep3 from '../create-session-footer/create-session-footer-step-3.component';
+import { useShallow } from 'zustand/react/shallow';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
-const AnimatedBox = Animated.createAnimatedComponent(Box);
+const generateRandomTitleSuggestions = () => {
+  const totalVariants = 21;
+  const numberOfSuggestions = 5;
 
-export default function CreateSessionStep3() {
+  const allIndices = list(totalVariants).map((_, index) => index + 1);
+
+  const randomIndices = shuffle(allIndices).slice(0, numberOfSuggestions);
+
+  return randomIndices.map((variantNumber, index) => ({
+    id: index,
+    title: `create-session-steps-step-3.title_suggestion_${variantNumber}`,
+  }));
+};
+
+type CreateSessionStep3Props = {
+  setActiveStep: Dispatch<SetStateAction<number>>;
+};
+
+export default function CreateSessionStep3(props: CreateSessionStep3Props) {
+  const { setActiveStep } = props;
   const { t } = useTranslate();
-  const { session } = useCreateSessionStore();
-  const { additionalData, endDate, fieldUid, gameMode, level, startDate, visibility } = session || {};
-  const { sport } = additionalData || {};
-  const { data: fieldData, isLoading } = useGetField(fieldUid);
+  const { trackEvent } = useAnalytics();
+  const { title, description, teamAName, teamBName } = useCreateSessionStore(
+    useShallow(state => ({
+      title: state.session?.title,
+      description: state.session?.description,
+      teamAName: state.session?.teamAName,
+      teamBName: state.session?.teamBName,
+    })),
+  );
+  const setCreateSessionData = useCreateSessionStore(state => state.setSession);
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<CreateSessionStep3Schema>({
+    resolver: zodResolver(createSessionStep3Schema(t)),
+    mode: 'onChange',
+    defaultValues: {
+      title: title || undefined,
+      description: description || undefined,
+      teamAName: teamAName || undefined,
+      teamBName: teamBName || undefined,
+    },
+  });
+  const [titleSource, setTitleSource] = useState<'user' | 'suggestion'>('user');
+  const suggestions = useMemo(() => generateRandomTitleSuggestions(), []);
 
-  const sessionImage = getSportImage(sport);
+  const onSubmit = (data: CreateSessionStep3Schema) => {
+    setCreateSessionData(data);
+    trackEvent({
+      eventName: 'create_session_step_3_completed',
+      data: {
+        has_title: data.title?.length > 0 || false,
+        title_source: data.title ? titleSource : 'none',
+        has_description: data.description?.length > 0 || false,
+        has_team_a_name: data.teamAName?.length > 0 || false,
+        has_team_b_name: data.teamBName?.length > 0 || false,
+      },
+    });
+    setActiveStep(prev => prev + 1);
+  };
+
+  const handlePressSuggestion = (title: string) => {
+    setValue('title', t(title));
+    setTitleSource('suggestion');
+  };
 
   return (
-    <AnimatedBox entering={FadeInRight} className="flex-1">
-      <WrapperScrollView className="pb-10">
-        <CreateSessionTitle title={t('create-session-steps.step-3.title')} />
-        <Box className="gap-9">
+    <>
+      <Animated.View entering={FadeInRight} className="flex-1">
+        <WrapperKeyboardAwareScrollView contentContainerClassName="gap-5 pb-10">
           <Box>
-            <String className="mb-3" font="primaryBold">
-              {t('create-session-steps.step-3.session_details_title')}
+            <CreateSessionTitle title={t('create-session-steps.step-3.title')} />
+            <String colorVariant="muted" variant="body-sm">
+              {t('create-session-steps.step-3.description')}
             </String>
-
-            <BoxRow className="border-ring items-center gap-10 rounded-2xl border bg-white px-8 py-3">
-              <Box className="items-center gap-2">
-                <Image source={sessionImage} className="size-10" />
-                <String font="primaryBold">{t(`common.game_mode_${gameMode}`, { space: ' ' })}</String>
-              </Box>
-              <Box>
-                <BoxRow>
-                  <String font="primaryBold">{t('common.date')} : </String>
-                  <String colorVariant="primary" font="primaryBold">
-                    {formatDate({ date: startDate, format: 'dddd DD MMMM YYYY' })}
-                  </String>
-                </BoxRow>
-                <BoxRow>
-                  <String font="primaryBold">{t('create-session-steps.step-3.level_searched')} : </String>
-                  <String colorVariant="primary" font="primaryBold">
-                    {t(`common.session_level_${SESSION_LEVELS[level]?.name}`)}
-                  </String>
-                </BoxRow>
-                <BoxRow>
-                  <String useFastText={false} font="primaryBold">
-                    {t('common.hour')} :{' '}
-                    <String useFastText={false} colorVariant="primary" font="primaryBold">
-                      {formatDate({ date: startDate, format: 'HH[h]mm' })}
-                    </String>{' '}
-                    {t('common.to')}{' '}
-                    <String useFastText={false} colorVariant="primary" font="primaryBold">
-                      {formatDate({ date: endDate, format: 'HH[h]mm' })}
-                    </String>
-                  </String>
-                </BoxRow>
-
-                <BoxRow>
-                  <String font="primaryBold">{t('common.sport')} : </String>
-                  <String colorVariant="primary" font="primaryBold">
-                    {t(`common.session_sport_${sport}`)}
-                  </String>
-                </BoxRow>
-                <BoxRow className="items-center">
-                  <String font="primaryBold">Visibilité : </String>
-                  <String colorVariant="primary" font="primaryBold">
-                    {t(`common.session_visibility_${visibility}`)}{' '}
-                  </String>
-                  <String colorVariant="primary" font="primaryRegular" className="text-[10px]">
-                    ({t(`common.session_visibility_description_${visibility}`)})
-                  </String>
-                </BoxRow>
-              </Box>
-            </BoxRow>
           </Box>
           <Box>
-            <String className="mb-3" font="primaryBold">
-              {t('create-session-steps.step-3.field_chosen_title')}
-            </String>
-            {isLoading ? <FieldCardSkeleton /> : <FieldCard field={fieldData} />}
+            <CreateSessionStep3SectionTitle
+              iconName="type-text-square-regular"
+              title={'create-session-steps-step-3.section_session_title'}
+            />
+            <FormInput
+              control={control}
+              name="title"
+              placeholder={t('create-session-steps-step-3.section_session_title_placeholder')}
+              maxLength={TITLE_MAX_LENGTH}
+              hasLengthCounter
+            />
+            <Box className="gap-2">
+              <String colorVariant="muted" variant="body-sm">
+                {t('create-session-steps-step-3.section_session_title_suggestions')}
+              </String>
+              <FlatList
+                data={suggestions}
+                renderItem={({ item }) => (
+                  <Chip
+                    colorVariant="muted"
+                    size="2xs"
+                    title={t(item.title)}
+                    titleProps={{
+                      colorVariant: 'dark',
+                      color: '#000',
+                    }}
+                    iconProps={{
+                      name: 'stars-regular',
+                      position: 'left',
+                      color: '#000',
+                      className: 'mr-1',
+                    }}
+                    onPress={() => handlePressSuggestion(item.title)}
+                  />
+                )}
+                keyExtractor={item => item.id.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerClassName="items-center gap-2"
+              />
+            </Box>
           </Box>
-        </Box>
-      </WrapperScrollView>
-    </AnimatedBox>
+          <Box>
+            <CreateSessionStep3SectionTitle
+              iconName="text-align-right-regular"
+              title={'create-session-steps-step-3.section_session_description'}
+            />
+            <FormInput
+              control={control}
+              name="description"
+              multiline
+              maxLength={DESCRIPTION_MAX_LENGTH}
+              hasLengthCounter
+              placeholder={t('create-session-steps-step-3.section_session_description_placeholder')}
+            />
+          </Box>
+          <Box>
+            <CreateSessionStep3SectionTitle
+              iconName="people-regular"
+              title={'create-session-steps-step-3.section_session_teams_names'}
+            />
+            <BoxRowCenterBetween className="gap-3">
+              <BoxGrow className="gap-1">
+                <BoxRow className="items-end">
+                  <Icon name="ludo-king" size="xl" />
+                  <String>{t('create-session-steps-step-3.section_session_teams_names_team_1')}</String>
+                </BoxRow>
+                <FormInput
+                  control={control}
+                  name="teamAName"
+                  placeholder={t('create-session-steps-step-3.section_session_teams_names_team_1_placeholder')}
+                  maxLength={TEAM_NAME_MAX_LENGTH}
+                  hasLengthCounter
+                />
+              </BoxGrow>
+              <BoxGrow className="gap-1">
+                <BoxRow className="items-end">
+                  <Icon name="ludo-king-2" size="xl" />
+                  <String>{t('create-session-steps-step-3.section_session_teams_names_team_2')}</String>
+                </BoxRow>
+                <FormInput
+                  control={control}
+                  name="teamBName"
+                  className="flex-1"
+                  placeholder={t('create-session-steps-step-3.section_session_teams_names_team_2_placeholder')}
+                  maxLength={TEAM_NAME_MAX_LENGTH}
+                  hasLengthCounter
+                />
+              </BoxGrow>
+            </BoxRowCenterBetween>
+          </Box>
+        </WrapperKeyboardAwareScrollView>
+      </Animated.View>
+      <CreateSessionFooterStep3 onPress={handleSubmit(onSubmit)} isDisabled={!isValid} />
+    </>
   );
 }

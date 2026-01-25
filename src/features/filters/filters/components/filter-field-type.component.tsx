@@ -1,7 +1,7 @@
 import { useTranslate } from '@tolgee/react';
 import { Box, Button, Icon, String } from '@ludo/ui';
 
-import { useFiltersStore } from '../store/filters.store';
+import { useFiltersStore, selectFilters } from '../store/filters.store';
 
 type FieldsType = 'ALL' | 'PRIVATE' | 'PUBLIC';
 
@@ -27,11 +27,11 @@ const fieldType: FieldTypeProps[] = [
 
 export default function FilterFieldType() {
   const { t } = useTranslate();
-  const fieldTypeStore = useFiltersStore(state => state.filters.fieldType);
+  const fieldTypeStore = useFiltersStore(state => selectFilters(state).fieldType);
   const setFilters = useFiltersStore(state => state.setFilters);
 
   return (
-    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
+    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
       {/* Header Toujours Visible */}
       <Box className="flex-row justify-between">
         <Box className="flex-row items-center gap-2">

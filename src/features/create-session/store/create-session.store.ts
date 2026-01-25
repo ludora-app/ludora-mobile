@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 import { CreateSessionFromRequestDto } from '@api/generated/model/createSessionFromRequestDto';
 
-import { SessionCollectionItemSport } from '@/api/generated/model';
+import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 type SessionProps = CreateSessionFromRequestDto & {
   additionalData: {
     price?: number;
     pricePerPlayer?: number;
     publicFieldSlotUid?: string;
-    sport?: SessionCollectionItemSport;
+    sport?: SessionCollectionItemDtoSport;
     fieldType?: 'partner' | 'public';
     createdSessionUid?: string;
+    autoGoToNextStep?: boolean;
   };
 };
 

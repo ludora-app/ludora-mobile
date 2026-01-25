@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenterBetween, Button, Icon, String } from '@ludo/ui';
 
-import { useFiltersStore } from '../store/filters.store';
+import { useFiltersStore, selectFilters } from '../store/filters.store';
 
 const sessionDuration = [
   {
@@ -25,8 +25,10 @@ const sessionDuration = [
 
 function FilterSessionDuration() {
   const { t } = useTranslate();
-  const sessionDurationStore = useFiltersStore(state => state.filters.sessionDuration);
+  const sessionDurationStore = useFiltersStore(state => selectFilters(state).sessionDuration);
   const setFilters = useFiltersStore(state => state.setFilters);
+
+  const isSessionDurationSelected = (duration: string) => duration === sessionDurationStore;
 
   const filterRightText = () => {
     if (sessionDurationStore) return `${sessionDurationStore} min`;
@@ -54,8 +56,16 @@ function FilterSessionDuration() {
     }
   };
 
+  const handleSelectDuration = (duration: string) => {
+    if (isSessionDurationSelected(duration)) {
+      setFilters({ sessionDuration: undefined });
+      return;
+    }
+    setFilters({ sessionDuration: duration });
+  };
+
   return (
-    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
+    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="items-center gap-2">
@@ -100,7 +110,7 @@ function FilterSessionDuration() {
               className="flex-1"
               size="xs"
               variant={type.value === sessionDurationStore ? 'contained' : 'outlined'}
-              onPress={() => setFilters({ sessionDuration: type.value })}
+              onPress={() => handleSelectDuration(type.value)}
             />
           ))}
         </BoxRow>

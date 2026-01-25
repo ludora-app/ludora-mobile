@@ -7,7 +7,7 @@ import { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reani
 import { BounceBox, cn } from '@/components/chill-ui-library';
 import { SESSION_LEVEL_TYPE } from '@/constants/session.constants';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 type CreateSessionStep1Part2LevelItemProps = {
   difficulty: SESSION_LEVEL_TYPE;
@@ -20,7 +20,7 @@ export default function FilterLevelsItem(props: CreateSessionStep1Part2LevelItem
   const { t } = useTranslate();
   const { difficulty } = props;
 
-  const selectedLevels = useFiltersStore(state => state.filters?.levels);
+  const selectedLevels = useFiltersStore(state => selectFilters(state)?.levels);
   const setFilters = useFiltersStore(state => state.setFilters);
 
   const isSelectedLevel = selectedLevels?.includes(difficulty.code);
@@ -54,7 +54,7 @@ export default function FilterLevelsItem(props: CreateSessionStep1Part2LevelItem
       </BounceBox>
       <Box className={cn('h-2 w-full rounded-full bg-[#D9D9D9]', isSelectedLevel && 'bg-[#69B42E]')} />
       <String position="center" size="xs">
-        {t(`common.session_level_${difficulty.name}`)}
+        {t(`common.session_level_${difficulty.code}`, '')}
       </String>
     </Pressable>
   );

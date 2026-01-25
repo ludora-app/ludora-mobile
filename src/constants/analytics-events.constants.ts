@@ -1,3 +1,5 @@
+import { Filters } from '@/features/filters/filters/store/filters.store';
+
 type JsonType = string | number | boolean | null | { [key: string]: JsonType } | JsonType[];
 
 export const ANALYTICS_EVENTS = {
@@ -34,6 +36,7 @@ export const ANALYTICS_EVENTS = {
     SESSION_FAILED: 'create_session_failed',
     STEP_1_COMPLETED: 'create_session_step_1_completed',
     STEP_2_COMPLETED: 'create_session_step_2_completed',
+    STEP_3_COMPLETED: 'create_session_step_3_completed',
   },
 
   FILTERS: {
@@ -48,29 +51,27 @@ export const ANALYTICS_EVENTS = {
 } as const;
 
 export interface AnalyticsEventData {
-
   // auth events
   [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_NEW_PASSWORD_FAILED]: {
     error_message: string;
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_FAILED]: {
     error_message: string;
-    method: "google" | "email";
+    method: 'google' | 'email';
   };
   [ANALYTICS_EVENTS.AUTH.SIGNUP_FAILED]: {
     error_message: string;
-    method: "google" | "email";
+    method: 'google' | 'email';
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_SUCCESS]: {
-    method: "google" | "email";
+    method: 'google' | 'email';
     auto_login_from_signup?: boolean;
   };
 
   [ANALYTICS_EVENTS.AUTH.SIGNUP_SUCCESS]: {
     auto_register_from_login?: boolean;
-    method: "google" | "email";
+    method: 'google' | 'email';
   };
-  
 
   // session events
   [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SELECTED]: {
@@ -92,7 +93,55 @@ export interface AnalyticsEventData {
     error_message: string;
   };
 
+  // **
+  // create session events
+  // **
+  [ANALYTICS_EVENTS.CREATE_SESSION.SESSION_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.CREATE_SESSION.STEP_1_COMPLETED]: {
+    game_mode: string;
+    level: number;
+    sport: string;
+    visibility: string;
+  };
+  [ANALYTICS_EVENTS.CREATE_SESSION.STEP_3_COMPLETED]: {
+    has_title: boolean;
+    has_description: boolean;
+    has_team_a_name: boolean;
+    has_team_b_name: boolean;
+    title_source: 'user' | 'suggestion' | 'none';
+  };
+  [ANALYTICS_EVENTS.CREATE_SESSION.STEP_2_COMPLETED]: {
+    end_date: string;
+    field_uid: string;
+    is_partner: boolean;
+    price: number;
+    price_per_player: number;
+    slot_uid: string;
+    start_date: string;
+  };
+  [ANALYTICS_EVENTS.CREATE_SESSION.SESSION_CREATED]: {
+    end_date: string;
+    field_uid: string;
+    game_mode: string;
+    is_partner: boolean;
+    level: number;
+    session_visibility: string;
+    start_date: string;
+  };
 
+  // **
+  // filters events
+  // **
+  [ANALYTICS_EVENTS.FILTERS.FILTER_FIELDS_APPLIED]: {
+    filters: Partial<Filters>;
+    numberOfFilters: number;
+  };
+  [ANALYTICS_EVENTS.FILTERS.FILTER_SESSIONS_ALL_APPLIED]: {
+    numberOfFilters: number;
+    filters: Partial<Filters>;
+  };
 }
 
 type DeepValue<T> = T extends string ? T : T extends object ? DeepValue<T[keyof T]> : never;

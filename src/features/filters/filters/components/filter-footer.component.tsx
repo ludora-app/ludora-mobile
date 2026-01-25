@@ -10,7 +10,7 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 
-import { useFiltersStore } from '../store/filters.store';
+import { useFiltersStore, selectFilters, selectNumberOfFilters } from '../store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '../types/filters.types';
 
 const mmkvStorageKey = {
@@ -22,8 +22,8 @@ export default function FilterFooter() {
   const { goBackPath, source } = useLocalSearchParams<FiltersScreenParams>();
 
   const { t } = useTranslate();
-  const numberOfFilters = useFiltersStore(state => state.numberOfFilters);
-  const filters = useFiltersStore(state => state.filters);
+  const numberOfFilters = useFiltersStore(selectNumberOfFilters);
+  const filters = useFiltersStore(selectFilters);
 
   const router = useRouter();
   const { trackEvent } = useAnalytics();
@@ -42,7 +42,7 @@ export default function FilterFooter() {
   const handleApply = () => {
     const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey.goBackPath);
     const sourceValue = source ?? (mmkvStorage.getString(mmkvStorageKey.source) as FiltersScreenParams['source']);
-    trackEvent({ eventName: `${sourceValue}_applied`, properties: { filters, numberOfFilters } });
+    trackEvent({ eventName: `${sourceValue}_applied`, data: { filters, numberOfFilters } });
     const params: FiltersReturnParams = {
       selectedFilters: serialize(filters),
     };

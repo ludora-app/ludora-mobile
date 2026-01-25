@@ -7,7 +7,7 @@ import Animated, { FadeIn, FadeOut, useAnimatedReaction, useSharedValue } from '
 import COLORS from '@/constants/COLORS';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 const radiusDistances = [
   {
@@ -37,9 +37,9 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 function FilterDistanceRadius() {
   const { t } = useTranslate();
   const [distanceValue, setDistanceValue] = useState(25);
-  const address = useFiltersStore(state => state.filters.address);
+  const address = useFiltersStore(state => selectFilters(state).address);
   const { latitude, longitude } = useUserLocationStore(state => state.location) || {};
-  const maxDistanceStoreValue = useFiltersStore(state => state.filters.maxDistance);
+  const maxDistanceStoreValue = useFiltersStore(state => selectFilters(state).maxDistance);
   const thumbScaleValue = useSharedValue(1);
   const setFilters = useFiltersStore(state => state.setFilters);
 
@@ -86,7 +86,7 @@ function FilterDistanceRadius() {
   };
 
   return (
-    <AnimatedBox className="gap-3 rounded-xl border border-ring bg-white p-3 py-2" entering={FadeIn} exiting={FadeOut}>
+    <AnimatedBox className="border-ring gap-3 rounded-xl border bg-white p-3 py-2" entering={FadeIn} exiting={FadeOut}>
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="items-center gap-2">

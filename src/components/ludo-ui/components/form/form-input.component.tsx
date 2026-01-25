@@ -24,6 +24,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     placeholder,
     rightContentProps,
     rightIconAction,
+    hasLengthCounter,
     ...rest
   } = props;
   const { t } = useTranslate();
@@ -67,6 +68,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
       leftIconAction={leftIconAction}
       rightIconAction={rightIconAction}
       rightContentProps={rightContentProps}
+      hasLengthCounter={hasLengthCounter}
     />
   );
 }

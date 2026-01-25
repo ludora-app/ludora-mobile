@@ -6,7 +6,7 @@ type CreateSessionTitleProps = {
 export default function CreateSessionTitle(props: CreateSessionTitleProps) {
   const { title } = props;
   return (
-    <String className="py-5 text-center" variant="body-2" font="primaryBold">
+    <String className="py-2 text-center" variant="body-2" font="primaryBold">
       {title}
     </String>
   );

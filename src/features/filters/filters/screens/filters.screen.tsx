@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { WrapperGestureHandlerScrollView } from '@ludo/ui';
 
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
+import { useFiltersStore } from '../store/filters.store';
 
 import { FiltersScreenParams } from '../types/filters.types';
 import FilterHeader from '../components/filter-header.component';
@@ -20,8 +22,15 @@ const mmkvStorageKey = MMKV_STORAGE_KEY.FILTERS_SCREEN.SOURCE;
 export default function FiltersScreen() {
   const { source } = useLocalSearchParams<FiltersScreenParams>();
   const sourceValue = source ?? (mmkvStorage.getString(mmkvStorageKey) as FiltersScreenParams['source']);
+  const setCurrentSource = useFiltersStore(state => state.setCurrentSource);
 
   const showFilterSessionsAll = sourceValue === 'filter_sessions_all';
+
+  useEffect(() => {
+    if (sourceValue) {
+      setCurrentSource(sourceValue);
+    }
+  }, [sourceValue, setCurrentSource]);
 
   return (
     <>

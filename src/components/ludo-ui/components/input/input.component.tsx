@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { Input as InputChillUi, InputContainer, InputField, InputLabel, InputMessage, cn, Box } from '@chillui/ui';
+import {
+  Input as InputChillUi,
+  InputContainer,
+  InputField,
+  InputLabel,
+  InputMessage,
+  cn,
+  Box,
+  BoxRow,
+} from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -20,10 +29,12 @@ export default function Input(props: InputProps) {
     leftIconAction,
     rightContentProps,
     rightIconAction,
+    hasLengthCounter,
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const showError = hasError && !!error;
   const showMessageError = !!error && hasMessageError;
+  const showLengthCounter = hasLengthCounter && !!inputFieldProps?.maxLength;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,11 +42,12 @@ export default function Input(props: InputProps) {
 
   const showClearIcon = hasClearIcon && inputFieldProps?.value;
 
-
   return (
     <InputChillUi className={className}>
       {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
-      <InputContainer className={cn({ 'border-error': showError, "border-primary": isFocused }, inputContainerClassName)}>
+      <InputContainer
+        className={cn({ 'border-error': showError, 'border-primary': isFocused }, inputContainerClassName)}
+      >
         {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
@@ -72,14 +84,26 @@ export default function Input(props: InputProps) {
           />
         )}
       </InputContainer>
-      {showMessageError && (
-        <Box className="flex-row items-center">
-          <Icon name="warning-solid" size="xs" color="red" />
-          <InputMessage colorVariant="error" size="xs">
-            {error}
-          </InputMessage>
+      <BoxRow className="items-center gap-2">
+        <Box className="flex-1 flex-row items-center">
+          {showMessageError && (
+            <>
+              <Icon name="warning-solid" size="xs" color="red" />
+              <String colorVariant="error" size="xs" truncate>
+                {error}
+              </String>
+            </>
+          )}
         </Box>
-      )}
+
+        {showLengthCounter && (
+          <Box>
+            <String size="xs" colorVariant="muted">
+              {inputFieldProps?.value?.length ?? 0}/{inputFieldProps?.maxLength}
+            </String>
+          </Box>
+        )}
+      </BoxRow>
     </InputChillUi>
   );
 }

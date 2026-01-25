@@ -33,6 +33,7 @@ export default function SessionScreen() {
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const { data: sessionData, isLoading: isLoadingSessionData } = useGetSessionById(sessionUid);
+  console.log(sessionData);
   const { creator, description, fieldUid, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);
@@ -45,7 +46,7 @@ export default function SessionScreen() {
     <>
       <ScrollView
         ref={scrollViewRef}
-        className="flex-1"
+        className="bg-white"
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll
         showsVerticalScrollIndicator={false}
@@ -53,13 +54,11 @@ export default function SessionScreen() {
       >
         {/* SECTION 0 : CAROUSEL session */}
         <SessionImagesSection session={sessionData} />
-        <Wrapper className="bg-white z-50 my-2 -mt-2 gap-5 rounded-xl pt-4">
+        <Wrapper className="z-50 my-2 -mt-2 gap-5 rounded-xl bg-white pt-4">
           {/* SECTION 1 : TEAMS */}
           <SessionSectionTeams session={sessionData} />
           <Separator />
           <Box className="gap-2">
-
-
             {/* SECTION 3 : DETAILS session */}
             <SessionSectionDetails session={sessionData} />
           </Box>
@@ -70,7 +69,6 @@ export default function SessionScreen() {
 
           {/* SECTION 5 : DESCRIPTION */}
           <SessionSectionDescription description={description} title={title} />
-          <Separator />
 
           {/* SECTION 6 : FIELD */}
           <SessionSectionFieldDetail fieldUid={fieldUid} />

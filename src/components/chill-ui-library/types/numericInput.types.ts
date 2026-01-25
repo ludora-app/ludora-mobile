@@ -1,6 +1,9 @@
 import type { PressableProps } from 'react-native';
 
+import { VariantProps } from 'tailwind-variants';
+
 import { IconProps } from './icon.types';
+import { numericInputButtonTv } from '../components/numericInput/styles/NumericInput.styles';
 
 export type NumericInputProps = {
   /** Current numeric value */
@@ -63,54 +66,28 @@ export type NumericAddInputProps = PressableProps & {
   /** Custom CSS classes */
   className?: string;
   /** Color variant of the button */
-  colorVariant?:
-    | 'accent'
-    | 'danger'
-    | 'dark'
-    | 'error'
-    | 'info'
-    | 'inverted'
-    | 'light'
-    | 'muted'
-    | 'neutral'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'tertiary'
-    | 'warning'
-    | 'white';
+  colorVariant?: VariantProps<typeof numericInputButtonTv>['color'];
   /** Button style variant: 'contained' | 'outlined' */
-  variant?: 'contained' | 'outlined';
+  variant?: VariantProps<typeof numericInputButtonTv>['variant'];
   /** Icon color */
   iconColor?: IconProps['color'];
   /** Icon size */
   iconSize?: IconProps['size'];
+  /** Component to render */
+  as?: 'pressable' | 'scalePressable';
 };
 
 export type NumericRemoveInputProps = PressableProps & {
   /** Custom CSS classes */
   className?: string;
   /** Color variant of the button */
-  colorVariant?:
-    | 'accent'
-    | 'danger'
-    | 'dark'
-    | 'error'
-    | 'info'
-    | 'inverted'
-    | 'light'
-    | 'muted'
-    | 'neutral'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'tertiary'
-    | 'warning'
-    | 'white';
+  colorVariant?: VariantProps<typeof numericInputButtonTv>['color'];
   /** Button style variant: 'contained' | 'outlined' */
-  variant?: 'contained' | 'outlined';
+  variant?: VariantProps<typeof numericInputButtonTv>['variant'];
   /** Icon color */
   iconColor?: IconProps['color'];
   /** Icon size */
   iconSize?: IconProps['size'];
+  /** Component to render */
+  as?: 'pressable' | 'scalePressable';
 };

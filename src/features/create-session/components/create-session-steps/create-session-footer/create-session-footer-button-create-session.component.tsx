@@ -29,13 +29,17 @@ export default function CreateSessionFooterButtonCreateSession(props: CreateSess
         level: sessionStoreData.level,
         startDate: sessionStoreData.startDate,
         visibility: sessionStoreData.visibility,
+        title: sessionStoreData?.title,
+        description: sessionStoreData?.description,
+        teamAName: sessionStoreData?.teamAName,
+        teamBName: sessionStoreData?.teamBName,
       };
       const response = await createSession(sessionData);
       const createdSessionUid = response.data.uid;
       setCreateSession({ additionalData: { createdSessionUid } });
       trackEvent({
         eventName: 'create_session_completed',
-        properties: {
+        data: {
           end_date: sessionStoreData.endDate,
           field_uid: sessionStoreData.fieldUid,
           game_mode: sessionStoreData.gameMode,
@@ -50,7 +54,7 @@ export default function CreateSessionFooterButtonCreateSession(props: CreateSess
       const response = error as ErrorResponse;
       trackEvent({
         eventName: 'create_session_failed',
-        properties: { error_message: response.api_error_detail || 'unknown_api_error' },
+        data: { error_message: response.api_error_detail || 'unknown_api_error' },
       });
       trackError({ error });
     }

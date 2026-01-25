@@ -9,6 +9,7 @@ import { useSessionTeamStore } from '@/features/session/stores/session-team.stor
 import { FindOneSessionResponseData, SessionTeamResponseData } from '@/api/generated/model';
 
 import SessionSectionAvatar from '../../session-section-avatar.component';
+import { useEffect } from 'react';
 
 type SessionSectionTeamsCardTeamProps = {
   team: SessionTeamResponseData;
@@ -52,12 +53,17 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
 
   const isSideSelected = isTeamSelected || isJoinedTeam;
 
+  useEffect(() => {
+    if (isSideSelected) {
+      setSideTeam(side);
+    }
+  }, [isSideSelected]);
+
   const pushAvatarToLeft = (sessionPlayersIndex: number) =>
     sessionPlayersIndex > 0 || isTeamSelected || (!isCompleteTeam && !isJoinedSession);
 
   const handleSelectTeam = (teamUidToSelect: string) => {
     setTeamUid(teamUidToSelect);
-    setSideTeam(side);
     trackEvent({ data: { source_screen: '/session/[id]' }, eventName: 'session_team_selected' });
   };
 
@@ -90,7 +96,7 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
         variant={isSideSelected ? 'contained' : 'outlined'}
         colorVariant={side === 'left' ? 'primary' : 'secondary'}
         className={cn('absolute left-1/2 z-60 max-w-[90%] -translate-x-1/2 -translate-y-1/2 transform self-start', {
-          'bg-white': !isTeamSelected && !isJoinedTeam,
+          'bg-white': !isSideSelected,
         })}
         size="2xs"
       />
@@ -127,7 +133,7 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
             {team.sessionPlayers?.map((player, sessionPlayersIndex) => (
               <SessionSectionAvatar
                 key={player.userUid}
-                data={player}
+                data={{ firstname: player?.firstname, lastname: player?.lastname, imageUrl: player?.imageUrl }}
                 sideTeam={side}
                 size="sm"
                 style={{

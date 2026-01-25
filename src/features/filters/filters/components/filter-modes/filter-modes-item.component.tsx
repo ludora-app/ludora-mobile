@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 
 import { CreateSessionFromRequestDtoGameMode } from '@/api/generated/model';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 interface CreateSessionStep1Part3ItemProps {
   gameMode: CreateSessionFromRequestDtoGameMode;
@@ -13,7 +13,7 @@ interface CreateSessionStep1Part3ItemProps {
 export default function FilterModesItem({ gameMode }: CreateSessionStep1Part3ItemProps) {
   const { t } = useTranslate();
 
-  const selectedGameMode = useFiltersStore(state => state.filters?.gameModes?.includes(gameMode));
+  const selectedGameMode = useFiltersStore(state => selectFilters(state)?.gameModes?.includes(gameMode));
   const setFilters = useFiltersStore(state => state.setFilters);
 
   const handlePress = () => {

@@ -22,8 +22,11 @@ export default function FormSheetFooter(props: PropsWithChildren<FormSheetFooter
   const { bottom } = useSafeArea();
   return (
     <Wrapper
-      className="gap-2 py-2 bg-white"
-      style={[shadowVariant === 'black' ? styles.boxShadowBlack : styles.boxShadowPrimary, hasBottomSafeArea && { paddingBottom: bottom }]}
+      className="gap-2 bg-white py-2"
+      style={[
+        shadowVariant === 'black' ? styles.boxShadowBlack : styles.boxShadowPrimary,
+        hasBottomSafeArea && { paddingBottom: bottom },
+      ]}
       fill={false}
     >
       {children}

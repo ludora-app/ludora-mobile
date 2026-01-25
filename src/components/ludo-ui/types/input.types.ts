@@ -17,4 +17,5 @@ export type InputProps = {
   rightContentProps?: StringProps & {
     content: string;
   };
+  hasLengthCounter?: boolean;
 };

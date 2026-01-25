@@ -8,12 +8,12 @@ import { useCreateSessionFiltersFieldsStore } from '../store/create-session-filt
 import CreateSessionProgressStepper from '../components/create-session-progress-stepper.component';
 import CreateSessionStep1 from '../components/create-session-steps/create-session-step-1/create-session-step-1.component';
 import CreateSessionStep2 from '../components/create-session-steps/create-session-step-2/create-session-step-2.component';
-import CreateSessionStep3 from '../components/create-session-steps/create-session-step-3/create-session-step-3.component';
 import CreateSessionStep4 from '../components/create-session-steps/create-session-step-4/create-session-step-4.component';
+import CreateSessionStep5 from '../components/create-session-steps/create-session-step-5/create-session-step-5.component';
 import CreateSessionFooter from '../components/create-session-steps/create-session-footer/create-session-footer.component';
+import CreateSessionStep3 from '../components/create-session-steps/create-session-step-3/create-session-step-3.component';
 
 export default function CreateSessionScreen() {
-
   const resetCreateSession = useCreateSessionStore(state => state.reset);
   const resetFieldsFilter = useCreateSessionFiltersFieldsStore(state => state.reset);
   const [activeStep, setActiveStep] = useState(1);
@@ -32,6 +32,7 @@ export default function CreateSessionScreen() {
   const showStep3 = activeStep === 3;
 
   const showStep4 = activeStep === 4;
+  const showStep5 = activeStep === 5;
 
   return (
     <>
@@ -41,9 +42,10 @@ export default function CreateSessionScreen() {
 
       {showStep1 && <CreateSessionStep1 />}
       {showStep2 && <CreateSessionStep2 />}
-      {showStep3 && <CreateSessionStep3 />}
-
+      {showStep3 && <CreateSessionStep3 setActiveStep={setActiveStep} />}
       {showStep4 && <CreateSessionStep4 />}
+
+      {showStep5 && <CreateSessionStep5 />}
 
       <CreateSessionFooter activeStep={activeStep} setActiveStep={setActiveStep} />
     </>

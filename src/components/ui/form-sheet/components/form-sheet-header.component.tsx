@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
 
 export default function FormSheetHeader(props: FormSheetHeaderProps) {
   const { hasGoBack, hasShadow = true, title } = props;
+
+  const showShadow = hasShadow && !!title;
   return (
-    <Box collapsable={false} style={hasShadow ? styles.shadox : undefined}>
+    <Box collapsable={false} style={showShadow ? styles.shadox : undefined}>
       <Box className="mx-auto mt-2 h-1 w-12 rounded-full bg-zinc-400" />
       <Box className={cn(hasGoBack && 'relative my-1 items-center justify-center')}>
         {hasGoBack && (

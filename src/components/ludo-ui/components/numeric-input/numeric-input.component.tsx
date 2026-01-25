@@ -1,5 +1,11 @@
 import { FieldValues, useController } from 'react-hook-form';
-import { InputMessage, NumericAddInput, NumericInput as NumericInputChillUi, NumericRemoveInput } from '@chillui/ui';
+import {
+  InputMessage,
+  NumericAddInput,
+  NumericInput as NumericInputChillUi,
+  NumericRemoveInput,
+  ScalePressable,
+} from '@chillui/ui';
 
 import { Box } from '../box';
 import { Icon } from '../icon';
@@ -35,6 +41,7 @@ export default function NumericInput<T extends FieldValues = FieldValues>(props:
           keyboardType="number-pad"
           {...inputProps}
         />
+
         <NumericAddInput />
       </NumericInputChillUi>
       {!!error && (

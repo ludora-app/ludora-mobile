@@ -4,7 +4,7 @@ import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 import COLORS from '@/constants/COLORS';
 import { SessionsFindAllSportsItem } from '@/api/generated/model';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import FilterSportsItem from './filter-sports-item.component';
 
 interface SportProps {
@@ -30,10 +30,11 @@ const sports: SportProps[] = [
   },
 ];
 export default function FilterSports() {
-  const selecteSports = useFiltersStore(state => state.filters?.sports);
+  const selecteSports = useFiltersStore(state => selectFilters(state)?.sports);
   const { t } = useTranslate();
+
   return (
-    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
+    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="flex-1 items-center gap-2">

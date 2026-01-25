@@ -6,7 +6,7 @@ import { cn } from '@/components/chill-ui-library';
 import { getSportImage } from '@/utils/sports.utils';
 import { SportProps } from '@/features/create-session/types/create-session-step-1.types';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 type CreateSessionStep1Part1ItemProps = {
   sport: SportProps;
@@ -15,7 +15,7 @@ type CreateSessionStep1Part1ItemProps = {
 function FilterSportsItem(props: CreateSessionStep1Part1ItemProps) {
   const { sport } = props;
   const { t } = useTranslate();
-  const isSelectedSport = useFiltersStore(state => state.filters?.sports?.includes(sport.name));
+  const isSelectedSport = useFiltersStore(state => selectFilters(state)?.sports?.includes(sport.name));
 
   const setFilters = useFiltersStore(state => state.setFilters);
 

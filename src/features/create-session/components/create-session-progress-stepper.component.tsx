@@ -82,11 +82,11 @@ function StepConnector({ activeStep, step }: StepConnectorProps) {
 
 export default function CreateSessionProgressStepper({ activeStep = 1 }: CreateSessionStepsProps) {
   return (
-    <Box className="bg-background relative z-50 flex-row items-center justify-center pb-2">
-      {list(1, 4).map((step, index) => (
+    <Box className="relative z-50 flex-row items-center justify-center pb-2">
+      {list(1, 5).map((step, index) => (
         <React.Fragment key={step}>
           <StepCircle step={step} activeStep={activeStep} />
-          {index < 3 && <StepConnector step={step} activeStep={activeStep} />}
+          {index < 4 && <StepConnector step={step} activeStep={activeStep} />}
         </React.Fragment>
       ))}
     </Box>

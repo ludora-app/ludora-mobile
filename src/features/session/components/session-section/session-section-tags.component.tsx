@@ -24,9 +24,9 @@ export default function SessionSectionTags({ session }: SessionSectionTagsProps)
   }, [sideTeam]);
   return (
     <BoxRow className="flex-row items-center gap-2">
-      <Chip title={t(`common.field_type_${fieldType}`)} size="2xs" colorVariant={handleColorVariant} />
-      <Chip title={t(`common.session_level_${SESSION_LEVELS[level]?.name}`)} size="2xs" colorVariant={handleColorVariant} />
-      <Chip title={t(`common.session_sport_${sport}`)} size="2xs" colorVariant={handleColorVariant} />
+      <Chip title={t(`common.field_type_${fieldType}`, '')} size="2xs" colorVariant={handleColorVariant} />
+      <Chip title={t(`common.session_level_${level}`, '')} size="2xs" colorVariant={handleColorVariant} />
+      <Chip title={t(`common.session_sport_${sport}`, '')} size="2xs" colorVariant={handleColorVariant} />
     </BoxRow>
   );
 }

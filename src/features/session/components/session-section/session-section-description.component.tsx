@@ -1,4 +1,4 @@
-import { String } from '@ludo/ui';
+import { Separator, String } from '@ludo/ui';
 
 import { FindOneSessionResponseData } from '@/api/generated/model';
 
@@ -17,14 +17,17 @@ export default function SessionSectionDescription(props: SessionSectionDescripti
     return null;
   }
   return (
-    <SessionSectionWrapper>
-      <SessionSectionHeader iconName="warning-regular" title="session.description_section_title" />
-      <String font="primaryBold" variant="body-2">
-        {title}
-      </String>
+    <>
       <SessionSectionWrapper>
-        <String>{description}</String>
+        <SessionSectionHeader iconName="warning-regular" title="session.description_section_title" />
+        <String font="primaryBold" variant="body-2">
+          {title}
+        </String>
+        <SessionSectionWrapper>
+          <String>{description}</String>
+        </SessionSectionWrapper>
       </SessionSectionWrapper>
-    </SessionSectionWrapper>
+      <Separator />
+    </>
   );
 }

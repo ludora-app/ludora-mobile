@@ -11,7 +11,7 @@ import { parse } from '@/utils/json.utils';
 import useGetUserLocation from '@/hooks/user-location.hook';
 import { FiltersAddressesReturnParams } from '@/features/filters/filters-addresses/types/filters-addresses.types';
 
-import { useFiltersStore } from '../../store/filters.store';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import { FiltersAddressesScreenParams } from '../../types/filters.types';
 
 type FilterLocationProps = FiltersAddressesReturnParams;
@@ -21,8 +21,8 @@ function FilterLocation(props: FilterLocationProps) {
   const { t } = useTranslate();
   const router = useRouter();
 
-  const selectedAddress = useFiltersStore(state => state.filters.address);
-  const nearby = useFiltersStore(state => state.filters.nearby);
+  const selectedAddress = useFiltersStore(state => selectFilters(state).address);
+  const nearby = useFiltersStore(state => selectFilters(state).nearby);
   const setFilters = useFiltersStore(state => state.setFilters);
 
   const { getCurrentLocation, isLoading: isLoadingUserLocation } = useGetUserLocation({
@@ -78,7 +78,7 @@ function FilterLocation(props: FilterLocationProps) {
   };
 
   return (
-    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
+    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
       {/* Header */}
       <BoxRowCenterBetween>
         <Box className="flex-1 flex-row items-center gap-2">
@@ -98,7 +98,7 @@ function FilterLocation(props: FilterLocationProps) {
         <Button
           title={t('filters.location_button_search_address')}
           colorVariant="light"
-          className="flex-1 rounded-md border-ring bg-white"
+          className="border-ring flex-1 rounded-md bg-white"
           onPress={handlePressSearch}
           iconProps={{ color: COLORS.muted, name: 'map-regular', position: 'left-outside' }}
           size="sm"
@@ -109,7 +109,7 @@ function FilterLocation(props: FilterLocationProps) {
         <Button
           title={t('filters.location_button_nearby')}
           colorVariant="light"
-          className="flex-1 rounded-md border-ring bg-white"
+          className="border-ring flex-1 rounded-md bg-white"
           onPress={handlePressGetCurrentLocation}
           isLoading={isLoadingUserLocation}
           iconProps={{

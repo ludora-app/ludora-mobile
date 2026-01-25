@@ -7,6 +7,7 @@ import COLORS from '@/constants/COLORS';
 import { getSportImage } from '@/utils/sports.utils';
 import { convertMToKm } from '@/utils/distance.utils';
 import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
+import { useTranslate } from '@tolgee/react';
 
 const styles = StyleSheet.create({
   shadowBlack: {
@@ -23,11 +24,12 @@ const styles = StyleSheet.create({
 interface FieldCardProps {
   onPress?: () => void;
   field: FieldResponseDto;
-  shadowVariant?: 'primary' | "black" | "secondary";
+  shadowVariant?: 'primary' | 'black' | 'secondary';
 }
 
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
   const { children, field, onPress, shadowVariant = 'black' } = props;
+  const { t } = useTranslate();
 
   const { fieldImages, name, shortAddress, sport, type, userDistance = 0 } = field || {};
 
@@ -60,17 +62,16 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
     return COLORS.primary;
   }, [shadowVariant]);
 
-
   const content = (
-    <Box style={handleShadow} className='rounded-xl'>
+    <Box style={handleShadow} className="rounded-xl">
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
           {type === FieldResponseDtoType.PUBLIC && (
-            <Chip title="Terrain publique" size="2xs" className="mt-2 mr-2 ml-auto" />
+            <Chip title={t(`common.field_type_${type}`)} size="2xs" className="mt-2 mr-2 ml-auto" />
           )}
         </ImageBackground>
       </Box>
-      <Box className={cn('overflow-hidden rounded-b-xl bg-white')}>
+      <Box className="overflow-hidden rounded-b-xl bg-white">
         <Box>
           {/* top card content */}
           <Box className="gap-2 bg-white px-3 py-2">
@@ -82,7 +83,9 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
                   {shortAddress}
                 </String>
                 <Box>
-                  <String variant="body-xs">{userDistance ? `(${convertMToKm(userDistance)} km)` : ''}</String>
+                  <String variant="body-xs">
+                    {userDistance ? `(${convertMToKm(userDistance)} ${t('common.km').toLowerCase()})` : ''}
+                  </String>
                 </Box>
               </Box>
             </BoxRow>

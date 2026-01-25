@@ -1,7 +1,7 @@
 import { Button } from '@ludo/ui';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
 
 import ROUTES from '@/constants/ROUTES';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -17,6 +17,8 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
   const router = useRouter();
   const { activeStep, setActiveStep } = props;
   const { trackEvent } = useAnalytics();
+  const autoGoToNextStep = useCreateSessionStore(state => state.session?.additionalData?.autoGoToNextStep);
+  const setCreateSession = useCreateSessionStore(state => state.setSession);
 
   const isStep1Valid = useCreateSessionStore(
     state =>
@@ -57,7 +59,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     if (activeStep === 1 && currentSession) {
       trackEvent({
         eventName: 'create_session_step_1_completed',
-        properties: {
+        data: {
           game_mode: gameMode,
           level,
           sport,
@@ -68,7 +70,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     if (activeStep === 2 && currentSession) {
       trackEvent({
         eventName: 'create_session_step_2_completed',
-        properties: {
+        data: {
           end_date: endDate,
           field_uid: fieldUid,
           is_partner: fieldType === 'partner',
@@ -81,5 +83,19 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     }
     setActiveStep(prev => prev + 1);
   };
+
+  useEffect(() => {
+    if (isStep2Valid && autoGoToNextStep) {
+      // the setTimeout is needed to let the formsheet close before the next step
+      setTimeout(() => {
+        handleSubmit();
+      }, 600);
+      setCreateSession({
+        additionalData: {
+          autoGoToNextStep: false,
+        },
+      });
+    }
+  }, [isStep2Valid, autoGoToNextStep]);
   return <Button title={t('common.button_next')} isDisabled={!handleButtonDisabled} onPress={handleSubmit} />;
 }

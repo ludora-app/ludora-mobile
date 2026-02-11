@@ -33,7 +33,6 @@ export default function SessionScreen() {
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const { data: sessionData, isLoading: isLoadingSessionData } = useGetSessionById(sessionUid);
-  console.log(sessionData);
   const { creator, description, fieldUid, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);

@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  Input as InputChillUi,
-  InputContainer,
-  InputField,
-  InputLabel,
-  InputMessage,
-  cn,
-  Box,
-  BoxRow,
-} from '@chillui/ui';
+import { Input as InputChillUi, InputContainer, InputField, InputLabel, cn, Box, BoxRow } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -22,6 +13,7 @@ export default function Input(props: InputProps) {
     error,
     hasClearIcon = true,
     hasError,
+    hasLengthCounter,
     hasMessageError,
     inputContainerClassName,
     inputFieldProps,
@@ -29,7 +21,6 @@ export default function Input(props: InputProps) {
     leftIconAction,
     rightContentProps,
     rightIconAction,
-    hasLengthCounter,
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const showError = hasError && !!error;

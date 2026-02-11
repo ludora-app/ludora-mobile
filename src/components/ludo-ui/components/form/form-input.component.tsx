@@ -14,6 +14,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     hasClearIcon,
     hasError = true,
     hasErrorTranslation = true,
+    hasLengthCounter,
     hasMessageError = true,
     inputContainerClassName,
     inputFieldClassName,
@@ -24,7 +25,6 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     placeholder,
     rightContentProps,
     rightIconAction,
-    hasLengthCounter,
     ...rest
   } = props;
   const { t } = useTranslate();

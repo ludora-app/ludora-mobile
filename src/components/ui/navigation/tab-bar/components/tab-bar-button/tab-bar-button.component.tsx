@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
 import { TabTriggerSlotProps } from 'expo-router/ui';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { TabRoutes } from '@/constants/TABS_ROUTES';
 import { Box, ScalePressable } from '@/components/chill-ui-library';
 
@@ -41,7 +41,7 @@ export default function TabBarButton(props: TabBarButtonProps) {
       ]}
       className="absolute left-1/2 items-center justify-center rounded-full border-none bg-transparent"
     >
-      <ScalePressable onPress={() => router.navigate(ROUTES.CREATE_SESSION.INDEX)}>
+      <ScalePressable onPress={() => router.navigate(ROUTES.CREATE_SESSION.STEP_1)}>
         <Box
           className="bg-primary items-center justify-center rounded-full"
           style={{

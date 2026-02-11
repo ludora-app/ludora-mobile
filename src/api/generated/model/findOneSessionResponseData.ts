@@ -59,6 +59,8 @@ export interface FindOneSessionResponseData {
   readonly uid: string;
   /** Distance to the session in meters */
   readonly userDistance?: number;
+  /** Number of views of the session */
+  viewCount: number;
   /** Session visibility */
   readonly visibility?: FindOneSessionResponseDataVisibility;
 }

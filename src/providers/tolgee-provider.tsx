@@ -7,18 +7,16 @@ import { FormatIcu } from '@tolgee/format-icu';
 import { Tolgee, TolgeeProvider as TolgeeProviderNative } from '@tolgee/react';
 
 import en from '../../locales/en.json';
-import frFR from '../../locales/fr-FR.json';
+import fr from '../../locales/fr.json';
 
-const tolgee = Tolgee()
-  .use(FormatIcu())
-  .init({
-    defaultLanguage: 'fr-FR',
-    fallbackLanguage: 'en',
-    staticData: {
-      en,
-      'fr-FR': frFR,
-    },
-  });
+const tolgee = Tolgee().use(FormatIcu()).init({
+  defaultLanguage: 'fr',
+  fallbackLanguage: 'en',
+  staticData: {
+    en,
+    fr,
+  },
+});
 
 export default function TolgeeProvider({ children }: PropsWithChildren) {
   return <TolgeeProviderNative tolgee={tolgee}>{children}</TolgeeProviderNative>;

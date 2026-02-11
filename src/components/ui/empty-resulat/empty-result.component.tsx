@@ -15,15 +15,20 @@ export type EmptyResultProps = {
   iconClassName?: string;
   hasRandomTitle?: boolean;
   randomOptions?: number;
+  iconNames?: TIconsAll[];
+  center?: boolean;
 };
 
 const RANDOM_OPTIONS = 3;
 
 function EmptyResult(props: EmptyResultProps) {
   const { t } = useTranslate();
-  const { className, hasRandomTitle, iconClassName, randomOptions = RANDOM_OPTIONS, title, variant } = props;
+  const { center, className, hasRandomTitle, iconClassName, iconNames, randomOptions = RANDOM_OPTIONS, title, variant } = props;
 
   const getIconName = (): TIconsAll => {
+    if (iconNames) {
+      return iconNames[Math.floor(Math.random() * iconNames.length)];
+    }
     if (variant) {
       return variant === 'icon-1' ? 'ludo-cry' : 'ludo-cry-2';
     }
@@ -44,7 +49,7 @@ function EmptyResult(props: EmptyResultProps) {
 
   const iconName = getIconName();
   return (
-    <Wrapper className={cn('bg-background mt-14 grow items-center gap-4', className)}>
+    <Wrapper className={cn('items-center gap-4', className, { "mt-14": !center })}>
       <Icon name={iconName} className={cn('size-36', iconClassName)} />
       <String className="text-center">{handleTitle()}</String>
     </Wrapper>

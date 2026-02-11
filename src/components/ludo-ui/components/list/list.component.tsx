@@ -185,7 +185,7 @@ export default function List(props: ListProps) {
         keyboardDismissMode="on-drag"
         style={[listStyle, style]}
         keyboardShouldPersistTaps="always"
-        contentContainerClassName={cn('grow', contentContainerClassName)}
+        contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
         ListFooterComponent={
           <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
         }

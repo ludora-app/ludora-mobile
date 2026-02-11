@@ -1,12 +1,9 @@
-import { useGet as useGetChatRoomsEvents } from '@api/hooks/chatRoomsEvents.hook';
-import { useGet as useGetChatRoomsPrivate } from '@api/hooks/chatRoomsPrivate.hook';
+import { ConversationsFindAllByUserUidParams } from '@/api/generated/model';
+import { useConversationsFindAllByUserUidInfinite } from '@/api/generated/api/conversations/conversations.api';
 
-export const useGetPrivateChatRooms = () => {
-  const { data, error, isLoading } = useGetChatRoomsPrivate();
-  return { data: data?.data, error, isLoading };
-};
-
-export const useGetEventsChatRooms = () => {
-  const { data, error, isLoading } = useGetChatRoomsEvents();
-  return { data: data?.data, error, isLoading };
-};
+export const useGetAllChatRooms = (filter: ConversationsFindAllByUserUidParams) =>
+  useConversationsFindAllByUserUidInfinite(filter, {
+    query: {
+      getNextPageParam: lastPage => lastPage?.data?.nextCursor,
+    },
+  });

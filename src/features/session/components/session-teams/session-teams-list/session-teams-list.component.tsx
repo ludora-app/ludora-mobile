@@ -24,7 +24,7 @@ export default function SessionTeamsList() {
   return (
     <FlatList
       data={sessionTeams}
-      renderItem={({ item, index }) => (
+      renderItem={({ index, item }) => (
         <SessionTeamsListSection
           item={item}
           hasUserJoinedATeam={hasUserJoinedATeam}

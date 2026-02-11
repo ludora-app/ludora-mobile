@@ -12,10 +12,10 @@ export interface UpdateUserDto {
   bio?: string;
   /** The birthdate of the user */
   birthdate?: string;
+  /** File image (avatar) */
+  file?: Blob;
   /** The firstname of the user */
   firstname?: string;
-  /** The image url of the user */
-  imageUrl?: string;
   /** The lastname of the user */
   lastname?: string;
   /** The phone number of the user */

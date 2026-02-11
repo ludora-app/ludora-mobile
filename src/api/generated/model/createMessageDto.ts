@@ -10,8 +10,14 @@ import type { CreateMessageDtoType } from './createMessageDtoType';
 export interface CreateMessageDto {
   /** Content of the message (text) */
   content?: string;
+  /** For a group or (already existing) private conversation, the conversation uid */
+  conversationUid?: string;
   /** File image (message) */
   file?: Blob;
+  /** For a private conversation, the recipient uid */
+  recipientUid?: string;
+  /** For a session conversation, the session uid */
+  sessionUid?: string;
   /** Type of the message */
   type: CreateMessageDtoType;
 }

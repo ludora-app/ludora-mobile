@@ -5,17 +5,20 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import type { FindOneUserResponseDataDtoUserSportsItem } from './findOneUserResponseDataDtoUserSportsItem';
+import type { UserSportPreferencesDto } from './userSportPreferencesDto';
 
 export interface FindOneUserResponseDataDto {
   /** @nullable */
   readonly bio?: string | null;
   readonly firstname: string;
+  readonly friendsCount?: number;
   /** @nullable */
   readonly imageUrl?: string | null;
   readonly lastname: string;
+  readonly matchesCount?: number;
   /** @nullable */
   readonly name?: string | null;
   readonly uid: string;
-  userSports?: FindOneUserResponseDataDtoUserSportsItem[];
+  /** @nullable */
+  readonly userSportPreferences?: readonly UserSportPreferencesDto[] | null;
 }

@@ -24,7 +24,9 @@ export interface SegmentedControlTriggerProps {
    * - `'touchable-opacity'`
    * - `'pressable'`
    */
-  as?: 'touchable-opacity' | 'pressable';
+  as?: 'touchable-opacity' | 'pressable' | 'scale-pressable';
+  /** Callback function called when the item is pressed */
+  onPress?: () => void;
   /** Props for the String component */
   stringProps?: StringProps & { activeStyle?: TextStyle; activeColor?: string; activeClassName?: string };
 }

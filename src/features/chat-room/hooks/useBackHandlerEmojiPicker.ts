@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
-import useChatRoomInputEmojiPickerStore from '../store/chatRoomInputEmojiPickerStore';
+import useChatRoomInputEmojiPickerStore from '../store/chat-room-input-emoji-picker.store';
 
 export function useBackHandlerEmojiPicker() {
   const { isEmojiPickerOpen, setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();

@@ -7,7 +7,7 @@
  */
 import type { FieldImageResponseDto } from './fieldImageResponseDto';
 import type { PartnerDto } from './partnerDto';
-import type { FindOneFieldResponseDataSport } from './findOneFieldResponseDataSport';
+import type { FindOneFieldResponseDataSportsItem } from './findOneFieldResponseDataSportsItem';
 import type { FindOneFieldResponseDataStatus } from './findOneFieldResponseDataStatus';
 import type { FindOneFieldResponseDataType } from './findOneFieldResponseDataType';
 
@@ -28,8 +28,8 @@ export interface FindOneFieldResponseData {
   partnerUid?: string;
   /** short address of the field */
   shortAddress: string;
-  /** sport of the field */
-  sport: FindOneFieldResponseDataSport;
+  /** sports of the field */
+  sports: FindOneFieldResponseDataSportsItem[];
   /** status of the field */
   status: FindOneFieldResponseDataStatus;
   /** type of the field */

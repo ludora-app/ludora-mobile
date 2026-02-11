@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
+import { getApiUrl } from '@/utils/api-url.utils';
 import { useAuthStore } from '@/stores/auth.store';
 import { useUserMe } from '@/queries/user-me.query';
 import { WS_RESOURCES } from '@/types/websocket.type';
 import { useWebsocketStore } from '@/stores/websocket.store';
-import { connect, disconnect, join, leave, on, emit, off } from '@/services/websocket/websocket.module';
+import { connect, disconnect, join, leave, on, emit, off } from '@/services/websocket/websocket.client';
 
 import { useAppState } from './app-state.hook';
 
@@ -24,7 +25,10 @@ export const useWebsocketConnection = () => {
   };
 
   const handleWSMessage = ({ payload, ressource }: { ressource: string; payload: any }) => {
-    console.log('----WS: ', payload);
+    if (__DEV__) {
+      // eslint-disable-next-line
+      console.log('----WS: ', payload);
+    }
     switch (ressource) {
       case WS_RESOURCES.MESSAGE:
         console.log('----WS: CHAT_ROOM_MESSAGE', payload);
@@ -41,7 +45,7 @@ export const useWebsocketConnection = () => {
       console.log('No access token found, cannot connect to WebSocket.');
       return;
     }
-    connect(`${process.env.EXPO_PUBLIC_DEV_API_URL}`, accessToken);
+    connect(getApiUrl(), accessToken);
 
     on('message', message => {
       if (message.action === 'AUTHENTICATE' && message.payload.isAuthenticated) {

@@ -1,10 +1,11 @@
 import { PropsWithChildren } from 'react';
-import { String } from '../../string';
-import { cn, isString, Slot } from '../../../utils';
-import { SegmentedControlTriggerProps } from '../../../types';
 import { Pressable, TouchableOpacity } from 'react-native';
 
+import { String } from '../../string';
+import { cn, isString, Slot } from '../../../utils';
+import { ScalePressable } from '../../scalePressable';
 import { twStyles } from '../styles/SegmentedControl.styles';
+import { SegmentedControlTriggerProps } from '../../../types';
 import { useSegmentedControlState, useSegmentedControlActions } from '../context/SegmentedControlContext';
 
 /**
@@ -31,14 +32,26 @@ import { useSegmentedControlState, useSegmentedControlActions } from '../context
  * @throws Error if used outside of SegmentedControlProvider context
  */
 export function SegmentedControlTrigger(props: PropsWithChildren<SegmentedControlTriggerProps>) {
-  const { activeClassName, activeStyle, as, asChild, children, className, isDisabled, stringProps, style, value } =
-    props;
+  const {
+    activeClassName,
+    activeStyle,
+    as,
+    asChild,
+    children,
+    className,
+    isDisabled,
+    onPress,
+    stringProps,
+    style,
+    value,
+  } = props;
   const { itemWidth, selectedOption } = useSegmentedControlState();
   const { setSelectedOption } = useSegmentedControlActions();
 
   const handleOptionPress = () => {
     if (isDisabled) return;
     setSelectedOption(value);
+    onPress?.();
   };
 
   const isActive = selectedOption === value;
@@ -47,7 +60,7 @@ export function SegmentedControlTrigger(props: PropsWithChildren<SegmentedContro
     <String
       color={isActive ? stringProps?.activeColor : stringProps?.color}
       style={[isActive && { ...stringProps?.activeStyle }, stringProps?.style]}
-      className={cn(isActive && stringProps?.activeClassName, stringProps?.className)}
+      className={cn(isActive ? stringProps?.activeClassName : stringProps?.className)}
       {...stringProps}
     >
       {children}
@@ -84,6 +97,10 @@ export function SegmentedControlTrigger(props: PropsWithChildren<SegmentedContro
 
   if (as === 'touchable-opacity') {
     return <TouchableOpacity {...commonProps}>{content}</TouchableOpacity>;
+  }
+
+  if (as === 'scale-pressable') {
+    return <ScalePressable {...commonProps}>{content}</ScalePressable>;
   }
 
   return <Pressable {...commonProps}>{content}</Pressable>;

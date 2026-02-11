@@ -7,7 +7,7 @@
  */
 import type { FindMeUserResponseDataDtoSex } from './findMeUserResponseDataDtoSex';
 import type { FindMeUserResponseDataDtoType } from './findMeUserResponseDataDtoType';
-import type { FindMeUserResponseDataDtoUserSportsItem } from './findMeUserResponseDataDtoUserSportsItem';
+import type { UserSportPreferencesDto } from './userSportPreferencesDto';
 
 export interface FindMeUserResponseDataDto {
   /** @nullable */
@@ -19,11 +19,13 @@ export interface FindMeUserResponseDataDto {
   /** @nullable */
   readonly email?: string | null;
   readonly firstname: string;
+  readonly friendsCount?: number;
   /** @nullable */
   readonly imageUrl?: string | null;
   /** */
   readonly isEmailVerified?: boolean;
   readonly lastname: string;
+  readonly matchesCount?: number;
   /** @nullable */
   readonly name?: string | null;
   /** @nullable */
@@ -35,5 +37,6 @@ export interface FindMeUserResponseDataDto {
   /** @nullable */
   readonly type: FindMeUserResponseDataDtoType;
   readonly uid: string;
-  userSports?: FindMeUserResponseDataDtoUserSportsItem[];
+  /** @nullable */
+  readonly userSportPreferences?: readonly UserSportPreferencesDto[] | null;
 }

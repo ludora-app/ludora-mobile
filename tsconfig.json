@@ -19,6 +19,7 @@
     "src/features/filters/filters-calendar",
     "src/utils/api-url.utils.ts",
     "tools/generate-api/api-url.utils.js",
-    "src/components/ludo-ui/components/list/utils/index.tsw"
+    "src/components/ludo-ui/components/list/utils/index.tsw",
+    "src/features/create-session/screens/creat-session-step-1.screen.tsW"
   ]
 }

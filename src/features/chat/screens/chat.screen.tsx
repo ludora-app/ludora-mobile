@@ -1,15 +1,17 @@
-import { TabSwitch } from '@components/nysaUi';
+import { useSharedValue } from 'react-native-reanimated';
 
-import ChatScreenPrivateConversations from '../components/chat-private-conversations.component';
-import ChatScreenPartiesConversations from '../components/chat-parties-conversations.component';
+import ChatConversationsList from '../components/chat-conversations-list.component';
+import ChatConversationsListHeaderType from '../components/chat-conversations-header/chat-conversations-header-type.component';
+import ChatConversationsHeaderSearch from '../components/chat-conversations-header/chat-conversations-header-search.component';
 
 export default function ChatScreen() {
+  const scrollY = useSharedValue(0);
+
   return (
-    <TabSwitch
-      leftScreenTitle="Messages privés"
-      rightScreenTitle="Chat soirées"
-      leftRender={<ChatScreenPrivateConversations />}
-      rightRender={<ChatScreenPartiesConversations />}
-    />
+    <>
+      <ChatConversationsHeaderSearch />
+      <ChatConversationsListHeaderType scrollY={scrollY} />
+      <ChatConversationsList scrollY={scrollY} />
+    </>
   );
 }

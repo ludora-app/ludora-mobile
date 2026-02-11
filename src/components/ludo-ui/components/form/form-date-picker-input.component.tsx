@@ -16,6 +16,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     className,
     control,
     datePickerProps,
+    hasErrorTranslation,
     inputContainerClassName,
     inputFieldClassName,
     label,
@@ -23,7 +24,6 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     placeholder,
     ...rest
   } = props;
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslate();
@@ -33,8 +33,9 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     field: { onBlur, onChange, value },
     fieldState: { error },
   } = useController({ control, name });
-
+  const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : new Date());
   const dateValue = value ? dayjs(value).format('DD/MM/YYYY') : '';
+
 
   return (
     <>
@@ -54,7 +55,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
           className={className}
           hasError
           hasMessageError
-          error={error?.message}
+          error={hasErrorTranslation ? t(error?.message) : error?.message}
         />
       </ScalePressable>
       <DatePicker

@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { FieldResponseDto } from '@/api/generated/model';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { TimeSlot } from '@/features/create-session/types/create-session-step-2.types';

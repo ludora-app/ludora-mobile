@@ -1,10 +1,8 @@
-import { Icon } from '@components/nysaUi';
-import { usePickImage } from '@utils/images';
+import { Icon } from '@ludo/ui';
 import { useCallback, useEffect } from 'react';
-import { MessageType } from '@api/utils/api.types';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue.queries';
+import { usePickImage } from '@/utils/image-picker.utils';
 
 interface ChatRoomInputCameraAlbumProps {
   inputValue: string;
@@ -13,7 +11,7 @@ interface ChatRoomInputCameraAlbumProps {
 function ChatRoomInputCameraAlbumIcons({ inputValue }: ChatRoomInputCameraAlbumProps) {
   const { clearImages, handlePickImage, images } = usePickImage();
 
-  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
+  // const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
 
   const iconsTranslateX = useSharedValue(0);
   const iconPositionStyle = useAnimatedStyle(() => ({
@@ -29,19 +27,19 @@ function ChatRoomInputCameraAlbumIcons({ inputValue }: ChatRoomInputCameraAlbumP
   }, [iconsTranslateX]);
 
   useEffect(() => {
-    if (inputValue.length === 0) {
+    if (inputValue?.length === 0) {
       showIcons();
     } else {
       hideIcons();
     }
-  }, [inputValue.length === 0]);
+  }, [inputValue?.length === 0]);
 
   useEffect(() => {
     if (images && images.length === 1) {
-      addOptimisticMessageToQueue(images[0].uri, MessageType.IMAGE);
+      // addOptimisticMessageToQueue(images[0].uri, MessageType.IMAGE);
     } else if (images && images.length > 1) {
       const imagesUri = images.map(image => image.uri);
-      addOptimisticMessageToQueue(imagesUri, MessageType.IMAGES);
+      // addOptimisticMessageToQueue(imagesUri, MessageType.IMAGES);
     }
     return () => {
       clearImages();

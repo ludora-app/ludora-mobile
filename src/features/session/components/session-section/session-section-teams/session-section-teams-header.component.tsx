@@ -5,7 +5,7 @@ import { BoxRowCenterBetween, Chip } from '@ludo/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import COLORS from '@/constants/COLORS';
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { SessionScreenLocalSearchParams } from '@/features/session/types/session.types';
 
@@ -30,14 +30,14 @@ export default function SessionSectionTeamsHeader() {
 
   const handleColorVariant = useMemo(() => {
     if (!sideTeam) {
-      return "muted";
+      return 'muted';
     }
     return sideTeam === 'left' ? 'primary' : 'secondary';
   }, [sideTeam]);
 
   const handleVariant = useMemo(() => {
     if (!sideTeam) {
-      return "contained";
+      return 'contained';
     }
     return 'outlined';
   }, [sideTeam]);
@@ -49,7 +49,7 @@ export default function SessionSectionTeamsHeader() {
         title={t('common.seeAll')}
         variant={handleVariant}
         size="2xs"
-        className={cn("px-0 bg-white", { "border-muted": handleVariant === "contained" })}
+        className={cn('bg-white px-0', { 'border-muted': handleVariant === 'contained' })}
         contentProps={{
           className: 'px-2',
         }}

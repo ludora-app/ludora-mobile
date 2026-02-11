@@ -7,7 +7,7 @@
  */
 import type { FieldAvailabilityDto } from './fieldAvailabilityDto';
 import type { FieldImageResponseDto } from './fieldImageResponseDto';
-import type { FieldResponseDtoSport } from './fieldResponseDtoSport';
+import type { FieldResponseDtoSportsItem } from './fieldResponseDtoSportsItem';
 import type { FieldResponseDtoType } from './fieldResponseDtoType';
 
 export interface FieldResponseDto {
@@ -23,8 +23,8 @@ export interface FieldResponseDto {
   name?: string;
   /** short address of the field */
   shortAddress: string;
-  /** sport of the field */
-  sport: FieldResponseDtoSport;
+  /** sports of the field */
+  sports: FieldResponseDtoSportsItem[];
   /** type of the field */
   type: FieldResponseDtoType;
   /** uid of the field */

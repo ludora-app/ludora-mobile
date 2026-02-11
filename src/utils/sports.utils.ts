@@ -1,6 +1,6 @@
 import { basketballBall } from 'assets';
 
 import { SPORT_IMAGES } from '@/constants/session.constants';
-import { SessionCollectionItemSport } from '@/api/generated/model';
+import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
-export const getSportImage = (sport: SessionCollectionItemSport) => SPORT_IMAGES[sport] ?? basketballBall;
+export const getSportImage = (sport: SessionCollectionItemDtoSport) => SPORT_IMAGES[sport] ?? basketballBall;

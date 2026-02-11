@@ -1,7 +1,13 @@
-import { Audio } from 'expo-av';
-import { useToast } from '@components/nysaUi';
-import { useCallback, useState } from 'react';
+import { useToast } from '@chillui/ui';
 import { Alert, Vibration } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  useAudioRecorder as useAudioRecorderNative,
+  RecordingPresets,
+  setAudioModeAsync,
+  useAudioRecorderState,
+  requestRecordingPermissionsAsync,
+} from 'expo-audio';
 
 import { useChatRoomInputAudioStore, useChatRoomInputAudioTimerStore } from '../store/chatRoomInputAudioStore';
 
@@ -11,82 +17,85 @@ export default function useAudioRecorder() {
   const { toast } = useToast();
   const { audioTimer, setAudioTimer } = useChatRoomInputAudioTimerStore();
   const { setIsRecording } = useChatRoomInputAudioStore();
-  const [recording, setRecording] = useState<Audio.Recording | undefined>(undefined);
+  const audioRecorder = useAudioRecorderNative(RecordingPresets.HIGH_QUALITY);
+  const recorderState = useAudioRecorderState(audioRecorder);
   const [audioUri, setAudioUri] = useState<string | null>(null);
   const [pingToStopRecording, setPingToStopRecording] = useState(false);
 
-  // get permission to record audio
-  const audioRecorderPermission = async () => {
-    const { granted } = await Audio.requestPermissionsAsync();
-    if (!granted) {
-      Alert.alert('Permission refusée', 'L’accès au microphone est requis pour enregistrer.');
-      return;
-    }
-  };
+  // Request permissions on mount
+  useEffect(() => {
+    (async () => {
+      const status = await requestRecordingPermissionsAsync();
+      if (!status.granted) {
+        Alert.alert('Permission refusée', "L'accès au microphone est requis pour enregistrer.");
+      }
 
-  // Fonction pour démarrer l'enregistrement
+      await setAudioModeAsync({
+        allowsRecording: true,
+        playsInSilentMode: true,
+      });
+    })();
+  }, []);
+
+  // Track recording duration and update timer
+  useEffect(() => {
+    if (recorderState.isRecording && recorderState.durationMillis !== undefined) {
+      const duration = Math.round(recorderState.durationMillis / 1000);
+      setAudioTimer(duration);
+
+      if (duration >= MAX_DURATION) {
+        setPingToStopRecording(true);
+      }
+    }
+  }, [recorderState.isRecording, recorderState.durationMillis, setAudioTimer]);
+
+  // Sync recording state with store
+  useEffect(() => {
+    setIsRecording(recorderState.isRecording);
+  }, [recorderState.isRecording, setIsRecording]);
+
+  // Start recording
   const startRecording = async () => {
     Vibration.vibrate(100);
 
     try {
-      await audioRecorderPermission();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-      const { recording: recordingObject, status } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets['HIGH_QUALITY'],
-        status => {
-          const duration = Math.round(status.durationMillis / 1000);
-          if (status.isRecording) {
-            setAudioTimer(duration);
-
-            if (duration >= MAX_DURATION) {
-              setPingToStopRecording(true);
-            }
-          }
-        },
-        1000,
-      );
-      setRecording(recordingObject);
-      setIsRecording(status.isRecording);
-      console.log(status.durationMillis);
+      await audioRecorder.prepareToRecordAsync();
+      audioRecorder.record();
     } catch (error) {
       console.log('error', error);
-      stopRecording();
       toast({
-        message: 'huu',
+        message: "Erreur lors du démarrage de l'enregistrement",
         position: 'top',
         variant: 'error',
       });
     }
   };
 
-  // stop recording
+  // Stop recording
   const stopRecording = useCallback(async () => {
     Vibration.vibrate(100);
     try {
-      if (!recording) return;
-      const uri = recording.getURI();
-      if (audioTimer > 0) {
+      if (!recorderState.isRecording) return;
+
+      await audioRecorder.stop();
+
+      // The recording will be available on audioRecorder.uri
+      const { uri } = audioRecorder;
+      if (audioTimer > 0 && uri) {
         setAudioUri(uri);
       }
-      setRecording(undefined);
-      await recording.stopAndUnloadAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-      });
 
-      setIsRecording(false);
       setAudioTimer(0);
-    } catch {
+      setPingToStopRecording(false);
+    } catch (error) {
+      console.log('error', error);
       toast({
-        message: 'ceci',
+        message: "Erreur lors de l'arrêt de l'enregistrement",
         position: 'top',
         variant: 'error',
       });
     }
-  }, [recording, audioTimer]);
+  }, [audioRecorder, recorderState.isRecording, audioTimer, setAudioTimer]);
 
   return {
     audioUri,

@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { useShallow } from 'zustand/react/shallow';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import API_ERRORS from '@/api/utils/api.errors';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';

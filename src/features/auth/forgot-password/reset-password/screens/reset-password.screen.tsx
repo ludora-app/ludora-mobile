@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { WrapperSafeAreaView, FormInput, Button } from '@ludo/ui';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useDisableBack } from '@/hooks/navigation.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';

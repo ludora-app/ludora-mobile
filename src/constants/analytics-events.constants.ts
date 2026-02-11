@@ -43,6 +43,20 @@ export const ANALYTICS_EVENTS = {
     FILTER_FIELDS_APPLIED: 'filter_fields_applied',
     FILTER_SESSIONS_ALL_APPLIED: 'filter_sessions_all_applied',
   },
+  PROFIL: {
+    PROFIL_EDIT_BIO_FAILED: 'profil_edit_bio_failed',
+    PROFIL_EDIT_BIO_SUCCESS: 'profil_edit_bio_success',
+    PROFIL_EDIT_BIRTHDATE_FAILED: 'profil_edit_birthdate_failed',
+    PROFIL_EDIT_BIRTHDATE_SUCCESS: 'profil_edit_birthdate_success',
+    PROFIL_EDIT_EMAIL_FAILED: 'profil_edit_email_failed',
+    PROFIL_EDIT_EMAIL_SUCCESS: 'profil_edit_email_success',
+    PROFIL_EDIT_NAME_FAILED: 'profil_edit_name_failed',
+    PROFIL_EDIT_NAME_SUCCESS: 'profil_edit_name_success',
+    PROFIL_EDIT_PASSWORD_FAILED: 'profil_edit_password_failed',
+    PROFIL_EDIT_PASSWORD_SUCCESS: 'profil_edit_password_success',
+    PROFIL_EDIT_SEX_FAILED: 'profil_edit_sex_failed',
+    PROFIL_EDIT_SEX_SUCCESS: 'profil_edit_sex_success',
+  },
   SESSION: {
     SESSION_JOINED: 'session_joined',
     SESSION_JOINED_FAILED: 'session_joined_failed',
@@ -141,6 +155,41 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.FILTERS.FILTER_SESSIONS_ALL_APPLIED]: {
     numberOfFilters: number;
     filters: Partial<Filters>;
+  };
+
+  // **
+  // profil events
+  // **
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_BIO_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_SEX_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_NAME_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_EMAIL_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_PASSWORD_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_BIRTHDATE_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_SEX_SUCCESS]: {
+    is_sex_added: boolean;
+    is_sex_updated: boolean;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_NAME_SUCCESS]: {
+    is_firstname_changed: boolean;
+    is_lastname_changed: boolean;
+  };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_BIO_SUCCESS]: {
+    is_bio_added: boolean;
+    is_bio_removed: boolean;
+    is_bio_updated: boolean;
   };
 }
 

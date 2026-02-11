@@ -1,7 +1,6 @@
 import { cn } from '../../../utils';
-import { Animated } from 'react-native';
-import { useEffect, useRef } from 'react';
-import { AnimatedBox } from '../../animatedBox';
+import { useEffect } from 'react';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { SegmentedControlIndicatorProps } from '../../../types';
 
 import { twStyles } from '../styles/SegmentedControl.styles';
@@ -26,32 +25,27 @@ export function SegmentedControlIndicator(props: SegmentedControlIndicatorProps)
   const { itemWidth, selectedOption, validItemsValues } = useSegmentedControlState();
   const { className, duration, style } = props;
 
-  const animatedLeft = useRef(
-    new Animated.Value(
-      itemWidth * validItemsValues.indexOf(selectedOption) + segmentedControlDefaultProps.internalPadding / 2,
-    ),
-  ).current;
+  const animatedLeft = useSharedValue(
+    itemWidth * validItemsValues.indexOf(selectedOption) + segmentedControlDefaultProps.internalPadding / 2,
+  );
 
   useEffect(() => {
     const newLeft =
       itemWidth * validItemsValues.indexOf(selectedOption) + segmentedControlDefaultProps.internalPadding / 2;
-    Animated.timing(animatedLeft, {
+    animatedLeft.value = withTiming(newLeft, {
       duration: duration ?? segmentedControlDefaultProps.duration,
-      toValue: newLeft,
-      useNativeDriver: false,
-    }).start();
-  }, [selectedOption, validItemsValues, itemWidth, animatedLeft, duration]);
+    });
+  }, [selectedOption, validItemsValues, itemWidth, duration]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    left: animatedLeft.value,
+    width: itemWidth,
+  }));
 
   return (
-    <AnimatedBox
+    <Animated.View
       className={cn(twStyles.indicatorContainer, className, twStyles.indicatorContainerFreezed)}
-      style={[
-        {
-          left: animatedLeft,
-          width: itemWidth,
-        },
-        style,
-      ]}
+      style={[animatedStyle, style]}
     />
   );
 }

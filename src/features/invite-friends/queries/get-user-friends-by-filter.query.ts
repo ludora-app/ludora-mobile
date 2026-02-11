@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { filterObjectEntries } from '@/utils/filters.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
 

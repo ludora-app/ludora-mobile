@@ -5,7 +5,7 @@ import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRowCenter, Icon, String } from '@ludo/ui';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/COLORS';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';

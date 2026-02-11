@@ -1,25 +1,12 @@
 import { z } from 'zod';
 import { TolgeeInstance } from '@tolgee/react';
 
-import { emailSchema, nameSchema, passwordSchema } from '@/utils/zod-schemas.utils';
+import { birthdateSchema, emailSchema, nameSchema, passwordSchema } from '@/utils/zod-schemas.utils';
 
 export const formSchema = (t: TolgeeInstance['t']) =>
   z
     .object({
-      birthdate: z
-        .date({
-          error: t('common.input_birthdate_invalid_required'),
-        })
-        .refine(
-          date => {
-            const minDate = new Date();
-            minDate.setFullYear(minDate.getFullYear() - 15);
-            return date <= minDate;
-          },
-          {
-            message: t('common.input_birthdate_invalid_age'),
-          },
-        ),
+      birthdate: birthdateSchema(t),
       confirmPassword: z.string({ error: t('common.input_confirm_password_invalid_required') }),
       email: emailSchema(t),
       firstname: nameSchema(t),

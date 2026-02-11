@@ -6,13 +6,16 @@
 import { useQueryClient } from '@tanstack/react-query';
 import type {
   ConversationsFindAllByUserUidParams,
+  ConversationsLoadMoreMessagesParams,
   FieldsFindAllByPartnerUidParams,
+  FieldsFindAllPublicFieldsParams,
   FieldsFindAllVerifiedParams,
   FriendsFindAllMyFriendsParams,
   FriendsFindAllMyRequestsParams,
   SessionInvitationsFindAllBySessionIdParams,
   SessionInvitationsFindAllByUserIdParams,
   SessionsFindAllByUserUidParams,
+  SessionsFindAllMeParams,
   SessionsFindAllParams,
   SessionsFindOneWithDistanceParams,
   StorageGetSignedUrlParams,
@@ -31,6 +34,7 @@ import {
 import {
     getConversationsFindAllByUserUidQueryKey,
     getConversationsFindOneQueryKey,
+    getConversationsLoadMoreMessagesQueryKey,
 } from './api/conversations/conversations.api';
 import {
     getEmailsTestEmailQueryKey,
@@ -39,12 +43,20 @@ import {
     getFieldsFindAllVerifiedQueryKey,
     getFieldsFindAllByPartnerUidQueryKey,
     getFieldsFindOneQueryKey,
+    getFieldsFindAllPublicFieldsQueryKey,
 } from './api/fields/fields.api';
 import {
     getFriendsFindAllMyFriendsQueryKey,
     getFriendsFindAllMyRequestsQueryKey,
     getFriendsFindMyFriendRequestQueryKey,
 } from './api/friends/friends.api';
+import {
+    getGameModePreferencesFindMyGameModePreferencesQueryKey,
+} from './api/game-mode-preferences/game-mode-preferences.api';
+import {
+    getHourPreferencesFindAllByUserUidQueryKey,
+    getHourPreferencesFindMyHourPreferencesQueryKey,
+} from './api/hour-preferences/hour-preferences.api';
 import {
     getMetricsIndexQueryKey,
 } from './api/metrics/metrics.api';
@@ -68,21 +80,18 @@ import {
 } from './api/session-teams/session-teams.api';
 import {
     getSessionsFindAllQueryKey,
+    getSessionsFindAllMeQueryKey,
     getSessionsFindAllByUserUidQueryKey,
     getSessionsFindOneQueryKey,
     getSessionsFindOneWithDistanceQueryKey,
 } from './api/sessions/sessions.api';
 import {
+    getSportPreferencesFindAllByUserUidQueryKey,
+    getSportPreferencesFindMySportPreferencesQueryKey,
+} from './api/sport-preferences/sport-preferences.api';
+import {
     getStorageGetSignedUrlQueryKey,
 } from './api/storage/storage.api';
-import {
-    getUserHourPreferencesFindAllByUserUidQueryKey,
-    getUserHourPreferencesFindMyHourPreferencesQueryKey,
-} from './api/user-hour-preferences/user-hour-preferences.api';
-import {
-    getUserSportPreferencesFindAllByUserUidQueryKey,
-    getUserSportPreferencesFindMySportPreferencesQueryKey,
-} from './api/user-sport-preferences/user-sport-preferences.api';
 import {
     getUsersFindAllQueryKey,
     getUsersFindOneQueryKey,
@@ -146,6 +155,14 @@ export const useInvalidateConversationsFindOne = (uid: string) => {
     });
 };
 
+export const useInvalidateConversationsLoadMoreMessages = (uid: string, params: ConversationsLoadMoreMessagesParams) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getConversationsLoadMoreMessagesQueryKey(uid, params),
+    });
+};
+
 export const useInvalidateEmailsTestEmail = () => {
   const queryClient = useQueryClient();
   return () =>
@@ -178,6 +195,14 @@ export const useInvalidateFieldsFindOne = (uid: string) => {
     });
 };
 
+export const useInvalidateFieldsFindAllPublicFields = (params?: FieldsFindAllPublicFieldsParams) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getFieldsFindAllPublicFieldsQueryKey(params),
+    });
+};
+
 export const useInvalidateFriendsFindAllMyFriends = (params?: FriendsFindAllMyFriendsParams) => {
   const queryClient = useQueryClient();
   return () =>
@@ -199,6 +224,30 @@ export const useInvalidateFriendsFindMyFriendRequest = (otherUserUid: string) =>
   return () =>
     queryClient.invalidateQueries({
       queryKey: getFriendsFindMyFriendRequestQueryKey(otherUserUid),
+    });
+};
+
+export const useInvalidateGameModePreferencesFindMyGameModePreferences = () => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getGameModePreferencesFindMyGameModePreferencesQueryKey(),
+    });
+};
+
+export const useInvalidateHourPreferencesFindAllByUserUid = (userUid: string) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getHourPreferencesFindAllByUserUidQueryKey(userUid),
+    });
+};
+
+export const useInvalidateHourPreferencesFindMyHourPreferences = () => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getHourPreferencesFindMyHourPreferencesQueryKey(),
     });
 };
 
@@ -298,11 +347,19 @@ export const useInvalidateSessionsFindAll = (params?: SessionsFindAllParams) => 
     });
 };
 
-export const useInvalidateSessionsFindAllByUserUid = (params?: SessionsFindAllByUserUidParams) => {
+export const useInvalidateSessionsFindAllMe = (params?: SessionsFindAllMeParams) => {
   const queryClient = useQueryClient();
   return () =>
     queryClient.invalidateQueries({
-      queryKey: getSessionsFindAllByUserUidQueryKey(params),
+      queryKey: getSessionsFindAllMeQueryKey(params),
+    });
+};
+
+export const useInvalidateSessionsFindAllByUserUid = (userUid: string, params?: SessionsFindAllByUserUidParams) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSessionsFindAllByUserUidQueryKey(userUid, params),
     });
 };
 
@@ -322,43 +379,27 @@ export const useInvalidateSessionsFindOneWithDistance = (uid: string, params: Se
     });
 };
 
+export const useInvalidateSportPreferencesFindAllByUserUid = (userUid: string) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSportPreferencesFindAllByUserUidQueryKey(userUid),
+    });
+};
+
+export const useInvalidateSportPreferencesFindMySportPreferences = () => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSportPreferencesFindMySportPreferencesQueryKey(),
+    });
+};
+
 export const useInvalidateStorageGetSignedUrl = (params: StorageGetSignedUrlParams) => {
   const queryClient = useQueryClient();
   return () =>
     queryClient.invalidateQueries({
       queryKey: getStorageGetSignedUrlQueryKey(params),
-    });
-};
-
-export const useInvalidateUserHourPreferencesFindAllByUserUid = (userUid: string) => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getUserHourPreferencesFindAllByUserUidQueryKey(userUid),
-    });
-};
-
-export const useInvalidateUserHourPreferencesFindMyHourPreferences = () => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getUserHourPreferencesFindMyHourPreferencesQueryKey(),
-    });
-};
-
-export const useInvalidateUserSportPreferencesFindAllByUserUid = (userUid: string) => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getUserSportPreferencesFindAllByUserUidQueryKey(userUid),
-    });
-};
-
-export const useInvalidateUserSportPreferencesFindMySportPreferences = () => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getUserSportPreferencesFindMySportPreferencesQueryKey(),
     });
 };
 

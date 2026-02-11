@@ -26,7 +26,7 @@ export default function CreateSessionStep2FieldsListHeaderSticky() {
     <FiltersHeader
       numberOfFilters={numberOfFilters}
       source="filter_fields"
-      goBackPath="/create-session"
+      goBackPath="/create-session/step-2"
       selectedDayCarouselDate={selectedDayCarouselDate}
       onFiltersChange={OnFiltersChange}
       onChangeText={onInputChangeText}

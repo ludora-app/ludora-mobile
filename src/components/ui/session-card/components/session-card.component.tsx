@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
 import { cn } from '@chillui/ui';
-import { isArray } from 'radash';
 import { Link } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { getSportImage } from '@/utils/sports.utils';
-import { truncateString } from '@/utils/string.utils';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
 import { FindOneSessionResponseData, SessionCollectionItemDto } from '@/api/generated/model';
 
@@ -21,11 +19,11 @@ const styles = StyleSheet.create({
 
 interface SessionCardProps {
   isNextSession?: boolean;
-  session: SessionCollectionItemDto | FindOneSessionResponseData;
+  item: SessionCollectionItemDto | FindOneSessionResponseData;
 }
 
 export default function SessionCard(props: SessionCardProps) {
-  const { isNextSession = false, session } = props;
+  const { isNextSession = false, item: session } = props;
   const {
     endDate,
     fieldShortAddress,
@@ -66,10 +64,10 @@ export default function SessionCard(props: SessionCardProps) {
               <BoxRow className="items-center gap-1">
                 <BoxRow className="max-w-1/2 items-center">
                   <String variant="body-xs" font="primaryBold" colorVariant="primary" truncate>
-                    {sessionTeams[0].teamName}
+                    {sessionTeams?.[0]?.teamName}
                   </String>
                   <String variant="body-xs" font="primaryBold" colorVariant="primary">
-                    {` (${sessionTeams[0].numberOfPlayers}/${maxPlayersPerTeam})`}
+                    {` (${sessionTeams?.[0]?.numberOfPlayers}/${maxPlayersPerTeam})`}
                   </String>
                 </BoxRow>
                 <Box>
@@ -79,10 +77,10 @@ export default function SessionCard(props: SessionCardProps) {
                 </Box>
                 <BoxRow className="max-w-1/2 items-center">
                   <String variant="body-xs" font="primaryBold" colorVariant="secondary" truncate>
-                    {sessionTeams[1].teamName}
+                    {sessionTeams?.[1]?.teamName}
                   </String>
                   <String variant="body-xs" font="primaryBold" colorVariant="secondary">
-                    {` (${sessionTeams[1].numberOfPlayers}/${maxPlayersPerTeam})`}
+                    {` (${sessionTeams?.[1]?.numberOfPlayers}/${maxPlayersPerTeam})`}
                   </String>
                 </BoxRow>
               </BoxRow>

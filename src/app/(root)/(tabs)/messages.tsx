@@ -1,12 +1,3 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import ChatScreen from '@/features/chat/screens/chat.screen';
 
-export default function Messages() {
-  return (
-    <View>
-      <Text>messages</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({});
+export default ChatScreen;

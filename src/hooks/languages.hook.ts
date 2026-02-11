@@ -5,14 +5,7 @@ export const useLanguages = () => {
 
   const getLanguage = () => {
     const tolgeeLang = tolgee.getLanguage();
-    switch (tolgeeLang) {
-      case 'fr-FR':
-        return 'fr';
-      case 'en':
-        return 'en';
-      default:
-        return 'fr';
-    }
+    return tolgeeLang;
   };
   return { getLanguage };
 };

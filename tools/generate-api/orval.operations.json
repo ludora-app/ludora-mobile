@@ -11,6 +11,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "ConversationsController_loadMoreMessages": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "FieldsController_findAllVerified": {
     "query": {
       "useInfinite": true,
@@ -18,6 +24,12 @@
     }
   },
   "FieldsController_findAllByPartnerUid": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "FieldsController_findAllPublicFields": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"
@@ -36,6 +48,12 @@
     }
   },
   "SessionsController_findAll": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "SessionsController_findAllMe": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

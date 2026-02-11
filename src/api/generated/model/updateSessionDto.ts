@@ -7,6 +7,7 @@
  */
 import type { UpdateSessionDtoGameMode } from './updateSessionDtoGameMode';
 import type { UpdateSessionDtoLevel } from './updateSessionDtoLevel';
+import type { UpdateSessionDtoSport } from './updateSessionDtoSport';
 import type { UpdateSessionDtoVisibility } from './updateSessionDtoVisibility';
 
 export interface UpdateSessionDto {
@@ -26,6 +27,8 @@ export interface UpdateSessionDto {
   minPlayersPerTeam: number;
   /** The uid of the field slot */
   slotUid?: string;
+  /** The sport of the session */
+  sport?: UpdateSessionDtoSport;
   /** The start date of the session */
   startDate: string;
   /**

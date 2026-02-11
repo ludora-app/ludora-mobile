@@ -5,7 +5,7 @@ import { useTranslate } from '@tolgee/react';
 import { memo, useEffect, useMemo } from 'react';
 import { Box, Button, Icon, Separator, String, BoxRowCenterBetween } from '@ludo/ui';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/COLORS';
 import { parse } from '@/utils/json.utils';
 import useGetUserLocation from '@/hooks/user-location.hook';

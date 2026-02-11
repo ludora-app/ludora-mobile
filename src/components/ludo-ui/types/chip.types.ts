@@ -1,7 +1,7 @@
 import { ChipContentProps, ChipTitleProps, ChipProps as ChillUiChipProps, ChipIconProps } from '@chillui/ui';
 
 import { TIconsAll } from '@/constants/ICONS';
-import { RouteValues } from '@/constants/ROUTES';
+import { RouteValues } from '@/constants/routes.constants';
 
 export type ChipProps = ChillUiChipProps & {
   redirect?: RouteValues;

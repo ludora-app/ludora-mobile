@@ -1,6 +1,6 @@
 import { useTranslate } from '@tolgee/react';
-import { memo, useCallback, useState } from 'react';
 import { Slider } from 'react-native-awesome-slider';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Box, BoxRow, BoxRowCenterBetween, Button, Icon, String } from '@ludo/ui';
 import Animated, { FadeIn, FadeOut, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
@@ -49,6 +49,10 @@ function FilterDistanceRadius() {
   const hasLocation = (!!latitude && !!longitude) || !!address;
   const isScrubbing = useSharedValue(false);
 
+  useEffect(() => {
+    setDistanceValue(maxDistanceStoreValue);
+  }, [maxDistanceStoreValue]);
+
   useAnimatedReaction(
     () => distanceValue,
     data => {
@@ -73,16 +77,16 @@ function FilterDistanceRadius() {
   }
 
   const handlePressChange = (value: number) => {
-    setDistanceValue(value);
+    setFilters({ maxDistance: value });
   };
 
   const handleIncrement = () => {
     const value = Math.min(distanceValue + 1, 50);
-    setDistanceValue(value);
+    setFilters({ maxDistance: value });
   };
   const handleDecrement = () => {
     const value = Math.max(distanceValue - 1, 1);
-    setDistanceValue(value);
+    setFilters({ maxDistance: value });
   };
 
   return (
@@ -128,6 +132,7 @@ function FilterDistanceRadius() {
               thumbScaleValue.value = 1.4;
             }}
             onSlidingComplete={() => {
+              setFilters({ maxDistance: distanceValue });
               thumbScaleValue.value = 1;
             }}
             theme={{

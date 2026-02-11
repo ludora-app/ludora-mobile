@@ -1,56 +1,64 @@
-import { backgroundImg } from 'assets';
-import { PropsWithChildren } from 'react';
-import { cn, OutlinedString, } from '@chillui/ui';
-import { Box, Icon, String, Image, Wrapper } from '@ludo/ui';
+import { Box, String } from '@ludo/ui';
+import { BoxGrow, cn, WrapperProps } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import HeaderWrapper from './header-wrapper.component';
+import GoBackButton from '../../navigation/header-go-back/components/go-back-button.component';
 
-interface HeaderProps {
+type HeaderProps = {
   title?: string;
-  subTitle?: string;
+  hasShadow?: boolean;
+  hasGoBack?: boolean;
   className?: string;
-  hasNewSession?: boolean;
-}
+  hasTopSafeArea?: boolean;
+  px?: WrapperProps['px'];
+  titlePosition?: 'center' | 'left';
+};
 
-export default function Header(props: PropsWithChildren<HeaderProps>) {
-  const { children, className, hasNewSession = false, subTitle, title } = props;
+export default function Header(props: HeaderProps) {
+  const {
+    className,
+    hasGoBack = false,
+    hasShadow = false,
+    hasTopSafeArea = false,
+    px,
+    title,
+    titlePosition = 'center',
+  } = props;
+
+  if (titlePosition === 'left') {
+    return (
+      <HeaderWrapper
+        className={cn(hasGoBack && 'my-2 flex-row items-center gap-3', className)}
+        hasTopSafeArea={hasTopSafeArea}
+        hasShadow={hasShadow}
+        px={px}
+      >
+        {hasGoBack && <GoBackButton />}
+        {title && (
+          <BoxGrow>
+            <String font="primaryBold" variant="body-3">
+              {title}
+            </String>
+          </BoxGrow>
+        )}
+      </HeaderWrapper>
+    );
+  }
 
   return (
-    <Wrapper className={cn('h-56 flex-row items-end overflow-hidden', className)}>
-      <Image
-        source={backgroundImg}
-        className="w-screen h-screen absolute top-0 left-0"
-
-      />
-      <Box className="flex-1 flex-row justify-center gap-4">
-        <Box className="flex-1 gap-2 pb-3">
-          <Box className="-mb-3 w-full">
-            <OutlinedString
-              text={title}
-              fontSize={32}
-              width={350}
-              fillColor="#FFFFFF"
-              strokeColor={COLORS.primary}
-              strokeWidth={2}
-              fontFamily="NunitoSans700Bold"
-            />
-          </Box>
-          <String colorVariant="white" font="primaryBold">
-            {subTitle}
-          </String>
-          {children}
-          {hasNewSession && (
-            <Box className="absolute right-0 bottom-16">
-              <Icon name="mascotte-ludora" className="size-36" />
-            </Box>
-          )}
-        </Box>
-        {!hasNewSession && (
-          <Box className="justify-end">
-            <Icon name="mascotte-ludora" className="size-36" />
+    <HeaderWrapper className={className} hasTopSafeArea={hasTopSafeArea} hasShadow={hasShadow} px={px || 'none'}>
+      <Box className={cn(hasGoBack && 'relative my-2 items-center justify-center')}>
+        {hasGoBack && (
+          <Box className="absolute left-3">
+            <GoBackButton />
           </Box>
         )}
+        {title && (
+          <String font="primaryBold" variant="body-3" className="text-center">
+            {title}
+          </String>
+        )}
       </Box>
-    </Wrapper>
+    </HeaderWrapper>
   );
 }

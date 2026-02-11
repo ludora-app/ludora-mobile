@@ -5,7 +5,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Badge, Box, BoxCenter, BoxRow, Icon } from '@ludo/ui';
 
 import { parse } from '@/utils/json.utils';
-import ROUTES, { RouteValues } from '@/constants/ROUTES';
+import ROUTES, { RouteValues } from '@/constants/routes.constants';
 import { Filters } from '@/features/filters/filters/store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '@/features/filters/filters/types/filters.types';
 
@@ -72,7 +72,7 @@ export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props:
       </Box>
       <Badge show={numberOfFilters > 0} title={numberOfFilters?.toString() || '0'}>
         <ScalePressable onPress={handleOpenFilter}>
-          <BoxCenter className="rounded-full bg-primary p-3">
+          <BoxCenter className="bg-primary rounded-full p-3">
             <Icon name="filter-add-solid" size="md" />
           </BoxCenter>
         </ScalePressable>

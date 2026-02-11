@@ -29,15 +29,20 @@ import type {
   CreateFieldSlotDto,
   CreatePrivateFieldDto,
   FieldsFindAllByPartnerUidParams,
+  FieldsFindAllPublicFieldsParams,
   FieldsFindAllVerifiedParams,
   FindOneFieldResponseDto,
   NotFoundResponseDto,
   PaginationResponseFieldResponseDto,
+  PaginationResponsePublicFieldResponseData,
   ResponseTypeDto,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
+/**
+ * @summary Create a field slot
+ */
 export const fieldsCreateFieldSlot = (createFieldSlotDto: CreateFieldSlotDto, signal?: AbortSignal) => {
   return customInstance<void>({
     url: `/fields/field-slots`,
@@ -48,7 +53,10 @@ export const fieldsCreateFieldSlot = (createFieldSlotDto: CreateFieldSlotDto, si
   });
 };
 
-export const getFieldsCreateFieldSlotMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const getFieldsCreateFieldSlotMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ConflictResponseDto,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
     TError,
@@ -79,9 +87,18 @@ export type FieldsCreateFieldSlotMutationResult = NonNullable<
   Awaited<ReturnType<typeof fieldsCreateFieldSlot>>
 >;
 export type FieldsCreateFieldSlotMutationBody = CreateFieldSlotDto;
-export type FieldsCreateFieldSlotMutationError = unknown;
+export type FieldsCreateFieldSlotMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | ConflictResponseDto;
 
-export const useFieldsCreateFieldSlot = <TError = unknown, TContext = unknown>(options?: {
+/**
+ * @summary Create a field slot
+ */
+export const useFieldsCreateFieldSlot = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ConflictResponseDto,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof fieldsCreateFieldSlot>>,
     TError,
@@ -145,7 +162,7 @@ export const fieldsCreatePrivateField = (
   signal?: AbortSignal,
 ) => {
   const formData = new FormData();
-  formData.append('sport', createPrivateFieldDto.sport);
+  createPrivateFieldDto.sports.forEach(value => formData.append('sports', value));
   formData.append('name', createPrivateFieldDto.name);
   formData.append('address', createPrivateFieldDto.address);
   if (createPrivateFieldDto.lat !== undefined) {
@@ -661,6 +678,183 @@ export function useFieldsFindOne<
   const queryOptions = getFieldsFindOneQueryOptions(uid, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get all public fields
+ */
+export const fieldsFindAllPublicFields = (
+  params?: FieldsFindAllPublicFieldsParams,
+  signal?: AbortSignal,
+) => {
+  return customInstance<PaginationResponsePublicFieldResponseData>({
+    url: `/fields/list-public/collection`,
+    method: 'GET',
+    params,
+    signal,
+  });
+};
+
+export const getFieldsFindAllPublicFieldsQueryKey = (params?: FieldsFindAllPublicFieldsParams) => {
+  return [`/fields/list-public/collection`, ...(params ? [params] : [])] as const;
+};
+
+export const getFieldsFindAllPublicFieldsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    FieldsFindAllPublicFieldsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FieldsFindAllPublicFieldsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+        FieldsFindAllPublicFieldsParams['cursor']
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFieldsFindAllPublicFieldsQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    QueryKey,
+    FieldsFindAllPublicFieldsParams['cursor']
+  > = ({ signal, pageParam }) =>
+    fieldsFindAllPublicFields({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+    FieldsFindAllPublicFieldsParams['cursor']
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type FieldsFindAllPublicFieldsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof fieldsFindAllPublicFields>>
+>;
+export type FieldsFindAllPublicFieldsInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
+
+export function useFieldsFindAllPublicFieldsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    FieldsFindAllPublicFieldsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params: undefined | FieldsFindAllPublicFieldsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+        FieldsFindAllPublicFieldsParams['cursor']
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useFieldsFindAllPublicFieldsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    FieldsFindAllPublicFieldsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FieldsFindAllPublicFieldsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+        FieldsFindAllPublicFieldsParams['cursor']
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useFieldsFindAllPublicFieldsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    FieldsFindAllPublicFieldsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FieldsFindAllPublicFieldsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+        FieldsFindAllPublicFieldsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get all public fields
+ */
+
+export function useFieldsFindAllPublicFieldsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+    FieldsFindAllPublicFieldsParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+>(
+  params?: FieldsFindAllPublicFieldsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof fieldsFindAllPublicFields>>,
+        TError,
+        TData,
+        QueryKey,
+        FieldsFindAllPublicFieldsParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getFieldsFindAllPublicFieldsInfiniteQueryOptions(params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

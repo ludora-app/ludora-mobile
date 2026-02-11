@@ -10,8 +10,8 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 
-import { useFiltersStore, selectFilters, selectNumberOfFilters } from '../store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '../types/filters.types';
+import { useFiltersStore, selectFilters, selectNumberOfFilters } from '../store/filters.store';
 
 const mmkvStorageKey = {
   goBackPath: MMKV_STORAGE_KEY.FILTERS_SCREEN.GO_BACK_PATH,
@@ -42,10 +42,11 @@ export default function FilterFooter() {
   const handleApply = () => {
     const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey.goBackPath);
     const sourceValue = source ?? (mmkvStorage.getString(mmkvStorageKey.source) as FiltersScreenParams['source']);
-    trackEvent({ eventName: `${sourceValue}_applied`, data: { filters, numberOfFilters } });
+    trackEvent({ data: { filters, numberOfFilters }, eventName: `${sourceValue}_applied` });
     const params: FiltersReturnParams = {
       selectedFilters: serialize(filters),
     };
+
     router.dismissTo({ params, pathname: backPatchValue });
     mmkvStorage.removeItem(mmkvStorageKey.goBackPath);
     mmkvStorage.removeItem(mmkvStorageKey.source);

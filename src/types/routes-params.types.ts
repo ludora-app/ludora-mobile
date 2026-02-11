@@ -1,4 +1,4 @@
-import ROUTES, { RouteValues } from '@/constants/ROUTES';
+import ROUTES, { RouteValues } from '@/constants/routes.constants';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 export type RootStackParamList = {
@@ -25,6 +25,16 @@ export type RootStackParamList = {
   [ROUTES.SESSION.INDEX]: {
     id: string;
   };
+  [ROUTES.CHAT_ROOM.INDEX]: {
+    name: string;
+    imageUrl: string;
+  };
+  [ROUTES.CREATE_SESSION.STEP_5]: {
+    sessionUid: string;
+  };
+  [ROUTES.IMAGE_PICKER.INDEX]: {
+    goBackPath: RouteValues;
+  };
 };
 
 export type ReturnStackParamList = {
@@ -37,5 +47,8 @@ export type ReturnStackParamList = {
   [ROUTES.FILTERS.FILTER_ADDRESSES]: {
     address?: string;
     getUserLocation?: string;
+  };
+  [ROUTES.IMAGE_PICKER.INDEX]: {
+    images: string;
   };
 };

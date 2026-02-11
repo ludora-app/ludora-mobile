@@ -10,7 +10,6 @@ type SessionProps = CreateSessionFromRequestDto & {
     publicFieldSlotUid?: string;
     sport?: SessionCollectionItemDtoSport;
     fieldType?: 'partner' | 'public';
-    createdSessionUid?: string;
     autoGoToNextStep?: boolean;
   };
 };

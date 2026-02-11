@@ -7,18 +7,6 @@ dayjs.extend(isToday);
 dayjs.extend(isTomorrow);
 dayjs.locale('fr');
 
-export function formatDateLabel(dateStr: string) {
-  const date = dayjs(dateStr);
-
-  if (date.isToday()) {
-    return "Aujourd'hui";
-  }
-  if (date.isTomorrow()) {
-    return 'Demain';
-  }
-  return date.format('dddd DD/MM');
-}
-
 export function formatToHour({
   date,
   format,

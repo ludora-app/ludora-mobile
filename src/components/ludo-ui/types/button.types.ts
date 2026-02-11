@@ -1,7 +1,12 @@
-import { ButtonContentProps, ButtonLoaderProps, ButtonTitleProps, ButtonProps as ChillUiButtonProps } from '@chillui/ui';
+import {
+  ButtonContentProps,
+  ButtonLoaderProps,
+  ButtonTitleProps,
+  ButtonProps as ChillUiButtonProps,
+} from '@chillui/ui';
 
 import { TIconsAll } from '@/constants/ICONS';
-import { RouteValues } from '@/constants/ROUTES';
+import { RouteValues } from '@/constants/routes.constants';
 
 import { IconProps } from './icon.types';
 

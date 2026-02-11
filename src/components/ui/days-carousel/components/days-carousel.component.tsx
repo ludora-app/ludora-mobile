@@ -68,6 +68,7 @@ export default function DaysCarousel(props: DateCarouselProps) {
     }
   }, [selected, days, visibleIndices, screenWidth]);
 
+  console.log(days)
   return (
     <FlatList
       ref={flatListRef}

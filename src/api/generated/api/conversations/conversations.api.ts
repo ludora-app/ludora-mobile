@@ -25,79 +25,108 @@ import type {
 } from '@tanstack/react-query';
 import type {
   BadRequestResponseDto,
-  ConversationResponseDto,
   ConversationsFindAllByUserUidParams,
+  ConversationsLoadMoreMessagesParams,
   CreateMessageDto,
+  FindOneConversationResponseDto,
   ForbiddenResponseDto,
   NotFoundResponseDto,
-  PaginationResponseConversationResponseData,
+  PaginationResponseConversationCollectionResponseData,
+  PaginationResponseMessageCollectionItemDto,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
 /**
- * @summary DEV ONLY:Create mock conversations
+ * @summary Create a message
  */
-export const conversationsCreateMockConversation = (signal?: AbortSignal) => {
-  return customInstance<ConversationResponseDto>({ url: `/conversations/mock`, method: 'POST', signal });
+export const conversationsCreateMessage = (createMessageDto: CreateMessageDto, signal?: AbortSignal) => {
+  const formData = new FormData();
+  if (createMessageDto.content !== undefined) {
+    formData.append('content', createMessageDto.content);
+  }
+  formData.append('type', createMessageDto.type);
+  if (createMessageDto.file !== undefined) {
+    formData.append('file', createMessageDto.file);
+  }
+  if (createMessageDto.conversationUid !== undefined) {
+    formData.append('conversationUid', createMessageDto.conversationUid);
+  }
+  if (createMessageDto.sessionUid !== undefined) {
+    formData.append('sessionUid', createMessageDto.sessionUid);
+  }
+  if (createMessageDto.recipientUid !== undefined) {
+    formData.append('recipientUid', createMessageDto.recipientUid);
+  }
+
+  return customInstance<void>({
+    url: `/conversations`,
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
+    signal,
+  });
 };
 
-export const getConversationsCreateMockConversationMutationOptions = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+export const getConversationsCreateMessageMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof conversationsCreateMockConversation>>,
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
     TError,
-    void,
+    { data: CreateMessageDto },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof conversationsCreateMockConversation>>,
+  Awaited<ReturnType<typeof conversationsCreateMessage>>,
   TError,
-  void,
+  { data: CreateMessageDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof conversationsCreateMockConversation>>,
-    void
-  > = () => {
-    return conversationsCreateMockConversation();
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
+    { data: CreateMessageDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return conversationsCreateMessage(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type ConversationsCreateMockConversationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof conversationsCreateMockConversation>>
+export type ConversationsCreateMessageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsCreateMessage>>
 >;
-
-export type ConversationsCreateMockConversationMutationError =
+export type ConversationsCreateMessageMutationBody = CreateMessageDto;
+export type ConversationsCreateMessageMutationError =
   | BadRequestResponseDto
-  | UnauthorizedResponseDto;
+  | UnauthorizedResponseDto
+  | NotFoundResponseDto;
 
 /**
- * @summary DEV ONLY:Create mock conversations
+ * @summary Create a message
  */
-export const useConversationsCreateMockConversation = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+export const useConversationsCreateMessage = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof conversationsCreateMockConversation>>,
+    Awaited<ReturnType<typeof conversationsCreateMessage>>,
     TError,
-    void,
+    { data: CreateMessageDto },
     TContext
   >;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof conversationsCreateMockConversation>>,
+  Awaited<ReturnType<typeof conversationsCreateMessage>>,
   TError,
-  void,
+  { data: CreateMessageDto },
   TContext
 > => {
-  const mutationOptions = getConversationsCreateMockConversationMutationOptions(options);
+  const mutationOptions = getConversationsCreateMessageMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
@@ -108,7 +137,7 @@ export const conversationsFindAllByUserUid = (
   params?: ConversationsFindAllByUserUidParams,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginationResponseConversationResponseData>({
+  return customInstance<PaginationResponseConversationCollectionResponseData>({
     url: `/conversations/list/collection`,
     method: 'GET',
     params,
@@ -284,7 +313,7 @@ export function useConversationsFindAllByUserUidInfinite<
  * @summary Get a conversation by uid
  */
 export const conversationsFindOne = (uid: string, signal?: AbortSignal) => {
-  return customInstance<ConversationResponseDto>({ url: `/conversations/${uid}`, method: 'GET', signal });
+  return customInstance<FindOneConversationResponseDto>({ url: `/conversations/${uid}`, method: 'GET', signal });
 };
 
 export const getConversationsFindOneQueryKey = (uid: string) => {
@@ -380,76 +409,192 @@ export function useConversationsFindOne<
   return query;
 }
 
-export const conversationsCreateMessage = (
-  conversationUid: string,
-  createMessageDto: CreateMessageDto,
+/**
+ * @summary Get a list of messages for a conversation
+ */
+export const conversationsLoadMoreMessages = (
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
   signal?: AbortSignal,
 ) => {
-  const formData = new FormData();
-  if (createMessageDto.content !== undefined) {
-    formData.append('content', createMessageDto.content);
-  }
-  formData.append('type', createMessageDto.type);
-  if (createMessageDto.file !== undefined) {
-    formData.append('file', createMessageDto.file);
-  }
-
-  return customInstance<void>({
-    url: `/conversations/${conversationUid}/messages`,
-    method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data: formData,
+  return customInstance<PaginationResponseMessageCollectionItemDto>({
+    url: `/conversations/${uid}/messages-list/collection`,
+    method: 'GET',
+    params,
     signal,
   });
 };
 
-export const getConversationsCreateMessageMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof conversationsCreateMessage>>,
-    TError,
-    { conversationUid: string; data: CreateMessageDto },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof conversationsCreateMessage>>,
-  TError,
-  { conversationUid: string; data: CreateMessageDto },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
+export const getConversationsLoadMoreMessagesQueryKey = (
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+) => {
+  return [`/conversations/${uid}/messages-list/collection`, ...(params ? [params] : [])] as const;
+};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof conversationsCreateMessage>>,
-    { conversationUid: string; data: CreateMessageDto }
-  > = props => {
-    const { conversationUid, data } = props ?? {};
+export const getConversationsLoadMoreMessagesInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    ConversationsLoadMoreMessagesParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+        ConversationsLoadMoreMessagesParams['cursor']
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
 
-    return conversationsCreateMessage(conversationUid, data);
+  const queryKey = queryOptions?.queryKey ?? getConversationsLoadMoreMessagesQueryKey(uid, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    QueryKey,
+    ConversationsLoadMoreMessagesParams['cursor']
+  > = ({ signal, pageParam }) =>
+    conversationsLoadMoreMessages(uid, { ...params, cursor: pageParam || params?.['cursor'] }, signal);
+
+  return { queryKey, queryFn, enabled: !!uid, ...queryOptions } as UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+    ConversationsLoadMoreMessagesParams['cursor']
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type ConversationsLoadMoreMessagesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsLoadMoreMessages>>
+>;
+export type ConversationsLoadMoreMessagesInfiniteQueryError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | ForbiddenResponseDto
+  | NotFoundResponseDto;
+
+export function useConversationsLoadMoreMessagesInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    ConversationsLoadMoreMessagesParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+        ConversationsLoadMoreMessagesParams['cursor']
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useConversationsLoadMoreMessagesInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    ConversationsLoadMoreMessagesParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+        ConversationsLoadMoreMessagesParams['cursor']
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+          TError,
+          TData,
+          QueryKey
+        >,
+        'initialData'
+      >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useConversationsLoadMoreMessagesInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    ConversationsLoadMoreMessagesParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+        ConversationsLoadMoreMessagesParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get a list of messages for a conversation
+ */
+
+export function useConversationsLoadMoreMessagesInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+    ConversationsLoadMoreMessagesParams['cursor']
+  >,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  params: ConversationsLoadMoreMessagesParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof conversationsLoadMoreMessages>>,
+        TError,
+        TData,
+        QueryKey,
+        ConversationsLoadMoreMessagesParams['cursor']
+      >
+    >;
+  },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getConversationsLoadMoreMessagesInfiniteQueryOptions(uid, params, options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
   };
 
-  return { mutationFn, ...mutationOptions };
-};
+  query.queryKey = queryOptions.queryKey;
 
-export type ConversationsCreateMessageMutationResult = NonNullable<
-  Awaited<ReturnType<typeof conversationsCreateMessage>>
->;
-export type ConversationsCreateMessageMutationBody = CreateMessageDto;
-export type ConversationsCreateMessageMutationError = unknown;
-
-export const useConversationsCreateMessage = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof conversationsCreateMessage>>,
-    TError,
-    { conversationUid: string; data: CreateMessageDto },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof conversationsCreateMessage>>,
-  TError,
-  { conversationUid: string; data: CreateMessageDto },
-  TContext
-> => {
-  const mutationOptions = getConversationsCreateMessageMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
+  return query;
+}

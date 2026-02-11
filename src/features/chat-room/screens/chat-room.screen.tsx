@@ -1,21 +1,18 @@
-import { Wrapper } from '@ludo/ui';
+import { ScreenLayout } from '@/components/ludo-ui';
+import { WrapperKeyboardAvoidingView } from '@/components/chill-ui-library';
 
+import ChatRoomInput from '../components/chat-room-input/chat-room-input.component';
 import ChatRoomHeader from '../components/chat-room-header/chat-room-header.component';
-import ChatRoomMessage from '../components/chat-room-messages/chat-room-message.component';
-import ChatRoomInputContainer from '../components/chat-room-input/chat-room-input-container.component';
-import ChatRoomInputKeyboardEmojiView from '../components/chat-room-input/chat-room-input-keyboard-emoji-view.component';
-import ChatRoomInputEmojiPicker from '../components/chat-room-input/chat-room-input-emoji-picker/ChatRoomInputEmojiPicker';
-import ChatRoomMessageFullScreenImageModal from '../components/chat-room-messages/chat-room-messages-content/ChatRoomMessageFullScreenImageModal';
+import ChatRoomMessagesList from '../components/chat-room-messages/chat-room-messages-list/chat-room-messages-list.component';
 
 export default function ChatRoom() {
   return (
-    <Wrapper px="none">
-      <ChatRoomHeader />
-      <ChatRoomMessage />
-      <ChatRoomInputContainer />
-      <ChatRoomInputEmojiPicker />
-      <ChatRoomInputKeyboardEmojiView />
-      <ChatRoomMessageFullScreenImageModal />
-    </Wrapper>
+    <ScreenLayout>
+      <WrapperKeyboardAvoidingView fill px="none" hasSafeArea behavior="padding" edges={['top']}>
+        <ChatRoomHeader />
+        <ChatRoomMessagesList />
+        <ChatRoomInput />
+      </WrapperKeyboardAvoidingView>
+    </ScreenLayout>
   );
 }

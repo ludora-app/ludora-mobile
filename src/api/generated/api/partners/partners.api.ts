@@ -10,6 +10,9 @@ import type { MutationFunction, UseMutationOptions, UseMutationResult } from '@t
 import type { CreatePartnerDto } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
+/**
+ * @summary Create a partner entity
+ */
 export const partnersCreate = (createPartnerDto: CreatePartnerDto, signal?: AbortSignal) => {
   return customInstance<void>({
     url: `/partners`,
@@ -51,6 +54,9 @@ export type PartnersCreateMutationResult = NonNullable<Awaited<ReturnType<typeof
 export type PartnersCreateMutationBody = CreatePartnerDto;
 export type PartnersCreateMutationError = unknown;
 
+/**
+ * @summary Create a partner entity
+ */
 export const usePartnersCreate = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof partnersCreate>>,

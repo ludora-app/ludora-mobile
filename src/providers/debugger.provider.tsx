@@ -4,7 +4,7 @@ import { penTool, openBook } from 'assets';
 import { FloatingDevTools } from '@buoy-gg/core';
 import { FullWindowOverlay } from 'react-native-screens';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { IS_IOS } from '@/constants/PLATFORM';
 
 export default function DebuggerProvider() {

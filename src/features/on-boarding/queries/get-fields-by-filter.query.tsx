@@ -1,0 +1,38 @@
+import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
+import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
+
+import { useGetFields } from './get-fields.query';
+// import { FiltersProps, useCreateSessionFiltersFieldsStore } from '../store/create-session-filters-fields.store';
+
+const LIMIT_RESULTS_FIELDS = 10;
+
+export const useGetAllFieldsByFilter = () => {
+  // const filters = useCreateSessionFiltersFieldsStore(state => state.filters);
+
+  // const cleanedFilters = filterObjectEntries(filters);
+
+  // const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
+
+  const userLocation = useUserLocationStore(state => state.location);
+
+  // const dateValue = filterDate?.date;
+
+  const params = {
+    // date: dateValue,
+    limit: LIMIT_RESULTS_FIELDS,
+    ...(userLocation && {
+      userLat: userLocation.latitude,
+      userLon: userLocation.longitude,
+    }),
+    // ...restFilters,
+  };
+
+  const { data, error, isError, ...rest } = useGetFields(params);
+
+  useGetMethodErrorTracking({ error, extra: { context: 'useGetAllFieldsByFilter', params }, isError });
+
+  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const totalCount = data?.pages[0]?.data.totalCount ?? 0;
+
+  return { error, isError, items, totalCount, ...rest };
+};

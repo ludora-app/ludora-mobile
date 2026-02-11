@@ -9,6 +9,10 @@ const __dirname = dirname(__filename);
 // Configuration
 const API_KEY = process.env.TOLGEE_API_KEY;
 const API_URL = process.env.TOLGEE_API_URL;
+
+console.log('API_KEY', API_KEY);
+console.log('API_URL', API_URL);
+
 if (!API_KEY || !API_URL) {
   console.error('Error: TOLGEE_API_KEY or TOLGEE_API_URL is not set');
   process.exit(1);

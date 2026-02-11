@@ -1,10 +1,20 @@
-import { Stack } from 'expo-router';
+import { Redirect, Stack, usePathname } from 'expo-router';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
+  const pathname = usePathname();
+
+  const profileStatus = '';
+  const showPreferences = profileStatus === 'PENDING';
+  const isInsideOnBoarding = pathname.includes('on-boarding') || pathname.includes('image-picker');
+
+  if (showPreferences && !isInsideOnBoarding) {
+    return <Redirect href="/on-boarding/step-1" />;
+  }
+
   return (
     <Stack
       initialRouteName="(tabs)"
@@ -14,23 +24,12 @@ function AppLayoutNav() {
       }}
     >
       <Stack.Screen
-        name="create-session/index"
+        name="create-session"
         options={{
           animation: 'slide_from_bottom',
         }}
       />
-      <Stack.Screen
-        name="create-session/create-session-duration"
-        options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
-        }}
-      />
+
       <Stack.Screen
         name="create-session/create-session-step-3-payment"
         options={{
@@ -40,6 +39,18 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: [0.8],
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/profil-edit-name"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: "fitToContents",
           sheetCornerRadius: 12,
         }}
       />
@@ -99,6 +110,28 @@ function AppLayoutNav() {
           },
           headerShown: false,
           presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="chat-room/[id]/index"
+        options={{
+          animation: 'slide_from_right',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="image-picker"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
         }}
       />
     </Stack>

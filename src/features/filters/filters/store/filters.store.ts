@@ -23,15 +23,15 @@ export type Filters = {
 export type FilterSource = 'filter_sessions_all' | 'filter_fields';
 
 interface FiltersStoreInstance {
-  filters: Partial<Filters>;
   numberOfFilters: number;
+  filters: Partial<Filters>;
 }
 
 interface FiltersStore {
-  instances: Record<FilterSource, FiltersStoreInstance>;
+  resetFilters: () => void;
   currentSource: FilterSource;
   setCurrentSource: (source: FilterSource) => void;
-  resetFilters: () => void;
+  instances: Record<FilterSource, FiltersStoreInstance>;
   setFilters: (filters: Partial<Filters> | ((prev: Partial<Filters>) => Partial<Filters>)) => void;
 }
 
@@ -40,8 +40,8 @@ const createDefaultInstance = (): FiltersStoreInstance => ({
   numberOfFilters: 0,
 });
 
-const calculateNumberOfFilters = (filters: Partial<Filters>): number => {
-  return Object.keys(filters).filter(key => {
+const calculateNumberOfFilters = (filters: Partial<Filters>): number =>
+  Object.keys(filters).filter(key => {
     const value = filters[key as keyof Filters];
 
     if (key === 'fieldType' && value === 'ALL') return false;
@@ -55,17 +55,12 @@ const calculateNumberOfFilters = (filters: Partial<Filters>): number => {
 
     return value !== undefined;
   }).length;
-};
 
 export const useFiltersStore = create<FiltersStore>((set, get) => ({
-  instances: {
-    filter_sessions_all: createDefaultInstance(),
-    filter_fields: createDefaultInstance(),
-  },
   currentSource: 'filter_sessions_all',
-
-  setCurrentSource: source => {
-    set({ currentSource: source });
+  instances: {
+    filter_fields: createDefaultInstance(),
+    filter_sessions_all: createDefaultInstance(),
   },
 
   resetFilters: () => {
@@ -92,6 +87,10 @@ export const useFiltersStore = create<FiltersStore>((set, get) => ({
         },
       },
     });
+  },
+
+  setCurrentSource: source => {
+    set({ currentSource: source });
   },
 
   setFilters: newFilters => {

@@ -1,7 +1,7 @@
+import { cn } from '@chillui/ui';
+import { Icon, String } from '@ludo/ui';
 import { useEffect, useState } from 'react';
 import { View, Pressable } from 'react-native';
-import { MessageType } from '@api/utils/api.types';
-import { cn, Icon, String } from '@components/nysaUi';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSpring } from 'react-native-reanimated';
 import {
   GestureEvent,
@@ -13,7 +13,6 @@ import {
 
 import useAudioRecorder from '../../../hooks/useAudioRecorder';
 import { useChatRoomInputAudioStore } from '../../../store/chatRoomInputAudioStore';
-import { useChatRoomMessageOptimisticQueue } from '../../../queries/chat-room-message-queue.queries';
 // --- Constantes
 const INITIAL_SIZE = 50;
 const EXPAND_SIZE = 80;
@@ -29,7 +28,7 @@ export default function ChatRoomInputAudioRecorderButton() {
     useChatRoomInputAudioStore();
   const { audioUri, pingToStopRecording, setAudioUri, setPingToStopRecording, startRecording, stopRecording } =
     useAudioRecorder();
-  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
+  // const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
   const [lockAxis, setLockAxis] = useState<'x' | 'y' | 'center'>('x');
   const [isAborded, setIsAborded] = useState(false);
   const recordBtnSize = useSharedValue(INITIAL_SIZE);
@@ -170,7 +169,7 @@ export default function ChatRoomInputAudioRecorderButton() {
 
   const handleSubmit = () => {
     if (!audioUri) return;
-    addOptimisticMessageToQueue(audioUri, MessageType.AUDIO);
+    // addOptimisticMessageToQueue(audioUri, MessageType.AUDIO);
     setAudioUri(null);
   };
 
@@ -205,7 +204,7 @@ export default function ChatRoomInputAudioRecorderButton() {
           </View>
         ) : (
           <Animated.View
-            className="absolute items-center justify-center rounded-full bg-primary"
+            className="bg-primary absolute items-center justify-center rounded-full"
             style={recordBtnStyle}
           >
             <Icon variant="microphone-solid" color="#fff" />
@@ -223,7 +222,7 @@ export default function ChatRoomInputAudioRecorderButton() {
         )}
 
         <AnimatedPressable
-          className={cn('absolute bottom-[110%] -z-10 items-center rounded-full bg-darkLight p-2', {
+          className={cn('bg-darkLight absolute bottom-[110%] -z-10 items-center rounded-full p-2', {
             'size-40 items-center justify-center overflow-hidden': isRecordingLocked,
           })}
           style={[lockWrapperStyle, { width: 50 }]}
@@ -245,7 +244,7 @@ export default function ChatRoomInputAudioRecorderButton() {
                 <Icon variant="lock-solid" size="xs" />
               </View>
               <View className="absolute h-[1px] w-16 rotate-45 bg-white" />
-              <View className="absolute right-3 top-3">
+              <View className="absolute top-3 right-3">
                 <Icon variant="paper-plane-solid" size="xs" />
               </View>
             </>

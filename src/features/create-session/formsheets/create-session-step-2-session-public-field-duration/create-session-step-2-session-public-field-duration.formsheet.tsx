@@ -16,7 +16,7 @@ import {
 } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
@@ -78,12 +78,12 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
   const handleConfirm = () => {
     setCreateSession({
       additionalData: {
+        autoGoToNextStep: true,
         fieldType: 'public',
         price: null,
         pricePerPlayer: null,
         publicFieldSlotUid: slotUid,
         sport,
-        autoGoToNextStep: true,
       },
       endDate: matchDetails.endIso,
       fieldUid,

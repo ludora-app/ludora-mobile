@@ -7,7 +7,7 @@ import { cn, InputMessage, useToast } from '@chillui/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { WrapperSafeAreaView, FormInput, String, BoxRow, Box } from '@ludo/ui';
 
-import ROUTES from '@/constants/ROUTES';
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
@@ -94,11 +94,11 @@ export default function VerifyCodeScreen() {
       <HeaderGoBack title={t('auth.verify-code.title')} />
       <WrapperSafeAreaView edges={['bottom']}>
         <AuthHeader>
-          <Box className='gap-1'>
-            <String className='text-center'>
-              {t('auth.verify-code.description')}
+          <Box className="gap-1">
+            <String className="text-center">{t('auth.verify-code.description')}</String>
+            <String font="primaryBold" variant="body-2" className="text-center">
+              {email?.toString() ?? ''}
             </String>
-            <String font="primaryBold" variant='body-2' className='text-center'>{email?.toString() ?? ''}</String>
           </Box>
         </AuthHeader>
         <ContentWapper>

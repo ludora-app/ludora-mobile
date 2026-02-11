@@ -22,3 +22,19 @@ export const nameSchema = (t: TolgeeInstance['t']) =>
 
 export const emailSchema = (t?: TolgeeInstance['t']) =>
   z.email({ message: t?.('common.input_email_invalid') || 'common.input_email_invalid' }).toLowerCase();
+
+export const birthdateSchema = (t?: TolgeeInstance['t']) =>
+  z
+    .date({
+      error: t?.('common.input_birthdate_invalid_required') || 'common.input_birthdate_invalid_required',
+    })
+    .refine(
+      date => {
+        const minDate = new Date();
+        minDate.setFullYear(minDate.getFullYear() - 15);
+        return date <= minDate;
+      },
+      {
+        message: t?.('common.input_birthdate_invalid_age') || 'common.input_birthdate_invalid_age',
+      },
+    );

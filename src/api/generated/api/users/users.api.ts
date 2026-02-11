@@ -513,11 +513,34 @@ export function useUsersFindOneByEmail<
  * @summary update user requires to be connected, does not update the password
  */
 export const usersUpdate = (updateUserDto: UpdateUserDto) => {
+  const formData = new FormData();
+  if (updateUserDto.firstname !== undefined) {
+    formData.append('firstname', updateUserDto.firstname);
+  }
+  if (updateUserDto.lastname !== undefined) {
+    formData.append('lastname', updateUserDto.lastname);
+  }
+  if (updateUserDto.birthdate !== undefined) {
+    formData.append('birthdate', updateUserDto.birthdate);
+  }
+  if (updateUserDto.sex !== undefined) {
+    formData.append('sex', updateUserDto.sex);
+  }
+  if (updateUserDto.phone !== undefined) {
+    formData.append('phone', updateUserDto.phone);
+  }
+  if (updateUserDto.bio !== undefined) {
+    formData.append('bio', updateUserDto.bio);
+  }
+  if (updateUserDto.file !== undefined) {
+    formData.append('file', updateUserDto.file);
+  }
+
   return customInstance<void>({
     url: `/users/update`,
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    data: updateUserDto,
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
   });
 };
 

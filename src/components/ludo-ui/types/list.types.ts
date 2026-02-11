@@ -10,7 +10,7 @@ export type ListProps = {
   isRefetching: boolean;
   ItemComponent: React.ComponentType<{ item: any }>;
   data: any[];
-  SkeletonComponent?: React.ComponentType;
+  SkeletonComponent: React.ComponentType;
   hasNextPage: boolean;
   emptyResultProps?: EmptyResultProps;
   ListStickyComponent?: React.ComponentType | React.ReactElement;

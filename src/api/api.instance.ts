@@ -17,7 +17,6 @@ const handleLogout = async () => {
 
 async function handleRefreshToken(refreshToken: string): Promise<string | null> {
   try {
-    console.log('REFRESH TOKEN : ', refreshToken);
     const response = await refreshTokenPost(refreshToken);
 
     const { accessToken, refreshToken: newRefreshToken } = response.data;
@@ -26,8 +25,7 @@ async function handleRefreshToken(refreshToken: string): Promise<string | null> 
     await SecureStore.setItemAsync('refresh_token', newRefreshToken);
 
     return accessToken;
-  } catch (error) {
-    console.log('ERROR TO REFRESH TOKEN : ', error);
+  } catch {
     await handleLogout();
     return null;
   }

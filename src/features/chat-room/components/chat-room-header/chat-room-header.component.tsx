@@ -1,26 +1,39 @@
-import { Avatar, Box, Icon, String } from '@ludo/ui';
-import { useChatRoomRouter } from '../../hooks/useChatRoomRouter';
-import ChatRoomHeaderGroupMenu from './chat-room-header-group-menu.component';
-import ChatRoomHeaderPrivateMenu from './chat-room-header-private-menu.component';
+import { StyleSheet } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
+
+import ROUTES from '@/constants/routes.constants';
+import { RootStackParamList } from '@/types/routes-params.types';
+
+type ChatRoomLocalSearch = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
+
+const styles = StyleSheet.create({
+  shadow: {
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  },
+});
 
 export default function ChatRoomHeader() {
-  const { chatRoomAvatar, chatRoomName, isGroup } = useChatRoomRouter();
+  const { imageUrl, name } = useLocalSearchParams<ChatRoomLocalSearch>();
+  const router = useRouter();
 
   return (
-    <Box className="relative z-50 flex-row items-center justify-between border-b border-gray-200 px-3 py-2">
-      <Box className="flex-row items-center gap-2">
-        <Icon name="arrow-left-solid" size="md" />
-        <Avatar
-          data={{
-            firstname: chatRoomName,
-            imageUrl: chatRoomAvatar,
-            lastname: !isGroup ? chatRoomName : undefined,
-          }}
-          size="sm"
-        />
-        <String className="ml-2">{chatRoomName}</String>
-      </Box>
-      {isGroup ? <ChatRoomHeaderGroupMenu /> : <ChatRoomHeaderPrivateMenu />}
+    <Box style={styles.shadow} className="z-50">
+      <Wrapper className="relative flex-row items-center justify-between py-2">
+        <BoxGrow className="flex-row items-center gap-1">
+          <Icon name="arrow-left-regular" size="lg" color="#FFF" onPress={router.back} pressEffectSize="xs" />
+          <Avatar
+            data={{
+              firstname: name,
+              imageUrl,
+            }}
+          />
+          <String className="ml-2" colorVariant="white" font="primaryBold">
+            {name}
+          </String>
+        </BoxGrow>
+        <Icon name="info-circle-regular" size="lg" color="#FFF" />
+      </Wrapper>
     </Box>
   );
 }

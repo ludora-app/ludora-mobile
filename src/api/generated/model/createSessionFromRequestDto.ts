@@ -7,6 +7,7 @@
  */
 import type { CreateSessionFromRequestDtoGameMode } from './createSessionFromRequestDtoGameMode';
 import type { CreateSessionFromRequestDtoLevel } from './createSessionFromRequestDtoLevel';
+import type { CreateSessionFromRequestDtoSport } from './createSessionFromRequestDtoSport';
 import type { CreateSessionFromRequestDtoVisibility } from './createSessionFromRequestDtoVisibility';
 
 export interface CreateSessionFromRequestDto {
@@ -22,6 +23,8 @@ export interface CreateSessionFromRequestDto {
   level?: CreateSessionFromRequestDtoLevel;
   /** The uid of the field slot */
   slotUid?: string;
+  /** The sport of the session */
+  sport: CreateSessionFromRequestDtoSport;
   /** The start date of the session */
   startDate: string;
   /**

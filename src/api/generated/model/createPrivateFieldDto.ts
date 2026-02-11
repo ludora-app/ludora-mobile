@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { CreateImageDto } from './createImageDto';
-import type { CreatePrivateFieldDtoSport } from './createPrivateFieldDtoSport';
+import type { CreatePrivateFieldDtoSportsItem } from './createPrivateFieldDtoSportsItem';
 
 export interface CreatePrivateFieldDto {
   /** The address of the field */
@@ -27,5 +27,5 @@ export interface CreatePrivateFieldDto {
   /** The short address of the field */
   shortAddress?: string;
   /** The sport of the field */
-  sport: CreatePrivateFieldDtoSport;
+  sports: CreatePrivateFieldDtoSportsItem[];
 }

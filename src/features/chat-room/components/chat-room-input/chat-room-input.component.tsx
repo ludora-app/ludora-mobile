@@ -1,154 +1,86 @@
-import * as yup from 'yup';
-import { Field, Formik } from 'formik';
-import { MessageType } from '@api/utils/api.types';
-import { useEffect, useRef, useState } from 'react';
-import { Box, cn, Icon, FormikCustomInput } from '@components/nysaUi';
-import { KeyboardController } from 'react-native-keyboard-controller';
-import { Pressable, TextInput, TextInputSelectionChangeEventData, NativeSyntheticEvent } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
+import { useCallback, useState } from 'react';
+import { EmojiType } from 'rn-emoji-keyboard';
+import { useLocalSearchParams } from 'expo-router';
+import { BoxRow, FormInput, Wrapper } from '@ludo/ui';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import useKeyboardVisible from '../../hooks/useKeyboardVisible';
-import ChatRoomInputHandleChange from './ChatRoomInputHandleChange';
-import { useChatRoomInputAudioStore } from '../../store/chatRoomInputAudioStore';
-import useChatRoomInputEmojiPickerStore from '../../store/chatRoomInputEmojiPickerStore';
-import ChatRoomInputCameraAlbumIcons from './chat-room-input-camera-album-icons.component';
-import EmojiToInputSync from './chat-room-input-emoji-picker/ChatRoomInputEmojiPickerToInputSync';
-import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue.queries';
+import COLORS from '@/constants/COLORS';
+import { useSafeArea } from '@/hooks/safe-area.hook';
 
-type FormikSubmitValues = {
-  message: string;
-};
+import ChatRoomInputSubmitButton from './chat-room-input-submit-button.component';
+import { ChatRoomInputSchema, schema } from '../../schemas/chat-room-input.schema';
+import ChatRoomInputKeyboardEmoji from './chat-room-input-keyboard-emoji.component';
+import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
+import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue.query';
 
-const validationSchema = yup.object().shape({
-  message: yup.string().required(),
+const styles = StyleSheet.create({
+  shadow: {
+    boxShadow: '0px -4px 10px 0px rgba(0, 0, 0, 0.1)',
+  },
 });
 
 export default function ChatRoomInput() {
-  const isKeyboardVisible = useKeyboardVisible();
-  const inputRef = useRef<TextInput>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [selection, setSelection] = useState<{ start: number; end: number }>({
-    end: 0,
-    start: 0,
+  const { bottom } = useSafeArea();
+  const [cursorPosition, setCursorPosition] = useState(0);
+
+  const {
+    control,
+    formState: { isValid },
+    handleSubmit,
+    setValue,
+    watch,
+  } = useForm<ChatRoomInputSchema>({
+    resolver: zodResolver(schema),
   });
-  const { isRecording } = useChatRoomInputAudioStore();
-  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
+  const inputValue = watch('message') || '';
 
-  const { isEmojiPickerOpen, setEmojiPickerOpen, setEmojiValue } = useChatRoomInputEmojiPickerStore();
+  const { id: chatRoomId } = useLocalSearchParams<{ id: string }>();
 
-  const onSubmit = (values: FormikSubmitValues) => {
-    addOptimisticMessageToQueue(values.message, MessageType.TEXT);
+  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue(chatRoomId);
+
+  const { setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();
+
+  const onSubmit = (values: ChatRoomInputSchema) => {
+    addOptimisticMessageToQueue(values.message, 'TEXT');
+    setValue('message', '');
+    setCursorPosition(0);
   };
 
-  useEffect(() => {
-    if (isKeyboardVisible) {
-      setEmojiPickerOpen(false);
-    }
-  }, [isKeyboardVisible]);
+  const handleEmojiPick = (emoji: EmojiType) => {
+    if (!emoji || emoji === undefined || emoji.emoji === undefined) return;
+    const textBeforeCursor = inputValue.substring(0, cursorPosition);
+    const textAfterCursor = inputValue.substring(cursorPosition);
+    const newText = textBeforeCursor + emoji.emoji + textAfterCursor;
+    setValue('message', newText, { shouldValidate: true });
+    setCursorPosition(cursorPosition + emoji.emoji.length);
+  };
 
-  useEffect(() => {
-    if (isFocused && !isEmojiPickerOpen) {
-      setTimeout(() => {
-        KeyboardController.setFocusTo('current');
-      }, 50);
-    }
-  }, [isFocused]);
-
-  useEffect(
-    () => () => {
-      setEmojiValue('');
-    },
-    [],
-  );
+  const handleSelectionChange = useCallback((event: { nativeEvent: { selection: { start: number } } }) => {
+    setCursorPosition(event.nativeEvent.selection.start);
+  }, []);
 
   return (
-    <Formik
-      initialValues={{ message: '' }}
-      onSubmit={(values, { resetForm }) => {
-        onSubmit(values);
-        resetForm();
-      }}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit, setFieldValue, values }) => (
-        <Box className="flex flex-row items-center gap-2">
-          <EmojiToInputSync selection={selection} setSelection={setSelection} />
-          <ChatRoomInputHandleChange inputValue={values.message} />
-          <Box className="flex-1 justify-center overflow-hidden">
-            <Box className="absolute left-1 z-50">
-              {isEmojiPickerOpen && !isKeyboardVisible ? (
-                <Icon
-                  variant="keyboard-solid"
-                  size="sm"
-                  wrapper
-                  onPress={() => {
-                    KeyboardController.setFocusTo('current');
-                  }}
-                />
-              ) : (
-                <Icon
-                  variant="smile-solid"
-                  color="#fff"
-                  wrapper
-                  size="sm"
-                  onPress={async () => {
-                    setEmojiPickerOpen(true);
-                    inputRef.current?.focus();
-                    isKeyboardVisible &&
-                      (await KeyboardController.dismiss({
-                        keepFocus: true,
-                      }));
-                  }}
-                />
-              )}
-            </Box>
-            <ChatRoomInputCameraAlbumIcons inputValue={values.message} />
-
-            <Field
-              inputRef={inputRef}
-              selection={selection}
-              placeholder="Tape ton message..."
-              name="message"
-              component={FormikCustomInput}
-              className="max-h-40 min-h-10 px-10 align-middle"
-              multiline
-              showDeleteIcon={false}
-              showSoftInputOnFocus={isFocused}
-              onFocus={() => {
-                setIsFocused(true);
-              }}
-              onBlur={() => {
-                setIsFocused(false);
-              }}
-              onSelectionChange={(event: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
-                setSelection(event.nativeEvent.selection);
-              }}
-              onChangeText={(text: string) => {
-                if (isRecording) {
-                  return;
-                }
-                setFieldValue('message', text);
-              }}
-            />
-          </Box>
-          {(isKeyboardVisible || values.message.length > 0) && (
-            <Box className="w-14">
-              <Pressable
-                className={cn('items-center justify-center rounded-full bg-primary', {
-                  'opacity-50': values.message.length === 0,
-                })}
-                onPress={() => handleSubmit()}
-                style={{
-                  height: 50,
-                  width: 50,
-                }}
-                disabled={values.message.length === 0}
-              >
-                <Icon variant="paper-plane-solid" />
-              </Pressable>
-            </Box>
-          )}
-        </Box>
-      )}
-    </Formik>
+    <Wrapper style={[styles.shadow, { paddingBottom: bottom }]} className="bg-white pt-2">
+      <ChatRoomInputKeyboardEmoji onSelect={handleEmojiPick} />
+      <BoxRow className="items-center gap-2">
+        <FormInput
+          control={control}
+          name="message"
+          leftIconAction={{
+            color: COLORS.muted,
+            name: 'emoji-smile-grinning-regular',
+            onPress: () => {
+              setEmojiPickerOpen(true);
+            },
+            pressEffectSize: 'xs',
+          }}
+          className="flex-1"
+          onSelectionChange={handleSelectionChange}
+        />
+        <ChatRoomInputSubmitButton onPress={handleSubmit(onSubmit)} isDisabled={!isValid} />
+      </BoxRow>
+    </Wrapper>
   );
 }

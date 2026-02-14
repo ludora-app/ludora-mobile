@@ -5,15 +5,17 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { SportPreferenceResponseDataGameModesItem } from './sportPreferenceResponseDataGameModesItem';
 import type { SportPreferenceResponseDataLevel } from './sportPreferenceResponseDataLevel';
+import type { SportPreferenceResponseDataSport } from './sportPreferenceResponseDataSport';
 
 export interface SportPreferenceResponseData {
-  /** The creation date of the user sport preference */
-  createdAt: string;
+  /** The game modes for this sport */
+  gameModes: SportPreferenceResponseDataGameModesItem[];
   /** The level of the user sport preference */
   level: SportPreferenceResponseDataLevel;
   /** The sport of the user sport preference */
-  sport: string;
+  sport: SportPreferenceResponseDataSport;
   /** The unique identifier of the user sport preference */
   uid: string;
 }

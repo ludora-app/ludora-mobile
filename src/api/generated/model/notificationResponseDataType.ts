@@ -9,4 +9,18 @@
 /**
  * type of the notification
  */
-export type NotificationResponseDataType = { [key: string]: unknown };
+export type NotificationResponseDataType =
+  (typeof NotificationResponseDataType)[keyof typeof NotificationResponseDataType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const NotificationResponseDataType = {
+  FRIEND_REQUEST: 'FRIEND_REQUEST',
+  FRIEND_ACCEPTED: 'FRIEND_ACCEPTED',
+  SESSION_INVITATION: 'SESSION_INVITATION',
+  SESSION_UPDATED: 'SESSION_UPDATED',
+  SESSION_CANCELLED: 'SESSION_CANCELLED',
+  SESSION_REMINDER: 'SESSION_REMINDER',
+  NEW_MESSAGE: 'NEW_MESSAGE',
+  GENERAL: 'GENERAL',
+  EMAIL_VERIFIED: 'EMAIL_VERIFIED',
+} as const;

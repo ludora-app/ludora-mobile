@@ -48,6 +48,7 @@ export const useWebsocketConnection = () => {
     connect(getApiUrl(), accessToken);
 
     on('message', message => {
+      console.log('----MESSAGER: ', message);
       if (message.action === 'AUTHENTICATE' && message.payload.isAuthenticated) {
         handleActionAuthentication(message);
         emit('message', { text: "Salut serveur, tu m'entends ?" });

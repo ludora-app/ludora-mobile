@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 import { ScrollView, StyleSheet } from 'react-native'
-import { Box, BoxCenter, String, Wrapper, BoxRowCenterBetween, Icon, ScreenLayout } from '@ludo/ui'
+import { Box, BoxCenter, String, Wrapper, BoxRowCenterBetween, Icon, ScreenLayout, BoxGrow } from '@ludo/ui'
 
 import COLORS from '@/constants/COLORS'
 import { formatDate } from '@/utils/date.utils'
@@ -39,7 +39,7 @@ export default function ProfilEditScreen() {
     {
       label: t('profil.profil-edit.sex_info_title'),
       route: ROUTES.PROFIL.EDIT_SEX,
-      value: t(`common.${userSex}`) || t('profil.profil-edit.empty_sex'),
+      value: userSex ? t(`common.${userSex}`) : t('profil.profil-edit.empty_sex'),
     },
     {
       label: t('profil.profil-edit.email_info_title'),
@@ -74,11 +74,11 @@ export default function ProfilEditScreen() {
             </BoxCenter>
             <Box className='gap-5'>
               {data.map((item, index) => (
-                <BoxRowCenterBetween key={index}>
-                  <Box>
+                <BoxRowCenterBetween key={index} className='gap-1'>
+                  <BoxGrow>
                     <String font="primaryBold" variant="body-2">{item.label}</String>
-                    <String>{item.value}</String>
-                  </Box>
+                    <String truncate>{item.value}</String>
+                  </BoxGrow>
                   <Icon name='stylus-pen-edit-regular' color='#000' onPress={() => router.push(item.route)} />
                 </BoxRowCenterBetween>
               ))}

@@ -4,18 +4,19 @@ import { Box, BoxRow, Icon, Image, Separator, String } from '@ludo/ui'
 
 import { getSportImage } from '@/utils/sports.utils'
 import { GAMEMODES_BY_SPORT } from '@/constants/session.constants'
-import { CreateSessionFromRequestDtoGameMode, SessionCollectionItemDtoSport } from '@/api/generated/model'
+import { CreateSportPreferenceDataGameModesItem, SessionCollectionItemDtoSport } from '@/api/generated/model'
 
-import { PreferencesSportData } from '../../../stores/settings-preferences.store'
+import { useSettingsPreferencesStore } from '../../../stores/settings-preferences.store'
 import SettingsPreferencesGameModeChip from './settings-preferences-game-modes-chip.component'
 
 interface SettingsPreferencesGameModeSectionProps {
-  sportPreferences: PreferencesSportData[]
-  onToggleGameMode: (sport: string, gameMode: CreateSessionFromRequestDtoGameMode) => void
+  onToggleGameMode: (sport: string, gameMode: CreateSportPreferenceDataGameModesItem) => void
 }
 
 export default function SettingsPreferencesGameModesChipsList(props: SettingsPreferencesGameModeSectionProps) {
-  const { onToggleGameMode, sportPreferences } = props
+  const { onToggleGameMode } = props
+  const sportPreferences = useSettingsPreferencesStore(state => state.sportPreferences)
+
   const { t } = useTranslate()
 
   if (sportPreferences.length === 0) {

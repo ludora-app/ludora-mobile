@@ -53,7 +53,7 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
-  "SessionsController_findAllMe": {
+  "SessionsController_findAllMySessions": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"
@@ -72,6 +72,12 @@
     }
   },
   "SessionInvitationsController_findAllBySessionId": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "NotificationsController_findAll": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

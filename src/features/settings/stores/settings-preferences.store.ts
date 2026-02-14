@@ -1,41 +1,43 @@
 import { create } from 'zustand';
 
 import {
-  CreateGameModePreferencesDtoFromRequestGameMode,
+  CreateSportPreferenceData,
+  CreateSportPreferenceDto,
   SportPreferenceResponseDataLevel,
 } from '@/api/generated/model';
 
-export type PreferencesSportData = {
-  gameModes: CreateGameModePreferencesDtoFromRequestGameMode[];
-  level: SportPreferenceResponseDataLevel;
-  sport: string;
-};
+export type PreferencesSportData = CreateSportPreferenceData;
 
-type SettingsPreferencesState = {
-  initialize: (sportPrefs: any[], gameModePrefs: any[]) => void;
-  removeSportPreference: (sport: string) => void;
-  setSportPreference: (sport: string, level: SportPreferenceResponseDataLevel) => void;
-  sportPreferences: PreferencesSportData[];
-  toggleGameMode: (sport: string, gameMode: CreateGameModePreferencesDtoFromRequestGameMode) => void;
+type PreferencesGameModeData = CreateSportPreferenceData['gameModes'][number];
+
+type PreferencesLevelData = CreateSportPreferenceData['level'];
+
+type PreferencesSport = CreateSportPreferenceData['sport'];
+
+type SettingsPreferencesState = CreateSportPreferenceDto & {
+  initialize: (sportPrefs: any[]) => void;
+  removeSportPreference: (sport: PreferencesSport) => void;
+  setSportPreference: (sport: PreferencesSport, level: PreferencesLevelData) => void;
+  // sportPreferences: PreferencesSportData[];
+  toggleGameMode: (sport: PreferencesSport, gameMode: PreferencesGameModeData) => void;
+  toggleSportPreference: (sport: string) => void;
 };
 
 export const useSettingsPreferencesStore = create<SettingsPreferencesState>()(set => ({
-  initialize: (sportPrefs: any[], gameModePrefs: any[]) =>
+  initialize: (sportPrefs: any[]) =>
     set(() => {
       const sportPreferences: PreferencesSportData[] = sportPrefs.map(sp => ({
-        gameModes: gameModePrefs
-          .filter(gm => gm.sportPreference?.sport === sp.sport)
-          .map(gm => gm.gameMode as CreateGameModePreferencesDtoFromRequestGameMode),
+        gameModes: sp.gameModes ?? [],
         level: sp.level as SportPreferenceResponseDataLevel,
         sport: sp.sport,
       }));
       return { sportPreferences };
     }),
-  removeSportPreference: (sport: string) =>
+  removeSportPreference: (sport: PreferencesSport) =>
     set(state => ({
       sportPreferences: state.sportPreferences.filter(sp => sp.sport !== sport),
     })),
-  setSportPreference: (sport: string, level: SportPreferenceResponseDataLevel) =>
+  setSportPreference: (sport: PreferencesSport, level: PreferencesLevelData) =>
     set(state => {
       const existing = state.sportPreferences.find(sp => sp.sport === sport);
       if (existing) {
@@ -48,7 +50,7 @@ export const useSettingsPreferencesStore = create<SettingsPreferencesState>()(se
       };
     }),
   sportPreferences: [],
-  toggleGameMode: (sport: string, gameMode: CreateGameModePreferencesDtoFromRequestGameMode) =>
+  toggleGameMode: (sport: PreferencesSport, gameMode: PreferencesGameModeData) =>
     set(state => ({
       sportPreferences: state.sportPreferences.map(sp => {
         if (sp.sport !== sport) return sp;
@@ -60,4 +62,31 @@ export const useSettingsPreferencesStore = create<SettingsPreferencesState>()(se
         };
       }),
     })),
+  toggleSportPreference: (sport: string) =>
+    set(state => {
+      const existing = state.sportPreferences.find(sp => sp.sport === sport);
+      if (existing && existing.level === 3) {
+        return {
+          sportPreferences: state.sportPreferences.filter(sp => sp.sport !== sport),
+        };
+      }
+      const nextLevel = existing ? existing.level + 1 : 1;
+      if (existing) {
+        return {
+          sportPreferences: state.sportPreferences.map(sp =>
+            sp.sport === sport ? { ...sp, level: nextLevel as SportPreferenceResponseDataLevel } : sp,
+          ),
+        };
+      }
+      return {
+        sportPreferences: [
+          ...state.sportPreferences,
+          {
+            gameModes: [],
+            level: nextLevel as SportPreferenceResponseDataLevel,
+            sport: sport as CreateSportPreferenceData['sport'],
+          },
+        ],
+      };
+    }),
 }));

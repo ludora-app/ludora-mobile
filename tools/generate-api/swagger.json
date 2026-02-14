@@ -740,6 +740,7 @@
             "description": "Limit of users to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -1116,6 +1117,69 @@
         ]
       }
     },
+    "/users/update-email": {
+      "patch": {
+        "operationId": "UsersController_updateEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserEmailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Email updated successfully"
+          },
+          "400": {
+            "description": "Error updating email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token invalid: user missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "update email requires to be connected",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/users/deactivate": {
       "patch": {
         "operationId": "UsersController_deactivate",
@@ -1245,17 +1309,12 @@
             "description": ""
           }
         },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
         "tags": [
           "Storage"
         ]
       }
     },
-    "/storage/get-signed-url": {
+    "/storage": {
       "get": {
         "operationId": "StorageController_getSignedUrl",
         "parameters": [
@@ -1280,11 +1339,6 @@
             }
           }
         },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
         "tags": [
           "Storage"
         ]
@@ -1475,6 +1529,7 @@
             "description": "Limit of conversations to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -1626,6 +1681,53 @@
         "tags": [
           "Conversations"
         ]
+      },
+      "delete": {
+        "operationId": "ConversationsController_remove",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Conversation's display messages after updated successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Soft delete a conversation, it updates the display messages after to the current date",
+        "tags": [
+          "Conversations"
+        ]
       }
     },
     "/conversations/{uid}/messages-list/collection": {
@@ -1642,16 +1744,18 @@
           },
           {
             "name": "cursor",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Cursor for pagination",
             "schema": {
               "type": "string"
             }
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Limit of messages to return",
             "schema": {
               "type": "number"
             }
@@ -1715,6 +1819,240 @@
           }
         ],
         "summary": "Get a list of messages for a conversation",
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/conversations/{uid}/members": {
+      "get": {
+        "operationId": "ConversationsController_findAllMembers",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedConversationMemberResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all members of a conversation",
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/conversations/mute/{uid}": {
+      "patch": {
+        "operationId": "ConversationsController_updateMuteSettings",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MutedConversationSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Conversation's mute settings updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a conversation's mute settings",
+        "tags": [
+          "Conversations"
+        ]
+      }
+    },
+    "/conversations/archive/{uid}": {
+      "patch": {
+        "operationId": "ConversationsController_updateArchivedSettings",
+        "parameters": [
+          {
+            "name": "uid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArchivedConversationSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Conversation's archive settings updated successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a conversation's archive settings",
         "tags": [
           "Conversations"
         ]
@@ -2570,6 +2908,7 @@
             "description": "Limit of users to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -2657,6 +2996,7 @@
             "description": "Limit of users to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -3089,6 +3429,7 @@
             "description": "Number of results to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -3217,9 +3558,92 @@
         ]
       }
     },
+    "/sessions/my-stats": {
+      "get": {
+        "operationId": "SessionsController_getMyStats",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSessionStatsResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get session stats for the current user",
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/sessions/stats/{userUid}": {
+      "get": {
+        "operationId": "SessionsController_getUserStats",
+        "parameters": [
+          {
+            "name": "userUid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSessionStatsResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get session stats for a specific user",
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
     "/sessions/my-list/collection": {
       "get": {
-        "operationId": "SessionsController_findAllMe",
+        "operationId": "SessionsController_findAllMySessions",
         "parameters": [
           {
             "name": "ownership",
@@ -3989,6 +4413,7 @@
             "description": "Limit of session invitations to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -4098,6 +4523,7 @@
             "description": "Limit of session invitations to return",
             "schema": {
               "minimum": 1,
+              "maximum": 50,
               "example": 10,
               "type": "number"
             }
@@ -4503,129 +4929,6 @@
         ]
       }
     },
-    "/hour-preferences": {
-      "post": {
-        "operationId": "HourPreferencesController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHourPreferenceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HourPreferenceResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create a new user hour preference",
-        "tags": [
-          "HourPreferences"
-        ]
-      }
-    },
-    "/hour-preferences/list-by-user/{userUid}": {
-      "get": {
-        "operationId": "HourPreferencesController_findAllByUserUid",
-        "parameters": [
-          {
-            "name": "userUid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseHourPreferenceResponseData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get all user hour preferences by user ID",
-        "tags": [
-          "HourPreferences"
-        ]
-      }
-    },
     "/hour-preferences/my-list": {
       "get": {
         "operationId": "HourPreferencesController_findMyHourPreferences",
@@ -4636,7 +4939,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginationResponseHourPreferenceResponseData"
+                  "$ref": "#/components/schemas/PaginationResponseHourPreferenceData"
                 }
               }
             }
@@ -4673,79 +4976,23 @@
         ]
       }
     },
-    "/hour-preferences/{uid}": {
-      "delete": {
-        "operationId": "HourPreferencesController_remove",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "User hour preference deleted successfully"
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Delete a user hour preference by uid",
-        "tags": [
-          "HourPreferences"
-        ]
-      }
-    },
-    "/sport-preferences": {
-      "post": {
-        "operationId": "SportPreferencesController_create",
+    "/hour-preferences": {
+      "put": {
+        "operationId": "HourPreferencesController_createMany",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateSportPreferenceDtoFromRequest"
+                "$ref": "#/components/schemas/CreateHourPreferenceDto"
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SportPreferenceResponseDto"
-                }
-              }
-            }
+          "204": {
+            "description": "User hour preferences created successfully"
           },
           "400": {
             "description": "",
@@ -4783,9 +5030,47 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Create a user sport preference",
+        "summary": "Saves the hour preferences of the connected user",
         "tags": [
-          "SportPreferences"
+          "HourPreferences"
+        ]
+      },
+      "delete": {
+        "operationId": "HourPreferencesController_remove",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "User hour preference deleted successfully"
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Delete all the hour preferences of the connected user",
+        "tags": [
+          "HourPreferences"
         ]
       }
     },
@@ -4912,19 +5197,58 @@
         ]
       }
     },
-    "/sport-preferences/{uid}": {
-      "delete": {
-        "operationId": "SportPreferencesController_remove",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
+    "/sport-preferences": {
+      "put": {
+        "operationId": "SportPreferencesController_createManyWithGameModes",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSportPreferenceDto"
+              }
             }
           }
+        },
+        "responses": {
+          "204": {
+            "description": "User sport preferences created successfully"
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
         ],
+        "summary": "Saves the sport preferences of the connected user",
+        "tags": [
+          "SportPreferences"
+        ]
+      },
+      "delete": {
+        "operationId": "SportPreferencesController_remove",
+        "parameters": [],
         "responses": {
           "204": {
             "description": "User sport preference deleted successfully"
@@ -4961,280 +5285,7 @@
         ]
       }
     },
-    "/game-mode-preferences": {
-      "post": {
-        "operationId": "GameModePreferencesController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGameModePreferencesDtoFromRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameModePreferenceResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create a new user game mode preference",
-        "tags": [
-          "GameModePreferences"
-        ]
-      }
-    },
-    "/game-mode-preferences/my-list": {
-      "get": {
-        "operationId": "GameModePreferencesController_findMyGameModePreferences",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Get the game mode preferences of the connected user",
-        "tags": [
-          "GameModePreferences"
-        ]
-      }
-    },
-    "/game-mode-preferences/{uid}": {
-      "patch": {
-        "operationId": "GameModePreferencesController_update",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateGameModePreferenceDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "User game mode preference updated successfully"
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Update a user game mode preference by uid",
-        "tags": [
-          "GameModePreferences"
-        ]
-      },
-      "delete": {
-        "operationId": "GameModePreferencesController_remove",
-        "parameters": [
-          {
-            "name": "uid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "User game mode preference deleted successfully"
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Delete a user game mode preference by uid",
-        "tags": [
-          "GameModePreferences"
-        ]
-      }
-    },
-    "/user-preferences": {
-      "post": {
-        "operationId": "UserPreferencesController_createAllPreferences",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAllPreferencesDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Create all user preferences (sports with game modes)",
-        "tags": [
-          "UserPreferences"
-        ]
-      }
-    },
-    "/notifications": {
+    "/notifications/collection": {
       "get": {
         "operationId": "NotificationsController_findAll",
         "parameters": [],
@@ -6214,14 +6265,6 @@
       "description": "SportPreferences operations"
     },
     {
-      "name": "GameModePreferences",
-      "description": "GameModePreferences operations"
-    },
-    {
-      "name": "UserPreferences",
-      "description": "UserPreferences operations"
-    },
-    {
       "name": "Notifications",
       "description": "Notifications operations"
     },
@@ -6259,11 +6302,6 @@
               "PARTNER"
             ],
             "example": "USER"
-          },
-          "deviceUid": {
-            "type": "string",
-            "description": "device uid, only for phones",
-            "example": "123456"
           },
           "email": {
             "type": "string",
@@ -6501,11 +6539,6 @@
             "description": "User Password.\n      Must contain at least:\n        - 8 characters\n        - 1 uppercase letter\n        - 1 special character",
             "example": "Test!1234",
             "pattern": "^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$"
-          },
-          "deviceUid": {
-            "type": "string",
-            "description": "Device identifier, only for phones",
-            "example": "123456"
           }
         },
         "required": [
@@ -6906,19 +6939,26 @@
             "nullable": true,
             "readOnly": true
           },
-          "userSports": {
+          "sportPreferences": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "sport": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "sport"
+              "type": "string",
+              "enum": [
+                "BASKETBALL",
+                "FOOTBALL",
+                "TENNIS",
+                "VOLLEYBALL",
+                "PADDEL",
+                "BADMINTON",
+                "PING-PONG"
               ]
-            }
+            },
+            "example": [
+              "BASKETBALL",
+              "FOOTBALL"
+            ],
+            "nullable": true,
+            "readOnly": true
           }
         },
         "required": [
@@ -6973,9 +7013,13 @@
           "data"
         ]
       },
-      "UserSportPreferencesDto": {
+      "SportPreferenceResponseData": {
         "type": "object",
         "properties": {
+          "uid": {
+            "type": "string",
+            "description": "The unique identifier of the user sport preference"
+          },
           "sport": {
             "enum": [
               "BASKETBALL",
@@ -6987,15 +7031,51 @@
               "PING-PONG"
             ],
             "type": "string",
-            "example": "BASKETBALL",
-            "readOnly": true
+            "description": "The sport of the user sport preference",
+            "example": "BASKETBALL"
+          },
+          "level": {
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "type": "number",
+            "description": "The level of the user sport preference",
+            "example": 1
+          },
+          "gameModes": {
+            "type": "array",
+            "description": "The game modes for this sport",
+            "example": [
+              "THREE_V_THREE",
+              "FIVE_V_FIVE"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "ONE_V_ONE",
+                "TWO_V_TWO",
+                "THREE_V_THREE",
+                "FOUR_V_FOUR",
+                "FIVE_V_FIVE",
+                "SIX_V_SIX",
+                "SEVEN_V_SEVEN",
+                "EIGHT_V_EIGHT",
+                "TEN_V_TEN",
+                "ELEVEN_V_ELEVEN"
+              ]
+            }
           }
         },
         "required": [
-          "sport"
+          "uid",
+          "sport",
+          "level",
+          "gameModes"
         ]
       },
-      "FindOneUserResponseDataDto": {
+      "FindOneUserResponseData": {
         "type": "object",
         "properties": {
           "uid": {
@@ -7031,17 +7111,21 @@
             "nullable": true,
             "readOnly": true
           },
-          "userSportPreferences": {
-            "example": [
-              {
-                "sport": "BASKETBALL"
-              }
-            ],
-            "nullable": true,
-            "readOnly": true,
+          "sportPreferences": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserSportPreferencesDto"
+              "required": false,
+              "example": [
+                {
+                  "sport": "BASKETBALL"
+                }
+              ],
+              "nullable": true,
+              "readOnly": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SportPreferenceResponseData"
+              }
             }
           },
           "friendsCount": {
@@ -7058,7 +7142,8 @@
         "required": [
           "uid",
           "firstname",
-          "lastname"
+          "lastname",
+          "sportPreferences"
         ]
       },
       "FindOneUserResponseDto": {
@@ -7072,7 +7157,7 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FindOneUserResponseDataDto"
+                "$ref": "#/components/schemas/FindOneUserResponseData"
               }
             ]
           }
@@ -7081,7 +7166,7 @@
           "data"
         ]
       },
-      "FindMeUserResponseDataDto": {
+      "FindMeUserResponseData": {
         "type": "object",
         "properties": {
           "uid": {
@@ -7115,6 +7200,33 @@
             "type": "string",
             "example": "https://example.com/image.jpg",
             "nullable": true,
+            "readOnly": true
+          },
+          "sportPreferences": {
+            "type": "array",
+            "items": {
+              "required": false,
+              "example": [
+                {
+                  "sport": "BASKETBALL"
+                }
+              ],
+              "nullable": true,
+              "readOnly": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SportPreferenceResponseData"
+              }
+            }
+          },
+          "friendsCount": {
+            "type": "number",
+            "example": 42,
+            "readOnly": true
+          },
+          "matchesCount": {
+            "type": "number",
+            "example": 12,
             "readOnly": true
           },
           "email": {
@@ -7164,19 +7276,11 @@
             "nullable": true,
             "readOnly": true
           },
-          "stripe_account_uid": {
+          "stripeAccountId": {
             "type": "string",
             "example": null,
             "nullable": true,
             "readOnly": true
-          },
-          "userSportPreferences": {
-            "nullable": true,
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSportPreferencesDto"
-            }
           },
           "isEmailVerified": {
             "type": "boolean",
@@ -7184,14 +7288,10 @@
             "nullable": false,
             "readOnly": true
           },
-          "friendsCount": {
-            "type": "number",
-            "example": 42,
-            "readOnly": true
-          },
-          "matchesCount": {
-            "type": "number",
-            "example": 12,
+          "profileStatus": {
+            "type": "object",
+            "example": "INCOMPLETE",
+            "nullable": false,
             "readOnly": true
           }
         },
@@ -7199,7 +7299,9 @@
           "uid",
           "firstname",
           "lastname",
-          "type"
+          "sportPreferences",
+          "type",
+          "profileStatus"
         ]
       },
       "FindMeUserResponseDto": {
@@ -7213,7 +7315,7 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FindMeUserResponseDataDto"
+                "$ref": "#/components/schemas/FindMeUserResponseData"
               }
             ]
           }
@@ -7288,6 +7390,20 @@
         "required": [
           "oldPassword",
           "newPassword"
+        ]
+      },
+      "UpdateUserEmailDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user",
+            "example": "test@gmail.com"
+          }
+        },
+        "required": [
+          "email"
         ]
       },
       "CreatePartnerDto": {
@@ -7387,6 +7503,51 @@
           "SESSION"
         ]
       },
+      "SessionData": {
+        "type": "object",
+        "properties": {
+          "teamLabel": {
+            "type": "string",
+            "description": "Team label of the connected user in the conversation",
+            "example": "A",
+            "readOnly": true
+          },
+          "teamName": {
+            "type": "string",
+            "description": "Team name of the connected user in the conversation",
+            "example": "Team A",
+            "readOnly": true
+          },
+          "sessionUid": {
+            "type": "string",
+            "nullable": true,
+            "description": "Session ID of the conversation",
+            "example": "cmajhjkjf000bq77q4b5ugn8b",
+            "readOnly": true
+          },
+          "sport": {
+            "enum": [
+              "BASKETBALL",
+              "FOOTBALL",
+              "TENNIS",
+              "VOLLEYBALL",
+              "PADDEL",
+              "BADMINTON",
+              "PING-PONG"
+            ],
+            "type": "string",
+            "description": "Session sport",
+            "example": "FOOTBALL",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "teamLabel",
+          "teamName",
+          "sessionUid",
+          "sport"
+        ]
+      },
       "SenderDto": {
         "type": "object",
         "properties": {
@@ -7478,12 +7639,15 @@
             "example": "cmkpi7ca502t45imrn5ss4zki",
             "readOnly": true
           },
-          "sessionUid": {
-            "type": "string",
+          "sessionData": {
             "nullable": true,
-            "description": "Session ID",
-            "example": "cmajhjkjf000bq77q4b5ugn8b",
-            "readOnly": true
+            "description": "Session data",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionData"
+              }
+            ]
           },
           "name": {
             "type": "string",
@@ -7529,16 +7693,23 @@
                 "$ref": "#/components/schemas/MessageDto"
               }
             ]
+          },
+          "unreadMessagesCount": {
+            "type": "number",
+            "description": "Number of unread messages in the conversation",
+            "example": 1,
+            "readOnly": true
           }
         },
         "required": [
           "uid",
-          "sessionUid",
+          "sessionData",
           "name",
           "type",
           "sender",
           "imageUrl",
-          "lastMessage"
+          "lastMessage",
+          "unreadMessagesCount"
         ]
       },
       "PaginationDataConversationCollectionResponseData": {
@@ -7587,6 +7758,25 @@
           "data"
         ]
       },
+      "ConversationSettingsDto": {
+        "type": "object",
+        "properties": {
+          "isArchived": {
+            "type": "boolean",
+            "description": "Controls whether the conversation is archived",
+            "example": false
+          },
+          "isMuted": {
+            "type": "boolean",
+            "description": "Controls whether the conversation is muted",
+            "example": false
+          }
+        },
+        "required": [
+          "isArchived",
+          "isMuted"
+        ]
+      },
       "FindOneConversationResponseData": {
         "type": "object",
         "properties": {
@@ -7596,12 +7786,15 @@
             "example": "cmkpi7ca502t45imrn5ss4zki",
             "readOnly": true
           },
-          "sessionUid": {
-            "type": "string",
+          "sessionData": {
             "nullable": true,
-            "description": "Session ID",
-            "example": "cmajhjkjf000bq77q4b5ugn8b",
-            "readOnly": true
+            "description": "Session data",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionData"
+              }
+            ]
           },
           "name": {
             "type": "string",
@@ -7638,6 +7831,14 @@
             "example": "https://example.com/image.jpg",
             "readOnly": true
           },
+          "settings": {
+            "description": "Conversation settings",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConversationSettingsDto"
+              }
+            ]
+          },
           "messages": {
             "type": "array",
             "items": {
@@ -7647,11 +7848,12 @@
         },
         "required": [
           "uid",
-          "sessionUid",
+          "sessionData",
           "name",
           "type",
           "sender",
           "imageUrl",
+          "settings",
           "messages"
         ]
       },
@@ -7817,6 +8019,179 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "SessionTeamData": {
+        "type": "object",
+        "properties": {
+          "teamLabel": {
+            "type": "string",
+            "description": "Team label of the connected user in the conversation",
+            "example": "A",
+            "readOnly": true
+          },
+          "teamName": {
+            "type": "string",
+            "description": "Team name of the connected user in the conversation",
+            "example": "Team A",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "teamLabel",
+          "teamName"
+        ]
+      },
+      "ConversationMemberResponseData": {
+        "type": "object",
+        "properties": {
+          "userUid": {
+            "type": "string",
+            "description": "User unique identifier",
+            "example": "cmgoxfs3t002hob8arwdna80g",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string",
+            "description": "User first name",
+            "example": "Seto",
+            "readOnly": true
+          },
+          "lastname": {
+            "type": "string",
+            "description": "User last name",
+            "example": "Kaiba",
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "User image URL",
+            "example": "https://example.com/image.jpg",
+            "readOnly": true
+          },
+          "isAdmin": {
+            "type": "boolean",
+            "description": "Whether the user is an admin",
+            "example": true,
+            "readOnly": true
+          },
+          "joinedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "User joined at",
+            "example": "2025-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "sessionData": {
+            "nullable": true,
+            "description": "If the conversation is of type SESSION, this will contain the session data like team label and team name",
+            "example": {
+              "teamLabel": "A",
+              "teamName": "Team A"
+            },
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionTeamData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "userUid",
+          "firstname",
+          "lastname",
+          "imageUrl",
+          "isAdmin",
+          "joinedAt"
+        ]
+      },
+      "PaginationDataConversationMemberResponseData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationMemberResponseData"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "number",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "totalCount"
+        ]
+      },
+      "PaginationResponseConversationMemberResponseData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          },
+          "data": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationDataConversationMemberResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PaginatedConversationMemberResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Conversation members",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationResponseConversationMemberResponseData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MutedConversationSettingsDto": {
+        "type": "object",
+        "properties": {
+          "isMuted": {
+            "type": "boolean",
+            "description": "Controls whether the conversation is muted",
+            "example": false
+          }
+        },
+        "required": [
+          "isMuted"
+        ]
+      },
+      "ArchivedConversationSettingsDto": {
+        "type": "object",
+        "properties": {
+          "isArchived": {
+            "type": "boolean",
+            "description": "Controls whether the conversation is archived",
+            "example": false
+          }
+        },
+        "required": [
+          "isArchived"
         ]
       },
       "CreateFieldSlotDto": {
@@ -9147,6 +9522,38 @@
           "data"
         ]
       },
+      "UserSessionStatsResponseDataDto": {
+        "type": "object",
+        "properties": {
+          "organizedCount": {
+            "type": "number",
+            "example": 12
+          },
+          "participatedCount": {
+            "type": "number",
+            "example": 25
+          }
+        },
+        "required": [
+          "organizedCount",
+          "participatedCount"
+        ]
+      },
+      "UserSessionStatsResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UserSessionStatsResponseDataDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "message"
+        ]
+      },
       "FlattenedSessionPlayer": {
         "type": "object",
         "properties": {
@@ -10165,7 +10572,7 @@
           "data"
         ]
       },
-      "CreateHourPreferenceDto": {
+      "HourPreferenceData": {
         "type": "object",
         "properties": {
           "dayOfWeek": {
@@ -10185,7 +10592,7 @@
             ],
             "example": "MORNING"
           },
-          "preferenceType": {
+          "type": {
             "type": "string",
             "description": "The preference type, RECURRENT is a recurring preference, ONE_TIME is a one time preference",
             "enum": [
@@ -10195,102 +10602,27 @@
             "example": "RECURRENT"
           },
           "date": {
+            "format": "date-time",
             "type": "string",
             "description": "The date of the preference",
-            "example": "2025-05-10T22:30:32.525Z"
+            "example": "2025-05-10T22:30:32.525Z",
+            "nullable": true
           }
         },
         "required": [
-          "timePeriod",
-          "preferenceType"
-        ]
-      },
-      "HourPreferenceResponseData": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Entity's creation date",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          },
-          "uid": {
-            "type": "string",
-            "example": "cm7hvgonx0000to0mh5maqajc",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "RECURRENT",
-              "ONE_TIME"
-            ],
-            "example": "RECURRENT",
-            "readOnly": true
-          },
-          "timePeriod": {
-            "type": "string",
-            "enum": [
-              "MORNING",
-              "AFTERNOON",
-              "EVENING"
-            ],
-            "example": "MORNING",
-            "readOnly": true
-          },
-          "dayOfWeek": {
-            "type": "number",
-            "description": "The day of the week, 0 is Sunday, 6 is Saturday",
-            "example": 0,
-            "readOnly": true
-          },
-          "date": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": true,
-            "description": "Applicable date for a ONE_TIME preference, null for a RECURRENT preference",
-            "example": "2025-05-10T22:30:32.525Z",
-            "readOnly": true
-          }
-        },
-        "required": [
-          "createdAt",
-          "uid",
-          "type",
-          "timePeriod",
           "dayOfWeek",
-          "date"
+          "timePeriod",
+          "type"
         ]
       },
-      "HourPreferenceResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HourPreferenceResponseData"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "PaginationDataHourPreferenceResponseData": {
+      "PaginationDataHourPreferenceData": {
         "type": "object",
         "properties": {
           "items": {
             "readOnly": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HourPreferenceResponseData"
+              "$ref": "#/components/schemas/HourPreferenceData"
             }
           },
           "nextCursor": {
@@ -10309,7 +10641,7 @@
           "totalCount"
         ]
       },
-      "PaginationResponseHourPreferenceResponseData": {
+      "PaginationResponseHourPreferenceData": {
         "type": "object",
         "properties": {
           "message": {
@@ -10320,7 +10652,7 @@
             "readOnly": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PaginationDataHourPreferenceResponseData"
+                "$ref": "#/components/schemas/PaginationDataHourPreferenceData"
               }
             ]
           }
@@ -10329,93 +10661,19 @@
           "data"
         ]
       },
-      "CreateSportPreferenceDtoFromRequest": {
+      "CreateHourPreferenceDto": {
         "type": "object",
         "properties": {
-          "sport": {
-            "type": "string",
-            "description": "The sport that the user wants to register as a preference",
-            "enum": [
-              "BASKETBALL",
-              "FOOTBALL",
-              "TENNIS",
-              "VOLLEYBALL",
-              "PADDEL",
-              "BADMINTON",
-              "PING-PONG"
-            ],
-            "example": "BASKETBALL"
-          },
-          "level": {
-            "enum": [
-              1,
-              2,
-              3
-            ],
-            "minimum": 1,
-            "maximum": 3,
-            "type": "number",
-            "description": "The level of the user for the sport, from 1 to 3",
-            "example": 1
+          "hourPreferences": {
+            "description": "The hour preferences of the user",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HourPreferenceData"
+            }
           }
         },
         "required": [
-          "sport",
-          "level"
-        ]
-      },
-      "SportPreferenceResponseData": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "type": "string",
-            "description": "The unique identifier of the user sport preference"
-          },
-          "sport": {
-            "type": "string",
-            "description": "The sport of the user sport preference"
-          },
-          "level": {
-            "enum": [
-              1,
-              2,
-              3
-            ],
-            "type": "number",
-            "description": "The level of the user sport preference",
-            "example": 1
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "The creation date of the user sport preference"
-          }
-        },
-        "required": [
-          "uid",
-          "sport",
-          "level",
-          "createdAt"
-        ]
-      },
-      "SportPreferenceResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SportPreferenceResponseData"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
+          "hourPreferences"
         ]
       },
       "PaginationDataSportPreferenceResponseData": {
@@ -10464,147 +10722,7 @@
           "data"
         ]
       },
-      "CreateGameModePreferencesDtoFromRequest": {
-        "type": "object",
-        "properties": {
-          "gameMode": {
-            "type": "string",
-            "description": "The game mode which the user prefers",
-            "enum": [
-              "ONE_V_ONE",
-              "TWO_V_TWO",
-              "THREE_V_THREE",
-              "FOUR_V_FOUR",
-              "FIVE_V_FIVE",
-              "SIX_V_SIX",
-              "SEVEN_V_SEVEN",
-              "EIGHT_V_EIGHT",
-              "TEN_V_TEN",
-              "ELEVEN_V_ELEVEN"
-            ],
-            "example": "THREE_V_THREE"
-          },
-          "sport": {
-            "enum": [
-              "BASKETBALL",
-              "FOOTBALL",
-              "TENNIS",
-              "VOLLEYBALL",
-              "PADDEL",
-              "BADMINTON",
-              "PING-PONG"
-            ],
-            "type": "string",
-            "description": "The sport which the user wants to play in the game mode",
-            "example": "BASKETBALL"
-          }
-        },
-        "required": [
-          "gameMode",
-          "sport"
-        ]
-      },
-      "GameModePreferenceResponseData": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "type": "string",
-            "description": "The unique identifier of the user game mode preference",
-            "example": "cmajhjkjf000bq77q4b5ugn8b"
-          },
-          "gameMode": {
-            "type": "string",
-            "description": "The game mode of the user game mode preference",
-            "enum": [
-              "ONE_V_ONE",
-              "TWO_V_TWO",
-              "THREE_V_THREE",
-              "FOUR_V_FOUR",
-              "FIVE_V_FIVE",
-              "SIX_V_SIX",
-              "SEVEN_V_SEVEN",
-              "EIGHT_V_EIGHT",
-              "TEN_V_TEN",
-              "ELEVEN_V_ELEVEN"
-            ],
-            "example": "THREE_V_THREE"
-          },
-          "sport": {
-            "type": "string",
-            "description": "The sport of the user game mode preference",
-            "example": "BASKETBALL"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "The creation date of the user game mode preference",
-            "example": "2021-01-01T00:00:00.000Z"
-          }
-        },
-        "required": [
-          "uid",
-          "gameMode",
-          "sport",
-          "createdAt"
-        ]
-      },
-      "GameModePreferenceResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameModePreferenceResponseData"
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "UpdateGameModePreferenceDto": {
-        "type": "object",
-        "properties": {
-          "gameMode": {
-            "type": "string",
-            "description": "The game mode of the user game mode preference",
-            "enum": [
-              "ONE_V_ONE",
-              "TWO_V_TWO",
-              "THREE_V_THREE",
-              "FOUR_V_FOUR",
-              "FIVE_V_FIVE",
-              "SIX_V_SIX",
-              "SEVEN_V_SEVEN",
-              "EIGHT_V_EIGHT",
-              "TEN_V_TEN",
-              "ELEVEN_V_ELEVEN"
-            ],
-            "example": "THREE_V_THREE"
-          },
-          "sport": {
-            "enum": [
-              "BASKETBALL",
-              "FOOTBALL",
-              "TENNIS",
-              "VOLLEYBALL",
-              "PADDEL",
-              "BADMINTON",
-              "PING-PONG"
-            ],
-            "type": "string",
-            "description": "The sport of the user game mode preference",
-            "example": "BASKETBALL"
-          }
-        }
-      },
-      "CreateSportWithGameModePreferenceDto": {
+      "CreateSportPreferenceData": {
         "type": "object",
         "properties": {
           "sport": {
@@ -10660,19 +10778,56 @@
           "gameModes"
         ]
       },
-      "CreateAllPreferencesDto": {
+      "CreateSportPreferenceDto": {
         "type": "object",
         "properties": {
           "sportPreferences": {
             "description": "The sport preferences of the user",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateSportWithGameModePreferenceDto"
+              "$ref": "#/components/schemas/CreateSportPreferenceData"
             }
           }
         },
         "required": [
           "sportPreferences"
+        ]
+      },
+      "FriendRequestData": {
+        "type": "object",
+        "properties": {
+          "senderUid": {
+            "type": "string",
+            "description": "sender uid of the notification",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "senderName": {
+            "type": "string",
+            "description": "name of sender",
+            "example": "John Doe"
+          }
+        },
+        "required": [
+          "senderUid",
+          "senderName"
+        ]
+      },
+      "SessionInvitationData": {
+        "type": "object",
+        "properties": {
+          "senderUid": {
+            "type": "string",
+            "description": "sender uid of the notification",
+            "example": "cm7hvgonx0000to0mh5maqajc"
+          },
+          "test": {
+            "type": "string",
+            "example": "value"
+          }
+        },
+        "required": [
+          "senderUid",
+          "test"
         ]
       },
       "NotificationResponseData": {
@@ -10694,11 +10849,15 @@
             "example": "Notification Body"
           },
           "data": {
-            "type": "object",
             "description": "data of the notification",
-            "example": {
-              "key": "value"
-            }
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FriendRequestData"
+              },
+              {
+                "$ref": "#/components/schemas/SessionInvitationData"
+              }
+            ]
           },
           "createdAt": {
             "format": "date-time",
@@ -10723,8 +10882,19 @@
             "example": true
           },
           "type": {
-            "type": "object",
+            "type": "string",
             "description": "type of the notification",
+            "enum": [
+              "FRIEND_REQUEST",
+              "FRIEND_ACCEPTED",
+              "SESSION_INVITATION",
+              "SESSION_UPDATED",
+              "SESSION_CANCELLED",
+              "SESSION_REMINDER",
+              "NEW_MESSAGE",
+              "GENERAL",
+              "EMAIL_VERIFIED"
+            ],
             "example": "FRIEND_REQUEST"
           }
         },

@@ -1,2 +1,2 @@
-export { default as SessionCard } from './components/field-card.component';
-export { default as SessionCardSkeleton } from './components/field-card-skeleton.component';
+export { default as FieldCard } from './components/field-card.component';
+export { default as FieldCardSkeleton } from './components/field-card-skeleton.component';

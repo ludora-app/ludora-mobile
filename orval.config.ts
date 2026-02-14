@@ -17,6 +17,7 @@ module.exports = {
       target: './tools/generate-api/swagger.json',
     },
     output: {
+      clean: true,
       client: 'react-query',
       fileExtension: '.api.ts',
       mode: 'tags-split',
@@ -39,16 +40,4 @@ module.exports = {
       target: 'src/api/generated/api',
     },
   },
-  // 2. Config pour Zod (seulement les schémas, pas les hooks)
-  // backendZod: {
-  //   input: {
-  //     target: process.env.EXPO_PUBLIC_SWAGGER_URL,
-  //   },
-  //   output: {
-  //     mode: 'tags-split',
-  //     target: 'src/api/generated/api',
-  //     client: 'zod',
-  //     fileExtension: '.zod.ts',
-  //   },
-  // },
 };

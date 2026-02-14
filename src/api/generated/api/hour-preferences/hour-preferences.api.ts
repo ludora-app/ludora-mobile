@@ -22,210 +22,17 @@ import type {
 import type {
   BadRequestResponseDto,
   CreateHourPreferenceDto,
-  HourPreferenceResponseDto,
   NotFoundResponseDto,
-  PaginationResponseHourPreferenceResponseData,
+  PaginationResponseHourPreferenceData,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
 /**
- * @summary Create a new user hour preference
- */
-export const hourPreferencesCreate = (
-  createHourPreferenceDto: CreateHourPreferenceDto,
-  signal?: AbortSignal,
-) => {
-  return customInstance<HourPreferenceResponseDto>({
-    url: `/hour-preferences`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: createHourPreferenceDto,
-    signal,
-  });
-};
-
-export const getHourPreferencesCreateMutationOptions = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hourPreferencesCreate>>,
-    TError,
-    { data: CreateHourPreferenceDto },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof hourPreferencesCreate>>,
-  TError,
-  { data: CreateHourPreferenceDto },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof hourPreferencesCreate>>,
-    { data: CreateHourPreferenceDto }
-  > = props => {
-    const { data } = props ?? {};
-
-    return hourPreferencesCreate(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type HourPreferencesCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof hourPreferencesCreate>>
->;
-export type HourPreferencesCreateMutationBody = CreateHourPreferenceDto;
-export type HourPreferencesCreateMutationError =
-  | BadRequestResponseDto
-  | UnauthorizedResponseDto
-  | NotFoundResponseDto;
-
-/**
- * @summary Create a new user hour preference
- */
-export const useHourPreferencesCreate = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hourPreferencesCreate>>,
-    TError,
-    { data: CreateHourPreferenceDto },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof hourPreferencesCreate>>,
-  TError,
-  { data: CreateHourPreferenceDto },
-  TContext
-> => {
-  const mutationOptions = getHourPreferencesCreateMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-/**
- * @summary Get all user hour preferences by user ID
- */
-export const hourPreferencesFindAllByUserUid = (userUid: string, signal?: AbortSignal) => {
-  return customInstance<PaginationResponseHourPreferenceResponseData>({
-    url: `/hour-preferences/list-by-user/${userUid}`,
-    method: 'GET',
-    signal,
-  });
-};
-
-export const getHourPreferencesFindAllByUserUidQueryKey = (userUid: string) => {
-  return [`/hour-preferences/list-by-user/${userUid}`] as const;
-};
-
-export const getHourPreferencesFindAllByUserUidQueryOptions = <
-  TData = Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
->(
-  userUid: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>
-    >;
-  },
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getHourPreferencesFindAllByUserUidQueryKey(userUid);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>> = ({ signal }) =>
-    hourPreferencesFindAllByUserUid(userUid, signal);
-
-  return { queryKey, queryFn, enabled: !!userUid, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData> };
-};
-
-export type HourPreferencesFindAllByUserUidQueryResult = NonNullable<
-  Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>
->;
-export type HourPreferencesFindAllByUserUidQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
-
-export function useHourPreferencesFindAllByUserUid<
-  TData = Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
->(
-  userUid: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>
-    > &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>,
-        'initialData'
-      >;
-  },
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useHourPreferencesFindAllByUserUid<
-  TData = Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
->(
-  userUid: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-          TError,
-          TData
-        >,
-        'initialData'
-      >;
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useHourPreferencesFindAllByUserUid<
-  TData = Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
->(
-  userUid: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>
-    >;
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-/**
- * @summary Get all user hour preferences by user ID
- */
-
-export function useHourPreferencesFindAllByUserUid<
-  TData = Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>,
-  TError = BadRequestResponseDto | UnauthorizedResponseDto,
->(
-  userUid: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof hourPreferencesFindAllByUserUid>>, TError, TData>
-    >;
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getHourPreferencesFindAllByUserUidQueryOptions(userUid, options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-/**
  * @summary Get the hour preferences of the connected user
  */
 export const hourPreferencesFindMyHourPreferences = (signal?: AbortSignal) => {
-  return customInstance<PaginationResponseHourPreferenceResponseData>({
+  return customInstance<PaginationResponseHourPreferenceData>({
     url: `/hour-preferences/my-list`,
     method: 'GET',
     signal,
@@ -326,37 +133,96 @@ export function useHourPreferencesFindMyHourPreferences<
 }
 
 /**
- * @summary Delete a user hour preference by uid
+ * @summary Saves the hour preferences of the connected user
  */
-export const hourPreferencesRemove = (uid: string) => {
-  return customInstance<void>({ url: `/hour-preferences/${uid}`, method: 'DELETE' });
+export const hourPreferencesCreateMany = (createHourPreferenceDto: CreateHourPreferenceDto) => {
+  return customInstance<void>({
+    url: `/hour-preferences`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: createHourPreferenceDto,
+  });
+};
+
+export const getHourPreferencesCreateManyMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof hourPreferencesCreateMany>>,
+    TError,
+    { data: CreateHourPreferenceDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof hourPreferencesCreateMany>>,
+  TError,
+  { data: CreateHourPreferenceDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof hourPreferencesCreateMany>>,
+    { data: CreateHourPreferenceDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return hourPreferencesCreateMany(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type HourPreferencesCreateManyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof hourPreferencesCreateMany>>
+>;
+export type HourPreferencesCreateManyMutationBody = CreateHourPreferenceDto;
+export type HourPreferencesCreateManyMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | NotFoundResponseDto;
+
+/**
+ * @summary Saves the hour preferences of the connected user
+ */
+export const useHourPreferencesCreateMany = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof hourPreferencesCreateMany>>,
+    TError,
+    { data: CreateHourPreferenceDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof hourPreferencesCreateMany>>,
+  TError,
+  { data: CreateHourPreferenceDto },
+  TContext
+> => {
+  const mutationOptions = getHourPreferencesCreateManyMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Delete all the hour preferences of the connected user
+ */
+export const hourPreferencesRemove = () => {
+  return customInstance<void>({ url: `/hour-preferences`, method: 'DELETE' });
 };
 
 export const getHourPreferencesRemoveMutationOptions = <
   TError = UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hourPreferencesRemove>>,
-    TError,
-    { uid: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof hourPreferencesRemove>>,
-  TError,
-  { uid: string },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof hourPreferencesRemove>>, TError, void, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<typeof hourPreferencesRemove>>, TError, void, TContext> => {
   const { mutation: mutationOptions } = options ?? {};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof hourPreferencesRemove>>,
-    { uid: string }
-  > = props => {
-    const { uid } = props ?? {};
-
-    return hourPreferencesRemove(uid);
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof hourPreferencesRemove>>, void> = () => {
+    return hourPreferencesRemove();
   };
 
   return { mutationFn, ...mutationOptions };
@@ -369,24 +235,14 @@ export type HourPreferencesRemoveMutationResult = NonNullable<
 export type HourPreferencesRemoveMutationError = UnauthorizedResponseDto | NotFoundResponseDto;
 
 /**
- * @summary Delete a user hour preference by uid
+ * @summary Delete all the hour preferences of the connected user
  */
 export const useHourPreferencesRemove = <
   TError = UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof hourPreferencesRemove>>,
-    TError,
-    { uid: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof hourPreferencesRemove>>,
-  TError,
-  { uid: string },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof hourPreferencesRemove>>, TError, void, TContext>;
+}): UseMutationResult<Awaited<ReturnType<typeof hourPreferencesRemove>>, TError, void, TContext> => {
   const mutationOptions = getHourPreferencesRemoveMutationOptions(options);
 
   return useMutation(mutationOptions);

@@ -6,15 +6,24 @@ import COLORS from '@/constants/COLORS'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 
-export default function SettingsHeader() {
+type SettingsHeaderProps = {
+  titleKey: string
+}
+
+export default function SettingsHeader(props: SettingsHeaderProps) {
+  const { titleKey } = props
   const { t } = useTranslate()
   const { top } = useSafeArea()
+
+  if (!titleKey) {
+    return null
+  }
 
   return (
     <Wrapper className='flex-row items-center z-10 pb-4 gap-2' style={{ paddingTop: top + 10 }}>
       <GoBackButton />
       <OutlinedString
-        text={t('settings.header_title')}
+        text={t(titleKey)}
         fontSize={28}
         fillColor="#FFFFFF"
         strokeColor={COLORS.primary}

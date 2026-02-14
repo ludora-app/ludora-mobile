@@ -49,9 +49,6 @@ import { customInstance } from '../../../orval.instance';
 export const authB2CRegister = (registerB2CWithFileDto: RegisterB2CWithFileDto, signal?: AbortSignal) => {
   const formData = new FormData();
   formData.append('type', registerB2CWithFileDto.type);
-  if (registerB2CWithFileDto.deviceUid !== undefined) {
-    formData.append('deviceUid', registerB2CWithFileDto.deviceUid);
-  }
   formData.append('email', registerB2CWithFileDto.email);
   formData.append('password', registerB2CWithFileDto.password);
   if (registerB2CWithFileDto.firstname !== undefined) {

@@ -23,7 +23,7 @@ export default function ProfilEditBirthdateFormsheet() {
   const { birthdate: userMeBirthdate } = userMe || {}
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe()
   const { t } = useTranslate()
-  const { trackError, trackEvent } = useAnalytics()
+  const { trackError, trackEvent, trackIdentity } = useAnalytics()
   const { control, handleSubmit } = useForm(
     {
       defaultValues: {
@@ -42,6 +42,7 @@ export default function ProfilEditBirthdateFormsheet() {
       }
       await updateUserMe({ birthdate: data.birthdate.toISOString() })
       trackEvent({ eventName: "profil_edit_birthdate_success" })
+      trackIdentity({ birthdate: data.birthdate.toISOString() })
       toast({
         message: t('profil.profil-edit.birthdate_updated_success'),
         variant: "success",

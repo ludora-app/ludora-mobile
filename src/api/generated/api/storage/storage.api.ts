@@ -50,11 +50,11 @@ export const useStorageUpload = <TError = unknown, TContext = unknown>(options?:
   return useMutation(mutationOptions);
 };
 export const storageGetSignedUrl = (params: StorageGetSignedUrlParams, signal?: AbortSignal) => {
-  return customInstance<string>({ url: `/storage/get-signed-url`, method: 'GET', params, signal });
+  return customInstance<string>({ url: `/storage`, method: 'GET', params, signal });
 };
 
 export const getStorageGetSignedUrlQueryKey = (params: StorageGetSignedUrlParams) => {
-  return [`/storage/get-signed-url`, ...(params ? [params] : [])] as const;
+  return [`/storage`, ...(params ? [params] : [])] as const;
 };
 
 export const getStorageGetSignedUrlQueryOptions = <

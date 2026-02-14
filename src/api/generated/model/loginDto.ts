@@ -7,8 +7,6 @@
  */
 
 export interface LoginDto {
-  /** Device identifier, only for phones */
-  deviceUid?: string;
   /** User email */
   email: string;
   /**

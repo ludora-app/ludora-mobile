@@ -1,6 +1,12 @@
 import { Filters } from '@/features/filters/filters/store/filters.store';
+import {
+  FindMeUserResponseDataSex,
+  SportPreferenceResponseDataGameModesItem,
+  SportPreferenceResponseDataLevel,
+  SportPreferenceResponseDataSport,
+} from '@/api/generated/model';
 
-type JsonType = string | number | boolean | null | { [key: string]: JsonType } | JsonType[];
+type JsonType = string | number | boolean | null | Date | { [key: string]: JsonType } | JsonType[];
 
 export const ANALYTICS_EVENTS = {
   // Global
@@ -44,6 +50,8 @@ export const ANALYTICS_EVENTS = {
     FILTER_SESSIONS_ALL_APPLIED: 'filter_sessions_all_applied',
   },
   PROFIL: {
+    PROFIL_EDIT_AVATAR_FAILED: 'profil_edit_avatar_failed',
+    PROFIL_EDIT_AVATAR_SUCCESS: 'profil_edit_avatar_success',
     PROFIL_EDIT_BIO_FAILED: 'profil_edit_bio_failed',
     PROFIL_EDIT_BIO_SUCCESS: 'profil_edit_bio_success',
     PROFIL_EDIT_BIRTHDATE_FAILED: 'profil_edit_birthdate_failed',
@@ -62,29 +70,40 @@ export const ANALYTICS_EVENTS = {
     SESSION_JOINED_FAILED: 'session_joined_failed',
     SESSION_TEAM_SELECTED: 'session_team_selected',
   },
+  SETTINGS: {
+    SETTINGS_PLANNING_EDIT_FAILED: 'settings:settings_planning_edit_failed',
+    SETTINGS_PLANNING_EDIT_SUCCESS: 'settings:settings_planning_edit_success',
+    SETTINGS_PREFERENCES_SPORTS_EDIT_FAILED: 'settings:settings_preferences_sports_edit_failed',
+    SETTINGS_PREFERENCES_SPORTS_EDIT_SUCCESS: 'settings:settings_preferences_sports_edit_success',
+  },
 } as const;
 
 export interface AnalyticsEventData {
   // auth events
   [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_NEW_PASSWORD_FAILED]: {
     error_message: string;
+    flow: 'Authentication';
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_FAILED]: {
     error_message: string;
     method: 'google' | 'email';
+    flow: 'Authentication';
   };
   [ANALYTICS_EVENTS.AUTH.SIGNUP_FAILED]: {
     error_message: string;
     method: 'google' | 'email';
+    flow: 'Authentication';
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_SUCCESS]: {
     method: 'google' | 'email';
     auto_login_from_signup?: boolean;
+    flow: 'Authentication';
   };
 
   [ANALYTICS_EVENTS.AUTH.SIGNUP_SUCCESS]: {
     auto_register_from_login?: boolean;
     method: 'google' | 'email';
+    flow: 'Authentication';
   };
 
   // session events
@@ -172,6 +191,9 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_EMAIL_FAILED]: {
     error_message: string;
   };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_FAILED]: {
+    error_message: string;
+  };
   [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_PASSWORD_FAILED]: {
     error_message: string;
   };
@@ -182,6 +204,10 @@ export interface AnalyticsEventData {
     is_sex_added: boolean;
     is_sex_updated: boolean;
   };
+  [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_SUCCESS]: {
+    is_avatar_added: boolean;
+    is_avatar_updated: boolean;
+  };
   [ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_NAME_SUCCESS]: {
     is_firstname_changed: boolean;
     is_lastname_changed: boolean;
@@ -190,6 +216,27 @@ export interface AnalyticsEventData {
     is_bio_added: boolean;
     is_bio_removed: boolean;
     is_bio_updated: boolean;
+  };
+
+  // **
+  // settings events
+  // **
+  [ANALYTICS_EVENTS.SETTINGS.SETTINGS_PLANNING_EDIT_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.SETTINGS.SETTINGS_PREFERENCES_SPORTS_EDIT_FAILED]: {
+    error_message: string;
+  };
+
+  [ANALYTICS_EVENTS.SETTINGS.SETTINGS_PLANNING_EDIT_SUCCESS]: {
+    is_planning_added: boolean;
+    is_planning_removed: boolean;
+    is_planning_updated: boolean;
+  };
+  [ANALYTICS_EVENTS.SETTINGS.SETTINGS_PREFERENCES_SPORTS_EDIT_SUCCESS]: {
+    is_sport_preference_added: boolean;
+    is_sport_preference_removed: boolean;
+    is_sport_preference_updated: boolean;
   };
 }
 
@@ -206,3 +253,17 @@ export type AnalyticsEventWithDataType<T extends AnalyticsEvent> = T extends key
       eventName: T;
       data?: Record<string, JsonType> | undefined;
     };
+
+export type TrackIdentityProperties = {
+  sports_preferences?: SportPreferenceResponseDataSport[];
+  level_padel?: SportPreferenceResponseDataLevel;
+  level_tennis?: SportPreferenceResponseDataLevel;
+  level_football?: SportPreferenceResponseDataLevel;
+  level_basketball?: SportPreferenceResponseDataLevel;
+  game_mode_padel?: SportPreferenceResponseDataGameModesItem[];
+  game_mode_tennis?: SportPreferenceResponseDataGameModesItem[];
+  game_mode_football?: SportPreferenceResponseDataGameModesItem[];
+  game_mode_basketball?: SportPreferenceResponseDataGameModesItem[];
+  gender?: FindMeUserResponseDataSex;
+  birthdate?: string;
+};

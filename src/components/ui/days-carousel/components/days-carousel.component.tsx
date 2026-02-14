@@ -13,6 +13,7 @@ type DateCarouselProps = {
   contentContainerClassName?: string;
   initialDate?: Dayjs;
   startDay?: Dayjs;
+  numberOfDays?: number;
 };
 
 const DEBOUNCE_DELAY = 300;
@@ -20,9 +21,11 @@ const DEBOUNCE_DELAY = 300;
 const ITEM_WIDTH = 48;
 const ITEM_SPACING = 8;
 
+const DEFAULT_NBR_OF_DAYS = 14;
+
 export default function DaysCarousel(props: DateCarouselProps) {
-  const { className, contentContainerClassName, initialDate, onSelect, startDay } = props;
-  const { days, isSelected, selected, setSelected } = useDateCarousel({ initialDate, startDate: startDay });
+  const { className, contentContainerClassName, initialDate, numberOfDays = DEFAULT_NBR_OF_DAYS, onSelect, startDay } = props;
+  const { days, isSelected, selected, setSelected, } = useDateCarousel({ initialDate, numberOfDays, startDate: startDay });
   const flatListRef = useRef<FlatList>(null);
   const previousSelectedRef = useRef<Dayjs | null>(selected);
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
@@ -68,7 +71,7 @@ export default function DaysCarousel(props: DateCarouselProps) {
     }
   }, [selected, days, visibleIndices, screenWidth]);
 
-  console.log(days)
+
   return (
     <FlatList
       ref={flatListRef}

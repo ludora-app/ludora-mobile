@@ -5,8 +5,10 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
+import type { FriendRequestData } from './friendRequestData';
+import type { SessionInvitationData } from './sessionInvitationData';
 
 /**
  * data of the notification
  */
-export type NotificationResponseDataData = { [key: string]: unknown };
+export type NotificationResponseDataData = FriendRequestData | SessionInvitationData;

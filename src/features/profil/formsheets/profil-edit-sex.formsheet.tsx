@@ -6,6 +6,7 @@ import { useTranslate } from '@tolgee/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useUserMe } from '@/queries/user-me.query'
+import { ErrorResponse } from '@/api/orval.instance'
 import { UpdateUserDtoSex } from '@/api/generated/model'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { useUpdateUserMe } from '@/queries/update-user-me.query'
@@ -21,9 +22,9 @@ type SexOption = {
 }
 
 const SEX_OPTIONS: SexOption[] = [
-  { label: 'common.men', value: 'MALE' },
-  { label: 'common.women', value: 'FEMALE' },
-  { label: 'common.other', value: 'OTHER' },
+  { label: 'common.MALE', value: 'MALE' },
+  { label: 'common.FEMALE', value: 'FEMALE' },
+  { label: 'common.OTHER', value: 'OTHER' },
 ]
 
 export default function ProfilEditSexFormsheet() {
@@ -32,7 +33,7 @@ export default function ProfilEditSexFormsheet() {
   const router = useRouter()
   const { userMe } = useUserMe()
   const { sex: userMeSex } = userMe || {}
-  const { trackError, trackEvent } = useAnalytics()
+  const { trackError, trackEvent, trackIdentity } = useAnalytics()
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe()
 
 
@@ -57,6 +58,7 @@ export default function ProfilEditSexFormsheet() {
       const isSexAdded = !userMeSex && data.sex
       const isSexUpdated = userMeSex && data.sex
       trackEvent({ data: { is_sex_added: !!isSexAdded, is_sex_updated: !!isSexUpdated }, eventName: "profil_edit_sex_success" })
+      trackIdentity({ gender: data.sex })
       if (isSexAdded) {
         toast({
           message: t('profil.profil-edit.sex_added_success'),
@@ -70,8 +72,9 @@ export default function ProfilEditSexFormsheet() {
       }
       router.back()
     } catch (error) {
+      const responseError = error as ErrorResponse
       trackError({ error })
-      trackEvent({ data: { error_message: error.message }, eventName: "profil_edit_sex_failed" })
+      trackEvent({ data: { error_message: responseError.api_error_detail }, eventName: "profil_edit_sex_failed" })
     }
   }
 

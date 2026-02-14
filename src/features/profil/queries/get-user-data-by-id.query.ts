@@ -6,6 +6,7 @@ export const useGetUserDataById = (userId: string) => {
   const query = useUsersFindOne(userId, {
     query: {
       enabled: !!userId,
+      staleTime: Infinity,
     },
   });
   const { data } = query?.data || {};

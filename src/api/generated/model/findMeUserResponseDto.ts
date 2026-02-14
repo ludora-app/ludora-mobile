@@ -5,9 +5,9 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import type { FindMeUserResponseDataDto } from './findMeUserResponseDataDto';
+import type { FindMeUserResponseData } from './findMeUserResponseData';
 
 export interface FindMeUserResponseDto {
-  readonly data: FindMeUserResponseDataDto;
+  readonly data: FindMeUserResponseData;
   readonly message?: string;
 }

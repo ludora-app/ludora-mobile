@@ -11,7 +11,6 @@ import RatingCard from '../components/rating-card/rating-card.component';
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
 import ProfilSection4 from '../components/profil-section/profil-section-4.component';
 import ProfilSection3 from '../components/profil-section/profil-section-3/profil-section-3.component';
-import ProfilSection5 from '../components/profil-section/profil-section-5/profil-section-5.component';
 
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
@@ -73,7 +72,7 @@ export default function ProfilScreen() {
           {/* Section 4 */}
           <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} />
           {/* Section 5 */}
-          <ProfilSection5 />
+          {/* <ProfilSection5 /> */}
         </Wrapper>
       </ScrollView>
     </ScreenLayout >

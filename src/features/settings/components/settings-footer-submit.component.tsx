@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Button } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
@@ -7,11 +8,13 @@ import { FooterWrapper } from '@/components/ui/footer-wrapper'
 type SettingsFooterSubmitProps = {
   isDirty: boolean
   onPress: () => void
+  isLoading?: boolean
 }
 
-export default function SettingsFooterSubmit(props: SettingsFooterSubmitProps) {
-  const { isDirty, onPress } = props
+function SettingsFooterSubmit(props: SettingsFooterSubmitProps) {
+  const { isDirty, isLoading, onPress } = props
   const { t } = useTranslate()
+
   return (
     isDirty && (
       <Animated.View
@@ -23,9 +26,12 @@ export default function SettingsFooterSubmit(props: SettingsFooterSubmitProps) {
           <Button
             title={t('common.apply')}
             onPress={onPress}
+            isLoading={isLoading}
           />
         </FooterWrapper>
       </Animated.View>
     )
   )
 }
+
+export default memo(SettingsFooterSubmit, (prevProps, nextProps) => prevProps.isDirty === nextProps.isDirty && prevProps.isLoading === nextProps.isLoading)

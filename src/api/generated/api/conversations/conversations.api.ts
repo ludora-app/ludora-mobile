@@ -24,13 +24,16 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query';
 import type {
+  ArchivedConversationSettingsDto,
   BadRequestResponseDto,
   ConversationsFindAllByUserUidParams,
   ConversationsLoadMoreMessagesParams,
   CreateMessageDto,
   FindOneConversationResponseDto,
   ForbiddenResponseDto,
+  MutedConversationSettingsDto,
   NotFoundResponseDto,
+  PaginatedConversationMemberResponseDto,
   PaginationResponseConversationCollectionResponseData,
   PaginationResponseMessageCollectionItemDto,
   UnauthorizedResponseDto,
@@ -410,11 +413,72 @@ export function useConversationsFindOne<
 }
 
 /**
+ * @summary Soft delete a conversation, it updates the display messages after to the current date
+ */
+export const conversationsRemove = (uid: string) => {
+  return customInstance<void>({ url: `/conversations/${uid}`, method: 'DELETE' });
+};
+
+export const getConversationsRemoveMutationOptions = <
+  TError = UnauthorizedResponseDto | ForbiddenResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsRemove>>,
+    TError,
+    { uid: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof conversationsRemove>>,
+  TError,
+  { uid: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof conversationsRemove>>,
+    { uid: string }
+  > = props => {
+    const { uid } = props ?? {};
+
+    return conversationsRemove(uid);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConversationsRemoveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsRemove>>
+>;
+
+export type ConversationsRemoveMutationError = UnauthorizedResponseDto | ForbiddenResponseDto;
+
+/**
+ * @summary Soft delete a conversation, it updates the display messages after to the current date
+ */
+export const useConversationsRemove = <
+  TError = UnauthorizedResponseDto | ForbiddenResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsRemove>>,
+    TError,
+    { uid: string },
+    TContext
+  >;
+}): UseMutationResult<Awaited<ReturnType<typeof conversationsRemove>>, TError, { uid: string }, TContext> => {
+  const mutationOptions = getConversationsRemoveMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
  * @summary Get a list of messages for a conversation
  */
 export const conversationsLoadMoreMessages = (
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
   signal?: AbortSignal,
 ) => {
   return customInstance<PaginationResponseMessageCollectionItemDto>({
@@ -427,7 +491,7 @@ export const conversationsLoadMoreMessages = (
 
 export const getConversationsLoadMoreMessagesQueryKey = (
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
 ) => {
   return [`/conversations/${uid}/messages-list/collection`, ...(params ? [params] : [])] as const;
 };
@@ -440,7 +504,7 @@ export const getConversationsLoadMoreMessagesInfiniteQueryOptions = <
   TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
 >(
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -490,7 +554,7 @@ export function useConversationsLoadMoreMessagesInfinite<
   TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
 >(
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params: undefined | ConversationsLoadMoreMessagesParams,
   options: {
     query: Partial<
       UseInfiniteQueryOptions<
@@ -520,7 +584,7 @@ export function useConversationsLoadMoreMessagesInfinite<
   TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
 >(
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -550,7 +614,7 @@ export function useConversationsLoadMoreMessagesInfinite<
   TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
 >(
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -575,7 +639,7 @@ export function useConversationsLoadMoreMessagesInfinite<
   TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
 >(
   uid: string,
-  params: ConversationsLoadMoreMessagesParams,
+  params?: ConversationsLoadMoreMessagesParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
@@ -598,3 +662,264 @@ export function useConversationsLoadMoreMessagesInfinite<
 
   return query;
 }
+
+/**
+ * @summary Get all members of a conversation
+ */
+export const conversationsFindAllMembers = (uid: string, signal?: AbortSignal) => {
+  return customInstance<PaginatedConversationMemberResponseDto>({
+    url: `/conversations/${uid}/members`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getConversationsFindAllMembersQueryKey = (uid: string) => {
+  return [`/conversations/${uid}/members`] as const;
+};
+
+export const getConversationsFindAllMembersQueryOptions = <
+  TData = Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>>;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getConversationsFindAllMembersQueryKey(uid);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof conversationsFindAllMembers>>> = ({ signal }) =>
+    conversationsFindAllMembers(uid, signal);
+
+  return { queryKey, queryFn, enabled: !!uid, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type ConversationsFindAllMembersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsFindAllMembers>>
+>;
+export type ConversationsFindAllMembersQueryError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | ForbiddenResponseDto
+  | NotFoundResponseDto;
+
+export function useConversationsFindAllMembers<
+  TData = Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useConversationsFindAllMembers<
+  TData = Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useConversationsFindAllMembers<
+  TData = Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get all members of a conversation
+ */
+
+export function useConversationsFindAllMembers<
+  TData = Awaited<ReturnType<typeof conversationsFindAllMembers>>,
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+>(
+  uid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof conversationsFindAllMembers>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getConversationsFindAllMembersQueryOptions(uid, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Update a conversation's mute settings
+ */
+export const conversationsUpdateMuteSettings = (
+  uid: string,
+  mutedConversationSettingsDto: MutedConversationSettingsDto,
+) => {
+  return customInstance<void>({
+    url: `/conversations/mute/${uid}`,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    data: mutedConversationSettingsDto,
+  });
+};
+
+export const getConversationsUpdateMuteSettingsMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>,
+    TError,
+    { uid: string; data: MutedConversationSettingsDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>,
+  TError,
+  { uid: string; data: MutedConversationSettingsDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>,
+    { uid: string; data: MutedConversationSettingsDto }
+  > = props => {
+    const { uid, data } = props ?? {};
+
+    return conversationsUpdateMuteSettings(uid, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConversationsUpdateMuteSettingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>
+>;
+export type ConversationsUpdateMuteSettingsMutationBody = MutedConversationSettingsDto;
+export type ConversationsUpdateMuteSettingsMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | ForbiddenResponseDto
+  | NotFoundResponseDto;
+
+/**
+ * @summary Update a conversation's mute settings
+ */
+export const useConversationsUpdateMuteSettings = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>,
+    TError,
+    { uid: string; data: MutedConversationSettingsDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof conversationsUpdateMuteSettings>>,
+  TError,
+  { uid: string; data: MutedConversationSettingsDto },
+  TContext
+> => {
+  const mutationOptions = getConversationsUpdateMuteSettingsMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary Update a conversation's archive settings
+ */
+export const conversationsUpdateArchivedSettings = (
+  uid: string,
+  archivedConversationSettingsDto: ArchivedConversationSettingsDto,
+) => {
+  return customInstance<void>({
+    url: `/conversations/archive/${uid}`,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    data: archivedConversationSettingsDto,
+  });
+};
+
+export const getConversationsUpdateArchivedSettingsMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>,
+    TError,
+    { uid: string; data: ArchivedConversationSettingsDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>,
+  TError,
+  { uid: string; data: ArchivedConversationSettingsDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>,
+    { uid: string; data: ArchivedConversationSettingsDto }
+  > = props => {
+    const { uid, data } = props ?? {};
+
+    return conversationsUpdateArchivedSettings(uid, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConversationsUpdateArchivedSettingsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>
+>;
+export type ConversationsUpdateArchivedSettingsMutationBody = ArchivedConversationSettingsDto;
+export type ConversationsUpdateArchivedSettingsMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | ForbiddenResponseDto
+  | NotFoundResponseDto;
+
+/**
+ * @summary Update a conversation's archive settings
+ */
+export const useConversationsUpdateArchivedSettings = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | ForbiddenResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>,
+    TError,
+    { uid: string; data: ArchivedConversationSettingsDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof conversationsUpdateArchivedSettings>>,
+  TError,
+  { uid: string; data: ArchivedConversationSettingsDto },
+  TContext
+> => {
+  const mutationOptions = getConversationsUpdateArchivedSettingsMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};

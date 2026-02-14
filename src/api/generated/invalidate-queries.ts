@@ -15,7 +15,7 @@ import type {
   SessionInvitationsFindAllBySessionIdParams,
   SessionInvitationsFindAllByUserIdParams,
   SessionsFindAllByUserUidParams,
-  SessionsFindAllMeParams,
+  SessionsFindAllMySessionsParams,
   SessionsFindAllParams,
   SessionsFindOneWithDistanceParams,
   StorageGetSignedUrlParams,
@@ -35,6 +35,7 @@ import {
     getConversationsFindAllByUserUidQueryKey,
     getConversationsFindOneQueryKey,
     getConversationsLoadMoreMessagesQueryKey,
+    getConversationsFindAllMembersQueryKey,
 } from './api/conversations/conversations.api';
 import {
     getEmailsTestEmailQueryKey,
@@ -51,10 +52,6 @@ import {
     getFriendsFindMyFriendRequestQueryKey,
 } from './api/friends/friends.api';
 import {
-    getGameModePreferencesFindMyGameModePreferencesQueryKey,
-} from './api/game-mode-preferences/game-mode-preferences.api';
-import {
-    getHourPreferencesFindAllByUserUidQueryKey,
     getHourPreferencesFindMyHourPreferencesQueryKey,
 } from './api/hour-preferences/hour-preferences.api';
 import {
@@ -80,7 +77,9 @@ import {
 } from './api/session-teams/session-teams.api';
 import {
     getSessionsFindAllQueryKey,
-    getSessionsFindAllMeQueryKey,
+    getSessionsGetMyStatsQueryKey,
+    getSessionsGetUserStatsQueryKey,
+    getSessionsFindAllMySessionsQueryKey,
     getSessionsFindAllByUserUidQueryKey,
     getSessionsFindOneQueryKey,
     getSessionsFindOneWithDistanceQueryKey,
@@ -155,11 +154,19 @@ export const useInvalidateConversationsFindOne = (uid: string) => {
     });
 };
 
-export const useInvalidateConversationsLoadMoreMessages = (uid: string, params: ConversationsLoadMoreMessagesParams) => {
+export const useInvalidateConversationsLoadMoreMessages = (uid: string, params?: ConversationsLoadMoreMessagesParams) => {
   const queryClient = useQueryClient();
   return () =>
     queryClient.invalidateQueries({
       queryKey: getConversationsLoadMoreMessagesQueryKey(uid, params),
+    });
+};
+
+export const useInvalidateConversationsFindAllMembers = (uid: string) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getConversationsFindAllMembersQueryKey(uid),
     });
 };
 
@@ -224,22 +231,6 @@ export const useInvalidateFriendsFindMyFriendRequest = (otherUserUid: string) =>
   return () =>
     queryClient.invalidateQueries({
       queryKey: getFriendsFindMyFriendRequestQueryKey(otherUserUid),
-    });
-};
-
-export const useInvalidateGameModePreferencesFindMyGameModePreferences = () => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getGameModePreferencesFindMyGameModePreferencesQueryKey(),
-    });
-};
-
-export const useInvalidateHourPreferencesFindAllByUserUid = (userUid: string) => {
-  const queryClient = useQueryClient();
-  return () =>
-    queryClient.invalidateQueries({
-      queryKey: getHourPreferencesFindAllByUserUidQueryKey(userUid),
     });
 };
 
@@ -347,11 +338,27 @@ export const useInvalidateSessionsFindAll = (params?: SessionsFindAllParams) => 
     });
 };
 
-export const useInvalidateSessionsFindAllMe = (params?: SessionsFindAllMeParams) => {
+export const useInvalidateSessionsGetMyStats = () => {
   const queryClient = useQueryClient();
   return () =>
     queryClient.invalidateQueries({
-      queryKey: getSessionsFindAllMeQueryKey(params),
+      queryKey: getSessionsGetMyStatsQueryKey(),
+    });
+};
+
+export const useInvalidateSessionsGetUserStats = (userUid: string) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSessionsGetUserStatsQueryKey(userUid),
+    });
+};
+
+export const useInvalidateSessionsFindAllMySessions = (params?: SessionsFindAllMySessionsParams) => {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: getSessionsFindAllMySessionsQueryKey(params),
     });
 };
 

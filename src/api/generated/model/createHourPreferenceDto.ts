@@ -5,20 +5,9 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import type { CreateHourPreferenceDtoPreferenceType } from './createHourPreferenceDtoPreferenceType';
-import type { CreateHourPreferenceDtoTimePeriod } from './createHourPreferenceDtoTimePeriod';
+import type { HourPreferenceData } from './hourPreferenceData';
 
 export interface CreateHourPreferenceDto {
-  /** The date of the preference */
-  date?: string;
-  /**
-   * The day of the week, 0 is Sunday, 6 is Saturday
-   * @minimum 0
-   * @maximum 6
-   */
-  dayOfWeek?: number;
-  /** The preference type, RECURRENT is a recurring preference, ONE_TIME is a one time preference */
-  preferenceType: CreateHourPreferenceDtoPreferenceType;
-  /** The time period */
-  timePeriod: CreateHourPreferenceDtoTimePeriod;
+  /** The hour preferences of the user */
+  hourPreferences: HourPreferenceData[];
 }

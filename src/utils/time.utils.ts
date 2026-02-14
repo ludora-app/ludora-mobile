@@ -48,3 +48,9 @@ export function getDuration({
 
   return end.diff(start, measurement);
 }
+
+export const getAge = (date: string) => {
+  const birthDate = dayjs(date);
+  const today = dayjs();
+  return today.diff(birthDate, 'years');
+};

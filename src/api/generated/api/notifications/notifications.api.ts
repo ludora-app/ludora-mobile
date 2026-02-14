@@ -5,15 +5,19 @@
  * API for the Ludora app
  * OpenAPI spec version: 0.0.1
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -30,18 +34,22 @@ import { customInstance } from '../../../orval.instance';
  * @summary Get all notifications for the current user
  */
 export const notificationsFindAll = (signal?: AbortSignal) => {
-  return customInstance<PaginationResponseNotificationResponseData>({ url: `/notifications`, method: 'GET', signal });
+  return customInstance<PaginationResponseNotificationResponseData>({
+    url: `/notifications/collection`,
+    method: 'GET',
+    signal,
+  });
 };
 
 export const getNotificationsFindAllQueryKey = () => {
-  return [`/notifications`] as const;
+  return [`/notifications/collection`] as const;
 };
 
-export const getNotificationsFindAllQueryOptions = <
-  TData = Awaited<ReturnType<typeof notificationsFindAll>>,
+export const getNotificationsFindAllInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof notificationsFindAll>>>,
   TError = UnauthorizedResponseDto,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
 }) => {
   const { query: queryOptions } = options ?? {};
 
@@ -50,57 +58,59 @@ export const getNotificationsFindAllQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof notificationsFindAll>>> = ({ signal }) =>
     notificationsFindAll(signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof notificationsFindAll>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type NotificationsFindAllQueryResult = NonNullable<
+export type NotificationsFindAllInfiniteQueryResult = NonNullable<
   Awaited<ReturnType<typeof notificationsFindAll>>
 >;
-export type NotificationsFindAllQueryError = UnauthorizedResponseDto;
+export type NotificationsFindAllInfiniteQueryError = UnauthorizedResponseDto;
 
-export function useNotificationsFindAll<
-  TData = Awaited<ReturnType<typeof notificationsFindAll>>,
+export function useNotificationsFindAllInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof notificationsFindAll>>>,
   TError = UnauthorizedResponseDto,
 >(options: {
-  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>> &
+  query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>> &
     Pick<
       DefinedInitialDataOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>,
       'initialData'
     >;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useNotificationsFindAll<
-  TData = Awaited<ReturnType<typeof notificationsFindAll>>,
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useNotificationsFindAllInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof notificationsFindAll>>>,
   TError = UnauthorizedResponseDto,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>> &
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>> &
     Pick<
       UndefinedInitialDataOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>,
       'initialData'
     >;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useNotificationsFindAll<
-  TData = Awaited<ReturnType<typeof notificationsFindAll>>,
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useNotificationsFindAllInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof notificationsFindAll>>>,
   TError = UnauthorizedResponseDto,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 /**
  * @summary Get all notifications for the current user
  */
 
-export function useNotificationsFindAll<
-  TData = Awaited<ReturnType<typeof notificationsFindAll>>,
+export function useNotificationsFindAllInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof notificationsFindAll>>>,
   TError = UnauthorizedResponseDto,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getNotificationsFindAllQueryOptions(options);
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof notificationsFindAll>>, TError, TData>>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getNotificationsFindAllInfiniteQueryOptions(options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

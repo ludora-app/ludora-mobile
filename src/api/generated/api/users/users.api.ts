@@ -33,6 +33,7 @@ import type {
   UnauthorizedResponseDto,
   UpdatePasswordDto,
   UpdateUserDto,
+  UpdateUserEmailDto,
   UsersFindAllParams,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
@@ -667,6 +668,80 @@ export const useUsersUpdatePassword = <
   TContext
 > => {
   const mutationOptions = getUsersUpdatePasswordMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
+ * @summary update email requires to be connected
+ */
+export const usersUpdateEmail = (updateUserEmailDto: UpdateUserEmailDto) => {
+  return customInstance<void>({
+    url: `/users/update-email`,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateUserEmailDto,
+  });
+};
+
+export const getUsersUpdateEmailMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersUpdateEmail>>,
+    TError,
+    { data: UpdateUserEmailDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof usersUpdateEmail>>,
+  TError,
+  { data: UpdateUserEmailDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof usersUpdateEmail>>,
+    { data: UpdateUserEmailDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return usersUpdateEmail(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UsersUpdateEmailMutationResult = NonNullable<
+  Awaited<ReturnType<typeof usersUpdateEmail>>
+>;
+export type UsersUpdateEmailMutationBody = UpdateUserEmailDto;
+export type UsersUpdateEmailMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | NotFoundResponseDto;
+
+/**
+ * @summary update email requires to be connected
+ */
+export const useUsersUpdateEmail = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersUpdateEmail>>,
+    TError,
+    { data: UpdateUserEmailDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof usersUpdateEmail>>,
+  TError,
+  { data: UpdateUserEmailDto },
+  TContext
+> => {
+  const mutationOptions = getUsersUpdateEmailMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

@@ -7,6 +7,12 @@
  */
 
 export type ConversationsLoadMoreMessagesParams = {
-  cursor: string;
-  limit: number;
+  /**
+   * Cursor for pagination
+   */
+  cursor?: string;
+  /**
+   * Limit of messages to return
+   */
+  limit?: number;
 };

@@ -44,6 +44,9 @@ const ROUTES = {
   INVITE_PEOPLE: {
     INDEX: '/invite-people',
   },
+  NOTIFICATIONS: {
+    INDEX: '/notifications',
+  },
   ON_BOARDING: {
     STEP_1: '/on-boarding/step-1',
     STEP_2: '/on-boarding/step-2',
@@ -70,7 +73,6 @@ const ROUTES = {
     FAVORITES: '/settings/favorites',
     HISTORY: '/settings/history',
     INDEX: '/settings',
-    NOTIFICATIONS: '/settings/notifications',
     PLANNING: '/settings/planning',
     PREFERENCES: '/settings/preferences',
     PRIVACY_POLICY: '/settings/privacy-policy',

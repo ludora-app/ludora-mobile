@@ -1,14 +1,13 @@
-import { useSportPreferencesCreate } from '@generatedApi/sport-preferences/sport-preferences.api';
+import { useSportPreferencesCreateManyWithGameModes } from '@generatedApi/sport-preferences/sport-preferences.api';
 
-import { CreateSportPreferenceDtoFromRequest } from '@/api/generated/model';
+import { CreateSportPreferenceDto } from '@/api/generated/model';
 
 export const useCreateSportPreference = () => {
-  const mutation = useSportPreferencesCreate();
+  const mutation = useSportPreferencesCreateManyWithGameModes();
 
-  const mutateAsync = (sportPreferences: CreateSportPreferenceDtoFromRequest) =>
-    mutation.mutateAsync({ data: sportPreferences });
+  const mutateAsync = (sportPreferences: CreateSportPreferenceDto) => mutation.mutateAsync({ data: sportPreferences });
 
-  const mutate = (sportPreferences: CreateSportPreferenceDtoFromRequest) => mutation.mutate({ data: sportPreferences });
+  const mutate = (sportPreferences: CreateSportPreferenceDto) => mutation.mutate({ data: sportPreferences });
 
   return {
     ...mutation,

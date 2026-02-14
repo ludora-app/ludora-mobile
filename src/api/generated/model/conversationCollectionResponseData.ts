@@ -7,6 +7,7 @@
  */
 import type { ConversationCollectionResponseDataLastMessage } from './conversationCollectionResponseDataLastMessage';
 import type { ConversationCollectionResponseDataSender } from './conversationCollectionResponseDataSender';
+import type { ConversationCollectionResponseDataSessionData } from './conversationCollectionResponseDataSessionData';
 import type { ConversationCollectionResponseDataType } from './conversationCollectionResponseDataType';
 
 export interface ConversationCollectionResponseData {
@@ -31,12 +32,14 @@ export interface ConversationCollectionResponseData {
    */
   readonly sender: ConversationCollectionResponseDataSender;
   /**
-   * Session ID
+   * Session data
    * @nullable
    */
-  readonly sessionUid: string | null;
+  readonly sessionData: ConversationCollectionResponseDataSessionData;
   /** Conversation type: PRIVATE, GROUP, SESSION */
   readonly type: ConversationCollectionResponseDataType;
   /** Conversation ID */
   readonly uid: string;
+  /** Number of unread messages in the conversation */
+  readonly unreadMessagesCount: number;
 }

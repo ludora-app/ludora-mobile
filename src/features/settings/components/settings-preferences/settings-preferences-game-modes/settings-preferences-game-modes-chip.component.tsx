@@ -1,12 +1,12 @@
 import { Chip } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react'
 
-import { CreateSessionFromRequestDtoGameMode } from '@/api/generated/model'
+import { CreateSportPreferenceDataGameModesItem } from '@/api/generated/model'
 
 interface SettingsPreferencesGameModeChipProps {
   isSelected: boolean
-  gameMode: CreateSessionFromRequestDtoGameMode
-  onPress: (gameMode: CreateSessionFromRequestDtoGameMode) => void
+  gameMode: CreateSportPreferenceDataGameModesItem
+  onPress: (gameMode: CreateSportPreferenceDataGameModesItem) => void
 }
 
 export default function SettingsPreferencesGameModeChip({ gameMode, isSelected, onPress }: SettingsPreferencesGameModeChipProps) {

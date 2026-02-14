@@ -55,7 +55,7 @@ const SETTINGS_MENU = {
       iconName: 'bell-regular',
       id: 1,
       label: 'settings.section_shortcuts_notifications',
-      route: ROUTES.SETTINGS.NOTIFICATIONS,
+      route: ROUTES.NOTIFICATIONS.INDEX,
     },
     {
       description: 'settings.section_shortcuts_favorites_description',
@@ -110,7 +110,7 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <SettingsHeader />
+        <SettingsHeader titleKey="settings.header_title" />
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-5' style={{ paddingBottom: bottom }}>
 
           {Object.entries(SETTINGS_MENU).map(([title, items]) => (

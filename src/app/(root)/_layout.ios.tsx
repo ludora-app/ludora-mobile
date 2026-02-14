@@ -65,6 +65,12 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
+        name="notifications"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="filters/index"
         options={{
           animation: 'slide_from_bottom',

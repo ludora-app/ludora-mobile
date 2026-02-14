@@ -2,16 +2,14 @@ import { PreferencesSportData } from '../stores/settings-preferences.store';
 
 /**
  * Formats API data into the store's internal representation for comparison.
+ * Since the consolidated sportPreferences already contain gameModes, we just map it.
  */
-export const formatPreferencesForComparison = (sportPrefs: any[], gameModePrefs: any[]) => {
-  if (!sportPrefs || !gameModePrefs) return [];
+export const formatPreferencesForComparison = (sportPrefs: any[]) => {
+  if (!sportPrefs) return [];
 
   return sportPrefs
     .map(sp => ({
-      gameModes: gameModePrefs
-        .filter(gm => gm.sportPreference?.sport === sp.sport)
-        .map(gm => gm.gameMode)
-        .sort((a, b) => (a as string).localeCompare(b as string)),
+      gameModes: (sp.gameModes ?? []).sort((a, b) => (a as string).localeCompare(b as string)),
       level: sp.level,
       sport: sp.sport,
     }))

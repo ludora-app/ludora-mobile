@@ -1,11 +1,11 @@
-import { Box } from '../../box';
-import { cn, customConsole } from '../../../utils';
-import { SegmentedControlTriggerContentProps } from '../../../types';
 import { useEffect, PropsWithChildren, useMemo, memo, useState } from 'react';
 
+import { Box } from '../../box';
+import { cn, customConsole } from '../../../utils';
 import { twStyles } from '../styles/SegmentedControl.styles';
-import { segmentedControlDefaultProps } from '../utils/defaultProps';
 import { SegmentedControlTrigger } from './SegmentedControlTrigger';
+import { SegmentedControlTriggerContentProps } from '../../../types';
+import { segmentedControlDefaultProps } from '../utils/defaultProps';
 import { useSegmentedControlActions, useSegmentedControlState } from '../context/SegmentedControlContext';
 
 /**

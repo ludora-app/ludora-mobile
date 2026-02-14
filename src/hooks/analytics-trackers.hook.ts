@@ -5,7 +5,11 @@ import { useTranslate } from '@tolgee/react';
 import { HTTPError, TimeoutError } from 'ky';
 import { usePostHog } from 'posthog-react-native';
 
-import { AnalyticsEvent, AnalyticsEventWithDataType } from '@/constants/analytics-events.constants';
+import {
+  AnalyticsEvent,
+  AnalyticsEventWithDataType,
+  TrackIdentityProperties,
+} from '@/constants/analytics-events.constants';
 
 export const useAnalytics = () => {
   const posthog = usePostHog();
@@ -49,7 +53,11 @@ export const useAnalytics = () => {
     posthog.capture(eventName, data);
   };
 
-  return { trackError, trackEvent };
+  const trackIdentity = (properties: TrackIdentityProperties) => {
+    posthog.identify(posthog.getDistinctId(), properties);
+  };
+
+  return { trackError, trackEvent, trackIdentity };
 };
 
 export const useGetMethodErrorTracking = ({

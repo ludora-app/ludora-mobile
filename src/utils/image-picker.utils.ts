@@ -10,7 +10,7 @@ const QUALITY = 0.5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
 
 // allowed extensions
-const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif'];
+const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'];
 
 /**
  * verify the size of the file

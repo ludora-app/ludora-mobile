@@ -1,14 +1,12 @@
 import { list } from 'radash';
 import { cn } from '@chillui/ui';
-import { useCallback, useMemo, useState } from 'react';
-import { ViewStyle, LayoutChangeEvent, StyleProp } from 'react-native';
+import { ViewStyle } from 'react-native';
+import { useCallback, useMemo } from 'react';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
-import Animated, { useAnimatedStyle, interpolate, useSharedValue, Extrapolation } from 'react-native-reanimated';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
 
-import { Box } from '../box';
 import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
 import { ListProps } from '../../types/list.types';
@@ -47,8 +45,6 @@ export default function List(props: ListProps) {
     ...rest
   } = props;
 
-  const [stickyHeaderHeight, setStickyHeaderHeight] = useState(0);
-  const scrollY = useSharedValue(0);
   const { top } = useSafeArea();
 
   const showSkeletons = isLoading && !isRefetching;
@@ -122,18 +118,8 @@ export default function List(props: ListProps) {
     return String(index);
   }, []);
 
-  const onStickyHeaderLayout = (event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setStickyHeaderHeight(height);
-  };
 
-  const listContentContainerStyle: StyleProp<ViewStyle> | undefined = useMemo(() => {
-    const listContainerStyle = ListHeaderStickyComponent && {
-      marginTop: stickyHeaderHeight - top,
-    };
 
-    return listContainerStyle;
-  }, [stickyHeaderHeight, top, ListHeaderStickyComponent]);
 
   const listStyle: ViewStyle | undefined = useMemo(() => {
     if (ListStickyComponent && ListStickyComponentTopSafeArea) {
@@ -144,64 +130,29 @@ export default function List(props: ListProps) {
     return undefined;
   }, [top, ListStickyComponent, ListStickyComponentTopSafeArea]);
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(scrollY.value, [0, stickyHeaderHeight], [1, 0], Extrapolation.CLAMP);
-    const translateY = interpolate(
-      scrollY.value,
-      [0, stickyHeaderHeight],
-      [0, -stickyHeaderHeight * 0.3],
-      Extrapolation.CLAMP,
-    );
-    // const zIndex = interpolate(scrollY.value, [0, stickyHeaderHeight], [50, -1], Extrapolation.CLAMP);
-    return {
-      opacity,
-      transform: [{ translateY }],
-      // zIndex,
-    };
-  }, [stickyHeaderHeight]);
 
   return (
-    <>
-      {ListHeaderStickyComponent &&
-        (ListHeaderStickyComponentIsAnimated ? (
-          <Animated.View className="absolute w-full" style={headerAnimatedStyle} onLayout={onStickyHeaderLayout}>
-            {renderComponent(ListHeaderStickyComponent)}
-          </Animated.View>
-        ) : (
-          <Box className="absolute w-full" onLayout={onStickyHeaderLayout}>
-            {renderComponent(ListHeaderStickyComponent)}
-          </Box>
-        ))}
-      <LegendList
-        keyExtractor={keyExtractor}
-        data={dataToRender}
-        renderItem={renderItem}
-        getItemType={getItemType}
-        recycleItems
-        stickyIndices={stickyHeaderIndices}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
-        showsVerticalScrollIndicator={false}
-        keyboardDismissMode="on-drag"
-        style={[listStyle, style]}
-        keyboardShouldPersistTaps="always"
-        contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
-        ListFooterComponent={
-          <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
-        }
-        onScroll={e => {
-          scrollY.value = e.nativeEvent.contentOffset.y;
-        }}
-        scrollEventThrottle={16}
-        {...(ListHeaderStickyComponent &&
-          stickyHeaderHeight && {
-          stickyHeaderConfig: {
-            offset: -stickyHeaderHeight + top,
-          },
-        })}
-        contentContainerStyle={[listContentContainerStyle, contentContainerStyle]}
-        {...rest}
-      />
-    </>
+    <LegendList
+      keyExtractor={keyExtractor}
+      data={dataToRender}
+      renderItem={renderItem}
+      getItemType={getItemType}
+      recycleItems
+      stickyIndices={stickyHeaderIndices}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
+      showsVerticalScrollIndicator={false}
+      keyboardDismissMode="on-drag"
+      style={[listStyle, style]}
+      keyboardShouldPersistTaps="always"
+      contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
+      ListFooterComponent={
+        <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+      }
+      scrollEventThrottle={16}
+      contentContainerStyle={[contentContainerStyle]}
+      {...rest}
+    />
+
   );
 }

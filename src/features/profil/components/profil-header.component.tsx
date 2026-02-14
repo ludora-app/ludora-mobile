@@ -24,7 +24,9 @@ export default function ProfilHeader() {
         <Link href="/settings" asChild>
           <IconButton iconName='setting-gear-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
         </Link>
-        <IconButton iconName='bell-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
+        <Link href="/notifications" asChild>
+          <IconButton iconName='bell-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
+        </Link>
       </BoxRow>
 
     </Wrapper>

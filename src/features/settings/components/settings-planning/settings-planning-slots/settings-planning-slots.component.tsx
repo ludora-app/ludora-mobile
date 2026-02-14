@@ -1,43 +1,54 @@
-import { Box } from '@ludo/ui'
+import dayjs from 'dayjs'
+import { Box, String } from '@ludo/ui'
+import { useTranslate } from '@tolgee/react'
 
-import { usePlanningStore } from '../../../stores/planning.store'
 import { PlanningSlot } from '../../../types/settings-planning.types'
 import SettingsPlanningSlotsItem from './settings-planning-slots-item.component'
+import { useSettingsPlanningStore } from '../../../stores/settings-planning.store'
 
 const PLANNING_SLOTS: PlanningSlot[] = [{
   icon: 'sun-regular',
-  id: 'morning',
-  label: 'Matin',
-  time: '9h à 12h',
+  id: "MORNING",
+  label: "common.morning",
+  time: 'settings.planning.morning_slot_time',
 }, {
   icon: 'cloudy-with-moon-regular',
-  id: 'afternoon',
-  label: 'Après-midi',
-  time: '12h à 18h',
+  id: "AFTERNOON",
+  label: 'common.afternoon',
+  time: 'settings.planning.afternoon_slot_time',
 }, {
   icon: 'mug-regular',
-  id: 'evening',
-  label: 'Soirée',
-  time: '18h à 22h',
+  id: "EVENING",
+  label: 'common.evening',
+  time: 'settings.planning.evening_slot_time',
 }]
 
+
+
 export default function SettingsPlanningSlots() {
-  const selectedDay = usePlanningStore(state => state.selectedDay)
-  const planning = usePlanningStore(state => state.planning)
-  const toggleSlot = usePlanningStore(state => state.toggleSlot)
+  const { t } = useTranslate()
+  const selectedDay = useSettingsPlanningStore(state => state.selectedDay)
+  const planning = useSettingsPlanningStore(state => state.planning)
+  const setToggleSlot = useSettingsPlanningStore(state => state.setToggleSlot)
 
-  const dayPlanning = planning[selectedDay]
-
-
+  const selectedPlannings = planning.filter((dayPlanning) => {
+    if (dayPlanning.type === 'RECURRENT') {
+      return dayPlanning.dayOfWeek === selectedDay.day();
+    }
+    return dayjs(dayPlanning.date).isSame(selectedDay, 'day');
+  });
 
   return (
     <Box className="gap-5">
+      <String font="primaryBold">
+        {t('settings.planning.slots_title')}
+      </String>
       {PLANNING_SLOTS.map((slot) => (
         <SettingsPlanningSlotsItem
           key={slot.id}
           slot={slot}
-          availability={dayPlanning[slot.id]}
-          onPress={() => toggleSlot(slot.id)}
+          availability={selectedPlannings.find(dayPlanning => dayPlanning.timePeriod === slot.id)}
+          onPress={() => setToggleSlot(slot)}
         />
       ))}
     </Box>

@@ -7,6 +7,8 @@
  */
 import type { MessageDto } from './messageDto';
 import type { FindOneConversationResponseDataSender } from './findOneConversationResponseDataSender';
+import type { FindOneConversationResponseDataSessionData } from './findOneConversationResponseDataSessionData';
+import type { ConversationSettingsDto } from './conversationSettingsDto';
 import type { FindOneConversationResponseDataType } from './findOneConversationResponseDataType';
 
 export interface FindOneConversationResponseData {
@@ -27,10 +29,12 @@ export interface FindOneConversationResponseData {
    */
   readonly sender: FindOneConversationResponseDataSender;
   /**
-   * Session ID
+   * Session data
    * @nullable
    */
-  readonly sessionUid: string | null;
+  readonly sessionData: FindOneConversationResponseDataSessionData;
+  /** Conversation settings */
+  settings: ConversationSettingsDto;
   /** Conversation type */
   readonly type: FindOneConversationResponseDataType;
   /** Conversation ID */

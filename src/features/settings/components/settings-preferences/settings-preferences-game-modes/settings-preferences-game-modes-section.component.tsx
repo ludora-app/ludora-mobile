@@ -1,19 +1,15 @@
 import { Box, String } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react'
 
-import { CreateSessionFromRequestDtoGameMode } from '@/api/generated/model'
+import { useSettingsPreferencesStore } from '@/features/settings/stores/settings-preferences.store'
 
-import { PreferencesSportData } from '../../../stores/settings-preferences.store'
 import SettingsPreferencesGameModesChipsList from './settings-preferences-game-modes-chips-list.component'
 
-interface SettingsPreferencesGameModesSectionProps {
-  sportPreferences: PreferencesSportData[]
-  onToggleGameMode: (sport: string, gameMode: CreateSessionFromRequestDtoGameMode) => void
-}
 
-export default function SettingsPreferencesGameModesSection(props: SettingsPreferencesGameModesSectionProps) {
-  const { onToggleGameMode, sportPreferences } = props
+
+export default function SettingsPreferencesGameModesSection() {
   const { t } = useTranslate()
+  const toggleGameMode = useSettingsPreferencesStore(state => state.toggleGameMode)
 
   return (
     <Box className='gap-4'>
@@ -24,8 +20,7 @@ export default function SettingsPreferencesGameModesSection(props: SettingsPrefe
         {t('settings.preferences.game_modes_description')}
       </String>
       <SettingsPreferencesGameModesChipsList
-        sportPreferences={sportPreferences}
-        onToggleGameMode={onToggleGameMode}
+        onToggleGameMode={toggleGameMode}
       />
     </Box>
   )

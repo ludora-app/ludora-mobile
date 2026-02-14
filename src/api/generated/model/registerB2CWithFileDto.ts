@@ -13,8 +13,6 @@ export interface RegisterB2CWithFileDto {
   bio?: string;
   /** birthdate of user */
   birthdate?: string;
-  /** device uid, only for phones */
-  deviceUid?: string;
   /** email */
   email: string;
   /** File image (avatar) */

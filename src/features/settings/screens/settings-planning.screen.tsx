@@ -1,22 +1,31 @@
+import dayjs from 'dayjs'
+import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
 import { useTranslate } from '@tolgee/react'
 import { Box, ScreenLayout, String, Wrapper } from '@ludo/ui'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
 
-import SettingsFooterSubmit from '../components/settings-footer-submit.component'
-import SettingsPlanningHeader from '../components/settings-planning/settings-planning-header.component'
+import SettingsHeader from '../components/settings-header.component'
+import { useSettingsPlanningStore } from '../stores/settings-planning.store'
+import SettingsPlanningSubmit from '../components/settings-planning/settings-planning-submit.component'
 import SettingsPlanningSection from '../components/settings-planning/settings-planning-section.component'
+import { useGetUserHoursPreferences } from '../queries/user-hours-preferences/get-user-hours-preferences.query'
 
 export default function SettingsPlanningScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
+  const { data: hourPrefs, isSuccess: isHourPrefsSuccess } = useGetUserHoursPreferences()
 
-  const isDirty = true
 
-  const handleApply = () => {
-    // TODO: Implement mutations (Create/Delete sports, Patch game modes)
-  }
+  const setPlanning = useSettingsPlanningStore(state => state.setPlanning)
+
+  useEffect(() => {
+    if (isHourPrefsSuccess && hourPrefs) {
+      setPlanning(hourPrefs)
+    }
+  }, [isHourPrefsSuccess, hourPrefs, setPlanning])
+
 
   return (
     <ScreenLayout>
@@ -26,23 +35,22 @@ export default function SettingsPlanningScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <SettingsPlanningHeader />
-        <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-6' style={{ paddingBottom: bottom }}>
+        <SettingsHeader titleKey="settings.planning.header_title" />
+        <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-6' style={{ paddingBottom: bottom + 100 }}>
           <Box className='gap-4'>
-            <String variant="body-3" font="primaryBold">
-              {t('settings.planning.title')}
+            <String font="primaryBold" variant="body-3">
+              {t('settings.planning.select_slots_title')}
             </String>
             <String variant="body-1" className='text-gray-500'>
-              {t('settings.planning.desc')}
+              {dayjs().format('MMMM YYYY')}
             </String>
             <SettingsPlanningSection />
           </Box>
         </Wrapper>
       </ScrollView>
-      <SettingsFooterSubmit
-        isDirty={isDirty}
-        onPress={handleApply}
+      <SettingsPlanningSubmit
+        initialPlanning={hourPrefs}
       />
-    </ScreenLayout>
+    </ScreenLayout >
   )
 }

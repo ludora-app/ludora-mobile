@@ -1,13 +1,17 @@
 import { isString } from 'radash';
 import { Pressable } from 'react-native';
 import { useEffect, useMemo } from 'react'
-import { BoxAbsolute, IconButton } from '@ludo/ui';
+import { BoxAbsolute, Icon } from '@ludo/ui';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import COLORS from '@/constants/COLORS';
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
+import { useUserMe } from '@/queries/user-me.query';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { useUpdateUserMe } from '@/queries/update-user-me.query';
+import { cn, LoadingIndicator } from '@/components/chill-ui-library';
 import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 
@@ -17,8 +21,13 @@ type LocalSearchParams = RootStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 type ReturnParams = ReturnStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 
 export default function ProfilEditAvatar() {
+  const { userMe } = useUserMe()
+  const { imageUrl } = userMe || {}
+  const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
 
   const router = useRouter();
+
+  const { trackError, trackEvent } = useAnalytics();
 
   const { images } = useLocalSearchParams<ReturnParams>();
 
@@ -31,16 +40,34 @@ export default function ProfilEditAvatar() {
     }
   }, [images]);
 
+  const handleUpdateUserMeAvatar = async (file: Blob) => {
+    try {
+      trackEvent({ data: { is_avatar_added: !imageUrl, is_avatar_updated: !!imageUrl }, eventName: "profil_edit_avatar_success" });
+      await updateUserMe({ file });
+
+    } catch (error) {
+      trackError({ error });
+      trackEvent({ data: { error_message: error.message }, eventName: "profil_edit_avatar_failed" });
+    }
+  }
+
+
   useEffect(() => {
     if (parsedSelectedImages && parsedSelectedImages.length > 0) {
-      // DO SOMETHING
+      const asset = parsedSelectedImages[0];
+      const file = {
+        name: asset.fileName ?? 'avatar.jpg',
+        type: asset.mimeType ?? 'image/jpeg',
+        uri: asset.uri,
+      } as unknown as Blob;
+      handleUpdateUserMeAvatar(file);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images]);
 
   const handleSelectImage = () => {
     const params: LocalSearchParams = {
-      goBackPath: '/on-boarding/step-1',
+      goBackPath: "/profil/profil-edit",
     };
 
     router.push({
@@ -49,11 +76,16 @@ export default function ProfilEditAvatar() {
     });
   };
   return (
-    <Pressable onPress={handleSelectImage}>
-      <AvatarMe size="2xl" />
-      <BoxAbsolute className='right-0 bottom-0'>
-        <IconButton iconName='e-pen-regular' className='bg-white rounded-full' iconColor={COLORS.primary} onPress={handleSelectImage} />
+    <Pressable onPress={handleSelectImage} className='relative items-center justify-center overflow-hidden' disabled={isUpdatingUserMe}>
+      <AvatarMe size="2xl" className={cn({ 'opacity-50': isUpdatingUserMe })} />
+      <BoxAbsolute className='right-0 bottom-0 bg-white rounded-full p-2'>
+        <Icon name='e-pen-regular' color={COLORS.primary} />
       </BoxAbsolute>
+      <BoxAbsolute className='bg-black/30 flex-1 rounded-lg' />
+      {isUpdatingUserMe &&
+        <BoxAbsolute>
+          <LoadingIndicator name="swing" color={COLORS.primary} />
+        </BoxAbsolute>}
     </Pressable>
   )
 }

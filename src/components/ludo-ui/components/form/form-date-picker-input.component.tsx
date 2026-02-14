@@ -16,6 +16,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     className,
     control,
     datePickerProps,
+    hasClearIcon,
     hasErrorTranslation,
     inputContainerClassName,
     inputFieldClassName,
@@ -54,6 +55,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
           inputContainerClassName={inputContainerClassName}
           className={className}
           hasError
+          hasClearIcon={hasClearIcon}
           hasMessageError
           error={hasErrorTranslation ? t(error?.message) : error?.message}
         />
@@ -64,6 +66,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
         date={selectedDate}
         mode="date"
         locale={getLanguage()}
+
         onConfirm={date => {
           setOpen(false);
           onChange(date);
@@ -76,6 +79,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
         cancelText={t('common.button_cancel')}
         title={t('common.date_picker_title')}
         maximumDate={new Date()}
+        minimumDate={new Date('1900-01-01')}
         dividerColor={COLORS.primary}
         {...datePickerProps}
       />

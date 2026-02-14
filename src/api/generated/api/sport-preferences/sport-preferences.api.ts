@@ -21,92 +21,13 @@ import type {
 } from '@tanstack/react-query';
 import type {
   BadRequestResponseDto,
-  CreateSportPreferenceDtoFromRequest,
+  CreateSportPreferenceDto,
   NotFoundResponseDto,
   PaginationResponseSportPreferenceResponseData,
-  SportPreferenceResponseDto,
   UnauthorizedResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
-/**
- * @summary Create a user sport preference
- */
-export const sportPreferencesCreate = (
-  createSportPreferenceDtoFromRequest: CreateSportPreferenceDtoFromRequest,
-  signal?: AbortSignal,
-) => {
-  return customInstance<SportPreferenceResponseDto>({
-    url: `/sport-preferences`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: createSportPreferenceDtoFromRequest,
-    signal,
-  });
-};
-
-export const getSportPreferencesCreateMutationOptions = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof sportPreferencesCreate>>,
-    TError,
-    { data: CreateSportPreferenceDtoFromRequest },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof sportPreferencesCreate>>,
-  TError,
-  { data: CreateSportPreferenceDtoFromRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof sportPreferencesCreate>>,
-    { data: CreateSportPreferenceDtoFromRequest }
-  > = props => {
-    const { data } = props ?? {};
-
-    return sportPreferencesCreate(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type SportPreferencesCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof sportPreferencesCreate>>
->;
-export type SportPreferencesCreateMutationBody = CreateSportPreferenceDtoFromRequest;
-export type SportPreferencesCreateMutationError =
-  | BadRequestResponseDto
-  | UnauthorizedResponseDto
-  | NotFoundResponseDto;
-
-/**
- * @summary Create a user sport preference
- */
-export const useSportPreferencesCreate = <
-  TError = BadRequestResponseDto | UnauthorizedResponseDto | NotFoundResponseDto,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof sportPreferencesCreate>>,
-    TError,
-    { data: CreateSportPreferenceDtoFromRequest },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof sportPreferencesCreate>>,
-  TError,
-  { data: CreateSportPreferenceDtoFromRequest },
-  TContext
-> => {
-  const mutationOptions = getSportPreferencesCreateMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
 /**
  * @summary Get all user sport preferences by user ID
  */
@@ -336,37 +257,97 @@ export function useSportPreferencesFindMySportPreferences<
 }
 
 /**
+ * @summary Saves the sport preferences of the connected user
+ */
+export const sportPreferencesCreateManyWithGameModes = (
+  createSportPreferenceDto: CreateSportPreferenceDto,
+) => {
+  return customInstance<void>({
+    url: `/sport-preferences`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: createSportPreferenceDto,
+  });
+};
+
+export const getSportPreferencesCreateManyWithGameModesMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>,
+    TError,
+    { data: CreateSportPreferenceDto },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>,
+  TError,
+  { data: CreateSportPreferenceDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>,
+    { data: CreateSportPreferenceDto }
+  > = props => {
+    const { data } = props ?? {};
+
+    return sportPreferencesCreateManyWithGameModes(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SportPreferencesCreateManyWithGameModesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>
+>;
+export type SportPreferencesCreateManyWithGameModesMutationBody = CreateSportPreferenceDto;
+export type SportPreferencesCreateManyWithGameModesMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto;
+
+/**
+ * @summary Saves the sport preferences of the connected user
+ */
+export const useSportPreferencesCreateManyWithGameModes = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>,
+    TError,
+    { data: CreateSportPreferenceDto },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof sportPreferencesCreateManyWithGameModes>>,
+  TError,
+  { data: CreateSportPreferenceDto },
+  TContext
+> => {
+  const mutationOptions = getSportPreferencesCreateManyWithGameModesMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
  * @summary Delete a user sport preference by uid
  */
-export const sportPreferencesRemove = (uid: string) => {
-  return customInstance<void>({ url: `/sport-preferences/${uid}`, method: 'DELETE' });
+export const sportPreferencesRemove = () => {
+  return customInstance<void>({ url: `/sport-preferences`, method: 'DELETE' });
 };
 
 export const getSportPreferencesRemoveMutationOptions = <
   TError = UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof sportPreferencesRemove>>,
-    TError,
-    { uid: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof sportPreferencesRemove>>,
-  TError,
-  { uid: string },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof sportPreferencesRemove>>, TError, void, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<typeof sportPreferencesRemove>>, TError, void, TContext> => {
   const { mutation: mutationOptions } = options ?? {};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof sportPreferencesRemove>>,
-    { uid: string }
-  > = props => {
-    const { uid } = props ?? {};
-
-    return sportPreferencesRemove(uid);
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof sportPreferencesRemove>>, void> = () => {
+    return sportPreferencesRemove();
   };
 
   return { mutationFn, ...mutationOptions };
@@ -385,18 +366,8 @@ export const useSportPreferencesRemove = <
   TError = UnauthorizedResponseDto | NotFoundResponseDto,
   TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof sportPreferencesRemove>>,
-    TError,
-    { uid: string },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof sportPreferencesRemove>>,
-  TError,
-  { uid: string },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof sportPreferencesRemove>>, TError, void, TContext>;
+}): UseMutationResult<Awaited<ReturnType<typeof sportPreferencesRemove>>, TError, void, TContext> => {
   const mutationOptions = getSportPreferencesRemoveMutationOptions(options);
 
   return useMutation(mutationOptions);

@@ -2,18 +2,19 @@ import { useTranslate } from '@tolgee/react'
 import { Box, BoxRowCenterBetween, String } from '@ludo/ui'
 
 import { SPORTS, SportProps } from '@/constants/sports.constants'
+import { useSettingsPreferencesStore } from '@/features/settings/stores/settings-preferences.store'
 
-import { PreferencesSportData } from '../../../stores/settings-preferences.store'
 import SettingsPreferencesSportItem from './settings-preferences-sport-item.component'
 
-interface SettingsPreferencesSportsSectionProps {
-  sportPreferences: PreferencesSportData[]
-  onSportPress: (sport: SportProps) => void
-}
 
-export default function SettingsPreferencesSportsSection(props: SettingsPreferencesSportsSectionProps) {
-  const { onSportPress, sportPreferences } = props
+
+export default function SettingsPreferencesSportsSection() {
   const { t } = useTranslate()
+  const toggleSportPreference = useSettingsPreferencesStore(state => state.toggleSportPreference)
+
+  const handleSportPress = (sport: SportProps) => {
+    toggleSportPreference(sport.name)
+  }
 
   return (
     <Box className='gap-4'>
@@ -24,17 +25,13 @@ export default function SettingsPreferencesSportsSection(props: SettingsPreferen
         {t('settings.preferences.sports_description')}
       </String>
       <BoxRowCenterBetween className="flex-wrap gap-5">
-        {SPORTS.map(sport => {
-          const pref = sportPreferences.find(sp => sp.sport === sport.name)
-          return (
-            <SettingsPreferencesSportItem
-              key={sport.id}
-              level={pref?.level}
-              onPress={onSportPress}
-              sport={sport}
-            />
-          )
-        })}
+        {SPORTS.map(sport => (
+          <SettingsPreferencesSportItem
+            key={sport.id}
+            onPress={handleSportPress}
+            sport={sport}
+          />
+        ))}
       </BoxRowCenterBetween>
     </Box>
   )

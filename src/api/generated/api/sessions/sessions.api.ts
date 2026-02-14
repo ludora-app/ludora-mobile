@@ -32,11 +32,12 @@ import type {
   PaginationResponseSessionCollectionItemDto,
   SessionResponseDto,
   SessionsFindAllByUserUidParams,
-  SessionsFindAllMeParams,
+  SessionsFindAllMySessionsParams,
   SessionsFindAllParams,
   SessionsFindOneWithDistanceParams,
   UnauthorizedResponseDto,
   UpdateSessionDto,
+  UserSessionStatsResponseDto,
 } from '../../model';
 import { customInstance } from '../../../orval.instance';
 
@@ -278,9 +279,189 @@ export function useSessionsFindAllInfinite<
 }
 
 /**
+ * @summary Get session stats for the current user
+ */
+export const sessionsGetMyStats = (signal?: AbortSignal) => {
+  return customInstance<UserSessionStatsResponseDto>({ url: `/sessions/my-stats`, method: 'GET', signal });
+};
+
+export const getSessionsGetMyStatsQueryKey = () => {
+  return [`/sessions/my-stats`] as const;
+};
+
+export const getSessionsGetMyStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof sessionsGetMyStats>>,
+  TError = UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>>;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getSessionsGetMyStatsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof sessionsGetMyStats>>> = ({ signal }) =>
+    sessionsGetMyStats(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof sessionsGetMyStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type SessionsGetMyStatsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sessionsGetMyStats>>
+>;
+export type SessionsGetMyStatsQueryError = UnauthorizedResponseDto;
+
+export function useSessionsGetMyStats<
+  TData = Awaited<ReturnType<typeof sessionsGetMyStats>>,
+  TError = UnauthorizedResponseDto,
+>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>> &
+    Pick<
+      DefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>,
+      'initialData'
+    >;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsGetMyStats<
+  TData = Awaited<ReturnType<typeof sessionsGetMyStats>>,
+  TError = UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>> &
+    Pick<
+      UndefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>,
+      'initialData'
+    >;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsGetMyStats<
+  TData = Awaited<ReturnType<typeof sessionsGetMyStats>>,
+  TError = UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get session stats for the current user
+ */
+
+export function useSessionsGetMyStats<
+  TData = Awaited<ReturnType<typeof sessionsGetMyStats>>,
+  TError = UnauthorizedResponseDto,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetMyStats>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getSessionsGetMyStatsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get session stats for a specific user
+ */
+export const sessionsGetUserStats = (userUid: string, signal?: AbortSignal) => {
+  return customInstance<UserSessionStatsResponseDto>({ url: `/sessions/stats/${userUid}`, method: 'GET', signal });
+};
+
+export const getSessionsGetUserStatsQueryKey = (userUid: string) => {
+  return [`/sessions/stats/${userUid}`] as const;
+};
+
+export const getSessionsGetUserStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof sessionsGetUserStats>>,
+  TError = UnauthorizedResponseDto,
+>(
+  userUid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>>;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getSessionsGetUserStatsQueryKey(userUid);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof sessionsGetUserStats>>> = ({ signal }) =>
+    sessionsGetUserStats(userUid, signal);
+
+  return { queryKey, queryFn, enabled: !!userUid, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof sessionsGetUserStats>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type SessionsGetUserStatsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sessionsGetUserStats>>
+>;
+export type SessionsGetUserStatsQueryError = UnauthorizedResponseDto;
+
+export function useSessionsGetUserStats<
+  TData = Awaited<ReturnType<typeof sessionsGetUserStats>>,
+  TError = UnauthorizedResponseDto,
+>(
+  userUid: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsGetUserStats<
+  TData = Awaited<ReturnType<typeof sessionsGetUserStats>>,
+  TError = UnauthorizedResponseDto,
+>(
+  userUid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>,
+        'initialData'
+      >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useSessionsGetUserStats<
+  TData = Awaited<ReturnType<typeof sessionsGetUserStats>>,
+  TError = UnauthorizedResponseDto,
+>(
+  userUid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+/**
+ * @summary Get session stats for a specific user
+ */
+
+export function useSessionsGetUserStats<
+  TData = Awaited<ReturnType<typeof sessionsGetUserStats>>,
+  TError = UnauthorizedResponseDto,
+>(
+  userUid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof sessionsGetUserStats>>, TError, TData>>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getSessionsGetUserStatsQueryOptions(userUid, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * @summary Get all sessions created or joined by the current user
  */
-export const sessionsFindAllMe = (params?: SessionsFindAllMeParams, signal?: AbortSignal) => {
+export const sessionsFindAllMySessions = (
+  params?: SessionsFindAllMySessionsParams,
+  signal?: AbortSignal,
+) => {
   return customInstance<PaginationResponseSessionCollectionItemDto>({
     url: `/sessions/my-list/collection`,
     method: 'GET',
@@ -289,119 +470,129 @@ export const sessionsFindAllMe = (params?: SessionsFindAllMeParams, signal?: Abo
   });
 };
 
-export const getSessionsFindAllMeQueryKey = (params?: SessionsFindAllMeParams) => {
+export const getSessionsFindAllMySessionsQueryKey = (params?: SessionsFindAllMySessionsParams) => {
   return [`/sessions/my-list/collection`, ...(params ? [params] : [])] as const;
 };
 
-export const getSessionsFindAllMeInfiniteQueryOptions = <
+export const getSessionsFindAllMySessionsInfiniteQueryOptions = <
   TData = InfiniteData<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
-    SessionsFindAllMeParams['cursor']
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+    SessionsFindAllMySessionsParams['cursor']
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: SessionsFindAllMeParams,
+  params?: SessionsFindAllMySessionsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-        SessionsFindAllMeParams['cursor']
+        SessionsFindAllMySessionsParams['cursor']
       >
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getSessionsFindAllMeQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getSessionsFindAllMySessionsQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
     QueryKey,
-    SessionsFindAllMeParams['cursor']
+    SessionsFindAllMySessionsParams['cursor']
   > = ({ signal, pageParam }) =>
-    sessionsFindAllMe({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
+    sessionsFindAllMySessions({ ...params, cursor: pageParam || params?.['cursor'] }, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-    SessionsFindAllMeParams['cursor']
+    SessionsFindAllMySessionsParams['cursor']
   > & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type SessionsFindAllMeInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof sessionsFindAllMe>>
+export type SessionsFindAllMySessionsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sessionsFindAllMySessions>>
 >;
-export type SessionsFindAllMeInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
+export type SessionsFindAllMySessionsInfiniteQueryError = BadRequestResponseDto | UnauthorizedResponseDto;
 
-export function useSessionsFindAllMeInfinite<
+export function useSessionsFindAllMySessionsInfinite<
   TData = InfiniteData<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
-    SessionsFindAllMeParams['cursor']
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+    SessionsFindAllMySessionsParams['cursor']
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params: undefined | SessionsFindAllMeParams,
+  params: undefined | SessionsFindAllMySessionsParams,
   options: {
     query: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-        SessionsFindAllMeParams['cursor']
+        SessionsFindAllMySessionsParams['cursor']
       >
     > &
       Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsFindAllMe>>, TError, TData, QueryKey>,
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+          TError,
+          TData,
+          QueryKey
+        >,
         'initialData'
       >;
   },
 ): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useSessionsFindAllMeInfinite<
+export function useSessionsFindAllMySessionsInfinite<
   TData = InfiniteData<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
-    SessionsFindAllMeParams['cursor']
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+    SessionsFindAllMySessionsParams['cursor']
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: SessionsFindAllMeParams,
+  params?: SessionsFindAllMySessionsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-        SessionsFindAllMeParams['cursor']
+        SessionsFindAllMySessionsParams['cursor']
       >
     > &
       Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof sessionsFindAllMe>>, TError, TData, QueryKey>,
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+          TError,
+          TData,
+          QueryKey
+        >,
         'initialData'
       >;
   },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-export function useSessionsFindAllMeInfinite<
+export function useSessionsFindAllMySessionsInfinite<
   TData = InfiniteData<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
-    SessionsFindAllMeParams['cursor']
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+    SessionsFindAllMySessionsParams['cursor']
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: SessionsFindAllMeParams,
+  params?: SessionsFindAllMySessionsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-        SessionsFindAllMeParams['cursor']
+        SessionsFindAllMySessionsParams['cursor']
       >
     >;
   },
@@ -410,27 +601,27 @@ export function useSessionsFindAllMeInfinite<
  * @summary Get all sessions created or joined by the current user
  */
 
-export function useSessionsFindAllMeInfinite<
+export function useSessionsFindAllMySessionsInfinite<
   TData = InfiniteData<
-    Awaited<ReturnType<typeof sessionsFindAllMe>>,
-    SessionsFindAllMeParams['cursor']
+    Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
+    SessionsFindAllMySessionsParams['cursor']
   >,
   TError = BadRequestResponseDto | UnauthorizedResponseDto,
 >(
-  params?: SessionsFindAllMeParams,
+  params?: SessionsFindAllMySessionsParams,
   options?: {
     query?: Partial<
       UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof sessionsFindAllMe>>,
+        Awaited<ReturnType<typeof sessionsFindAllMySessions>>,
         TError,
         TData,
         QueryKey,
-        SessionsFindAllMeParams['cursor']
+        SessionsFindAllMySessionsParams['cursor']
       >
     >;
   },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-  const queryOptions = getSessionsFindAllMeInfiniteQueryOptions(params, options);
+  const queryOptions = getSessionsFindAllMySessionsInfiniteQueryOptions(params, options);
 
   const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData>;

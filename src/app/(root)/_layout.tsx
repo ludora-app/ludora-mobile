@@ -78,6 +78,12 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
+        name="notifications"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="filters/index"
         options={{
           contentStyle: {

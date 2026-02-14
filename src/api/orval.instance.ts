@@ -68,12 +68,14 @@ export const customInstance = async <T>({
     const lowercaseMethod = method.toLowerCase();
     let response: Response;
 
-    if (lowercaseMethod === 'get' || lowercaseMethod === 'delete') {
+    if (lowercaseMethod === 'get') {
       response = await client.get(`${cleanUrl}${queryParams}`, requestOptions);
     } else if (lowercaseMethod === 'post') {
       response = await client.post(cleanUrl + queryParams, requestOptions);
     } else if (lowercaseMethod === 'put') {
       response = await client.put(cleanUrl + queryParams, requestOptions);
+    } else if (lowercaseMethod === 'delete') {
+      response = await client.delete(cleanUrl + queryParams, requestOptions);
     } else {
       response = await client.patch(cleanUrl + queryParams, requestOptions);
     }

@@ -138,33 +138,33 @@ export const useInvalidateAuthB2CGoogleCallback = () => {
     });
 };
 
-export const useInvalidateConversationsFindAllByUserUid = (params?: ConversationsFindAllByUserUidParams) => {
+export const useInvalidateConversationsFindAllByUserUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: ConversationsFindAllByUserUidParams) =>
     queryClient.invalidateQueries({
       queryKey: getConversationsFindAllByUserUidQueryKey(params),
     });
 };
 
-export const useInvalidateConversationsFindOne = (uid: string) => {
+export const useInvalidateConversationsFindOne = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getConversationsFindOneQueryKey(uid),
     });
 };
 
-export const useInvalidateConversationsLoadMoreMessages = (uid: string, params?: ConversationsLoadMoreMessagesParams) => {
+export const useInvalidateConversationsLoadMoreMessages = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string, params?: ConversationsLoadMoreMessagesParams) =>
     queryClient.invalidateQueries({
       queryKey: getConversationsLoadMoreMessagesQueryKey(uid, params),
     });
 };
 
-export const useInvalidateConversationsFindAllMembers = (uid: string) => {
+export const useInvalidateConversationsFindAllMembers = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getConversationsFindAllMembersQueryKey(uid),
     });
@@ -178,57 +178,57 @@ export const useInvalidateEmailsTestEmail = () => {
     });
 };
 
-export const useInvalidateFieldsFindAllVerified = (params?: FieldsFindAllVerifiedParams) => {
+export const useInvalidateFieldsFindAllVerified = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: FieldsFindAllVerifiedParams) =>
     queryClient.invalidateQueries({
       queryKey: getFieldsFindAllVerifiedQueryKey(params),
     });
 };
 
-export const useInvalidateFieldsFindAllByPartnerUid = (params?: FieldsFindAllByPartnerUidParams) => {
+export const useInvalidateFieldsFindAllByPartnerUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: FieldsFindAllByPartnerUidParams) =>
     queryClient.invalidateQueries({
       queryKey: getFieldsFindAllByPartnerUidQueryKey(params),
     });
 };
 
-export const useInvalidateFieldsFindOne = (uid: string) => {
+export const useInvalidateFieldsFindOne = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getFieldsFindOneQueryKey(uid),
     });
 };
 
-export const useInvalidateFieldsFindAllPublicFields = (params?: FieldsFindAllPublicFieldsParams) => {
+export const useInvalidateFieldsFindAllPublicFields = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: FieldsFindAllPublicFieldsParams) =>
     queryClient.invalidateQueries({
       queryKey: getFieldsFindAllPublicFieldsQueryKey(params),
     });
 };
 
-export const useInvalidateFriendsFindAllMyFriends = (params?: FriendsFindAllMyFriendsParams) => {
+export const useInvalidateFriendsFindAllMyFriends = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: FriendsFindAllMyFriendsParams) =>
     queryClient.invalidateQueries({
       queryKey: getFriendsFindAllMyFriendsQueryKey(params),
     });
 };
 
-export const useInvalidateFriendsFindAllMyRequests = (params?: FriendsFindAllMyRequestsParams) => {
+export const useInvalidateFriendsFindAllMyRequests = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: FriendsFindAllMyRequestsParams) =>
     queryClient.invalidateQueries({
       queryKey: getFriendsFindAllMyRequestsQueryKey(params),
     });
 };
 
-export const useInvalidateFriendsFindMyFriendRequest = (otherUserUid: string) => {
+export const useInvalidateFriendsFindMyFriendRequest = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (otherUserUid: string) =>
     queryClient.invalidateQueries({
       queryKey: getFriendsFindMyFriendRequestQueryKey(otherUserUid),
     });
@@ -282,57 +282,57 @@ export const useInvalidatePaymentGetBankAccountsList = () => {
     });
 };
 
-export const useInvalidatePaymentGetBankAccount = (bankAccountId: string) => {
+export const useInvalidatePaymentGetBankAccount = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (bankAccountId: string) =>
     queryClient.invalidateQueries({
       queryKey: getPaymentGetBankAccountQueryKey(bankAccountId),
     });
 };
 
-export const useInvalidateSessionInvitationsFindAllByUserId = (userUid: string, params: SessionInvitationsFindAllByUserIdParams) => {
+export const useInvalidateSessionInvitationsFindAllByUserId = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (userUid: string, params: SessionInvitationsFindAllByUserIdParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionInvitationsFindAllByUserIdQueryKey(userUid, params),
     });
 };
 
-export const useInvalidateSessionInvitationsFindAllBySessionId = (sessionUid: string, params: SessionInvitationsFindAllBySessionIdParams) => {
+export const useInvalidateSessionInvitationsFindAllBySessionId = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (sessionUid: string, params: SessionInvitationsFindAllBySessionIdParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionInvitationsFindAllBySessionIdQueryKey(sessionUid, params),
     });
 };
 
-export const useInvalidateSessionInvitationsFindOne = (sessionUid: string, receiverUid: string) => {
+export const useInvalidateSessionInvitationsFindOne = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (sessionUid: string, receiverUid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSessionInvitationsFindOneQueryKey(sessionUid, receiverUid),
     });
 };
 
-export const useInvalidateSessionTeamsFindTeamsBySessionUid = (sessionUid: string) => {
+export const useInvalidateSessionTeamsFindTeamsBySessionUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (sessionUid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSessionTeamsFindTeamsBySessionUidQueryKey(sessionUid),
     });
 };
 
-export const useInvalidateSessionTeamsFindOneTeamByUid = (uid: string) => {
+export const useInvalidateSessionTeamsFindOneTeamByUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSessionTeamsFindOneTeamByUidQueryKey(uid),
     });
 };
 
-export const useInvalidateSessionsFindAll = (params?: SessionsFindAllParams) => {
+export const useInvalidateSessionsFindAll = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: SessionsFindAllParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindAllQueryKey(params),
     });
@@ -346,49 +346,49 @@ export const useInvalidateSessionsGetMyStats = () => {
     });
 };
 
-export const useInvalidateSessionsGetUserStats = (userUid: string) => {
+export const useInvalidateSessionsGetUserStats = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (userUid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsGetUserStatsQueryKey(userUid),
     });
 };
 
-export const useInvalidateSessionsFindAllMySessions = (params?: SessionsFindAllMySessionsParams) => {
+export const useInvalidateSessionsFindAllMySessions = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: SessionsFindAllMySessionsParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindAllMySessionsQueryKey(params),
     });
 };
 
-export const useInvalidateSessionsFindAllByUserUid = (userUid: string, params?: SessionsFindAllByUserUidParams) => {
+export const useInvalidateSessionsFindAllByUserUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (userUid: string, params?: SessionsFindAllByUserUidParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindAllByUserUidQueryKey(userUid, params),
     });
 };
 
-export const useInvalidateSessionsFindOne = (uid: string) => {
+export const useInvalidateSessionsFindOne = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindOneQueryKey(uid),
     });
 };
 
-export const useInvalidateSessionsFindOneWithDistance = (uid: string, params: SessionsFindOneWithDistanceParams) => {
+export const useInvalidateSessionsFindOneWithDistance = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string, params: SessionsFindOneWithDistanceParams) =>
     queryClient.invalidateQueries({
       queryKey: getSessionsFindOneWithDistanceQueryKey(uid, params),
     });
 };
 
-export const useInvalidateSportPreferencesFindAllByUserUid = (userUid: string) => {
+export const useInvalidateSportPreferencesFindAllByUserUid = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (userUid: string) =>
     queryClient.invalidateQueries({
       queryKey: getSportPreferencesFindAllByUserUidQueryKey(userUid),
     });
@@ -402,25 +402,25 @@ export const useInvalidateSportPreferencesFindMySportPreferences = () => {
     });
 };
 
-export const useInvalidateStorageGetSignedUrl = (params: StorageGetSignedUrlParams) => {
+export const useInvalidateStorageGetSignedUrl = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params: StorageGetSignedUrlParams) =>
     queryClient.invalidateQueries({
       queryKey: getStorageGetSignedUrlQueryKey(params),
     });
 };
 
-export const useInvalidateUsersFindAll = (params?: UsersFindAllParams) => {
+export const useInvalidateUsersFindAll = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (params?: UsersFindAllParams) =>
     queryClient.invalidateQueries({
       queryKey: getUsersFindAllQueryKey(params),
     });
 };
 
-export const useInvalidateUsersFindOne = (uid: string) => {
+export const useInvalidateUsersFindOne = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (uid: string) =>
     queryClient.invalidateQueries({
       queryKey: getUsersFindOneQueryKey(uid),
     });
@@ -434,9 +434,9 @@ export const useInvalidateUsersFindMe = () => {
     });
 };
 
-export const useInvalidateUsersFindOneByEmail = (email: string) => {
+export const useInvalidateUsersFindOneByEmail = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (email: string) =>
     queryClient.invalidateQueries({
       queryKey: getUsersFindOneByEmailQueryKey(email),
     });

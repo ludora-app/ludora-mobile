@@ -18,6 +18,7 @@ export interface FindOneUserResponseData {
   readonly matchesCount?: number;
   /** @nullable */
   readonly name?: string | null;
-  sportPreferences: (readonly SportPreferenceResponseData[] | null)[];
+  /** @nullable */
+  readonly sportPreferences?: readonly SportPreferenceResponseData[] | null;
   readonly uid: string;
 }

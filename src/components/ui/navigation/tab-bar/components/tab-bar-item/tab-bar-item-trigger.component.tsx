@@ -2,7 +2,8 @@ import { TabTrigger } from 'expo-router/ui';
 
 import { TabRoutes } from '@/constants/TABS_ROUTES';
 
-import { TabBarItem } from './tab-bar-item.component';
+import TabBarItem from './tab-bar-item.component';
+import TabBarItemProfil from './tab-bar-item-profil.component';
 
 type TabBarTriggerProps = TabRoutes;
 
@@ -11,7 +12,7 @@ export default function TabBarItemTrigger(props: TabBarTriggerProps) {
 
   return (
     <TabTrigger name={name} href={href} className="flex-1" asChild>
-      <TabBarItem {...rest} />
+      {name === 'profil' ? <TabBarItemProfil {...rest} /> : <TabBarItem {...rest} />}
     </TabTrigger>
   );
 }

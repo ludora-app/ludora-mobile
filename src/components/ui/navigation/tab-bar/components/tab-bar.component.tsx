@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
 
 import { TAB_BAR_CONSTANTS } from '../constants';
-import TabBarItemTrigger from './tab-bar-item/tab-bar-item-trigger.component copy';
+import TabBarItemTrigger from './tab-bar-item/tab-bar-item-trigger.component';
 import TabBarButtonTrigger from './tab-bar-button/tab-bar-button-trigger.component';
 
 const { BAR_HEIGHT, CORNER_RADIUS, EDGE_Y, NOTCH_DEPTH, NOTCH_EDGE_Y, NOTCH_RADIUS } = TAB_BAR_CONSTANTS;

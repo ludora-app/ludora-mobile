@@ -4,13 +4,14 @@ import * as SecureStore from 'expo-secure-store';
 import { getApiUrl } from '@/utils/api-url.utils';
 import { useAuthStore } from '@/stores/auth.store';
 import { useUserMe } from '@/queries/user-me.query';
-import { WS_RESOURCES } from '@/types/websocket.type';
 import { useWebsocketStore } from '@/stores/websocket.store';
 import { connect, disconnect, join, leave, on, emit, off } from '@/services/websocket/websocket.client';
 
-import { useAppState } from './app-state.hook';
+import { useAppState } from '../app-state.hook';
+import { useWebsocketOnNotifications } from './web-sockets-on-notifications/web-sockets-on-notifications.hook';
 
 export const useWebsocketConnection = () => {
+  const handleWSMessage = useWebsocketOnNotifications();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const { userMeId } = useUserMe(isAuthenticated);
 
@@ -24,21 +25,6 @@ export const useWebsocketConnection = () => {
     }
   };
 
-  const handleWSMessage = ({ payload, ressource }: { ressource: string; payload: any }) => {
-    if (__DEV__) {
-      // eslint-disable-next-line
-      console.log('----WS: ', payload);
-    }
-    switch (ressource) {
-      case WS_RESOURCES.MESSAGE:
-        console.log('----WS: CHAT_ROOM_MESSAGE', payload);
-        break;
-      case WS_RESOURCES.STRIPE:
-        console.log('----WS: STRIPE_CONNECT_URL', payload);
-        break;
-    }
-  };
-
   const connectWS = async () => {
     const accessToken = await SecureStore.getItemAsync('access_token');
     if (!accessToken) {
@@ -47,7 +33,7 @@ export const useWebsocketConnection = () => {
     }
     connect(getApiUrl(), accessToken);
 
-    on('message', message => {
+    on('notification', message => {
       console.log('----MESSAGER: ', message);
       if (message.action === 'AUTHENTICATE' && message.payload.isAuthenticated) {
         handleActionAuthentication(message);

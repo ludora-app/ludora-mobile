@@ -1,12 +1,15 @@
 import { list } from 'radash';
-import { cn } from '@chillui/ui';
 import { ViewStyle } from 'react-native';
-import { useCallback, useMemo } from 'react';
+import { cn, LoadingIndicator } from '@chillui/ui';
+import { useCallback, useMemo, useState } from 'react';
+import { RefreshControl } from 'react-native-gesture-handler';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 
+import COLORS from '@/constants/COLORS';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
 
+import { Box } from '../box';
 import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
 import { ListProps } from '../../types/list.types';
@@ -14,7 +17,8 @@ import { ListProps } from '../../types/list.types';
 type SkeletonItem = { type: 'skeleton'; uid: string };
 type SpecialItem = { type: 'sticky' | 'header_top'; uid: string };
 type EmptyItem = { type: 'empty'; uid: string };
-type ListItem = SkeletonItem | SpecialItem | EmptyItem;
+type LoadingItem = { type: 'loading'; uid: string };
+type ListItem = SkeletonItem | SpecialItem | EmptyItem | LoadingItem;
 
 const SKELETON_COUNT = 3;
 
@@ -31,23 +35,27 @@ export default function List(props: ListProps) {
     emptyResultProps,
     fetchNextPage,
     hasNextPage,
+    hasRefreshControl,
+    headerTransparent,
     isFetchingNextPage,
     isLoading,
     isRefetching,
     ItemComponent,
-    ListHeaderStickyComponent,
-    ListHeaderStickyComponentIsAnimated = true,
+    ListHeaderComponent,
+    listHeaderComponentHeight,
     ListStickyComponent,
     ListStickyComponentTopSafeArea,
     ListTopComponent,
+    refetch,
     SkeletonComponent,
     style,
     ...rest
   } = props;
 
   const { top } = useSafeArea();
+  const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
-  const showSkeletons = isLoading && !isRefetching;
+  const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
   const isEmptyData = !isLoading && !isRefetching && (!data || data.length === 0);
   const dataToRender = useMemo(() => {
     const items: ListItem[] = [];
@@ -61,6 +69,8 @@ export default function List(props: ListProps) {
 
     if (showSkeletons) {
       items.push(...SKELETON_DATA);
+    } else if (isLoading && !isRefetching) {
+      items.push({ type: 'loading', uid: 'loading' });
     } else if (isEmptyData) {
       items.push({ type: 'empty', uid: 'empty_res' });
     } else {
@@ -68,7 +78,7 @@ export default function List(props: ListProps) {
     }
 
     return items;
-  }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent]);
+  }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent, isLoading, isRefetching]);
 
   const stickyHeaderIndices = useMemo(() => {
     if (ListStickyComponent) {
@@ -100,6 +110,12 @@ export default function List(props: ListProps) {
             return renderComponent(ListStickyComponent);
           case 'header_top':
             return renderComponent(ListTopComponent);
+          case 'loading':
+            return (
+              <Box className="flex-1 items-center justify-center py-10">
+                <LoadingIndicator name="swing" color={COLORS.primary} size="xl" />
+              </Box>
+            );
           case 'empty':
             return <EmptyResult {...emptyResultProps} />;
           default:
@@ -131,6 +147,28 @@ export default function List(props: ListProps) {
   }, [top, ListStickyComponent, ListStickyComponentTopSafeArea]);
 
 
+  const headerComponent = () => {
+    if (headerTransparent) {
+      return (
+        <Box style={{ marginTop: -(listHeaderComponentHeight || 0) }}>
+          {renderComponent(ListHeaderComponent)}
+        </Box>
+      );
+    }
+    return renderComponent(ListHeaderComponent);
+  };
+
+  const handleRefresh = useCallback(async () => {
+    if (refetch) {
+      setIsManualRefreshing(true);
+      try {
+        await refetch();
+      } finally {
+        setIsManualRefreshing(false);
+      }
+    }
+  }, [refetch]);
+
   return (
     <LegendList
       keyExtractor={keyExtractor}
@@ -144,13 +182,25 @@ export default function List(props: ListProps) {
       showsVerticalScrollIndicator={false}
       keyboardDismissMode="on-drag"
       style={[listStyle, style]}
+      {...(headerTransparent && !!listHeaderComponentHeight && {
+        stickyHeaderConfig: {
+          offset: -listHeaderComponentHeight
+        }
+      })}
+      {...(hasRefreshControl && {
+        refreshControl: (
+          <RefreshControl refreshing={isManualRefreshing && isRefetching} onRefresh={handleRefresh} colors={[COLORS.primary]} />
+        )
+      })}
+      // onRefresh={handleRefresh}
       keyboardShouldPersistTaps="always"
       contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
       ListFooterComponent={
         <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
       }
       scrollEventThrottle={16}
-      contentContainerStyle={[contentContainerStyle]}
+      contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, contentContainerStyle]}
+      ListHeaderComponent={headerComponent}
       {...rest}
     />
 

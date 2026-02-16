@@ -1,5 +1,3 @@
-import { User } from '../api/utils/api.types';
-
 export const WS_ROOMS = {
   chat: (userID: string) => `chat_${userID}`,
   chatUserConnectedCenter: (centerID: string) => `chatUsersConnected_${centerID}`,
@@ -9,24 +7,16 @@ export const WS_ROOMS = {
   onBoardingUser: (userId: string) => `onBoardingUser_${userId}`,
 };
 
-export const WS_RESOURCES = {
-  INVITATION: 'INVITATION',
-  MESSAGE: 'MESSAGE',
-  STRIPE: 'STRIPE',
+export const WS_TYPES = {
+  FRIEND_ACCEPTED: 'FRIEND_ACCEPTED',
+  FRIEND_REQUEST: 'FRIEND_REQUEST',
+  SESSION_INVITATION: 'SESSION_INVITATION',
 } as const;
 
-export type TWebSocketMessage<T = any> = {
-  action: string;
-  resource: (typeof WS_RESOURCES)[keyof typeof WS_RESOURCES];
-  payload: T;
-  hostname?: string;
-  userId?: string;
-  wsHostname?: string;
+export type TWebSocketMessage = {
+  data: Record<string, string>;
+  type: (typeof WS_TYPES)[keyof typeof WS_TYPES];
+  title: string;
+  timestamp: string;
+  message: string;
 };
-
-export type TPayloadConnectedUsers =
-  | {
-      id: string;
-      userConnectStatus: User['connectStatus'];
-    }
-  | { items: { id: string; userConnectStatus: User['connectStatus'] }[] };

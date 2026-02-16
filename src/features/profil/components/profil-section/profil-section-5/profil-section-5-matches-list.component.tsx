@@ -12,8 +12,8 @@ export default function ProfilSection5MatchesList() {
   const { id: userId } = useLocalSearchParams()
   const { bottomTab } = useSafeArea();
 
-  const { fetchNextPage: fetchNextPageByUserId, hasNextPage: hasNextPageByUserId, isFetchingNextPage: isFetchingNextPageByUserId, isLoading: isLoadingByUserId, isRefetching: isRefetchingByUserId, items } = useGetSessionsByUserId(userId as string)
-  const { fetchNextPage: fetchNextPageMe, hasNextPage: hasNextPageMe, isFetchingNextPage: isFetchingNextPageMe, isLoading: isLoadingMe, isRefetching: isRefetchingMe, items: meItems } = useGetSessionsMe(!userId)
+  const { fetchNextPage: fetchNextPageByUserId, hasNextPage: hasNextPageByUserId, isFetchingNextPage: isFetchingNextPageByUserId, isLoading: isLoadingByUserId, isRefetching: isRefetchingByUserId, items, refetch: refetchByUserId } = useGetSessionsByUserId(userId as string)
+  const { fetchNextPage: fetchNextPageMe, hasNextPage: hasNextPageMe, isFetchingNextPage: isFetchingNextPageMe, isLoading: isLoadingMe, isRefetching: isRefetchingMe, items: meItems, refetch: refetchMe } = useGetSessionsMe(!userId)
 
 
   const sessions = userId ? items : meItems
@@ -23,11 +23,21 @@ export default function ProfilSection5MatchesList() {
   const isLoading = userId ? isLoadingByUserId : isLoadingMe
   const isRefetching = userId ? isRefetchingByUserId : isRefetchingMe
 
+
+  const handleRefresh = async () => {
+    if (userId) {
+      await refetchByUserId()
+    } else {
+      await refetchMe()
+    }
+  }
+
   return (
     <List
       data={sessions}
       ItemComponent={SessionCard}
       fetchNextPage={fetchNextPage}
+      refetch={handleRefresh}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}

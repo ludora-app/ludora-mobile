@@ -29,31 +29,6 @@ function AppLayoutNav() {
           animation: 'slide_from_bottom',
         }}
       />
-
-      <Stack.Screen
-        name="create-session/create-session-step-3-payment"
-        options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: [0.8],
-          sheetCornerRadius: 12,
-        }}
-      />
-      <Stack.Screen
-        name="profil/profil-edit/profil-edit-name"
-        options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: "fitToContents",
-          sheetCornerRadius: 12,
-        }}
-      />
       <Stack.Screen
         name="invite-people"
         options={{
@@ -107,6 +82,94 @@ function AppLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
+      {/* Profil edit screens */}
+      <Stack.Screen
+        name="profil/profil-edit/name"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/bio"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/birthdate"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/sex"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/email"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/password"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      {/*------------------------*/}
+
+      {/* Profil view screen */}
+      <Stack.Screen
+        name="profil/[id]/index"
+        options={{
+          animation: "fade_from_bottom",
+          headerShown: false,
+          presentation: "fullScreenModal",
+        }}
+      />
+      {/*------------------------*/}
+
+
+      {/* Session teams screen */}
       <Stack.Screen
         name="session/[id]/session-teams"
         options={{

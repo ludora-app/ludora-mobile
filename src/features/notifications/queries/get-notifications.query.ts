@@ -2,7 +2,11 @@ import { useNotificationsFindAllInfinite } from '@generatedApi/notifications/not
 
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
+import { useNotificationsFilterStore } from '../stores/notifications-filter.store';
+
 export const useGetNotificationsMe = () => {
+  const filters = useNotificationsFilterStore(state => state.filters);
+
   const { data, error, isError, ...rest } = useNotificationsFindAllInfinite({
     query: {
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,

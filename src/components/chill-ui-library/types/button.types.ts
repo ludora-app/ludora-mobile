@@ -30,6 +30,8 @@ export type ButtonProps = VariantProps<typeof ButtonTv> & {
   onPress?: () => void;
   /** Style object for the button container */
   style?: StyleProp<ViewStyle>;
+  /** Whether the button is disabled */
+  hasDisabledOpacity?: boolean;
 };
 
 export type ButtonContentProps = {

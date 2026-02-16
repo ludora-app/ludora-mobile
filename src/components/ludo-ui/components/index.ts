@@ -18,3 +18,4 @@ export * from './toggle';
 export * from './list';
 export * from './avatar';
 export * from './numeric-input';
+export * from './scroll-view';

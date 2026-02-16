@@ -144,9 +144,9 @@ import type {
     // Generate parameter list for the function call
     const functionParams = fn.params.length > 0 ? fn.params.map(p => p.name).join(', ') : '';
 
-    content += `export const ${hookName} = (${hookParams}) => {
+    content += `export const ${hookName} = () => {
   const queryClient = useQueryClient();
-  return () =>
+  return (${hookParams}) =>
     queryClient.invalidateQueries({
       queryKey: ${fn.functionName}(${functionParams}),
     });

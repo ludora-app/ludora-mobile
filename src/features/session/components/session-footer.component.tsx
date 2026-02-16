@@ -4,13 +4,13 @@ import { ScrollView } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 
-import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/COLORS';
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
-import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 
 import { useJoinSession } from '../queries/join-session.query';
@@ -27,7 +27,7 @@ const AnimatedButton = Animated.createAnimatedComponent(Button);
 export default function SessionFooter({ scrollViewRef, session }: SessionFooterProps) {
   const router = useRouter();
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
-  const invalidateSessionById = useInvalidateSessionsFindOne(sessionUid);
+  const invalidateSessionById = useInvalidateSessionsFindOne();
   const { t } = useTranslate();
   const { isJoined, remainingPlayers, sessionTeams } = session || {};
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
@@ -65,7 +65,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
         data: { error_message: errorResponse.api_error_detail },
         eventName: 'session_joined_failed',
       });
-      invalidateSessionById();
+      invalidateSessionById(sessionUid);
       trackError(error);
     }
   };

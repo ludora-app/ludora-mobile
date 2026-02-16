@@ -20,11 +20,13 @@ export default function Button(props: ButtonProps) {
       <ButtonContent {...contentProps}>
         {image?.source && <Image source={image?.source} contentFit={image.contentFit} className={image.className} />}
         {!isLoading && iconProps && iconProps.position === 'left' && <ButtonIcon {...iconProps} />}
+
         {!isLoading && (
-          <ButtonTitle font="primaryBold" {...titleProps}>
+          <ButtonTitle font="primaryBold" {...titleProps} numberOfLines={1} ellipsizeMode="tail">
             {title}
           </ButtonTitle>
         )}
+
         {isLoading && <ButtonLoader name="swing" color="#FFF" {...loaderProps} />}
         {!isLoading && iconProps && iconProps.position === 'right' && <ButtonIcon {...iconProps} />}
       </ButtonContent>

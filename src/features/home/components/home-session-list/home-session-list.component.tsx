@@ -1,6 +1,5 @@
 import { List } from '@ludo/ui';
 import { useMemo } from 'react';
-import { RefreshControl } from 'react-native';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
@@ -14,6 +13,8 @@ import HomeSessionListHeaderTopList from './home-session-list-headers/home-sessi
 const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
+const LIST_HEADER_HEIGHT = 224
+
 
 export default function HomeSessionList() {
   const {
@@ -50,6 +51,8 @@ export default function HomeSessionList() {
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      hasRefreshControl
+      refetch={refetch}
       getFixedItemSize={index => fixedEstimatedItemsSize(index)}
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
@@ -57,8 +60,9 @@ export default function HomeSessionList() {
       ListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
       ListStickyComponent={<HomeSessionListHeaderSticky />}
-      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+      headerTransparent
       bounces={false}
+      listHeaderComponentHeight={LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl"
       contentContainerStyle={{ paddingBottom: bottomTab }}
       emptyResultProps={{

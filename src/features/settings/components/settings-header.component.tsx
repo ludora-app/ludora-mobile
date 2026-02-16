@@ -1,6 +1,5 @@
-import { Wrapper } from '@ludo/ui'
-import { OutlinedString } from '@chillui/ui'
 import { useTranslate } from '@tolgee/react'
+import { OutlinedString, Wrapper } from '@chillui/ui'
 
 import COLORS from '@/constants/COLORS'
 import { useSafeArea } from '@/hooks/safe-area.hook'
@@ -8,10 +7,12 @@ import GoBackButton from '@/components/ui/navigation/header-go-back/components/g
 
 type SettingsHeaderProps = {
   titleKey: string
+  hasTopSafeArea?: boolean
+  hasHorizontalPadding?: boolean
 }
 
 export default function SettingsHeader(props: SettingsHeaderProps) {
-  const { titleKey } = props
+  const { hasHorizontalPadding, hasTopSafeArea, titleKey } = props
   const { t } = useTranslate()
   const { top } = useSafeArea()
 
@@ -20,7 +21,7 @@ export default function SettingsHeader(props: SettingsHeaderProps) {
   }
 
   return (
-    <Wrapper className='flex-row items-center z-10 pb-4 gap-2' style={{ paddingTop: top + 10 }}>
+    <Wrapper px={hasHorizontalPadding ? 'md' : 'none'} className='flex-row items-center z-10 pb-4 gap-2' style={{ paddingTop: hasTopSafeArea ? top + 10 : 0 }}>
       <GoBackButton />
       <OutlinedString
         text={t(titleKey)}

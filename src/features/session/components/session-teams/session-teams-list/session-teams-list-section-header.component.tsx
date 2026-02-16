@@ -1,9 +1,9 @@
+import { BoxGrow, cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { Box, BoxRowCenterBetween, BoxRowCenter, Avatar, Chip, String } from '@ludo/ui';
+import { BoxRowCenterBetween, BoxRowCenter, Avatar, Chip, String } from '@ludo/ui';
 
 import { SessionTeamResponseData } from '@/api/generated/model';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
-import { BoxGrow, cn } from '@chillui/ui';
 
 type SessionTeamsListHeaderProps = {
   team: SessionTeamResponseData;

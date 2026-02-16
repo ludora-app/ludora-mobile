@@ -9,4 +9,12 @@
 /**
  * Friend request status
  */
-export type FriendResponseDataStatus = { [key: string]: unknown };
+export type FriendResponseDataStatus = (typeof FriendResponseDataStatus)[keyof typeof FriendResponseDataStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FriendResponseDataStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  CANCELED: 'CANCELED',
+} as const;

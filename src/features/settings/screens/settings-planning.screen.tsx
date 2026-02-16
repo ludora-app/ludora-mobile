@@ -1,8 +1,7 @@
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
-import { ScrollView } from 'react-native'
 import { useTranslate } from '@tolgee/react'
-import { Box, ScreenLayout, String, Wrapper } from '@ludo/ui'
+import { Box, ScreenLayout, String, Wrapper, ScrollView } from '@ludo/ui'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
 
@@ -15,7 +14,7 @@ import { useGetUserHoursPreferences } from '../queries/user-hours-preferences/ge
 export default function SettingsPlanningScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
-  const { data: hourPrefs, isSuccess: isHourPrefsSuccess } = useGetUserHoursPreferences()
+  const { data: hourPrefs, isRefetching: isHourPrefsRefetching, isSuccess: isHourPrefsSuccess, refetch: refetchHourPrefs } = useGetUserHoursPreferences()
 
 
   const setPlanning = useSettingsPlanningStore(state => state.setPlanning)
@@ -29,13 +28,8 @@ export default function SettingsPlanningScreen() {
 
   return (
     <ScreenLayout>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <SettingsHeader titleKey="settings.planning.header_title" />
+      <ScrollView hasRefreshControl refetch={refetchHourPrefs} isRefetching={isHourPrefsRefetching}>
+        <SettingsHeader titleKey="settings.planning.header_title" hasTopSafeArea hasHorizontalPadding />
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-6' style={{ paddingBottom: bottom + 100 }}>
           <Box className='gap-4'>
             <String font="primaryBold" variant="body-3">

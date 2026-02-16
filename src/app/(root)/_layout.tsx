@@ -23,19 +23,16 @@ function AppLayoutNav() {
       }}
     >
       <Stack.Screen
-        name="create-session/step-1"
+        name="create-session"
         options={{
           animation: 'slide_from_bottom',
-          headerShown: true,
         }}
       />
       <Stack.Screen
-        name="create-session/create-session-duration"
+        name="profil/profil-edit/name"
         options={{
-          animation: 'slide_from_bottom',
           contentStyle: {
             backgroundColor: '#FFF',
-            paddingBottom: bottom,
           },
           headerShown: false,
           presentation: 'formSheet',
@@ -44,26 +41,62 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="create-session/create-session-step-3-payment"
+        name="profil/profil-edit/bio"
         options={{
           contentStyle: {
             backgroundColor: '#FFF',
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.8],
+          sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
-        name="profil/profil-edit/profil-edit-name"
+        name="profil/profil-edit/birthdate"
         options={{
           contentStyle: {
             backgroundColor: '#FFF',
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: "fitToContents",
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/sex"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/email"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
+        name="profil/profil-edit/password"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />

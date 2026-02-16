@@ -10,12 +10,14 @@ export type ListProps = {
   isRefetching: boolean;
   ItemComponent: React.ComponentType<{ item: any }>;
   data: any[];
-  SkeletonComponent: React.ComponentType;
+  SkeletonComponent?: React.ComponentType;
   hasNextPage: boolean;
+  refetch: () => Promise<any>;
   emptyResultProps?: EmptyResultProps;
   ListStickyComponent?: React.ComponentType | React.ReactElement;
   ListTopComponent?: React.ComponentType | React.ReactElement;
-  ListHeaderStickyComponent?: React.ComponentType | React.ReactElement;
-  ListHeaderStickyComponentIsAnimated?: boolean;
   ListStickyComponentTopSafeArea?: boolean;
+  headerTransparent?: boolean;
+  listHeaderComponentHeight?: number;
+  hasRefreshControl?: boolean;
 } & StrictOmit<LegendListProps<any>, 'renderItem' | 'getItemType' | 'data' | 'keyExtractor' | 'children'>;

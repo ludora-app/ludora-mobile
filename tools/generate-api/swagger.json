@@ -7112,20 +7112,16 @@
             "readOnly": true
           },
           "sportPreferences": {
+            "example": [
+              {
+                "sport": "BASKETBALL"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true,
             "type": "array",
             "items": {
-              "required": false,
-              "example": [
-                {
-                  "sport": "BASKETBALL"
-                }
-              ],
-              "nullable": true,
-              "readOnly": true,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SportPreferenceResponseData"
-              }
+              "$ref": "#/components/schemas/SportPreferenceResponseData"
             }
           },
           "friendsCount": {
@@ -7142,8 +7138,7 @@
         "required": [
           "uid",
           "firstname",
-          "lastname",
-          "sportPreferences"
+          "lastname"
         ]
       },
       "FindOneUserResponseDto": {
@@ -7203,20 +7198,16 @@
             "readOnly": true
           },
           "sportPreferences": {
+            "example": [
+              {
+                "sport": "BASKETBALL"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true,
             "type": "array",
             "items": {
-              "required": false,
-              "example": [
-                {
-                  "sport": "BASKETBALL"
-                }
-              ],
-              "nullable": true,
-              "readOnly": true,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SportPreferenceResponseData"
-              }
+              "$ref": "#/components/schemas/SportPreferenceResponseData"
             }
           },
           "friendsCount": {
@@ -7299,7 +7290,6 @@
           "uid",
           "firstname",
           "lastname",
-          "sportPreferences",
           "type",
           "profileStatus"
         ]
@@ -8834,8 +8824,14 @@
             "readOnly": true
           },
           "status": {
-            "type": "object",
+            "type": "string",
             "description": "Friend request status",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED",
+              "CANCELED"
+            ],
             "example": "PENDING",
             "readOnly": true
           },

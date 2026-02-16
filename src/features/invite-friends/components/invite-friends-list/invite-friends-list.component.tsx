@@ -11,7 +11,7 @@ const LIST_STICKY_COMPONENT_HEIGHT = 66;
 const LIST_ITEM_HEIGHT = 94;
 
 export default function InviteFriendsList() {
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items } =
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetUserFriendsByFilter();
 
   const fixedEstimatedItemsSize = useMemo(
@@ -33,6 +33,8 @@ export default function InviteFriendsList() {
       fetchNextPage={fetchNextPage}
       getEstimatedItemSize={fixedEstimatedItemsSize}
       isLoading={isLoading}
+      hasRefreshControl
+      refetch={refetch}
       isFetchingNextPage={isFetchingNextPage}
       ItemComponent={InviteFriendsListItem}
       SkeletonComponent={InviteFriendsListItemSkeleton}

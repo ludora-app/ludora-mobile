@@ -35,7 +35,8 @@ export interface FindMeUserResponseData {
   readonly profileStatus: FindMeUserResponseDataProfileStatus;
   /** @nullable */
   readonly sex?: FindMeUserResponseDataSex;
-  sportPreferences: (readonly SportPreferenceResponseData[] | null)[];
+  /** @nullable */
+  readonly sportPreferences?: readonly SportPreferenceResponseData[] | null;
   /** @nullable */
   readonly stripeAccountId?: string | null;
   /** @nullable */

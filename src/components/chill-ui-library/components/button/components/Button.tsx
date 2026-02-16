@@ -92,6 +92,7 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
     className,
     colorVariant = buttonDefaultProps.colorVariant,
     fit = buttonDefaultProps.fit,
+    hasDisabledOpacity,
     isDisabled,
     onPress,
     size = buttonDefaultProps.size,
@@ -123,7 +124,7 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
           ButtonTv({
             colorVariant,
             fit,
-            isDisabled: !!isDisabled,
+            isDisabled: !!isDisabled && hasDisabledOpacity,
             size,
             variant,
           }),

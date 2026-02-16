@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
+import { StyleSheet } from 'react-native'
 import { useTranslate } from '@tolgee/react'
-import { ScrollView, StyleSheet } from 'react-native'
-import { Box, BoxCenter, String, Wrapper, BoxRowCenterBetween, Icon, ScreenLayout, BoxGrow } from '@ludo/ui'
+import { Box, BoxCenter, String, Wrapper, BoxRowCenterBetween, Icon, ScreenLayout, BoxGrow, ScrollView } from '@ludo/ui'
 
 import COLORS from '@/constants/COLORS'
 import { formatDate } from '@/utils/date.utils'
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 export default function ProfilEditScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
-  const { userMe } = useUserMe()
+  const { isRefetching, refetch, userMe } = useUserMe()
   const { bio, birthdate, email, firstname, lastname, sex: userSex } = userMe || {}
   const router = useRouter()
 
@@ -58,13 +58,13 @@ export default function ProfilEditScreen() {
     },
   ]
 
+
   return (
     <ScreenLayout>
       <ScrollView
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll
-        showsVerticalScrollIndicator={false}
-        contentContainerClassName="grow"
+        hasRefreshControl
+        isRefetching={isRefetching}
+        refetch={refetch}
       >
         <ProfilEditHeader />
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-10' style={{ paddingBottom: bottom }}>

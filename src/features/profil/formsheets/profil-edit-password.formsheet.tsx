@@ -10,9 +10,9 @@ import { ErrorResponse } from '@/api/orval.instance'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component'
 
-import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component'
 import { useUpdateUserPassword } from '../queries/update-user-password.query'
 import { profilEditPasswordSchema } from '../schemas/profil-edit-password.schema'
+import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component'
 
 
 
@@ -44,11 +44,17 @@ export default function ProfilEditPasswordFormsheet() {
       trackEvent({ eventName: "profil_edit_password_success" })
       router.back()
     } catch (error) {
-      trackEvent({ data: { error_message: error.message }, eventName: "profil_edit_password_failed" })
       const responseError = error as ErrorResponse
-      if (responseError?.api_error?.message === "Invalid credentials") {
+      trackEvent({ data: { error_message: responseError.api_error_detail }, eventName: "profil_edit_password_failed" })
+      if (responseError?.api_error_detail === "Invalid credentials") {
         setError("oldPassword", {
           message: t('profil.profil-edit.old_password_incorrect'),
+        })
+        return;
+      }
+      if (responseError?.api_error_detail === "New password cannot be the same as the old password") {
+        setError("newPassword", {
+          message: t('profil.profil-edit.new_password_same_as_old'),
         })
         return;
       }

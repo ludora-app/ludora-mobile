@@ -18,7 +18,6 @@ type SettingsPreferencesState = CreateSportPreferenceDto & {
   initialize: (sportPrefs: any[]) => void;
   removeSportPreference: (sport: PreferencesSport) => void;
   setSportPreference: (sport: PreferencesSport, level: PreferencesLevelData) => void;
-  // sportPreferences: PreferencesSportData[];
   toggleGameMode: (sport: PreferencesSport, gameMode: PreferencesGameModeData) => void;
   toggleSportPreference: (sport: string) => void;
 };

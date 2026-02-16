@@ -1,12 +1,17 @@
 import { useFriendsUpdate } from '@generatedApi/friends/friends.api';
 
-import { useInvalidateNotificationsFindAll } from '@/api/generated/invalidate-queries';
+import { useInvalidateNotificationsFindAll, useInvalidateUsersFindMe } from '@/api/generated/invalidate-queries';
 
 export const useAcceptFriendRequest = (friendUid: string) => {
   const invalidateNotifications = useInvalidateNotificationsFindAll();
+  const invalidateUserMe = useInvalidateUsersFindMe();
+
   const mutation = useFriendsUpdate({
     mutation: {
-      onSuccess: () => invalidateNotifications(),
+      onSuccess: () => {
+        invalidateNotifications();
+        invalidateUserMe();
+      },
     },
   });
 

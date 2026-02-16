@@ -1,5 +1,5 @@
 import { useTranslate } from '@tolgee/react'
-import { Avatar, Box, BoxGrow, BoxRow, BoxRowCenterBetween, Button, IconButton, String } from '@ludo/ui'
+import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, Button, IconButton, String } from '@ludo/ui'
 
 import COLORS from '@/constants/COLORS'
 import { truncateString } from '@/utils/string.utils'
@@ -35,7 +35,7 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
   const notificationData = data as FriendsRequestData
   const { senderName, senderUid } = notificationData || {}
 
-  const { mutateAsync: acceptFriendRequest } = useAcceptFriendRequest(senderUid)
+  const { isPending: isLoadingAcceptFriendRequest, mutateAsync: acceptFriendRequest } = useAcceptFriendRequest(senderUid)
   const { mutateAsync: declineFriendRequest } = useDeclineFriendRequest(senderUid)
 
 
@@ -47,8 +47,17 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
     }
   }
 
+  const handleDeclineFriendRequest = async () => {
+    try {
+      if (acceptedFriendRequest) return
+      await declineFriendRequest()
+    } catch (error) {
+      trackError({ error })
+    }
+  }
+
   return (
-    <NotificationsListItemsContainer notificationUid={notificationUid}>
+    <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead} onPress={handleDeclineFriendRequest} isLoading={isLoadingAcceptFriendRequest}>
       <Avatar
         data={{
           firstname: senderName,
@@ -67,24 +76,28 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
             {formatNotificationTime(createdAt, t)}
           </String>
         </BoxRowCenterBetween>
-        {!acceptedFriendRequest && <BoxRow>
-          <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
-            <String font="primaryBold" useFastText={false}>
-              {truncateString({ maxLength: 40, str: senderName })}{" "}
-            </String>
-            {t(`notifications.body_${notificationType}`)}
-          </String>
-          <Button title={t('common.accept')} fit size='xs' onPress={handleAcceptFriendRequest} />
-        </BoxRow>}
-        {acceptedFriendRequest &&
-          <BoxRow>
-            <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
-              {t(`notifications.body_accepted_${notificationType}`)}{' '}
-              <String font="primaryBold" useFastText={false}>
-                {truncateString({ maxLength: 40, str: senderName })}{" "}
+        {!acceptedFriendRequest &&
+          <BoxRow className='gap-1'>
+            <BoxGrow>
+              <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                <String font="primaryBold" useFastText={false}>
+                  {truncateString({ maxLength: 40, str: senderName })}{" "}
+                </String>
+                {t(`notifications.body_${notificationType}`)}
               </String>
-
-            </String>
+            </BoxGrow>
+            <Button title={t('common.accept')} fit size='xs' onPress={handleAcceptFriendRequest} isLoading={isLoadingAcceptFriendRequest} />
+          </BoxRow>}
+        {acceptedFriendRequest &&
+          <BoxRow className='gap-1'>
+            <BoxGrow>
+              <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                {t(`notifications.body_accepted_${notificationType}`)}{' '}
+                <String font="primaryBold" useFastText={false}>
+                  {truncateString({ maxLength: 40, str: senderName })}{" "}
+                </String>
+              </String>
+            </BoxGrow>
             <IconButton
               iconName="chatbot-regular"
               variant="outlined"
@@ -92,13 +105,10 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
               colorVariant="primary"
               rounded="circle"
               size="xs"
-            /></BoxRow>}
+            />
+          </BoxRow>}
       </BoxGrow>
-      {
-        !isNotificationRead && (
-          <Box className='size-2.5 rounded-full bg-primary' />
-        )
-      }
+
     </NotificationsListItemsContainer >
   )
 }

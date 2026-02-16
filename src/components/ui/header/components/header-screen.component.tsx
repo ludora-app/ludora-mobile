@@ -1,7 +1,6 @@
-import { backgroundImg } from 'assets';
 import { PropsWithChildren } from 'react';
 import { cn, OutlinedString } from '@chillui/ui';
-import { Box, Icon, String, Image, Wrapper } from '@ludo/ui';
+import { Box, Icon, String, Wrapper } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -17,7 +16,6 @@ export default function HeaderScreen(props: PropsWithChildren<HeaderProps>) {
 
   return (
     <Wrapper className={cn('h-56 flex-row items-end overflow-hidden', className)}>
-      <Image source={backgroundImg} className="absolute top-0 left-0 h-screen w-screen" />
       <Box className="flex-1 flex-row justify-center gap-4">
         <Box className="flex-1 gap-2 pb-3">
           <Box className="-mb-3 w-full">

@@ -1,7 +1,7 @@
+import { Fragment } from 'react'
 import { useRouter } from 'expo-router'
-import { ScrollView } from 'react-native'
 import { useTranslate } from '@tolgee/react'
-import { Button, ScreenLayout, Separator, Wrapper } from '@ludo/ui'
+import { Button, ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 
 import { TIconsAll } from '@/constants/ICONS'
 import ROUTES from '@/constants/routes.constants'
@@ -104,28 +104,22 @@ export default function SettingsScreen() {
 
   return (
     <ScreenLayout>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <SettingsHeader titleKey="settings.header_title" />
+      <ScrollView bounces={false}>
+        <SettingsHeader titleKey="settings.header_title" hasTopSafeArea hasHorizontalPadding />
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-5' style={{ paddingBottom: bottom }}>
 
           {Object.entries(SETTINGS_MENU).map(([title, items]) => (
             <SettingsSection title={t(title)} key={title}>
               {items.map((item: TSettingsMenuItem) => (
-                <>
+                <Fragment key={item.id}>
                   <SettingsMenuItem
-                    key={item.id + title}
                     iconName={item.iconName}
                     label={t(item.label)}
                     description={t(item.description)}
                     onPress={() => router.push(item.route)}
                   />
                   {item.id !== items.length && <Separator />}
-                </>
+                </Fragment>
               ))}
             </SettingsSection>
           ))}

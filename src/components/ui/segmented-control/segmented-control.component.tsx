@@ -31,7 +31,7 @@ function SegmentedControlImpl<T extends string>(props: PropsWithChildren<Segment
   const { t } = useTranslate()
 
   return (
-    <Box className='gap-5'>
+    <Box className='gap-3'>
       <ChillSegmentedControl>
         <SegmentedControlTriggerContent className='h-12'>
           {items.map((item) => (
@@ -51,7 +51,7 @@ function SegmentedControlImpl<T extends string>(props: PropsWithChildren<Segment
         </SegmentedControlTriggerContent>
         <SegmentedControlIndicator className='bg-white' style={styles.shadow} />
       </ChillSegmentedControl>
-      {children}
+      {children && children}
     </Box>
   )
 }

@@ -1,50 +1,32 @@
 
-import { StyleSheet } from 'react-native'
-import { SegmentedControl, SegmentedControlIndicator, SegmentedControlPanel, SegmentedControlPanelSliderContent, SegmentedControlTrigger, SegmentedControlTriggerContent } from '@chillui/ui'
 
-import ProfilSection5Badges from './profil-section-5-badges.component'
-import ProfilSection5MatchesList from './profil-section-5-matches-list.component'
+import { SegmentedControl } from '@/components/ui/segmented-control'
+import { ProfilTab, useProfilStore } from '@/features/profil/stores/profil.store'
 
-const styles = StyleSheet.create({
-  shadow: {
-    boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.15)',
-  }
-})
+import ProfilSection5Tabs from './profil-section-5-tabs.component'
+
+
+
+
+const OPTIONS = [
+  {
+    labelKey: 'common.matches',
+    value: ProfilTab.Matches,
+  },
+  {
+    labelKey: 'common.badges',
+    value: ProfilTab.Badges,
+  },
+]
 
 export default function ProfilSection5() {
+  const setSelectedTab = useProfilStore(state => state.setSelectedTab)
   return (
-    <SegmentedControl>
-      <SegmentedControlTriggerContent className='h-12'>
-        <SegmentedControlTrigger
-          value='option1'
-          stringProps={{
-            activeColor: "black",
-            className: "text-muted",
-            font: "primaryBold"
-          }}
-        >
-          Matchs
-        </SegmentedControlTrigger>
-        <SegmentedControlTrigger
-          value='option2'
-          stringProps={{
-            activeColor: "black",
-            className: "text-muted",
-            font: "primaryBold"
-          }}
-        >
-          Badges
-        </SegmentedControlTrigger>
-      </SegmentedControlTriggerContent>
-      <SegmentedControlIndicator className='bg-white' style={styles.shadow} />
-      <SegmentedControlPanelSliderContent >
-        <SegmentedControlPanel value='option1'>
-          <ProfilSection5MatchesList />
-        </SegmentedControlPanel>
-        <SegmentedControlPanel value='option2'>
-          <ProfilSection5Badges />
-        </SegmentedControlPanel>
-      </SegmentedControlPanelSliderContent>
+    <SegmentedControl
+      items={OPTIONS}
+      onValueChange={(value) => setSelectedTab(value)}
+    >
+      <ProfilSection5Tabs />
     </SegmentedControl>
   )
 }

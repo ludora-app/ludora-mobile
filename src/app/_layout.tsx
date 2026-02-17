@@ -53,7 +53,7 @@ function RootLayoutNav() {
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.95],
+          sheetAllowedDetents: [0.90],
         }}
       />
       <Stack.Screen

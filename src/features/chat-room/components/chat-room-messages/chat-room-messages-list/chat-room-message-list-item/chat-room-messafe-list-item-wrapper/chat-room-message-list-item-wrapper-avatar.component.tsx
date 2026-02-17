@@ -1,9 +1,9 @@
 import { Avatar } from '@ludo/ui';
 
-import { Message } from '@/features/chat-room/mocks/messages.mock';
+import { MessageCollectionItemDto } from '@/api/generated/model';
 
 interface ChatRoomMessageListItemWrapperAvatarProps {
-  messageData: Message;
+  messageData: MessageCollectionItemDto;
 }
 
 export default function ChatRoomMessageListItemWrapperAvatar({

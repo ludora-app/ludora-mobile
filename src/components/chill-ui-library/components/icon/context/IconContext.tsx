@@ -18,6 +18,7 @@ export interface IconStructure {
   d?: string;
   fill?: string;
   stroke?: string;
+  points?: string;
   opacity?: string;
   fillRule?: string;
   clipRule?: string;
@@ -26,7 +27,7 @@ export interface IconStructure {
   strokeLinejoin?: string;
   props?: Record<string, any>;
   children?: readonly IconStructure[];
-  type: 'g' | 'path' | 'defs' | 'clipPath' | 'rect' | 'ellipse' | 'circle';
+  type: 'g' | 'path' | 'defs' | 'clipPath' | 'rect' | 'ellipse' | 'circle' | 'polygon';
 }
 
 export interface IconConfig {

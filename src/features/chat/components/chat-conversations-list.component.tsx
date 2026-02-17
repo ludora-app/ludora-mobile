@@ -15,10 +15,11 @@ const ITEM_HEIGHT = 81;
 
 export default function ChatConversationsList({ scrollY }: ChatConversationsListProps) {
   const { bottomTab } = useSafeArea();
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items } =
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetAllChatRoomsByFilter();
 
-  console.log('items', items);
+  console.log("items", items)
+
 
   const scrollYRef = scrollY;
 
@@ -32,6 +33,8 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
         isRefetching={isRefetching}
+        refetch={refetch}
+        hasRefreshControl
         hasNextPage={hasNextPage}
         onScroll={e => {
           'worklet';
@@ -39,7 +42,6 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
           scrollYRef.value = e.nativeEvent.contentOffset.y;
         }}
         getFixedItemSize={() => ITEM_HEIGHT}
-        bounces={false}
         contentContainerStyle={{
           paddingBottom: bottomTab + 150,
           paddingTop: 20,

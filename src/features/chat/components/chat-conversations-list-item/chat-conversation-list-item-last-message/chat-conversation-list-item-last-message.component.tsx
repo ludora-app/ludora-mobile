@@ -1,7 +1,7 @@
 import { ConversationCollectionResponseData } from '@/api/generated/model';
 
-import ChatConversationListItemLastMessageString from './chat-conversation-list-item-last-message-string.component';
 import ChatConversationListItemLastMessageEmpty from './chat-conversation-list-item-last-message-empty.component';
+import ChatConversationListItemLastMessageString from './chat-conversation-list-item-last-message-string.component';
 
 interface ChatConversationListItemLastMessageProps {
   conversation: ConversationCollectionResponseData;

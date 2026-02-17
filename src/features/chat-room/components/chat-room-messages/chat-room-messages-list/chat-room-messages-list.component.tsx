@@ -1,8 +1,7 @@
 import type { ViewToken } from 'react-native';
 
+import { List } from '@ludo/ui';
 import { useCallback } from 'react';
-import { Box, List } from '@ludo/ui';
-import { useLocalSearchParams } from 'expo-router';
 
 import Loading from '@/components/ui/loading/loading.component';
 
@@ -14,12 +13,10 @@ import ChatRoomMessageListItem from './chat-room-message-list-item/chat-room-mes
 import { useChatRoomMessageOnScreenDateStore } from '../../../store/chat-room-message-on-screen-date.store';
 
 export default function ChatRoomMessagesList() {
-  const { id: chatRoomId } = useLocalSearchParams();
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
+    useGetMessagesByChatroomId();
 
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items } =
-    useGetMessagesByChatroomId(chatRoomId as string);
-
-  console.log('items', items);
+  console.log('messageChatRoom', items);
   const setMessageCurrentDate = useChatRoomMessageOnScreenDateStore(state => state.setMessageCurrentDate);
 
   const handleViewableItemsChanged = useCallback(
@@ -49,14 +46,13 @@ export default function ChatRoomMessagesList() {
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isRefetching={isRefetching}
-        SkeletonComponent={() => <Box className="size-5 bg-accent" />}
         hasNextPage={hasNextPage}
-        bounces={false}
+        refetch={refetch}
         alignItemsAtEnd
         maintainScrollAtEnd
         maintainScrollAtEndThreshold={0.1}
         maintainVisibleContentPosition
-        contentContainerClassName="pt-2 flex-1 bg-white px-4"
+        contentContainerClassName="pt-2 bg-white px-4"
         emptyResultProps={{
           center: true,
           hasRandomTitle: true,

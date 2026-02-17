@@ -1,10 +1,3 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import PlayersScreen from '@/features/players/screens/players.screen';
 
-export default function players() {
-  return (
-    <View>
-      <Text>players</Text>
-    </View>
-  );
-}
+export default PlayersScreen;

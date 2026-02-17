@@ -1,5 +1,5 @@
 import { withUniwind } from 'uniwind';
-import Svg, { ClipPath, Defs, G, Path, Rect, Ellipse, type SvgProps, Circle } from 'react-native-svg';
+import Svg, { ClipPath, Defs, G, Path, Polygon, Rect, Ellipse, type SvgProps, Circle } from 'react-native-svg';
 
 import { ICONS } from '../../../constants';
 import { useIconContext, type IconConfig, type IconStructure } from '../context/IconContext';
@@ -62,6 +62,16 @@ const renderStructure = (structure: IconStructure, color?: string, index?: numbe
       return <Ellipse key={key} {...structure.props} />;
     case 'circle':
       return <Circle key={key} {...structure.props} />;
+    case 'polygon':
+      return (
+        <Polygon
+          key={key}
+          points={structure.points ?? ''}
+          {...(structure.fill && { fill: color ?? structure.fill })}
+          {...(structure.stroke && { stroke: color ?? structure.stroke })}
+          {...structure.props}
+        />
+      );
     default:
       return null;
   }

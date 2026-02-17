@@ -26,23 +26,7 @@ type ChatConversationsListHeaderTypeProps = {
   scrollY: SharedValue<number>;
 };
 
-const CHAT_FILTER_OPTIONS = [
-  {
-    icon: allChatsImg,
-    label: 'Tous',
-    value: 'option1',
-  },
-  {
-    icon: allMatchesImg,
-    label: 'Matchs',
-    value: 'option2',
-  },
-  {
-    icon: allPlayersImg,
-    label: 'Joueurs',
-    value: 'option3',
-  },
-];
+
 
 export default function ChatConversationsListHeaderType({ scrollY }: ChatConversationsListHeaderTypeProps) {
   const setFilters = useChatStore(state => state.setFilters);

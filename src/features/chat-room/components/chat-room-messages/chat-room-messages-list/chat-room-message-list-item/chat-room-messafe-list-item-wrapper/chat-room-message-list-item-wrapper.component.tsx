@@ -2,14 +2,14 @@ import { Box, BoxRow } from '@ludo/ui';
 import { PropsWithChildren } from 'react';
 import { BoxCenter, cn } from '@chillui/ui';
 
-import { Message } from '@/features/chat-room/mocks/messages.mock';
+import { MessageCollectionItemDto } from '@/api/generated/model';
 
 import ChatRoomMessageListItemWrapperTime from './chat-room-message-list-item-wrapper-time.component';
 import ChatRoomMessageListItemWrapperAvatar from './chat-room-message-list-item-wrapper-avatar.component';
 import ChatRoomMessageListItemWrapperIndicators from './chat-room-message-list-item-wrapper-indicators.component';
 
 type ChatRoomMessageListItemWrapperProps = {
-  messageData: Message;
+  messageData: MessageCollectionItemDto;
 };
 
 export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {

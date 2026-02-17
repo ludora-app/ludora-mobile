@@ -57,11 +57,13 @@ class SocketService {
     });
   }
 
-  emit(event: string, data: any) {
+  emit(event: string, data: any, callback?: (response: any) => void) {
     if (this.socket) {
-      this.socket.emit(event, data);
-    } else {
-      console.warn(`Socket.IO not connected. Cannot emit event: ${event}`);
+      if (callback) {
+        this.socket.emit(event, data, callback);
+      } else {
+        this.socket.emit(event, data);
+      }
     }
   }
 

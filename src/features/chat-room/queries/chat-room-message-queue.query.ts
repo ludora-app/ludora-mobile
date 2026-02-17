@@ -1,91 +1,116 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { getConversationsLoadMoreMessagesQueryKey } from '@generatedApi/conversations/conversations.api';
 
-import { WS_RESOURCES } from '@/types/websocket.type';
 import { emit } from '@/services/websocket/websocket.client';
+import { MessageCollectionItemDto, PaginationResponseMessageCollectionItemDto } from '@/api/generated/model';
 
-import type { Message, PaginatedMessagesResponse } from '../mocks/messages.mock';
+import { useChatRoomStore } from '../store/chat-room.store';
 
-export const useChatRoomMessageOptimisticQueue = (chatRoomId?: string) => {
+type WsSendMessageResponse = {
+  conversationUid: string;
+  message: {
+    uid: string;
+    content: string;
+    createdAt: string;
+    globalStatus: string;
+    type: string;
+    hasAnyRead: boolean;
+    hasEveryoneRead: boolean;
+  };
+};
+
+type MessagesInfiniteData = InfiniteData<PaginationResponseMessageCollectionItemDto>;
+
+export const useChatRoomMessageOptimisticQueue = () => {
+  const chatRoomId = useChatRoomStore(store => store.chatRoomId);
+  const setChatRoomId = useChatRoomStore(store => store.setChatRoomId);
   const queryClient = useQueryClient();
+
+  const getQueryKey = () => {
+    if (!chatRoomId) return undefined;
+    return getConversationsLoadMoreMessagesQueryKey(chatRoomId, { limit: 10 });
+  };
 
   const addOptimisticMessageToQueue = async (content: string | string[], type: 'TEXT') => {
     if (!content) return;
 
     const messageUid = `temp-${new Date().getTime()}`;
-    const newMessage: Message = {
+    const newMessage: MessageCollectionItemDto = {
       content: Array.isArray(content) ? content.join(' ') : content,
-      created_at: new Date(),
-      image_url: undefined,
-      isMe: true,
-      isSending: true,
-      message_reads: [],
+      createdAt: new Date().toISOString(),
+      globalStatus: 'SENT',
+      hasAnyRead: false,
+      hasEveryoneRead: false,
       type,
       uid: messageUid,
-      user_id: 'user-me-123',
     };
 
-    queryClient.setQueryData<{
-      pages: PaginatedMessagesResponse[];
-      pageParams: number[];
-    }>(['messages'], oldData => {
-      if (!oldData || !oldData.pages || oldData.pages.length === 0) {
-        return {
-          pageParams: [0],
-          pages: [
-            {
-              data: [newMessage],
-              hasMore: false,
-              nextCursor: null,
-              total: 1,
-            },
-          ],
+    const queryKey = getQueryKey();
+    if (queryKey) {
+      queryClient.setQueryData<MessagesInfiniteData>(queryKey, oldData => {
+        if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+          return {
+            pageParams: [undefined],
+            pages: [
+              {
+                data: {
+                  items: [newMessage],
+                  nextCursor: null,
+                  totalCount: 1,
+                },
+              },
+            ],
+          };
+        }
+
+        const updatedPages = [...oldData.pages];
+        const firstPage = updatedPages[0];
+
+        updatedPages[0] = {
+          ...firstPage,
+          data: {
+            ...firstPage.data,
+            items: [...firstPage.data.items, newMessage],
+            totalCount: firstPage.data.totalCount + 1,
+          },
         };
-      }
 
-      const updatedPages = [...oldData.pages];
-      const lastPageIndex = updatedPages.length - 1;
-      const lastPage = updatedPages[lastPageIndex];
-
-      updatedPages[lastPageIndex] = {
-        ...lastPage,
-        data: [...lastPage.data, newMessage],
-        total: lastPage.total + 1,
-      };
-
-      return {
-        ...oldData,
-        pages: updatedPages,
-      };
-    });
+        return {
+          ...oldData,
+          pages: updatedPages,
+        };
+      });
+    }
 
     // Send message via Socket.IO
-    // if (chatRoomId) {
     const messageData = {
-      action: 'SEND_MESSAGE',
-      payload: {
-        chatRoomId: 'resr',
-        content: Array.isArray(content) ? content.join(' ') : content,
-        tempUid: messageUid,
-        type,
-      },
-      resource: WS_RESOURCES.MESSAGE,
+      content: Array.isArray(content) ? content.join(' ') : content,
+      conversationUid: chatRoomId,
+      type,
     };
 
-    emit('sendMessage', messageData);
-    // }
+    emit('sendMessage', messageData, (response: WsSendMessageResponse) => {
+      console.log('response====>', response);
+      if (response?.conversationUid && !chatRoomId) {
+        setChatRoomId(response.conversationUid);
+      }
 
-    // Still keep the timeout for UI feedback in this demo,
-    // but in a real app, you'd wait for a socket confirmation event
-    setTimeout(() => {
-      queryClient.setQueryData<{
-        pages: PaginatedMessagesResponse[];
-        pageParams: number[];
-      }>(['messages'], oldData => {
+      const currentQueryKey = getQueryKey();
+      if (!currentQueryKey) return;
+
+      queryClient.setQueryData<MessagesInfiniteData>(currentQueryKey, oldData => {
         if (!oldData) return oldData;
 
         const updatedPages = oldData.pages.map(page => ({
           ...page,
-          data: page.data.map(msg => (msg.uid === messageUid ? { ...msg, isSending: false } : msg)),
+          data: {
+            ...page.data,
+            items: page.data.items.map(msg =>
+              msg.uid === messageUid
+                ? { ...msg, globalStatus: response.message?.globalStatus ?? ('DELIVERED' as const) }
+                : msg,
+            ),
+          },
         }));
 
         return {
@@ -93,7 +118,7 @@ export const useChatRoomMessageOptimisticQueue = (chatRoomId?: string) => {
           pages: updatedPages,
         };
       });
-    }, 1000); // Reduced delay since we are actually sending it now
+    });
   };
 
   return { addOptimisticMessageToQueue };

@@ -17,7 +17,7 @@ interface ChatConversationsListItemProps {
 
 function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
   const router = useRouter();
-  const { imageUrl: chatRoomAvatar, name: chatRoomName, uid: chatRoomId } = item || {};
+  const { imageUrl: chatRoomAvatar, name: chatRoomName, uid: chatRoomId, unreadMessagesCount } = item || {};
 
   const handlePress = () => {
     const params: RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX] = {
@@ -37,11 +37,13 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
         </BoxRowCenterBetween>
         <BoxRowCenterBetween className="gap-2">
           <ChatConversationListItemLastMessage conversation={item} />
-          <Box className="bg-primary size-6 items-center justify-center rounded-full">
-            <String variant="body-sm" colorVariant="white">
-              2
-            </String>
-          </Box>
+          {unreadMessagesCount > 0 && (
+            <Box className="bg-primary size-6 items-center justify-center rounded-full">
+              <String variant="body-sm" colorVariant="white">
+                {unreadMessagesCount}
+              </String>
+            </Box>
+          )}
         </BoxRowCenterBetween>
       </BoxGrow>
     </TouchableOpacity>

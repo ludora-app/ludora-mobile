@@ -149,6 +149,21 @@ function elementToStructure(element) {
     return circleObj;
   }
 
+  // --- Ajout pour les Polygons ---
+  if (tagName === 'polygon') {
+    const polygonObj = { type: 'polygon' };
+    const attrs = extractAttributes(element);
+
+    if (attrs.points) polygonObj.points = attrs.points;
+    if (attrs.fill) polygonObj.fill = attrs.fill;
+    if (attrs.stroke) polygonObj.stroke = attrs.stroke;
+    if (attrs.id) {
+      polygonObj.props = { id: attrs.id };
+    }
+
+    return polygonObj;
+  }
+
   return null;
 }
 
@@ -160,7 +175,8 @@ function hasComplexStructure(svg) {
     svg.querySelector('clipPath') ||
     svg.querySelector('clippath') ||
     svg.querySelector('ellipse') ||
-    svg.querySelector('circle')
+    svg.querySelector('circle') ||
+    svg.querySelector('polygon')
   );
 }
 

@@ -11,8 +11,8 @@ export function disconnect(): void {
   websocketService.disconnect();
 }
 
-export function emit(event: string, data: any): void {
-  websocketService.emit(event, data);
+export function emit(event: string, data: any, callback?: (response: any) => void): void {
+  websocketService.emit(event, data, callback);
 }
 
 export function join(userId: FindMeUserResponseData['uid']): void {

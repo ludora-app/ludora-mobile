@@ -57,10 +57,10 @@ export default function HomeSessionList() {
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
       ListHeaderComponent={HomeSessionListHeaderTopList}
-      ListStickyComponentTopSafeArea
+      hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
       ListStickyComponent={<HomeSessionListHeaderSticky />}
-      headerTransparent
+      hasHeaderTransparent
       bounces={false}
       listHeaderComponentHeight={LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl"

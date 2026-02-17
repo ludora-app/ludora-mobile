@@ -1,13 +1,15 @@
 import { Redirect, Stack, usePathname } from 'expo-router';
 
+import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
+  const { userMe } = useUserMe()
+  const { profileStatus } = userMe || {}
   const pathname = usePathname();
-  const profileStatus = '';
-  const showPreferences = profileStatus === 'PENDING';
+  const showPreferences = profileStatus === "";
   const isInsideOnBoarding = pathname.includes('on-boarding') || pathname.includes('image-picker');
 
   if (showPreferences && !isInsideOnBoarding) {

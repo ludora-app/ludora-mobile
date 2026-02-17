@@ -16,8 +16,8 @@ export type ListProps = {
   emptyResultProps?: EmptyResultProps;
   ListStickyComponent?: React.ComponentType | React.ReactElement;
   ListTopComponent?: React.ComponentType | React.ReactElement;
-  ListStickyComponentTopSafeArea?: boolean;
-  headerTransparent?: boolean;
+  hasListStickyComponentTopSafeArea?: boolean;
+  hasHeaderTransparent?: boolean;
   listHeaderComponentHeight?: number;
   hasRefreshControl?: boolean;
 } & StrictOmit<LegendListProps<any>, 'renderItem' | 'getItemType' | 'data' | 'keyExtractor' | 'children'>;

@@ -1,20 +1,20 @@
 import { useMemo } from 'react';
 
 import { filterObjectEntries } from '@/utils/filters.utils';
-import { SessionsFindAllParams } from '@/api/generated/model';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
+import { ConversationsFindAllByUserUidParams } from '@/api/generated/model';
 
 import { useChatStore } from '../store/chat.store';
 import { useGetAllChatRooms } from './get-chatrooms.query';
 
-const LIMIT_RESULTS_SESSIONS = 10;
+const LIMIT_RESULTS_SESSIONS = 20;
 
 export const useGetAllChatRoomsByFilter = () => {
   const chatRoomsFilters = useChatStore(state => state.filters);
   const cleanedFilters = filterObjectEntries(chatRoomsFilters);
 
   const params = useMemo(
-    (): SessionsFindAllParams => ({
+    (): ConversationsFindAllByUserUidParams => ({
       limit: LIMIT_RESULTS_SESSIONS,
       ...cleanedFilters,
     }),

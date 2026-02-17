@@ -36,9 +36,7 @@ export default function ChatRoomInput() {
   });
   const inputValue = watch('message') || '';
 
-  const { id: chatRoomId } = useLocalSearchParams<{ id: string }>();
-
-  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue(chatRoomId);
+  const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
 
   const { setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();
 

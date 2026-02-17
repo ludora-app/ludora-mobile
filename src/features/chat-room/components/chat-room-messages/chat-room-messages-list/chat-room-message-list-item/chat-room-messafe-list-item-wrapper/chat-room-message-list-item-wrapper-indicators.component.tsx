@@ -2,10 +2,10 @@ import { Icon, BoxRow } from '@ludo/ui';
 import { LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
-import { Message } from '@/features/chat-room/mocks/messages.mock';
+import { MessageCollectionItemDto } from '@/api/generated/model';
 
 interface ChatRoomMessageListItemWrapperIndicatorsProps {
-  messageData: Message;
+  messageData: MessageCollectionItemDto;
 }
 
 export default function ChatRoomMessageListItemWrapperIndicators({

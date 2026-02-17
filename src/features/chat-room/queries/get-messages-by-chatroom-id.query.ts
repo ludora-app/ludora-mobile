@@ -2,20 +2,24 @@ import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversa
 
 import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
 
+import { useChatRoomStore } from '../store/chat-room.store';
+
 const LIMIT_MESSAGES = 10;
 
-export const useGetMessagesByChatroomId = (chatRoomId: string) => {
+export const useGetMessagesByChatroomId = () => {
+  const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const filter: ConversationsLoadMoreMessagesParams = {
     limit: LIMIT_MESSAGES,
   };
 
   const { data, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
     query: {
+      enabled: !!chatRoomId,
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
   });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = data?.pages ? [...data.pages].reverse().flatMap(page => page.data.items) : [];
 
   return { ...rest, items };
 };

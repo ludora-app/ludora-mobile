@@ -34,9 +34,10 @@ export default function List(props: ListProps) {
     data,
     emptyResultProps,
     fetchNextPage,
+    hasHeaderTransparent,
+    hasListStickyComponentTopSafeArea,
     hasNextPage,
     hasRefreshControl,
-    headerTransparent,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -44,7 +45,6 @@ export default function List(props: ListProps) {
     ListHeaderComponent,
     listHeaderComponentHeight,
     ListStickyComponent,
-    ListStickyComponentTopSafeArea,
     ListTopComponent,
     refetch,
     SkeletonComponent,
@@ -138,17 +138,17 @@ export default function List(props: ListProps) {
 
 
   const listStyle: ViewStyle | undefined = useMemo(() => {
-    if (ListStickyComponent && ListStickyComponentTopSafeArea) {
+    if (ListStickyComponent && hasListStickyComponentTopSafeArea) {
       return {
         marginTop: top,
       };
     }
     return undefined;
-  }, [top, ListStickyComponent, ListStickyComponentTopSafeArea]);
+  }, [top, ListStickyComponent, hasListStickyComponentTopSafeArea]);
 
 
   const headerComponent = () => {
-    if (headerTransparent) {
+    if (hasHeaderTransparent) {
       return (
         <Box style={{ marginTop: -(listHeaderComponentHeight || 0) }}>
           {renderComponent(ListHeaderComponent)}
@@ -182,7 +182,7 @@ export default function List(props: ListProps) {
       showsVerticalScrollIndicator={false}
       keyboardDismissMode="on-drag"
       style={[listStyle, style]}
-      {...(headerTransparent && !!listHeaderComponentHeight && {
+      {...(hasHeaderTransparent && !!listHeaderComponentHeight && {
         stickyHeaderConfig: {
           offset: -listHeaderComponentHeight
         }

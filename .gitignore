@@ -42,3 +42,6 @@ app-example
 .env
 .env.development
 .env.production
+
+# generated api
+/src/api/generated

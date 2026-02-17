@@ -82,7 +82,7 @@ export default function ProfilSection3User() {
       <Box className={cn(isFriendRequestAccepted ? 'flex-1' : 'flex-2')}>
         <Button
           title={handleFriendsBtnTitle}
-          size="xs"
+          size="sm"
           onPress={handleSendFriendInvitation}
           isLoading={isPendingFriendInvitation}
           iconProps={{
@@ -99,7 +99,7 @@ export default function ProfilSection3User() {
       <Box className='grow'>
         <Button
           title={t("common.message")}
-          size="xs"
+          size="sm"
           iconProps={{
             className: 'mr-2',
             color: "#fff",

@@ -10,11 +10,12 @@ export const WS_ROOMS = {
 export const WS_TYPES = {
   FRIEND_ACCEPTED: 'FRIEND_ACCEPTED',
   FRIEND_REQUEST: 'FRIEND_REQUEST',
+  NEW_MESSAGE: 'NEW_MESSAGE',
   SESSION_INVITATION: 'SESSION_INVITATION',
 } as const;
 
 export type TWebSocketMessage = {
-  data: Record<string, string>;
+  data: any;
   type: (typeof WS_TYPES)[keyof typeof WS_TYPES];
   title: string;
   timestamp: string;

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { cn } from '@chillui/ui';
-import { Link } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
+import { Link, useRouter } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Chip, IconButton, String } from '@ludo/ui';
 
@@ -9,6 +9,7 @@ import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 import { FlattenedSessionPlayer } from '@/api/generated/model';
+import { RootStackParamList } from '@/types/routes-params.types';
 
 type SessionTeamsListItemProps = {
   data: FlattenedSessionPlayer;
@@ -24,7 +25,11 @@ const styles = StyleSheet.create({
   },
 });
 
+type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
+
+
 export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
+  const router = useRouter()
   const { t } = useTranslate();
   const { userMeId } = useUserMe();
   const { data: sessionPlayer, teamSide } = props;
@@ -36,6 +41,14 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
   const colorVariant = useMemo(() => (teamSide === 'left' ? 'primary' : 'secondary'), [teamSide]);
 
   const iconButtonColor = useMemo(() => (teamSide === 'left' ? COLORS.primary : COLORS.secondary), [teamSide]);
+
+  const handlePressChatIcon = () => {
+    const params: ChatRoomLocalSearchParams = {
+      imageUrl: imageUrl || '',
+      name: `${firstname} ${lastname}`,
+    }
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(userUid) })
+  };
 
   return (
     <Link href={ROUTES.PROFIL.INDEX_UID(userUid)} asChild disabled={isMe}>
@@ -77,14 +90,16 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
               </Box>
             )}
           </BoxGrow>
-          {!isMe && <IconButton
-            iconName="chatbot-regular"
-            variant="outlined"
-            colorVariant={colorVariant}
-            iconColor={iconButtonColor}
-            rounded="circle"
-            size="xs"
-          />}
+          {!isMe &&
+            <IconButton
+              iconName="chatbot-regular"
+              variant="outlined"
+              colorVariant={colorVariant}
+              iconColor={iconButtonColor}
+              rounded="circle"
+              size="xs"
+              onPress={handlePressChatIcon}
+            />}
         </BoxRow>
       </Pressable>
     </Link>

@@ -12,7 +12,7 @@ export type RootStackParamList = {
   };
   [ROUTES.FILTERS.FILTER]: {
     goBackPath: RouteValues;
-    source?: 'filter_fields' | 'filter_sessions_all';
+    source?: 'filter_fields' | 'filter_sessions_all' | 'players_suggestions';
     selectedDayCarouselDate: string;
   };
   [ROUTES.FILTERS.FILTER_CALENDAR]: {

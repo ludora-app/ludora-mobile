@@ -7,13 +7,14 @@ import HeaderScreen from '@/components/ui/header/components/header-screen.compon
 export default function PlayersListHeaderTopList() {
   const { t } = useTranslate()
   const { userMe } = useUserMe();
-  const firstname = truncateString({ maxLength: 8, str: userMe?.firstname ?? '' });
+  const { firstname } = userMe || {};
+  const userFirstname = truncateString({ maxLength: 8, str: firstname });
 
   return (
     <HeaderScreen
-      title={`Prêt ${firstname} ?`}
-      subTitle="Trouve ton prochain coéquipier"
-      iconProps={{ className: 'size-36', name: "ludo-idea" }}
+      title={t("players.header_ready_title", { firstname: userFirstname })}
+      subTitle={t("players.header_ready_subtitle")}
+      iconProps={{ className: 'size-36', name: "ludo-idea-2" }}
       className='h-40 items-center'
     />
   );

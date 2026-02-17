@@ -18,7 +18,7 @@ export type FiltersHeaderProps<T extends FiltersHeaderInputSchema> = FiltersHead
   onFilterPress?: () => void;
   selectedDayCarouselDate?: string | null;
   onFiltersChange?: (filters: Filters) => void;
-  source?: 'filter_fields' | 'filter_sessions_all';
+  source?: 'filter_fields' | 'filter_sessions_all' | 'players_suggestions';
 };
 
 export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props: FiltersHeaderProps<T>) {

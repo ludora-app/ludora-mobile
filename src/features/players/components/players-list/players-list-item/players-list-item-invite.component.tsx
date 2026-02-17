@@ -6,7 +6,7 @@ export default function PlayersListItemInvite() {
     <Button
       size="sm"
       title="Inviter"
-      iconProps={{ name: 'add-circle-regular', position: 'left' }}
+      iconProps={{ className: "mr-2", name: "user-add-solid", position: "left" }}
       onPress={() => { }}
     />
   )

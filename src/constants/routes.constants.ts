@@ -78,6 +78,10 @@ const ROUTES = {
     PRIVACY_POLICY: '/settings/privacy-policy',
     TERMS: '/settings/terms',
   },
+  TABS: {
+    INDEX: '/(tabs)',
+    PLAYERS: '/(tabs)/players',
+  },
 } as const;
 
 export type RouteValues = Flatten<typeof ROUTES>;

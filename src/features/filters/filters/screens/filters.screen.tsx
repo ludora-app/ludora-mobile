@@ -4,8 +4,8 @@ import { WrapperGestureHandlerScrollView } from '@ludo/ui';
 
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
-import { useFiltersStore } from '../store/filters.store';
 
+import { useFiltersStore } from '../store/filters.store';
 import { FiltersScreenParams } from '../types/filters.types';
 import FilterHeader from '../components/filter-header.component';
 import FilterFooter from '../components/filter-footer.component';
@@ -25,6 +25,7 @@ export default function FiltersScreen() {
   const setCurrentSource = useFiltersStore(state => state.setCurrentSource);
 
   const showFilterSessionsAll = sourceValue === 'filter_sessions_all';
+  const showPlayersSuggestions = sourceValue === 'players_suggestions';
 
   useEffect(() => {
     if (sourceValue) {
@@ -37,11 +38,11 @@ export default function FiltersScreen() {
       <FilterHeader />
       <WrapperGestureHandlerScrollView contentContainerClassName="gap-3 pb-10">
         {/* <FilterFieldType /> */}
-        {showFilterSessionsAll && <FilterSports />}
-        <FilterLocationWrapper />
-        <FilterSearchRadius />
-        <FilterSessionDateWrapper />
-        {showFilterSessionsAll && <FilterLevels />}
+        {(showFilterSessionsAll || showPlayersSuggestions) && <FilterSports />}
+        {!showPlayersSuggestions && <FilterLocationWrapper />}
+        {!showPlayersSuggestions && <FilterSearchRadius />}
+        {!showPlayersSuggestions && <FilterSessionDateWrapper />}
+        {(showFilterSessionsAll || showPlayersSuggestions) && <FilterLevels />}
         {showFilterSessionsAll && <FilterModes />}
         {showFilterSessionsAll && <FilterSessionDuration />}
       </WrapperGestureHandlerScrollView>

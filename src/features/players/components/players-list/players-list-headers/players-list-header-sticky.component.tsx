@@ -7,7 +7,7 @@ import { homeFiltersMapper } from '@/features/home/utils/home-filters-mapper.uti
 import { useHomeSessionFiltersStore } from '@/features/home/stores/home-sessions-filters.store';
 
 
-export default function HomeSessionListHeaderSticky() {
+export default function PlayersListHeaderSticky() {
   const { t } = useTranslate();
   const setSessionFilter = useHomeSessionFiltersStore(state => state.setFilters);
   const dateFilter = useHomeSessionFiltersStore(state => state.filters.date);
@@ -30,12 +30,12 @@ export default function HomeSessionListHeaderSticky() {
     <Wrapper className="rounded-t-xl bg-background py-3" px="none">
       <FiltersHeader
         numberOfFilters={numberOfFilters}
-        source="filter_sessions_all"
-        goBackPath="/"
+        source="players_suggestions"
+        goBackPath="/(tabs)/players"
         selectedDayCarouselDate={selectedDayCarouselDate}
         onFiltersChange={handleFiltersChange}
         onChangeText={handleInputChange}
-        placeholder={t('home.session-list-header.input_placeholder')}
+        placeholder={t('players.players_list_header.input_placeholder')}
       />
     </Wrapper>
   );

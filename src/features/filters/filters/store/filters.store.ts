@@ -20,7 +20,7 @@ export type Filters = {
   gameModes: CreateSessionFromRequestDtoGameMode[];
 };
 
-export type FilterSource = 'filter_sessions_all' | 'filter_fields';
+export type FilterSource = 'filter_sessions_all' | 'filter_fields' | 'players_suggestions';
 
 interface FiltersStoreInstance {
   numberOfFilters: number;
@@ -61,6 +61,7 @@ export const useFiltersStore = create<FiltersStore>((set, get) => ({
   instances: {
     filter_fields: createDefaultInstance(),
     filter_sessions_all: createDefaultInstance(),
+    players_suggestions: createDefaultInstance(),
   },
 
   resetFilters: () => {

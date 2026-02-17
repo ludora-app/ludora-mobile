@@ -45,3 +45,5 @@ app-example
 
 # generated api
 /src/api/generated
+
+src/tools/generate-api-swagger.json

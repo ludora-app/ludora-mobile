@@ -44,11 +44,13 @@ export default function List(props: ListProps) {
     ItemComponent,
     ListHeaderComponent,
     listHeaderComponentHeight,
+    listRef,
     ListStickyComponent,
     ListTopComponent,
     refetch,
     SkeletonComponent,
     style,
+    triggerEndReachedOnStart = false,
     ...rest
   } = props;
 
@@ -99,6 +101,7 @@ export default function List(props: ListProps) {
     }
     return 'row';
   }, []);
+
 
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<ListItem>) => {
@@ -171,13 +174,15 @@ export default function List(props: ListProps) {
 
   return (
     <LegendList
+      ref={listRef}
       keyExtractor={keyExtractor}
       data={dataToRender}
       renderItem={renderItem}
       getItemType={getItemType}
       recycleItems
       stickyIndices={stickyHeaderIndices}
-      onEndReached={onEndReached}
+      {...(triggerEndReachedOnStart && { onStartReached: onEndReached })}
+      {...(onEndReached && { onEndReached })}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
       keyboardDismissMode="on-drag"
@@ -192,15 +197,21 @@ export default function List(props: ListProps) {
           <RefreshControl refreshing={isManualRefreshing && isRefetching} onRefresh={handleRefresh} colors={[COLORS.primary]} />
         )
       })}
-      // onRefresh={handleRefresh}
+      {...(hasRefreshControl && { onRefresh: handleRefresh })}
       keyboardShouldPersistTaps="always"
       contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
       ListFooterComponent={
-        <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+        !triggerEndReachedOnStart
+          ? <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+          : undefined
       }
       scrollEventThrottle={16}
       contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, contentContainerStyle]}
-      ListHeaderComponent={headerComponent}
+      ListHeaderComponent={
+        triggerEndReachedOnStart
+          ? <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+          : headerComponent
+      }
       {...rest}
     />
 

@@ -1,9 +1,18 @@
-import { Message } from '@/features/chat-room/mocks/messages.mock';
+
+
+import { MessageCollectionItemDto } from '@/api/generated/model';
 
 import ChatRoomMessageListItemContentString from './chat-room-message-list-item-content-string.component';
 
-export default function ChatRoomMessageListItemContent({ messageData }: { messageData: Message }) {
-  switch (messageData.type) {
+
+type ChatRoomMessageListItemContentProps = {
+  messageData: MessageCollectionItemDto
+}
+
+export default function ChatRoomMessageListItemContent({ messageData }: ChatRoomMessageListItemContentProps) {
+  const { type: messageType } = messageData || {};
+
+  switch (messageType) {
     case 'TEXT':
       return <ChatRoomMessageListItemContentString messageData={messageData} />;
     default:

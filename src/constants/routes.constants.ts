@@ -10,8 +10,11 @@ const ROUTES = {
     VERIFY_CODE: '/auth/verify-code',
   },
   CHAT_ROOM: {
-    INDEX: '/chat-room',
-    INDEX_UID: (uid: string) => `/chat-room/${uid}`,
+    INDEX: '/chat-room/[chatRoomId]',
+    INDEX_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}`,
+    MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
+    MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
+      `/chat-room/${chatRoomId}/message-actions/${messageId}`,
   },
   CREATE_SESSION: {
     INDEX: '/create-session',

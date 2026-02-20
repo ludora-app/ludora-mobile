@@ -11,7 +11,7 @@ export function disconnect(): void {
   websocketService.disconnect();
 }
 
-export function emit(event: string, data: any, callback?: (response: any) => void): void {
+export function emit(event: string, data: any, callback?: (response: any, error: any) => void): void {
   websocketService.emit(event, data, callback);
 }
 

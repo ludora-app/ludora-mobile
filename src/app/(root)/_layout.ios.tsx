@@ -181,8 +181,11 @@ function AppLayoutNav() {
           presentation: 'modal',
         }}
       />
+      {/*------------------------*/}
+
+      {/* Chat room screens */}
       <Stack.Screen
-        name="chat-room/[id]/index"
+        name="chat-room/[chatRoomId]/index"
         options={{
           animation: 'slide_from_right',
           contentStyle: {
@@ -191,6 +194,21 @@ function AppLayoutNav() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="chat-room/[chatRoomId]/message-actions/[messageId]/index"
+        options={{
+          animation: 'slide_from_right',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      {/*------------------------*/}
+
       <Stack.Screen
         name="image-picker"
         options={{

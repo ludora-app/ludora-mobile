@@ -1,4 +1,4 @@
-import { LegendListProps } from '@legendapp/list';
+import { LegendListProps, LegendListRef } from '@legendapp/list';
 
 import { StrictOmit } from '@/components/chill-ui-library';
 import { EmptyResultProps } from '@/components/ui/empty-resulat/empty-result.component';
@@ -20,4 +20,6 @@ export type ListProps = {
   hasHeaderTransparent?: boolean;
   listHeaderComponentHeight?: number;
   hasRefreshControl?: boolean;
+  triggerEndReachedOnStart?: boolean;
+  listRef?: React.RefObject<LegendListRef>;
 } & StrictOmit<LegendListProps<any>, 'renderItem' | 'getItemType' | 'data' | 'keyExtractor' | 'children'>;

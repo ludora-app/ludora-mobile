@@ -5,6 +5,7 @@ const COLORS = {
   bluePrimary: '#97CDCC',
   blueSecondary: '#6AAFAD',
   border: '#e4e4e4',
+  danger: '#ff0000',
   destructive: '#A52523',
   gray: '#7C7C7C',
   input: '#e4e4e4',

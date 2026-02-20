@@ -1,6 +1,6 @@
 import React from 'react';
 import { list } from 'radash';
-import { LoadingIndicator } from '@chillui/ui';
+import { cn, LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
 
@@ -14,7 +14,7 @@ const SKELETON_COUNT = 3;
 export default function ListFooter(props: ListFooterProps) {
   const { isFetchingNextPage, SkeletonComponent } = props;
   return (
-    <Box className="py-5">
+    <Box className={cn({ "items-center": isFetchingNextPage, "py-5": isFetchingNextPage })}>
       {isFetchingNextPage && (
         SkeletonComponent ? (
           list(SKELETON_COUNT).map((_, index) => (

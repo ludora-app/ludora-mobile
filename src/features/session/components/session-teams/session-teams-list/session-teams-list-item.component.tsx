@@ -46,8 +46,9 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
     const params: ChatRoomLocalSearchParams = {
       imageUrl: imageUrl || '',
       name: `${firstname} ${lastname}`,
+      userUid,
     }
-    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(userUid) })
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
   };
 
   return (

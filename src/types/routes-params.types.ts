@@ -28,12 +28,18 @@ export type RootStackParamList = {
   [ROUTES.CHAT_ROOM.INDEX]: {
     name: string;
     imageUrl: string;
+    userUid?: string;
+    chatRoomId?: string;
   };
   [ROUTES.CREATE_SESSION.STEP_5]: {
     sessionUid: string;
   };
   [ROUTES.IMAGE_PICKER.INDEX]: {
     goBackPath: RouteValues;
+  };
+  [ROUTES.CHAT_ROOM.MESSAGE_ACTIONS]: {
+    messageId: string;
+    chatRoomId: string;
   };
 };
 

@@ -16,7 +16,7 @@ import { useChatStore } from '../../store/chat.store';
 
 const styles = StyleSheet.create({
   shadow: {
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.4)',
   },
 });
 
@@ -25,8 +25,6 @@ const SCROLL_DISTANCE = 100;
 type ChatConversationsListHeaderTypeProps = {
   scrollY: SharedValue<number>;
 };
-
-
 
 export default function ChatConversationsListHeaderType({ scrollY }: ChatConversationsListHeaderTypeProps) {
   const setFilters = useChatStore(state => state.setFilters);
@@ -49,7 +47,7 @@ export default function ChatConversationsListHeaderType({ scrollY }: ChatConvers
   };
 
   return (
-    <Wrapper className="rounded-b-xl py-2" style={styles.shadow}>
+    <Wrapper className="relative z-50 rounded-b-xl py-2" style={styles.shadow}>
       <SegmentedControl>
         <SegmentedControlTriggerContent className="border-0">
           <SegmentedControlTrigger value="option1" as="scale-pressable" onPress={() => handlePressType(undefined)}>

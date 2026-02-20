@@ -18,7 +18,6 @@ export const useGetMessagesByChatroomId = () => {
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
   });
-
   const items = data?.pages ? [...data.pages].reverse().flatMap(page => page.data.items) : [];
 
   return { ...rest, items };

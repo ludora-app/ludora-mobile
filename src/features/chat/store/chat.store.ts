@@ -9,5 +9,5 @@ interface ChatStore {
 
 export const useChatStore = create<ChatStore>(set => ({
   filters: {},
-  setFilters: filters => set({ filters }),
+  setFilters: filters => set(state => ({ filters: { ...state.filters, ...filters } })),
 }));

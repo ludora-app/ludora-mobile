@@ -24,6 +24,7 @@ export const useWebsocketOnNotifications = () => {
         handleNotificationSessionInvitation();
         break;
       case WS_TYPES.NEW_MESSAGE:
+        // case WS_TYPES.MESSAGES_READ:
         handleNotificationNewMessage(webSocketData);
         break;
       default:

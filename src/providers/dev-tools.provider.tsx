@@ -4,10 +4,10 @@ import { penTool, openBook } from 'assets';
 import { FloatingDevTools } from '@buoy-gg/core';
 import { FullWindowOverlay } from 'react-native-screens';
 
-import ROUTES from '@/constants/routes.constants';
 import { IS_IOS } from '@/constants/PLATFORM';
+import ROUTES from '@/constants/routes.constants';
 
-export default function DebuggerProvider() {
+export default function DevToolsProvider() {
   const router = useRouter();
 
   const content = (

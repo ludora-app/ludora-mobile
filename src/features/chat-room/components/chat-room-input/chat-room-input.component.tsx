@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
+import { useTranslate } from '@tolgee/react';
 import { useCallback, useState } from 'react';
 import { EmojiType } from 'rn-emoji-keyboard';
-import { useLocalSearchParams } from 'expo-router';
 import { BoxRow, FormInput, Wrapper } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import COLORS from '@/constants/COLORS';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
+import { useChatRoomScrollStore } from '../../store/chat-room-scroll.store';
 import ChatRoomInputSubmitButton from './chat-room-input-submit-button.component';
 import { ChatRoomInputSchema, schema } from '../../schemas/chat-room-input.schema';
 import ChatRoomInputKeyboardEmoji from './chat-room-input-keyboard-emoji.component';
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ChatRoomInput() {
+  const { t } = useTranslate();
   const { bottom } = useSafeArea();
   const [cursorPosition, setCursorPosition] = useState(0);
 
@@ -37,6 +39,7 @@ export default function ChatRoomInput() {
   const inputValue = watch('message') || '';
 
   const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
+  const scrollToEnd = useChatRoomScrollStore(state => state.scrollToEnd);
 
   const { setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();
 
@@ -44,6 +47,7 @@ export default function ChatRoomInput() {
     addOptimisticMessageToQueue(values.message, 'TEXT');
     setValue('message', '');
     setCursorPosition(0);
+    setTimeout(() => scrollToEnd?.(), 100);
   };
 
   const handleEmojiPick = (emoji: EmojiType) => {
@@ -67,8 +71,8 @@ export default function ChatRoomInput() {
           control={control}
           name="message"
           leftIconAction={{
-            color: COLORS.muted,
-            name: 'emoji-smile-grinning-regular',
+            color: COLORS.primary,
+            name: 'smileys-solid',
             onPress: () => {
               setEmojiPickerOpen(true);
             },
@@ -76,6 +80,9 @@ export default function ChatRoomInput() {
           }}
           className="flex-1"
           onSelectionChange={handleSelectionChange}
+          placeholder={t('common.message')}
+          hasMessageError={false}
+          hasError={false}
         />
         <ChatRoomInputSubmitButton onPress={handleSubmit(onSubmit)} isDisabled={!isValid} />
       </BoxRow>

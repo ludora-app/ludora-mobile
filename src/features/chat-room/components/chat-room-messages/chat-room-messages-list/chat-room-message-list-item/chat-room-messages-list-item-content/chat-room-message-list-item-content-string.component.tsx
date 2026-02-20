@@ -1,15 +1,17 @@
 import { String } from '@ludo/ui';
 
-import { Message } from '@/features/chat-room/mocks/messages.mock';
+import { MessageCollectionItemDto } from '@/api/generated/model';
 
 interface ChatRoomMessageListItemContentStringProps {
-  messageData: Message;
+  messageData: MessageCollectionItemDto;
 }
 
 export default function ChatRoomMessageListItemContentString({ messageData }: ChatRoomMessageListItemContentStringProps) {
+  const { content: messageContent } = messageData || {};
+
   return (
     <String color="#FFF" size="sm">
-      {messageData.content}
+      {messageContent}
     </String>
   );
 }

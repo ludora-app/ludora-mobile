@@ -9,7 +9,8 @@ interface ChatRoomMessageListItemWrapperAvatarProps {
 export default function ChatRoomMessageListItemWrapperAvatar({
   messageData,
 }: ChatRoomMessageListItemWrapperAvatarProps) {
-  const { isMe: isMessageFromMe } = messageData || {};
+  const { isSender: isMessageFromMe, sender } = messageData || {};
+  const { firstname: senderFirstName, imageUrl: senderImageUrl, lastname: senderLastName } = sender || {};
 
   if (isMessageFromMe) {
     return null;
@@ -19,9 +20,9 @@ export default function ChatRoomMessageListItemWrapperAvatar({
     <Avatar
       size="xs"
       data={{
-        firstname: '',
-        imageUrl: messageData?.image_url ?? '',
-        lastname: '',
+        firstname: senderFirstName,
+        imageUrl: senderImageUrl,
+        lastname: senderLastName,
       }}
     />
   );

@@ -4,13 +4,11 @@ import { filterObjectEntries } from '@/utils/filters.utils';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 import { ConversationsFindAllByUserUidParams } from '@/api/generated/model';
 
-import { useChatStore } from '../store/chat.store';
 import { useGetAllChatRooms } from './get-chatrooms.query';
 
 const LIMIT_RESULTS_SESSIONS = 20;
 
-export const useGetAllChatRoomsByFilter = () => {
-  const chatRoomsFilters = useChatStore(state => state.filters);
+export const useGetAllChatRoomsByFilter = (chatRoomsFilters: ConversationsFindAllByUserUidParams) => {
   const cleanedFilters = filterObjectEntries(chatRoomsFilters);
 
   const params = useMemo(

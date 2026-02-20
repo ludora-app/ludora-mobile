@@ -57,7 +57,7 @@ class SocketService {
     });
   }
 
-  emit(event: string, data: any, callback?: (response: any) => void) {
+  emit(event: string, data: any, callback?: (response: any, error: any) => void) {
     if (this.socket) {
       if (callback) {
         this.socket.emit(event, data, callback);

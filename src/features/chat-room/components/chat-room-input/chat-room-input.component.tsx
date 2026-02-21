@@ -1,5 +1,5 @@
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { useCallback, useState } from 'react';
 import { EmojiType } from 'rn-emoji-keyboard';
@@ -9,33 +9,34 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import COLORS from '@/constants/COLORS';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
+import { schema } from '../../schemas/chat-room-input.schema';
 import { useChatRoomScrollStore } from '../../store/chat-room-scroll.store';
 import ChatRoomInputSubmitButton from './chat-room-input-submit-button.component';
-import { ChatRoomInputSchema, schema } from '../../schemas/chat-room-input.schema';
 import ChatRoomInputKeyboardEmoji from './chat-room-input-keyboard-emoji.component';
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue.query';
 
-const styles = StyleSheet.create({
-  shadow: {
-    boxShadow: '0px -4px 10px 0px rgba(0, 0, 0, 0.1)',
-  },
-});
 
 export default function ChatRoomInput() {
   const { t } = useTranslate();
   const { bottom } = useSafeArea();
   const [cursorPosition, setCursorPosition] = useState(0);
 
+  const inputSchema = schema(t)
+
   const {
     control,
-    formState: { isValid },
+    formState: { errors, isValid },
     handleSubmit,
     setValue,
     watch,
-  } = useForm<ChatRoomInputSchema>({
-    resolver: zodResolver(schema),
+  } = useForm<z.infer<typeof inputSchema>>({
+    mode: 'onChange',
+    resolver: zodResolver(inputSchema),
   });
+
+  const errorMessage = errors?.message?.message;
+
   const inputValue = watch('message') || '';
 
   const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
@@ -43,7 +44,7 @@ export default function ChatRoomInput() {
 
   const { setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();
 
-  const onSubmit = (values: ChatRoomInputSchema) => {
+  const onSubmit = (values: z.infer<typeof inputSchema>) => {
     addOptimisticMessageToQueue(values.message, 'TEXT');
     setValue('message', '');
     setCursorPosition(0);
@@ -63,8 +64,11 @@ export default function ChatRoomInput() {
     setCursorPosition(event.nativeEvent.selection.start);
   }, []);
 
+
+
+
   return (
-    <Wrapper style={[styles.shadow, { paddingBottom: bottom }]} className="bg-white pt-2">
+    <Wrapper style={{ paddingBottom: bottom }} className="pt-2">
       <ChatRoomInputKeyboardEmoji onSelect={handleEmojiPick} />
       <BoxRow className="items-center gap-2">
         <FormInput
@@ -78,11 +82,12 @@ export default function ChatRoomInput() {
             },
             pressEffectSize: 'xs',
           }}
-          className="flex-1"
+          className="flex-1 max-h-36"
           onSelectionChange={handleSelectionChange}
           placeholder={t('common.message')}
-          hasMessageError={false}
-          hasError={false}
+          multiline
+          hasError={errorMessage === "Message is too long"}
+          hasMessageError={errorMessage === "Message is too long"}
         />
         <ChatRoomInputSubmitButton onPress={handleSubmit(onSubmit)} isDisabled={!isValid} />
       </BoxRow>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { FormInput, Wrapper } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormInput, WrapperSafeAreaView } from '@ludo/ui';
 
 import { useChatStore } from '../../store/chat.store';
 import { ChatInputSchema, schema } from '../../schemas/chat.schema';
@@ -9,6 +9,7 @@ import { ChatInputSchema, schema } from '../../schemas/chat.schema';
 
 
 export default function ChatConversationsHeaderSearch() {
+
   const { control, watch } = useForm<ChatInputSchema>(
     {
       resolver: zodResolver(schema),
@@ -24,7 +25,7 @@ export default function ChatConversationsHeaderSearch() {
   }, [search, setFilters]);
 
   return (
-    <WrapperSafeAreaView edges={['top']} fill={false}>
+    <Wrapper className='pt-safe-offset-1'>
       <FormInput
         control={control}
         name="search"
@@ -35,6 +36,6 @@ export default function ChatConversationsHeaderSearch() {
           name: 'search-regular',
         }}
       />
-    </WrapperSafeAreaView>
+    </Wrapper>
   );
 }

@@ -30,6 +30,9 @@ export type RootStackParamList = {
     imageUrl: string;
     userUid?: string;
     chatRoomId?: string;
+    type?: string;
+    sender?: string;
+    receiver?: string;
   };
   [ROUTES.CREATE_SESSION.STEP_5]: {
     sessionUid: string;

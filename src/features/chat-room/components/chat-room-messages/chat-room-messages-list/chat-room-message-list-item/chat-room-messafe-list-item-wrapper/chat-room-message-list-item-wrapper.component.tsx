@@ -16,21 +16,26 @@ import ROUTES from '@/constants/routes.constants';
 import { useHaptics } from '@/hooks/haptics.hook';
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
 
 import ChatRoomMessageListItemWrapperTime from './chat-room-message-list-item-wrapper-time.component';
 import ChatRoomMessageListItemWrapperAvatar from './chat-room-message-list-item-wrapper-avatar.component';
+import { chatRoomMessageListItemWrapperTv } from '../../../../styles/chat-room-message-list-item-wrapper.styles';
 import ChatRoomMessageListItemWrapperIndicators from './chat-room-message-list-item-wrapper-indicators/chat-room-message-list-item-wrapper-indicators.component';
 
 type ChatRoomMessageListItemWrapperProps = {
-  messageData: MessageCollectionItemDto;
+  isChatRoomGroup: boolean;
+  messageData: OptimisticMessage | MessageCollectionItemDto;
 };
 
 export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
-  const { children, messageData } = props;
-  const { isSender: isMessageFromMe, uid: messageUid } = messageData || {};
+  const { children, isChatRoomGroup, messageData } = props;
+  const { globalStatus: messageGlobalStatus, isSender: isMessageFromMe, uid: messageUid } = messageData || {};
   const router = useRouter();
   const { triggerHaptic } = useHaptics();
+
+  const isMessageDeleted = messageGlobalStatus === 'DELETED'
 
   const scale = useSharedValue(1);
 
@@ -39,9 +44,14 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
   }));
 
   const handleMessageLongPress = () => {
-    if (!chatRoomId || !messageUid) {
+    if (!chatRoomId || !messageUid || isMessageDeleted) {
       return;
     }
+    cancelAnimation(scale);
+    scale.value = withSequence(
+      withTiming(0.9, { duration: 100 }),
+      withSpring(1, { damping: 10, stiffness: 200 }),
+    );
     triggerHaptic('selection');
     router.push(ROUTES.CHAT_ROOM.MESSAGE_ACTIONS_UID({ chatRoomId, messageId: messageUid }));
   };
@@ -57,19 +67,20 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
       )}
     >
       <Box className="max-w-[80%]">
-        <BoxRow className="items-center justify-end gap-1">
-          <ChatRoomMessageListItemWrapperAvatar messageData={messageData} />
-          <Animated.View style={animatedStyle}>
+        <BoxRow
+          className={cn('items-end gap-1', {
+            'flex-row-reverse justify-start': isMessageFromMe,
+            'justify-start': !isMessageFromMe,
+          })}
+        >
+          {isChatRoomGroup && <ChatRoomMessageListItemWrapperAvatar messageData={messageData} />}
+          <Animated.View style={animatedStyle} className="shrink">
             <Pressable
               onLongPress={handleMessageLongPress}
-              onPressIn={() => {
-                cancelAnimation(scale);
-                scale.value = withSequence(
-                  withTiming(0.9, { duration: 100 }),
-                  withSpring(1, { damping: 10, stiffness: 200 }),
-                );
-              }}
-              className={cn('rounded-lg p-2', isMessageFromMe ? 'bg-primary' : 'bg-ring')}
+              className={chatRoomMessageListItemWrapperTv({
+                isMessageDeleted,
+                isMessageFromMe,
+              })}
             >
               {children}
             </Pressable>

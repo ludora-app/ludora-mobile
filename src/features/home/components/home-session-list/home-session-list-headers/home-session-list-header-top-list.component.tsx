@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
@@ -8,7 +9,7 @@ import { SessionCard } from '@/components/ui/session-card';
 import HeaderScreen from '@/components/ui/header/components/header-screen.component';
 import { useGetIncommingSessionMe } from '@/features/home/queries/get-incomming-session-me.query';
 
-export default function HomeSessionListHeaderTopList() {
+function HomeSessionListHeaderTopList() {
   const { t } = useTranslate();
   const { data: IncommingSessionMe, isLoading: IncommingSessionMeIsLoading } = useGetIncommingSessionMe();
   const { userMe } = useUserMe();
@@ -45,3 +46,6 @@ export default function HomeSessionListHeaderTopList() {
     </HeaderScreen>
   );
 }
+
+export default memo(HomeSessionListHeaderTopList)
+

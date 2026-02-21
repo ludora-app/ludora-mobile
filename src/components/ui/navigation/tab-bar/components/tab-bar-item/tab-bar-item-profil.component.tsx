@@ -15,6 +15,7 @@ function TabBarItemProfil({ iconName, iconNameActive, isFocused, text, ...props 
   const { data: unreadCount } = useNotificationsUnreadCount()
 
   const hasNotification = unreadCount?.unreadCount > 0;
+
   const { t } = useTranslate();
 
   return (

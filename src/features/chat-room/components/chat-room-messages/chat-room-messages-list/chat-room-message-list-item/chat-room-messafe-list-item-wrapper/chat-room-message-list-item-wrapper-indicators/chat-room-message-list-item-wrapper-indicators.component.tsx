@@ -2,20 +2,21 @@ import { Icon, BoxRow } from '@ludo/ui';
 import { LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/COLORS';
+import { MessageCollectionItemDto } from '@/api/generated/model';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
 
 
 
 
 interface ChatRoomMessageListItemWrapperIndicatorsProps {
-  messageData: OptimisticMessage;
+  messageData: OptimisticMessage | MessageCollectionItemDto;
 }
 
 export default function ChatRoomMessageListItemWrapperIndicators({
   messageData,
 }: ChatRoomMessageListItemWrapperIndicatorsProps) {
 
-  const { hasAnyRead, hasEveryoneRead, isError, isSender: isMessageFromMe, isSending } = messageData || {};
+  const { hasAnyRead, hasEveryoneRead, isError, isSender: isMessageFromMe, isSending } = messageData as OptimisticMessage || {};
 
 
   if (!isMessageFromMe) {

@@ -46,3 +46,7 @@ app-example
 # generated api
 /src/api/generated
 /tools/generate-api/swagger.json
+
+# Firebase
+google-services.json
+GoogleService-Info.plist

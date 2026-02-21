@@ -1,20 +1,26 @@
-import { List } from '@ludo/ui';
-import { useEffect, useRef } from 'react';
-import { LegendListRef } from '@legendapp/list';
+import { Box } from '@ludo/ui';
+import { FlashList } from '@shopify/flash-list';
+import { useEffect, useRef, useState } from 'react';
 
 import Loading from '@/components/ui/loading/loading.component';
+import { MessageCollectionItemDto } from '@/api/generated/model';
+import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
 
+import ChatRoomMessagesListEmpty from './chat-room-messages-list-empty';
 import { useChatRoomScrollStore } from '../../../store/chat-room-scroll.store';
-import ChatRoomMessageListHeaderDate from './chat-room-message-list-header-date.component';
 import { useGetMessagesByChatroomId } from '../../../queries/get-messages-by-chatroom-id.query';
+import ChatRoomMessagesListScrollButton from './chat-room-messages-list-scroll-button.component';
 import ChatRoomMessageListItem from './chat-room-message-list-item/chat-room-message-list-item.component';
 
 export default function ChatRoomMessagesList() {
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
+  const isChatRoomGroup = useChatRoomStore(state => state.chatRoomInfo?.type === "GROUP")
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, items } =
     useGetMessagesByChatroomId();
 
-  const listRef = useRef<LegendListRef>(null);
+  // @ts-ignore - FlashList typing is throwing a "value used as type" error in this context
+  const listRef = useRef<FlashList<MessageCollectionItemDto>>(null);
   const setScrollToEnd = useChatRoomScrollStore(state => state.setScrollToEnd);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
     setScrollToEnd(() => {
@@ -23,40 +29,53 @@ export default function ChatRoomMessagesList() {
     return () => setScrollToEnd(null);
   }, [setScrollToEnd]);
 
+  const handleScroll = (event: any) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    // distanceToBottom checks how far the viewport is from the maximum scroll height
+    const distanceToBottom = contentSize.height - layoutMeasurement.height - contentOffset.y;
+    const shouldShow = distanceToBottom > 200; // Show if user is further than 200px from bottom
+
+    if (shouldShow !== showScrollButton) {
+      setShowScrollButton(shouldShow);
+    }
+  };
+
   if (isLoading) {
     return <Loading />;
   }
 
+
   return (
-    <>
-      <ChatRoomMessageListHeaderDate />
-      <List
-        listRef={listRef}
+    <Box className="flex-1 z-40">
+      <FlashList
+        ref={listRef}
         data={items}
-        ItemComponent={ChatRoomMessageListItem}
-        isLoading={isLoading}
-        fetchNextPage={fetchNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        isRefetching={isRefetching}
-        hasNextPage={hasNextPage}
-        refetch={refetch}
-        alignItemsAtEnd
-        triggerEndReachedOnStart
-        maintainScrollAtEnd
-        keyboardDismissMode="none"
-        keyboardShouldPersistTaps="handled"
-        maintainScrollAtEndThreshold={0.1}
-        maintainVisibleContentPosition
-        contentContainerClassName="pt-2 px-4 z-20 relative"
-        className='z-40'
-        emptyResultProps={{
-          center: true,
-          hasRandomTitle: true,
-          iconNames: ["ludo-sunglass", "ludo-eating-pizza"],
-          randomOptions: 3,
-          title: "chat-room.chat-room-messages-list-empty.title_v",
+        renderItem={({ item }) => <ChatRoomMessageListItem item={item} isChatRoomGroup={isChatRoomGroup} />}
+        keyExtractor={(item) => item.uid}
+        maintainVisibleContentPosition={{
+          autoscrollToBottomThreshold: 0.2,
+          startRenderingFromBottom: true,
         }}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
+        onStartReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        contentContainerClassName='grow'
+        onStartReachedThreshold={0.5}
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 16, paddingHorizontal: 16, paddingTop: 8 }}
+        ListEmptyComponent={ChatRoomMessagesListEmpty}
       />
-    </>
+
+      <ChatRoomMessagesListScrollButton
+        isVisible={showScrollButton}
+        onPress={() => listRef.current?.scrollToEnd({ animated: true })}
+      />
+    </Box>
   );
 }

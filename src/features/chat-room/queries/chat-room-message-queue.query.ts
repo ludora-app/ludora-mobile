@@ -1,10 +1,14 @@
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { getConversationsLoadMoreMessagesQueryKey } from '@generatedApi/conversations/conversations.api';
 
-import { emit } from '@/services/websocket/websocket.client';
+import { emit, isConnected } from '@/services/websocket/websocket.client';
 import {
+  ConversationCollectionResponseData,
   MessageCollectionItemDtoGlobalStatus,
+  MessageDto,
+  MessageDtoGlobalStatus,
   MessageDtoType,
+  PaginationResponseConversationCollectionResponseData,
   PaginationResponseMessageCollectionItemDto,
 } from '@/api/generated/model';
 
@@ -29,6 +33,7 @@ type WsErrorSendMessageResponse = {
 type WsSendMessageResponse = WsResponse<WsDataSendMessageResponse, WsErrorSendMessageResponse>;
 
 type MessagesInfiniteData = InfiniteData<PaginationResponseMessageCollectionItemDto>;
+type ConversationsInfiniteData = InfiniteData<PaginationResponseConversationCollectionResponseData>;
 
 interface CreateMessageDto {
   file?: any;
@@ -45,6 +50,7 @@ interface CreateMessageDto {
 }
 
 const ERROR_SENDING_MESSAGE = 'MESSAGE_SEND_FAILED';
+const MESSAGE_SEND_TIMEOUT_MS = 15_000;
 
 export const useChatRoomMessageOptimisticQueue = () => {
   const chatRoomId = useChatRoomStore(store => store.chatRoomId);
@@ -61,41 +67,123 @@ export const useChatRoomMessageOptimisticQueue = () => {
     return getConversationsLoadMoreMessagesQueryKey(chatRoomId, { limit: 10 });
   };
 
+  const updateConversationListCache = (conversationUid: string, lastMessage: MessageDto) => {
+    queryClient.setQueriesData<ConversationsInfiniteData>({ queryKey: ['/conversations/list/collection'] }, oldData => {
+      if (!oldData || !oldData.pages || oldData.pages.length === 0) return oldData;
+
+      let foundItem: ConversationCollectionResponseData | null = null;
+
+      // Find and remove the conversation from its current position
+      const updatedPages = oldData.pages.map(page => {
+        const items = page.data.items.filter(item => {
+          if (item.uid === conversationUid) {
+            foundItem = item;
+            return false;
+          }
+          return true;
+        });
+        return { ...page, data: { ...page.data, items } };
+      });
+
+      if (foundItem) {
+        const updatedConversation: ConversationCollectionResponseData = {
+          ...foundItem,
+          lastMessage,
+        };
+
+        // Insert at the beginning of the first page to move it to the top
+        updatedPages[0].data = {
+          ...updatedPages[0].data,
+          items: [updatedConversation, ...updatedPages[0].data.items],
+        };
+        return { ...oldData, pages: updatedPages };
+      }
+
+      return oldData;
+    });
+  };
+
+  const markMessageAsFailed = (messageUid: string, messageData: CreateMessageDto) => {
+    updatePendingMessage(messageUid, { isError: true, isSending: false });
+
+    const currentQueryKey = getQueryKey();
+
+    if (chatRoomId) {
+      updateConversationListCache(chatRoomId, {
+        content: messageData.content ?? '',
+        createdAt: new Date().toISOString(),
+        globalStatus: 'FAILED' as MessageDtoGlobalStatus,
+        isSender: true,
+        type: messageData.type,
+        uid: messageUid,
+      });
+    }
+
+    if (currentQueryKey) {
+      queryClient.setQueryData<MessagesInfiniteData>(currentQueryKey, oldData => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map(page => ({
+            ...page,
+            data: {
+              ...page.data,
+              items: page.data.items.map(msg =>
+                msg.uid === messageUid ? { ...msg, isError: true, isSending: false } : msg,
+              ),
+            },
+          })),
+        };
+      });
+    }
+  };
+
   /** Shared emit handler for both initial send and retry */
   const sendMessageViaSocket = (messageUid: string, messageData: CreateMessageDto) => {
-    emit('sendMessage', messageData, (response: WsSendMessageResponse) => {
-      const currentQueryKey = getQueryKey();
+    if (!isConnected()) {
+      markMessageAsFailed(messageUid, messageData);
+      return;
+    }
 
-      // Handle error case
+    let hasResolved = false;
+
+    const timeoutId = setTimeout(() => {
+      if (hasResolved) return;
+      hasResolved = true;
+
+      const { pendingMessages } = useChatRoomOptimisticMessagesStore.getState();
+      if (pendingMessages[messageUid]?.isSending) {
+        markMessageAsFailed(messageUid, messageData);
+      }
+    }, MESSAGE_SEND_TIMEOUT_MS);
+
+    const didEmit = emit('sendMessage', messageData, (response: WsSendMessageResponse) => {
+      if (hasResolved) return;
+      hasResolved = true;
+      clearTimeout(timeoutId);
+
       if (response.error && response.error.code === ERROR_SENDING_MESSAGE) {
-        updatePendingMessage(messageUid, { isError: true, isSending: false });
-
-        if (currentQueryKey) {
-          queryClient.setQueryData<MessagesInfiniteData>(currentQueryKey, oldData => {
-            if (!oldData) return oldData;
-            return {
-              ...oldData,
-              pages: oldData.pages.map(page => ({
-                ...page,
-                data: {
-                  ...page.data,
-                  items: page.data.items.map(msg =>
-                    msg.uid === messageUid ? { ...msg, isError: true, isSending: false } : msg,
-                  ),
-                },
-              })),
-            };
-          });
-        }
+        markMessageAsFailed(messageUid, messageData);
         return;
       }
 
-      // Success case
       const successResponse = response.data;
+      const currentQueryKey = getQueryKey();
 
       if (successResponse.conversationUid && !chatRoomId) {
         setChatRoomId(successResponse.conversationUid);
         setChatRoomUserId(null);
+      }
+
+      if (successResponse.conversationUid) {
+        updateConversationListCache(successResponse.conversationUid, {
+          content: messageData.content ?? '',
+          createdAt: new Date().toISOString(),
+          globalStatus: MessageDtoGlobalStatus.DELIVERED,
+          isSender: true,
+          type: messageData.type,
+          uid: successResponse.messageUid,
+        });
       }
 
       removePendingMessage(messageUid);
@@ -128,6 +216,14 @@ export const useChatRoomMessageOptimisticQueue = () => {
         };
       });
     });
+
+    if (!didEmit) {
+      clearTimeout(timeoutId);
+      if (!hasResolved) {
+        hasResolved = true;
+        markMessageAsFailed(messageUid, messageData);
+      }
+    }
   };
 
   const addOptimisticMessageToQueue = async (content: string, type: 'TEXT') => {
@@ -154,6 +250,17 @@ export const useChatRoomMessageOptimisticQueue = () => {
 
     // Track this optimistic message in the store
     addPendingMessage(newMessage);
+
+    if (chatRoomId) {
+      updateConversationListCache(chatRoomId, {
+        content,
+        createdAt: newMessage.createdAt,
+        globalStatus: MessageDtoGlobalStatus.SENT,
+        isSender: true,
+        type,
+        uid: messageUid,
+      });
+    }
 
     const queryKey = getQueryKey();
     if (queryKey) {
@@ -225,6 +332,17 @@ export const useChatRoomMessageOptimisticQueue = () => {
             },
           })),
         };
+      });
+    }
+
+    if (chatRoomId) {
+      updateConversationListCache(chatRoomId, {
+        content: failedMessage.content,
+        createdAt: failedMessage.createdAt,
+        globalStatus: MessageDtoGlobalStatus.SENT,
+        isSender: true,
+        type: failedMessage.type as MessageDtoType,
+        uid: tempMessageUid,
       });
     }
 

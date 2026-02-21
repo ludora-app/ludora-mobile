@@ -1,6 +1,5 @@
 import { String } from '@ludo/ui';
 
-import { useUserMe } from '@/queries/user-me.query';
 import { isMessageRead } from '@/features/chat/utils/chat.utils';
 import { ConversationCollectionResponseData } from '@/api/generated/model';
 
@@ -12,12 +11,11 @@ export default function ChatConversationListItemLastMessageString(
   props: ChatConversationListItemLastMessageStringProps,
 ) {
   const { conversation } = props;
-  const { userMeId } = useUserMe();
   const { lastMessage, sender, type } = conversation || {};
   const { content: lastMessageContent } = lastMessage || {};
   const { firstname: senderFirstName } = sender || {};
 
-  const isLastMessageRead = isMessageRead(conversation, userMeId);
+  const isLastMessageRead = isMessageRead(conversation);
 
   const isGroupChat = type === 'GROUP' || type === 'SESSION';
 

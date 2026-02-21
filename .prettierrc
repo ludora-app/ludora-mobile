@@ -10,5 +10,6 @@
   "object-curly-newline": false,
   "bracketSameLine": false,
   "arrowParens": "avoid",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/global.css"
 }

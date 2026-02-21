@@ -77,6 +77,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "SessionPlayersController_suggestPlayerFromPreviousSessions": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "NotificationsController_findAll": {
     "query": {
       "useInfinite": true,

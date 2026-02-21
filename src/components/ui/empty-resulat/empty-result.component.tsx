@@ -23,7 +23,14 @@ const RANDOM_OPTIONS = 3;
 
 function EmptyResult(props: EmptyResultProps) {
   const { t } = useTranslate();
-  const { center, className, hasRandomTitle, iconClassName, iconNames, randomOptions = RANDOM_OPTIONS, title, variant } = props;
+  const { center,
+    className,
+    hasRandomTitle,
+    iconClassName,
+    iconNames,
+    randomOptions = RANDOM_OPTIONS,
+    title,
+    variant } = props;
 
   const getIconName = (): TIconsAll => {
     if (iconNames) {

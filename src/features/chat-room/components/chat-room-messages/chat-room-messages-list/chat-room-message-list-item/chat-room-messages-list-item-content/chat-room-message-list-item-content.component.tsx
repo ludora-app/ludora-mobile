@@ -3,6 +3,7 @@
 import { MessageCollectionItemDto } from '@/api/generated/model';
 
 import ChatRoomMessageListItemContentString from './chat-room-message-list-item-content-string.component';
+import ChatRoomMessageListItemContentDeleted from './chat-room-message-list-item-content-deleted.component';
 
 
 type ChatRoomMessageListItemContentProps = {
@@ -10,7 +11,13 @@ type ChatRoomMessageListItemContentProps = {
 }
 
 export default function ChatRoomMessageListItemContent({ messageData }: ChatRoomMessageListItemContentProps) {
-  const { type: messageType } = messageData || {};
+  const { globalStatus: messageGlobalStatus, type: messageType } = messageData || {};
+
+  const isMessageDeleted = messageGlobalStatus === 'DELETED'
+
+  if (isMessageDeleted) {
+    return <ChatRoomMessageListItemContentDeleted />
+  }
 
   switch (messageType) {
     case 'TEXT':

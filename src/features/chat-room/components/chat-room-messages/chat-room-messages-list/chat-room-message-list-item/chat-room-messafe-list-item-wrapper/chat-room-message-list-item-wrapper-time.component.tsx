@@ -1,17 +1,23 @@
 import { String } from '@ludo/ui';
+import 'dayjs/locale/fr';
 
-import { formatDate } from '@/utils/date.utils';
 import { MessageCollectionItemDto } from '@/api/generated/model';
+import { formatMessageTime } from '@/features/chat-room/utils/time';
+
+
+
 
 type ChatRoomMessageListItemWrapperTimeProps = {
   messageData: MessageCollectionItemDto;
 };
 
+
+
 export default function ChatRoomMessageListItemWrapperTime({ messageData }: ChatRoomMessageListItemWrapperTimeProps) {
   const { createdAt } = messageData || {};
   return (
     <String variant="body-xs" colorVariant="muted">
-      {formatDate({ date: createdAt, format: 'HH:mm' })}
+      {formatMessageTime(createdAt)}
     </String>
   );
 }

@@ -3,6 +3,11 @@ import { TabList, TabSlot, TabTrigger, Tabs } from 'expo-router/ui';
 import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
 import TabBarCustom from '@/components/ui/navigation/tab-bar/components/tab-bar.component';
 
+
+
+
+
+
 export default function TabLayout() {
   return (
     <Tabs>

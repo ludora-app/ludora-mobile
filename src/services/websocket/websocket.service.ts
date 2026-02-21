@@ -57,14 +57,21 @@ class SocketService {
     });
   }
 
-  emit(event: string, data: any, callback?: (response: any, error: any) => void) {
-    if (this.socket) {
-      if (callback) {
-        this.socket.emit(event, data, callback);
-      } else {
-        this.socket.emit(event, data);
-      }
+  emit(event: string, data: any, callback?: (response: any, error: any) => void): boolean {
+    if (!this.socket?.connected) {
+      return false;
     }
+
+    if (callback) {
+      this.socket.emit(event, data, callback);
+    } else {
+      this.socket.emit(event, data);
+    }
+    return true;
+  }
+
+  isConnected(): boolean {
+    return !!this.socket?.connected;
   }
 
   on(event: string, callback: (data: any) => void) {

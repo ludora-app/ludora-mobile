@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { OutlinedString, Wrapper } from '@chillui/ui'
 
@@ -11,7 +12,7 @@ type SettingsHeaderProps = {
   hasHorizontalPadding?: boolean
 }
 
-export default function SettingsHeader(props: SettingsHeaderProps) {
+function SettingsHeader(props: SettingsHeaderProps) {
   const { hasHorizontalPadding, hasTopSafeArea, titleKey } = props
   const { t } = useTranslate()
   const { top } = useSafeArea()
@@ -19,6 +20,7 @@ export default function SettingsHeader(props: SettingsHeaderProps) {
   if (!titleKey) {
     return null
   }
+
 
   return (
     <Wrapper px={hasHorizontalPadding ? 'md' : 'none'} className='flex-row items-center z-10 pb-4 gap-2' style={{ paddingTop: hasTopSafeArea ? top + 10 : 0 }}>
@@ -35,3 +37,5 @@ export default function SettingsHeader(props: SettingsHeaderProps) {
     </Wrapper>
   )
 }
+
+export default memo(SettingsHeader)

@@ -4,7 +4,7 @@ import { usePostHog } from 'posthog-react-native';
 import { useAuthStore } from '@/stores/auth.store';
 import { useUserMe } from '@/queries/user-me.query';
 
-export default function PostHogIdentifierProvider() {
+export default function PostHogIdentifierInitializer() {
   const lastIdentifiedId = useRef<string | null>(null);
   const posthog = usePostHog();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);

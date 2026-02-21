@@ -1,8 +1,9 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
-import { Box, BoxGrow, BoxRowCenterBetween, String } from '@ludo/ui';
+import { Pressable } from 'react-native';
+import { Box, BoxGrow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
+import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { ConversationCollectionResponseData } from '@/api/generated/model';
@@ -17,22 +18,41 @@ interface ChatConversationsListItemProps {
 
 function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
   const router = useRouter();
-  const { imageUrl: chatRoomAvatar, name: chatRoomName, uid: chatRoomId, unreadMessagesCount } = item || {};
+  const {
+    imageUrl: chatRoomAvatar,
+    name: chatRoomName,
+    receiver,
+    sessionData,
+    type: conversationType,
+    uid: chatRoomId,
+    unreadMessagesCount
+  } = item || {};
+
+
+  console.log("item=====>", item);
+
+  const { teamLabel } = sessionData || {};
 
   const handlePress = () => {
     const params: RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX] = {
       imageUrl: chatRoomAvatar,
       name: chatRoomName,
+      receiver: conversationType === "PRIVATE" ? serialize(receiver) : undefined,
+      type: conversationType
     };
     router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(chatRoomId) });
   };
 
+  const showLudoKingIcon = useMemo(() => conversationType === "SESSION", [conversationType]);
+
+  const ludoKingType = useMemo(() => teamLabel === "A" ? "ludo-king" : "ludo-king-2", [teamLabel]);
+
   return (
-    <TouchableOpacity className="border-b-muted/30 flex-row items-center gap-2 border-b py-3" onPress={handlePress}>
+    <Pressable className="border-b-muted/30 flex-row items-center gap-2 border-b py-3" onPress={handlePress}>
       <ChatConversationListItemAvatar conversation={item} />
       <BoxGrow className="gap-1">
         <BoxRowCenterBetween className="gap-2">
-          <String truncate>{chatRoomName}</String>
+          <String truncate font="primarySemiBold">{chatRoomName}</String>
           <ChatConversationListItemLastMessageDate conversation={item} />
         </BoxRowCenterBetween>
         <BoxRowCenterBetween className="gap-2">
@@ -46,7 +66,8 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
           )}
         </BoxRowCenterBetween>
       </BoxGrow>
-    </TouchableOpacity>
+      {showLudoKingIcon && <Icon name={ludoKingType} size="xl" />}
+    </Pressable>
   );
 }
 

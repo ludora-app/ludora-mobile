@@ -17,6 +17,8 @@ type ChatRoomMessageActionsRetrySendProps = {
 
 const WAIT_TIME_BEFORE_CLOSING_MODAL = 200
 
+const WAIT_TIME_BEFORE_RETRY = 400
+
 export default function ChatRoomMessageActionsRetrySend({ message }: ChatRoomMessageActionsRetrySendProps) {
   const { isSender: isSenderMe, uid: messageId } = message || {}
   const { t } = useTranslate()
@@ -35,15 +37,17 @@ export default function ChatRoomMessageActionsRetrySend({ message }: ChatRoomMes
   const handleRetry = () => {
     if (!messageId || isRetrying) return
     setIsRetrying(true)
-    retryOptimisticMessage(messageId)
+
     toast({
-      title: "Message renvoyé.",
+      title: t('chat.message_retry_sent'),
       variant: 'info',
     })
-    // adding setTimeout to prevent the modal from closing before the ripple pressable animation ends
     setTimeout(() => {
       router.back()
-      setIsRetrying(false)
+      setTimeout(() => {
+        retryOptimisticMessage(messageId)
+        setIsRetrying(false)
+      }, WAIT_TIME_BEFORE_RETRY)
     }, WAIT_TIME_BEFORE_CLOSING_MODAL)
   }
 

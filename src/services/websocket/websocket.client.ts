@@ -11,8 +11,12 @@ export function disconnect(): void {
   websocketService.disconnect();
 }
 
-export function emit(event: string, data: any, callback?: (response: any, error: any) => void): void {
-  websocketService.emit(event, data, callback);
+export function emit(event: string, data: any, callback?: (response: any, error: any) => void): boolean {
+  return websocketService.emit(event, data, callback);
+}
+
+export function isConnected(): boolean {
+  return websocketService.isConnected();
 }
 
 export function join(userId: FindMeUserResponseData['uid']): void {

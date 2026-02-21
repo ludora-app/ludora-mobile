@@ -42,9 +42,9 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
           scrollYRef.value = e.nativeEvent.contentOffset.y;
         }}
         getFixedItemSize={() => ITEM_HEIGHT}
+        contentContainerClassName='pt-2'
         contentContainerStyle={{
           paddingBottom: bottomTab + 150,
-          paddingTop: 20,
         }}
       />
     </Wrapper>

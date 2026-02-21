@@ -25,6 +25,9 @@ interface ChatRoomOptimisticMessagesStoreState {
 
   /** Check if a temp UID is still pending */
   hasPendingMessage: (tempUid: string) => boolean;
+
+  /** Clear all pending messages (used on chat room unmount) */
+  clearPendingMessages: () => void;
 }
 
 export const useChatRoomOptimisticMessagesStore = create<ChatRoomOptimisticMessagesStoreState>((set, get) => ({
@@ -32,6 +35,8 @@ export const useChatRoomOptimisticMessagesStore = create<ChatRoomOptimisticMessa
     set(state => ({
       pendingMessages: { ...state.pendingMessages, [message.uid]: message },
     })),
+
+  clearPendingMessages: () => set({ pendingMessages: {} }),
 
   getPendingMessages: () => Object.values(get().pendingMessages),
 

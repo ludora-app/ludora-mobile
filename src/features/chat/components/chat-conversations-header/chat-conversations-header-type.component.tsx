@@ -1,5 +1,5 @@
+import { Image, String } from '@ludo/ui';
 import { StyleSheet } from 'react-native';
-import { Image, String, Wrapper } from '@ludo/ui';
 import { allChatsImg, allMatchesImg, allPlayersImg } from 'assets';
 import Animated, { useAnimatedStyle, interpolate, Extrapolation, SharedValue } from 'react-native-reanimated';
 import {
@@ -16,7 +16,7 @@ import { useChatStore } from '../../store/chat.store';
 
 const styles = StyleSheet.create({
   shadow: {
-    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.4)',
+    boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
   },
 });
 
@@ -47,7 +47,7 @@ export default function ChatConversationsListHeaderType({ scrollY }: ChatConvers
   };
 
   return (
-    <Wrapper className="relative z-50 rounded-b-xl py-2" style={styles.shadow}>
+    <Box className="rounded-b-xl py-3 bg-background" style={styles.shadow}>
       <SegmentedControl>
         <SegmentedControlTriggerContent className="border-0">
           <SegmentedControlTrigger value="option1" as="scale-pressable" onPress={() => handlePressType(undefined)}>
@@ -74,6 +74,6 @@ export default function ChatConversationsListHeaderType({ scrollY }: ChatConvers
           <SegmentedControlIndicator className="border-primary mt-2 rounded-full border-b-4 bg-transparent" />
         </SegmentedControlTriggerContent>
       </SegmentedControl>
-    </Wrapper>
+    </Box>
   );
 }

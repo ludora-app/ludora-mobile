@@ -7,4 +7,5 @@ export type AvatarProps = AvatarChillUiProps & {
     lastname?: string;
   };
   contentProps?: Partial<AvatarContentProps>;
+  colorVariant?: 'primary' | 'secondary';
 };

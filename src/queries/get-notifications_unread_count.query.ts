@@ -3,7 +3,7 @@ import { useNotificationsGetUnreadCount } from '@generatedApi/notifications/noti
 export const useNotificationsUnreadCount = () => {
   const query = useNotificationsGetUnreadCount();
 
-  const { data } = query || {};
+  const { data } = query?.data || {};
 
   return {
     ...query,

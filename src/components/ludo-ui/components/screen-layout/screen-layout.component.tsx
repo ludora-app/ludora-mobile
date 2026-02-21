@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react';
 
 import { ImageBackground } from '../image';
 
+
 export default function ScreenLayout(props: PropsWithChildren) {
   const { children } = props;
   return (

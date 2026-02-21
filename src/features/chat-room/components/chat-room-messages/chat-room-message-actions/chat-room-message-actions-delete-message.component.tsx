@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
@@ -6,31 +5,35 @@ import COLORS from '@/constants/COLORS'
 import { useToast } from '@/components/chill-ui-library'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { MessageCollectionItemDto } from '@/api/generated/model'
+import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store'
+import { useDeleteMessageMutation } from '@/features/chat-room/queries/delete-message.query'
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component'
 
 const WAIT_TIME_BEFORE_CLOSING_MODAL = 200
 
-const MIN_TIME_BEFORE_DELETING_MESSAGE = 5 * 60 * 1000 // 5 MIN
 
 type ChatRoomMessageActionsDeleteMessageProps = {
   message: MessageCollectionItemDto
 }
 
 export default function ChatRoomMessageActionsDeleteMessage({ message }: ChatRoomMessageActionsDeleteMessageProps) {
-  const { createdAt: messageCreatedAt, isSender: isSenderMe, uid: messageId } = message || {}
+  const chatRoomId = useChatRoomStore(state => state.chatRoomId)
+  const { isSender: isSenderMe, uid: messageId } = message || {}
   const { t } = useTranslate()
   const { toast } = useToast()
   const router = useRouter()
   const { trackError } = useAnalytics()
+  const { mutateAsync: deleteMessage } = useDeleteMessageMutation(chatRoomId)
 
-  const isMessageOldThan5Minutes = dayjs(messageCreatedAt).isBefore(dayjs().subtract(MIN_TIME_BEFORE_DELETING_MESSAGE, 'millisecond'))
 
-  if (isMessageOldThan5Minutes || !isSenderMe) return null
+
+  if (!isSenderMe) return null
 
   const handleDeleteMessage = async () => {
     if (!messageId) return
     try {
+      await deleteMessage({ messageUid: messageId })
       toast({
         title: t('chat-room.chat-room-messages.message_deleted'),
         variant: 'info',

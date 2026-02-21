@@ -2,7 +2,7 @@ import { Box, BoxGrow, BoxRow, BoxRowCenterBetween, Skeleton } from '@ludo/ui';
 
 export default function ChatConversationsListItemSkeleton() {
   return (
-    <BoxRow className="items-center gap-2 py-2">
+    <BoxRow className="items-center gap-2 py-2 w-full">
       <Skeleton variant="circle" size="xs" />
       <BoxGrow className="gap-2">
         <BoxRowCenterBetween className="gap-5">

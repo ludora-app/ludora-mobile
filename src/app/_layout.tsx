@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { usePostHog } from 'posthog-react-native';
 
 import '../global.css';
+import { usePostHog } from 'posthog-react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 
 import { useAuthStore } from '@/stores/auth.store';
 import MainProvider from '@/providers/main.provider';
+import MainInitializer from '@/initializers/main.initializer';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 function StorybookHeader() {
@@ -75,9 +76,8 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <MainProvider>
-      {/* <LoadingScreen /> */}
-
+      <MainInitializer />
       <RootLayoutNav />
-    </MainProvider>
+    </MainProvider >
   );
 }

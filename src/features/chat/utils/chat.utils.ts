@@ -1,11 +1,12 @@
 import { ConversationCollectionResponseData } from '@/api/generated/model';
 
-export const isMessageRead = (conversation: ConversationCollectionResponseData, userMeId: string) => {
-  const { content: lastMessageContent, globalStatus: lastMessageStatus } = conversation?.lastMessage || {};
-  const { uid: senderId } = conversation?.sender || {};
+export const isMessageRead = (conversation: ConversationCollectionResponseData) => {
+  const {
+    content: lastMessageContent,
+    globalStatus: lastMessageStatus,
+    isSender: isLastMessageSenderMe,
+  } = conversation?.lastMessage || {};
 
-  const isSenderMe = senderId === userMeId;
-
-  const isLastMessageRead = lastMessageStatus === 'READ' || isSenderMe || !lastMessageContent;
+  const isLastMessageRead = lastMessageStatus === 'READ' || isLastMessageSenderMe || !lastMessageContent;
   return isLastMessageRead;
 };

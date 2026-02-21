@@ -1,8 +1,8 @@
+import { useTranslate } from '@tolgee/react';
 import { BoxRow, Icon, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { TIconsAll } from '@/constants/ICONS';
-import { useTranslate } from '@tolgee/react';
 
 type CreateSessionStep3SectionTitleProps = {
   title: string;

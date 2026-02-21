@@ -56,7 +56,7 @@ export default function HomeSessionList() {
       getFixedItemSize={index => fixedEstimatedItemsSize(index)}
       isRefetching={isRefetching}
       SkeletonComponent={HomeSessionListItemSkeleton}
-      ListHeaderComponent={HomeSessionListHeaderTopList}
+      ListHeaderComponent={<HomeSessionListHeaderTopList />}
       hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
       ListStickyComponent={<HomeSessionListHeaderSticky />}

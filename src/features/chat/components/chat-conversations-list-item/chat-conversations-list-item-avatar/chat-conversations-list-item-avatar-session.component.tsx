@@ -10,7 +10,9 @@ interface ChatConversationListItemAvatarSessionProps {
 export default function ChatConversationListItemAvatarSession({
   conversation,
 }: ChatConversationListItemAvatarSessionProps) {
-  const { imageUrl, name, sport } = conversation || {};
+  const { imageUrl, name, sessionData } = conversation || {};
+
+  const { sport, teamLabel } = sessionData || {};
 
   const sportImage = getSportImage(sport);
 
@@ -21,6 +23,7 @@ export default function ChatConversationListItemAvatarSession({
           firstname: name,
           imageUrl,
         }}
+        colorVariant={teamLabel === "B" ? "secondary" : "primary"}
       />
       <Image source={sportImage} className="absolute right-0 bottom-0 size-6" />
     </Box>

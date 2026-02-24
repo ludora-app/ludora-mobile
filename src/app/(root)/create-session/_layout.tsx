@@ -24,11 +24,10 @@ function CreateSessionLayoutNav() {
         options={{
           contentStyle: {
             backgroundColor: '#FFF',
-            height: '100%',
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.93],
+          sheetAllowedDetents: "fitToContents",
           sheetCornerRadius: 12,
         }}
       />
@@ -38,7 +37,8 @@ function CreateSessionLayoutNav() {
 
 export default function CreateSessionLayout() {
   const segments = useSegments()
-  const isSheetOpen = segments.some(s => s === 'create-field' || s === 'public-field-duration') && IS_ANDROID
+
+  const isSheetOpen = segments.some(s => s === 'create-field' || s === 'public-field-duration' || s === 'filters-addresses') && IS_ANDROID
   return (
     <>
       <CreateSessionHeader />

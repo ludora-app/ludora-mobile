@@ -26,7 +26,7 @@ export default function CreateFieldAddress(props: CreateFieldAddressProps) {
   const { control, name } = props
   const { t } = useTranslate()
   const router = useRouter()
-  const { field: { onChange: onChangeAddress }, } = useController({ control, name })
+  const { field: { onChange: onChangeAddress }, fieldState: { error } } = useController({ control, name })
   const { field: { onChange: onChangeShortAddress, value: shortAddressValue } } = useController({ control, name: 'shortAddress' })
   const { field: { onChange: onChangeLat } } = useController({ control, name: 'lat' })
   const { field: { onChange: onChangeLng } } = useController({ control, name: 'lng' })
@@ -50,7 +50,7 @@ export default function CreateFieldAddress(props: CreateFieldAddressProps) {
   }, [addressParam, onChangeAddress, onChangeShortAddress, onChangeLat, onChangeLng, router])
 
   const handleOpenAddressPicker = () => {
-    const params: LocalSearchParams = { goBackPath: ROUTES.CREATE_SESSION.STEP_2_CREATE_FIELD_FORM_SHEET }
+    const params: LocalSearchParams = { goBackPath: ROUTES.CREATE_SESSION.STEP_2_CREATE_FIELD_FORM_SHEET, showNearMe: 'false' }
     router.navigate({
       params,
       pathname: ROUTES.FILTERS.FILTER_ADDRESSES,
@@ -64,14 +64,19 @@ export default function CreateFieldAddress(props: CreateFieldAddressProps) {
       </String>
       <Pressable
         onPress={handleOpenAddressPicker}
-        className="flex-row items-center rounded-lg border border-input bg-white px-3 py-3"
+        className={`flex-row items-center rounded-lg border bg-white px-3 py-3 ${error ? 'border-red-500' : 'border-input'}`}
       >
         <Icon name="location-regular" size="sm" color={COLORS.muted} />
         <String className="ml-2 flex-1" colorVariant={shortAddressValue ? 'dark' : 'muted'}>
-          {shortAddressValue ?? t('create-session.create-field.address_placeholder')}
+          {shortAddressValue?.length > 0 ? shortAddressValue : t('create-session.create-field.address_placeholder')}
         </String>
         <Icon name="arrow-right-regular" size="xs" color={COLORS.muted} />
       </Pressable>
+      {error?.message && (
+        <String variant="body-xs" colorVariant="error" className="mt-1">
+          {t(error.message)}
+        </String>
+      )}
     </Box>
   )
 }

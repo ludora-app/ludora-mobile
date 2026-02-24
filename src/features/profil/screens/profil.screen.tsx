@@ -43,7 +43,7 @@ export default function ProfilScreen() {
         {/* Header */}
         <ProfilHeader isMe={isProfilMe} />
 
-        <Wrapper fill className='bg-background rounded-t-xl z-50 pt-2 gap-4'>
+        <Wrapper fill className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
           {/* Section 1 */}
           {isProfilLoading ? <ProfilSection1Skeleton /> :
             <ProfilSection1

@@ -30,7 +30,7 @@ interface FilterAddressesListProps {
 
 export default function FilterAddressesList(props: FilterAddressesListProps) {
   const { inputValue } = props;
-  const { goBackPath } = useLocalSearchParams<FiltersAddressesScreenParams>();
+  const { goBackPath, showNearMe } = useLocalSearchParams<FiltersAddressesScreenParams>();
   const router = useRouter();
   const { trackError } = useAnalytics();
   const [isFetchingPlaceDetails, setIsFetchingPlaceDetails] = useState(false);
@@ -128,7 +128,9 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
       data={dataToRender}
       renderItem={renderItem}
       ListHeaderComponent={
-        <FilterAddressesListHeader isLoading={isLoadingUserLocation} getCurrentLocation={getCurrentLocation} />
+        showNearMe !== 'false'
+          ? <FilterAddressesListHeader isLoading={isLoadingUserLocation} getCurrentLocation={getCurrentLocation} />
+          : undefined
       }
       contentContainerClassName="gap-4 pb-16 mt-5"
       bounces={false}

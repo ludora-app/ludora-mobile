@@ -171,6 +171,22 @@ function AppLayoutNav() {
         }}
       />
       {/*------------------------*/}
+      <Stack.Screen
+        name="chat-room/[chatRoomId]/index"
+        options={{
+          animation: "slide_from_bottom",
+          headerShown: false,
+          presentation: "fullScreenModal"
+        }}
+      />
+      <Stack.Screen
+        name="chat-room/[chatRoomId]/info/private"
+        options={{
+          animation: "slide_from_bottom",
+          headerShown: false,
+          presentation: "fullScreenModal"
+        }}
+      />
 
 
       {/* Session teams screen */}
@@ -187,17 +203,6 @@ function AppLayoutNav() {
       />
       {/*------------------------*/}
 
-      {/* Chat room screens */}
-      <Stack.Screen
-        name="chat-room/[chatRoomId]/index"
-        options={{
-          animation: 'slide_from_right',
-          contentStyle: {
-            backgroundColor: '#fff',
-          },
-          headerShown: false,
-        }}
-      />
       <Stack.Screen
         name="chat-room/[chatRoomId]/message-actions/[messageId]/index"
         options={{

@@ -22,7 +22,7 @@ type CreateFieldImagesProps = UseControllerProps<CreateFieldSchema>
 export default function CreateFieldImages(props: CreateFieldImagesProps) {
   const { control, name } = props
   const { t } = useTranslate()
-  const { field: { onChange: onChangeImages } } = useController({ control, name })
+  const { field: { onChange: onChangeImages }, fieldState: { error } } = useController({ control, name })
   const { handlePickImage, images: pickedImages } = usePickImage()
   const [images, setImages] = useState<FieldImage[]>([])
 
@@ -82,6 +82,11 @@ export default function CreateFieldImages(props: CreateFieldImagesProps) {
           </Pressable>
         )}
       </ScrollView>
+      {error?.message && (
+        <String variant="body-xs" colorVariant="error" className="mt-1">
+          {t(error.message)}
+        </String>
+      )}
     </Box>
   )
 }

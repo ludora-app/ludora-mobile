@@ -1,24 +1,33 @@
 import { useMemo } from 'react';
 import { cn, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { useLocalSearchParams } from 'expo-router';
 import { Box, BoxRow, Button, IconButton } from '@ludo/ui'
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import COLORS from '@/constants/COLORS';
 import { TIconsAll } from '@/constants/ICONS';
+import { serialize } from '@/utils/json.utils';
+import ROUTES from '@/constants/routes.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import { FriendResponseDataStatus } from '@/api/generated/model';
+import { RootStackParamList } from '@/types/routes-params.types';
 import { useSendFriendInvitation } from '@/queries/send-friend-invitation.query'
+import { useGetUserDataById } from '@/features/profil/queries/get-user-data-by-id.query'
 import { useGetFriendRequest } from '@/features/profil/queries/friends/get-friend-request.query'
+import { FindOneConversationResponseDataType, FriendResponseDataStatus } from '@/api/generated/model';
+
+type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
 
 export default function ProfilSection3User() {
+  const router = useRouter()
   const { trackError } = useAnalytics()
   const { id: userId } = useLocalSearchParams();
   const { toast } = useToast()
   const { t } = useTranslate()
+  const { data: userData } = useGetUserDataById(userId as string)
   const { isPending: isPendingFriendInvitation, mutateAsync: sendFriendInvitation } = useSendFriendInvitation(userId as string)
   const { data: friendRequest } = useGetFriendRequest(userId as string)
 
+  const { firstname, imageUrl: avatarUrl, lastname } = userData || {}
   const { status: invitationStatus } = friendRequest || {}
 
 
@@ -75,7 +84,20 @@ export default function ProfilSection3User() {
     return "#fff"
   }, [isFriendRequestAccepted, isFriendRequestPending])
 
-
+  const handlePressMessage = () => {
+    const params: ChatRoomLocalSearchParams = {
+      imageUrl: avatarUrl || '',
+      name: [firstname, lastname].filter(Boolean).join(' ') || '',
+      receiver: serialize({
+        firstname: firstname ?? '',
+        lastname: lastname ?? '',
+        userUid: userId,
+      }),
+      type: FindOneConversationResponseDataType.PRIVATE,
+      userUid: userId as string,
+    }
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+  }
 
   return (
     <BoxRow className='items-center gap-2'>
@@ -100,6 +122,7 @@ export default function ProfilSection3User() {
         <Button
           title={t("common.message")}
           size="sm"
+          onPress={handlePressMessage}
           iconProps={{
             className: 'mr-2',
             color: "#fff",

@@ -8,6 +8,7 @@ import { Box, BoxRow, Button, FormInput, Icon, String, WrapperGestureHandlerScro
 
 import COLORS from '@/constants/COLORS'
 import ROUTES from '@/constants/routes.constants'
+import { IS_ANDROID } from '@/constants/PLATFORM'
 import { ErrorResponse } from '@/api/orval.instance'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { RootStackParamList } from '@/types/routes-params.types'
@@ -32,6 +33,13 @@ export default function CreateFieldFormSheet() {
   const { isPending, mutateAsync: createField } = useAddField()
 
   const { control, handleSubmit, setValue } = useForm<CreateFieldSchema>({
+    defaultValues: {
+      address: '',
+      images: [],
+      name: '',
+      shortAddress: '',
+      sports: [],
+    },
     mode: 'onChange',
     resolver: zodResolver(createFieldSchema),
   })
@@ -41,10 +49,8 @@ export default function CreateFieldFormSheet() {
     setValue('sports', [sport])
   }, [sport, setValue])
 
-
   const onSubmit = async (data: CreateFieldSchema) => {
     try {
-
       const images = data.images.map((image) => ({
         file: image.file,
         name: image.name,
@@ -70,11 +76,21 @@ export default function CreateFieldFormSheet() {
       router.back()
     } catch (error) {
       const errorResponse = error as ErrorResponse;
+      const addressAlreadyExists = errorResponse.api_error_status === 409;
+
+      if (addressAlreadyExists) {
+        toast({
+          message: t('create-session.create-field.error_address_already_exists'),
+          variant: 'error',
+        })
+      }
       trackEvent({
         data: { error_message: errorResponse.api_error_detail },
         eventName: ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_FAILED,
       })
-      trackError({ error })
+      if (!addressAlreadyExists) {
+        trackError({ error })
+      }
     }
   }
 
@@ -88,6 +104,7 @@ export default function CreateFieldFormSheet() {
             name="name"
             placeholder={t('create-session.create-field.name_placeholder')}
             label={t('create-session.create-field.name_label')}
+            hasErrorTranslation
           />
           <CreateFieldAddress
             control={control}
@@ -104,7 +121,7 @@ export default function CreateFieldFormSheet() {
           </BoxRow>
         </Box>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter hasBottomSafeArea>
+      <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
         <Button
           title={t('common.add')}
           size="md"

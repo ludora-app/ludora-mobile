@@ -21,6 +21,7 @@ export type RootStackParamList = {
   };
   [ROUTES.FILTERS.FILTER_ADDRESSES]: {
     goBackPath: RouteValues;
+    showNearMe?: string;
   };
   [ROUTES.SESSION.INDEX]: {
     id: string;

@@ -4,7 +4,7 @@ import SettingsHeader from '@/features/settings/components/settings-header.compo
 
 function NotificationListHeader() {
   return (
-    <SettingsHeader titleKey="notifications.header_title" hasHorizontalPadding />
+    <SettingsHeader titleKey="notifications.header_title" className="mt-2" />
   )
 }
 

@@ -1,43 +1,44 @@
 
 import { memo } from 'react'
-import { Wrapper } from '@ludo/ui'
+import { Box } from '@ludo/ui'
 
+import { NotificationsFindAllType } from '@/api/generated/model'
 import { SegmentedControl } from '@/components/ui/segmented-control'
 
 import { useNotificationsFilterStore } from '../../stores/notifications-filter.store'
 
-type SegmentedControlValue = 'all' | 'sessions' | 'friend_requests'
-
 type SegmentedControlItem = {
   labelKey: string
-  value: SegmentedControlValue
+  value: NotificationsFindAllType | ""
 }
 
 const SEGMENTED_CONTROL_FAVORITES: SegmentedControlItem[] = [
   {
     labelKey: 'common.all',
-    value: 'all',
+    value: "",
   },
   {
     labelKey: 'common.matches',
-    value: 'sessions',
+    value: "SESSION",
   },
   {
     labelKey: 'notifications.segmented_control_friend_requests',
-    value: 'friend_requests',
+    value: "FRIEND",
   },
 ]
 
 function NotificationsListHeaderSticky() {
   const setFilters = useNotificationsFilterStore(state => state.setFilters)
 
+
+
   return (
-    <Wrapper className='py-2 bg-background'>
+    <Box className='py-2 bg-background'>
       <SegmentedControl
         items={SEGMENTED_CONTROL_FAVORITES}
         onValueChange={(value) => setFilters({ type: value })}
       />
-    </Wrapper>
+    </Box>
   )
 }
 

@@ -13,7 +13,7 @@ import ChatRoomMessagesListScrollButton from './chat-room-messages-list-scroll-b
 import ChatRoomMessageListItem from './chat-room-message-list-item/chat-room-message-list-item.component';
 
 export default function ChatRoomMessagesList() {
-  const isChatRoomGroup = useChatRoomStore(state => state.chatRoomInfo?.type === "GROUP")
+  const isChatRoomGroup = useChatRoomStore(state => state.chatRoomInfo?.type === 'SESSION' || state.chatRoomInfo?.type === 'GROUP')
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, items } =
     useGetMessagesByChatroomId();
 

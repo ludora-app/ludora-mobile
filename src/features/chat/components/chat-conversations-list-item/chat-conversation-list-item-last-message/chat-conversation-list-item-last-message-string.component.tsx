@@ -15,6 +15,7 @@ export default function ChatConversationListItemLastMessageString(
   const { content: lastMessageContent } = lastMessage || {};
   const { firstname: senderFirstName } = sender || {};
 
+
   const isLastMessageRead = isMessageRead(conversation);
 
   const isGroupChat = type === 'GROUP' || type === 'SESSION';

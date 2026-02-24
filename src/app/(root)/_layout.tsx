@@ -3,13 +3,14 @@ import { Redirect, Stack, usePathname } from 'expo-router';
 import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
+import PushNotificationsInitializer from '@/initializers/push-notifications.initializer';
 
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
   const { userMe } = useUserMe()
-  const { profileStatus } = userMe || {}
+  const { onBoardingStatus: userOnBoardingStatus } = userMe || {}
   const pathname = usePathname();
-  const showPreferences = profileStatus === "";
+  const showPreferences = userOnBoardingStatus === "INCOMPLETE";
   const isInsideOnBoarding = pathname.includes('on-boarding') || pathname.includes('image-picker');
 
   if (showPreferences && !isInsideOnBoarding) {
@@ -103,7 +104,7 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="invite-people"
+        name="invite-friends/[sessionId]/index"
         options={{
           animation: 'slide_from_bottom',
           contentStyle: {
@@ -206,6 +207,7 @@ export default function AppLayout() {
   return (
     <>
       <GeolocalisationProvider />
+      <PushNotificationsInitializer />
       <AppLayoutNav />
     </>
   );

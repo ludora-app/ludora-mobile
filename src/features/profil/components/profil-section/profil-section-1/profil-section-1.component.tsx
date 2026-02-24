@@ -1,14 +1,13 @@
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { BoxGrow, BoxRowGrow } from '@chillui/ui';
-import { Avatar, Box, BoxRow, Icon, Image, Link, String } from '@ludo/ui';
+import { Avatar, BoxRow, Icon, Image, Link, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/routes.constants';
 import { getSportImage } from '@/utils/sports.utils';
 import { SportPreferenceResponseData } from '@/api/generated/model';
 
-import RatingCard from '../rating-card/rating-card.component';
 
 interface ProfilSection1Props {
   isMe: boolean;
@@ -76,9 +75,6 @@ export default function ProfilSection1(props: ProfilSection1Props) {
           {renderSportsContent()}
         </BoxGrow>
       </BoxRowGrow>
-      <Box>
-        <RatingCard size="sm" />
-      </Box>
     </BoxRow>
   );
 }

@@ -17,6 +17,7 @@ import {
 
 import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/routes.constants';
+import { IS_ANDROID } from '@/constants/PLATFORM';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
@@ -31,7 +32,6 @@ import {
 export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() {
   const { endDate, fieldUid, slotUid, sport, startDate } =
     useLocalSearchParams<RootStackParamList[typeof ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET]>();
-
   const { t } = useTranslate();
   const router = useRouter();
   const setCreateSession = useCreateSessionStore(state => state.setSession);
@@ -83,11 +83,11 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
         price: null,
         pricePerPlayer: null,
         publicFieldSlotUid: slotUid,
-        sport,
       },
       endDate: matchDetails.endIso,
       fieldUid,
       slotUid: null,
+      sport,
       startDate,
     });
     router.back();
@@ -150,13 +150,13 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
           </BoxRowBetween>
         </Box>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter>
-        <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={() => router.back()} />
+      <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
         <Button
           title={t('create-session-step-2.public-availabilities-form-sheet.button_confirm')}
           size="md"
           onPress={handleSubmit(handleConfirm)}
         />
+        <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={() => router.back()} />
       </FormSheetFooter>
     </Box>
   );

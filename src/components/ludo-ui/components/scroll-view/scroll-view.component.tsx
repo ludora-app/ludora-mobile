@@ -1,5 +1,5 @@
 import { cn } from '@chillui/ui';
-import React, { useCallback, useState } from 'react';
+import { RefObject, useCallback, useState } from 'react';
 import { RefreshControl, ScrollView as RNScrollView, ScrollViewProps as RNScrollViewProps } from 'react-native';
 
 import COLORS from '@/constants/COLORS';
@@ -10,6 +10,7 @@ export type ScrollViewProps = RNScrollViewProps & {
   hasRefreshControl?: boolean;
   isRefetching?: boolean;
   refetch?: () => Promise<any>;
+  ref?: RefObject<RNScrollView>;
 };
 
 export default function ScrollView(props: ScrollViewProps) {
@@ -19,6 +20,7 @@ export default function ScrollView(props: ScrollViewProps) {
     contentContainerStyle,
     hasRefreshControl,
     isRefetching,
+    ref,
     refetch,
     showsVerticalScrollIndicator = false,
     stickyHeaderHiddenOnScroll = true,
@@ -42,6 +44,7 @@ export default function ScrollView(props: ScrollViewProps) {
 
   return (
     <RNScrollView
+      ref={ref}
       stickyHeaderIndices={stickyHeaderIndices}
       stickyHeaderHiddenOnScroll={stickyHeaderHiddenOnScroll}
       showsVerticalScrollIndicator={showsVerticalScrollIndicator}

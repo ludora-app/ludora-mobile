@@ -1,6 +1,6 @@
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { Button, String, Box, WrapperSafeAreaView, Link, Icon, BoxGrow, Separator } from '@ludo/ui';
+import { Button, String, Box, Link, Icon, BoxGrow, Separator, Wrapper } from '@ludo/ui';
 
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
@@ -11,8 +11,8 @@ export default function RegisterStep1Screen() {
 
   return (
     <>
-      <HeaderGoBack />
-      <WrapperSafeAreaView edges={['bottom']} hasSafeArea>
+      <HeaderGoBack hasTopSafeArea />
+      <Wrapper fill hasSafeArea edges={["bottom"]}>
         <BoxGrow className='gap-10 '>
           <Box className="items-center justify-center gap-5">
             <Icon name='ludo-sunglass' className="size-32" />
@@ -44,7 +44,7 @@ export default function RegisterStep1Screen() {
           </Pressable>
         </Link>
 
-      </WrapperSafeAreaView>
+      </Wrapper>
     </>
   );
 }

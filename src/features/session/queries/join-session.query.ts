@@ -1,25 +1,24 @@
 import { JoinSessionDto } from '@/api/generated/model';
 import { useSessionPlayersJoinSession } from '@/api/generated/api/session-players/session-players.api';
 import {
-  useInvalidateSessionsFindAllByUserUid,
+  useInvalidateConversationsFindAllByUserUid,
+  useInvalidateSessionsFindAllMySessions,
   useInvalidateSessionsFindOne,
   useInvalidateSessionTeamsFindTeamsBySessionUid,
 } from '@/api/generated/invalidate-queries';
 
 export const useJoinSession = (sessionUid: JoinSessionDto['sessionUid']) => {
-  const invalideSessionById = useInvalidateSessionsFindOne(sessionUid);
-  const invalideTeamsBySessionId = useInvalidateSessionTeamsFindTeamsBySessionUid(sessionUid);
-  const invalidateIncommingSessionMe = useInvalidateSessionsFindAllByUserUid({
-    limit: 1,
-    scope: 'UPCOMING',
-    startDateSortOrder: 'asc',
-  });
+  const invalideSessionById = useInvalidateSessionsFindOne();
+  const invalideTeamsBySessionId = useInvalidateSessionTeamsFindTeamsBySessionUid();
+  const invalidateSessionsFindAllMySessions = useInvalidateSessionsFindAllMySessions();
+  const invalidateConversationsFindAllMe = useInvalidateConversationsFindAllByUserUid();
   const mutation = useSessionPlayersJoinSession({
     mutation: {
       onSuccess: () => {
-        invalideSessionById();
-        invalideTeamsBySessionId();
-        invalidateIncommingSessionMe();
+        invalideSessionById(sessionUid);
+        invalideTeamsBySessionId(sessionUid);
+        invalidateSessionsFindAllMySessions();
+        invalidateConversationsFindAllMe();
       },
     },
   });

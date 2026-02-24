@@ -26,7 +26,7 @@ export default function CreateSessionStep1() {
     useShallow(state => ({
       gameMode: !!state.session?.gameMode,
       level: !!state.session?.level,
-      sport: !!state.session?.additionalData?.sport,
+      sport: !!state.session?.sport,
     })),
   );
 

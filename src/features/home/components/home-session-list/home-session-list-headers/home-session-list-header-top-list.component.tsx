@@ -3,6 +3,7 @@ import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
 import COLORS from '@/constants/COLORS';
+import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 import { truncateString } from '@/utils/string.utils';
 import { SessionCard } from '@/components/ui/session-card';
@@ -18,6 +19,7 @@ function HomeSessionListHeaderTopList() {
 
   const showSessionCard = hasNewSession && !IncommingSessionMeIsLoading;
 
+
   return (
     <HeaderScreen
       title={t('home.header.title', { username: truncateString({ maxLength: 8, str: userMe?.firstname ?? '' }) })}
@@ -30,7 +32,7 @@ function HomeSessionListHeaderTopList() {
           title={t('home.header.button_create_match')}
           colorVariant="inverted"
           as="scale-pressable"
-          redirect="/create-session"
+          redirect={ROUTES.CREATE_SESSION.STEP_1}
           size="md"
           iconProps={{
             color: COLORS.primary,

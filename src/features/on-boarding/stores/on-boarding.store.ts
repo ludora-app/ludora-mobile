@@ -1,26 +1,23 @@
 import { create } from 'zustand';
 import { ImagePickerAsset } from 'expo-image-picker';
 
-import {
-  CreateGameModePreferencesDtoFromRequestGameMode,
-  CreateSportPreferenceDtoFromRequest,
-} from '@/api/generated/model';
+import { CreateSportPreferenceData, CreateSportPreferenceDataGameModesItem } from '@/api/generated/model';
 
-export type SportPreferences = CreateSportPreferenceDtoFromRequest & {
-  gameModes: CreateGameModePreferencesDtoFromRequestGameMode[];
+export type SportPreferences = CreateSportPreferenceData & {
+  gameModes: CreateSportPreferenceDataGameModesItem[];
 };
 
 type OnBoardingState = {
   sportPreferences: SportPreferences[];
   setSportPreferences: (sportPreferences: SportPreferences) => void;
   removeSportPreference: (sport: string) => void;
-  addGameMode: (sport: string, gameMode: CreateGameModePreferencesDtoFromRequestGameMode) => void;
+  addGameMode: (sport: string, gameMode: CreateSportPreferenceDataGameModesItem) => void;
   profilePicture?: ImagePickerAsset;
   setProfilePicture: (profilePicture: ImagePickerAsset) => void;
 };
 
 export const useOnBoardingStore = create<OnBoardingState>()(set => ({
-  addGameMode: (sport: string, gameMode: CreateGameModePreferencesDtoFromRequestGameMode) =>
+  addGameMode: (sport: string, gameMode: CreateSportPreferenceDataGameModesItem) =>
     set(state => ({
       sportPreferences: state.sportPreferences.map(sportPreference => {
         if (sportPreference.sport !== sport) return sportPreference;

@@ -1,10 +1,16 @@
 import { useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
-import { Box, BoxGrow, BoxRow, BoxRowGrow, IconButton, String } from '@ludo/ui';
+import { TouchableOpacity } from 'react-native';
+import { BoxGrow, BoxRowGrow, IconButton, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
-import { FindOneSessionResponseData } from '@/api/generated/model';
+import { serialize } from '@/utils/json.utils';
+import ROUTES from '@/constants/routes.constants';
+import { useUserMe } from '@/queries/user-me.query';
+import { RootStackParamList } from '@/types/routes-params.types';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
+import { FindOneConversationResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
 import SessionSectionAvatar from '../session-section-avatar.component';
 import SessionSectionWrapperItem from '../section-section-wrapper/session-section-wrapper-item.component';
@@ -13,10 +19,15 @@ type SessionSectionCreatorCardProps = {
   creator: FindOneSessionResponseData['creator'];
 };
 
+type LocalSearchParamsChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
 export default function SessionSectionCreatorCard(props: SessionSectionCreatorCardProps) {
+  const router = useRouter();
   const { t } = useTranslate();
+  const { userMeId } = useUserMe();
+
   const { creator } = props;
-  const { firstname, sessionsCount } = creator || {};
+  const { firstname, imageUrl, lastname, sessionsCount, userUid: creatorUserUid } = creator || {};
+  const isCreatorMe = userMeId === creatorUserUid;
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const handleIconColor = useMemo(() => {
@@ -33,24 +44,46 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
     return sideTeam === 'left' ? 'primary' : 'secondary';
   }, [sideTeam]);
 
+  const handleIconPress = () => {
+    const params: LocalSearchParamsChatRoom = {
+      imageUrl: imageUrl || '',
+      name: `${firstname} ${lastname}`,
+      receiver: serialize({
+        firstname,
+        lastname,
+        userUid: creatorUserUid,
+      }),
+      type: FindOneConversationResponseDataType.PRIVATE,
+      userUid: creatorUserUid
+    };
+    router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+  };
+
+  const handleCardPress = () => {
+    router.push(ROUTES.PROFIL.INDEX_UID(creatorUserUid));
+  };
+
   return (
-    <SessionSectionWrapperItem className="flex-row items-center justify-between">
-      <BoxRowGrow className="items-center gap-2">
-        <SessionSectionAvatar data={creator} sideTeam={sideTeam} />
-        <BoxGrow>
-          <String font="primaryBold" truncate>
-            {firstname}
-          </String>
-          <String variant="body-sm">{t('session.creator-section.sessions_count', { count: sessionsCount })}</String>
-        </BoxGrow>
-      </BoxRowGrow>
-      <IconButton
-        iconName="chatbot-regular"
-        variant="outlined"
-        iconColor={handleIconColor}
-        colorVariant={handleColorVariant}
-        rounded="circle"
-      />
-    </SessionSectionWrapperItem>
+    <TouchableOpacity onPress={handleCardPress} disabled={isCreatorMe}>
+      <SessionSectionWrapperItem className="flex-row items-center justify-between">
+        <BoxRowGrow className="items-center gap-2">
+          <SessionSectionAvatar data={creator} sideTeam={sideTeam} />
+          <BoxGrow>
+            <String font="primaryBold" truncate>
+              {firstname}
+            </String>
+            <String variant="body-sm">{t('session.creator-section.sessions_count', { count: sessionsCount })}</String>
+          </BoxGrow>
+        </BoxRowGrow>
+        {!isCreatorMe && <IconButton
+          iconName="chatbot-regular"
+          variant="outlined"
+          iconColor={handleIconColor}
+          colorVariant={handleColorVariant}
+          rounded="circle"
+          onPress={handleIconPress}
+        />}
+      </SessionSectionWrapperItem>
+    </TouchableOpacity>
   );
 }

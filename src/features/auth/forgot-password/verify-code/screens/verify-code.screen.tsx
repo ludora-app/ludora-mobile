@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useRef, useState } from 'react';
 import { cn, InputMessage, useToast } from '@chillui/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { WrapperSafeAreaView, FormInput, String, BoxRow, Box } from '@ludo/ui';
+import { Wrapper, FormInput, String, BoxRow, Box } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
@@ -91,8 +91,8 @@ export default function VerifyCodeScreen() {
 
   return (
     <>
-      <HeaderGoBack title={t('auth.verify-code.title')} />
-      <WrapperSafeAreaView edges={['bottom']}>
+      <HeaderGoBack title={t('auth.verify-code.title')} hasTopSafeArea />
+      <Wrapper hasSafeArea edges={['bottom']}>
         <AuthHeader>
           <Box className="gap-1">
             <String className="text-center">{t('auth.verify-code.description')}</String>
@@ -145,7 +145,7 @@ export default function VerifyCodeScreen() {
           userEmail={email?.toString() ?? ''}
           code={parsedValues}
         />
-      </WrapperSafeAreaView>
+      </Wrapper>
     </>
   );
 }

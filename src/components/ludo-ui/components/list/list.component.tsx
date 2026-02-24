@@ -34,10 +34,12 @@ export default function List(props: ListProps) {
     data,
     emptyResultProps,
     fetchNextPage,
+    hasBottomSafeArea = false,
     hasHeaderTransparent,
     hasListStickyComponentTopSafeArea,
     hasNextPage,
     hasRefreshControl,
+    hasTopSafeArea = false,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -54,7 +56,7 @@ export default function List(props: ListProps) {
     ...rest
   } = props;
 
-  const { top } = useSafeArea();
+  const { bottom, top } = useSafeArea();
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
@@ -141,13 +143,28 @@ export default function List(props: ListProps) {
 
 
   const listStyle: ViewStyle | undefined = useMemo(() => {
-    if (ListStickyComponent && hasListStickyComponentTopSafeArea) {
+    if ((ListStickyComponent && hasListStickyComponentTopSafeArea) || hasTopSafeArea) {
       return {
         marginTop: top,
       };
     }
     return undefined;
-  }, [top, ListStickyComponent, hasListStickyComponentTopSafeArea]);
+  }, [top, ListStickyComponent, hasListStickyComponentTopSafeArea, hasTopSafeArea]);
+
+  const bottomSafeAreaStyle: ViewStyle | undefined = useMemo(() => {
+    if (hasBottomSafeArea && listHeaderComponentHeight) {
+      return {
+        paddingBottom: bottom + (listHeaderComponentHeight || 0),
+      };
+    }
+    if (hasBottomSafeArea) {
+      return {
+        paddingBottom: bottom,
+      };
+    }
+
+    return undefined;
+  }, [bottom, hasBottomSafeArea, listHeaderComponentHeight]);
 
 
   const headerComponent = () => {
@@ -206,7 +223,7 @@ export default function List(props: ListProps) {
           : undefined
       }
       scrollEventThrottle={16}
-      contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, contentContainerStyle]}
+      contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, bottomSafeAreaStyle, contentContainerStyle]}
       ListHeaderComponent={
         triggerEndReachedOnStart
           ? <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />

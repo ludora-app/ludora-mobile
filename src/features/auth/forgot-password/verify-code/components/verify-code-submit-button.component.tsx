@@ -26,7 +26,8 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
   const [resendCodeTime, setResendCodeTime] = useState(WAITING_TIME_TO_RESEND_CODE);
 
   const isCodeValid = code && code.length > 0;
-  const isButtonDisabled = !isCodeValid && resendCodeTime > 0;
+  const isShowingResendCountdown = resendCodeTime > 0;
+  const isButtonDisabled = isShowingResendCountdown ? true : !isCodeValid;
 
   const buttonMessage = useMemo(() => {
     if (isCodeValid) {

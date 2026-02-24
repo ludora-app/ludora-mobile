@@ -1,21 +1,24 @@
 import { List } from '@ludo/ui'
 import { useCallback, useEffect } from 'react'
 
+import { useSafeArea } from '@/hooks/safe-area.hook'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query'
 
-import { useGetNotificationsMe } from '../queries/get-notifications.query'
 import { useMarkReadNotifications } from '../queries/mark-read-notifications.query'
+import { useGetNotificationsMeByFilters } from '../queries/get-notifications-by-filters.query'
 import NotificationsListItems from './notifications-list-items/notifications-list-items.component'
 import NotificationListHeader from './notifications-list-headers/notification-list-header.component'
 import NotificationsListHeaderSticky from './notifications-list-headers/notifications-list-header-sticky.component'
 
 const COUNT_DOWN_TO_MARK_ALL_AS_READ = 2000
-const HEADER_HEIGHT = 58
+const HEADER_HEIGHT = 62
 
 export default function NotificationsList() {
+  const { bottom } = useSafeArea()
   const { trackError } = useAnalytics()
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, isSuccess, items, refetch } = useGetNotificationsMe()
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, isSuccess, items, refetch } =
+    useGetNotificationsMeByFilters()
   const { mutateAsync: markReadNotifications } = useMarkReadNotifications()
   const { data: unreadCount } = useNotificationsUnreadCount()
 
@@ -55,10 +58,11 @@ export default function NotificationsList() {
       isRefetching={isRefetching}
       refetch={refetch}
       hasRefreshControl
-      contentContainerClassName="grow bg-background"
-      ListStickyComponentTopSafeArea
-      headerTransparent
+      hasListStickyComponentTopSafeArea
+      contentContainerClassName="bg-background px-3"
+      hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}
+      contentContainerStyle={{ paddingBottom: bottom + HEADER_HEIGHT }}
       emptyResultProps={{
         hasRandomTitle: true,
         randomOptions: 3,

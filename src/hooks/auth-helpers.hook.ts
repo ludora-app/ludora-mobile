@@ -3,7 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/stores/auth.store';
 import { resetCaches } from '@/utils/reset-caches.utils';
+import { useUnRegisterDevice } from '@/queries/unRegister-device.query';
 import { useSignOut as useGoogleSignOut } from '@/api/hooks/auth-google.hook';
+import { pushNotificationService } from '@/services/push-notification.service';
 
 import { useSecureStorageState } from './secure-storage-state.hook';
 
@@ -18,6 +20,7 @@ type AuthTokens = {
 export function useAuthHelpers() {
   const queryClient = useQueryClient();
   const { mutateAsync: signOut } = useGoogleSignOut();
+  const { mutateAsync: unregisterDeviceAsync } = useUnRegisterDevice();
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
   const [, setAccessTokenStorage] = useSecureStorageState('access_token');
   const [, setRefreshTokenStorage] = useSecureStorageState('refresh_token');
@@ -38,7 +41,13 @@ export function useAuthHelpers() {
     resetCaches();
     await signOut();
     queryClient.clear();
-  }, [queryClient, signOut, setAccessTokenStorage, setRefreshTokenStorage, setIsAuthenticated]);
+
+    const fcmToken = await pushNotificationService.getFCMToken();
+    if (fcmToken) {
+      await unregisterDeviceAsync({ fcmToken });
+    }
+    await pushNotificationService.deleteToken();
+  }, [queryClient, signOut, setAccessTokenStorage, setRefreshTokenStorage, setIsAuthenticated, unregisterDeviceAsync]);
 
   return { login, logout };
 }

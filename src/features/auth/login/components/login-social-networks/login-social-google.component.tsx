@@ -29,12 +29,12 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
       const isNewUser = response?.data?.isNewUser;
       if (isNewUser) {
         trackEvent({
-          data: { auto_register_from_login: flow === 'login', method: 'google' },
+          data: { auto_register_from_login: flow === 'login', flow: 'Authentication', method: 'google' },
           eventName: 'signup_success',
         });
       } else {
         trackEvent({
-          data: { auto_login_from_signup: flow === 'register', method: 'google' },
+          data: { auto_login_from_signup: flow === 'register', flow: 'Authentication', method: 'google' },
           eventName: 'login_success',
         });
       }
@@ -46,6 +46,7 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
       trackEvent({
         data: {
           error_message: responseError?.api_error_detail || 'Unknown error',
+          flow: 'Authentication',
           method: 'google',
         },
         eventName: flow === 'login' ? 'login_failed' : 'signup_failed',

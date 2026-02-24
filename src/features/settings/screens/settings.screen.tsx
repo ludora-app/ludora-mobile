@@ -58,16 +58,23 @@ const SETTINGS_MENU = {
       route: ROUTES.NOTIFICATIONS.INDEX,
     },
     {
-      description: 'settings.section_shortcuts_favorites_description',
-      iconName: 'heart-regular',
+      description: 'settings.section_shortcuts_friends_description',
+      iconName: 'user-add-solid',
       id: 2,
-      label: 'settings.section_shortcuts_favorites',
-      route: ROUTES.SETTINGS.FAVORITES,
+      label: 'settings.section_shortcuts_friends',
+      route: ROUTES.SETTINGS.FRIENDS,
     },
+    // {
+    //   description: 'settings.section_shortcuts_favorites_description',
+    //   iconName: 'heart-regular',
+    //   id: 3,
+    //   label: 'settings.section_shortcuts_favorites',
+    //   route: ROUTES.SETTINGS.FAVORITES,
+    // },
     {
       description: 'settings.section_shortcuts_history_description',
       iconName: 'clock-regular',
-      id: 3,
+      id: 4,
       label: 'settings.section_shortcuts_history',
       route: ROUTES.SETTINGS.HISTORY,
     }

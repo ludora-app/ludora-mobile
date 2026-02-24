@@ -10,13 +10,13 @@ import { useInviteFriendsFilterStore } from '../stores/invite-friends-filter.sto
 const LIMIT_USER_FRIENDS_ITEMS = 10;
 
 export const useGetUserFriendsByFilter = () => {
-  const { sessionUid } = useLocalSearchParams<RootStackParamList[typeof ROUTES.INVITE_PEOPLE.INDEX]>();
+  const { sessionId } = useLocalSearchParams<RootStackParamList[typeof ROUTES.INVITE_FRIENDS.INDEX]>();
   const userFriendsFilter = useInviteFriendsFilterStore(state => state.filter);
 
   const { data, ...rest } = useGetUserFriends({
     ...filterObjectEntries(userFriendsFilter),
     limit: LIMIT_USER_FRIENDS_ITEMS,
-    sessionUid,
+    sessionUid: sessionId,
   });
   const items = data?.pages.flatMap(page => page.data.items) ?? [];
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;

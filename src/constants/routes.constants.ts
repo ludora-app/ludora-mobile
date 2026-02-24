@@ -12,6 +12,10 @@ const ROUTES = {
   CHAT_ROOM: {
     INDEX: '/chat-room/[chatRoomId]',
     INDEX_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}`,
+    INFO_PRIVATE: '/chat-room/[chatRoomId]/info/private',
+    INFO_PRIVATE_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/private`,
+    INFO_SESSION: '/chat-room/[chatRoomId]/info/session',
+    INFO_SESSION_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/session`,
     MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
     MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
       `/chat-room/${chatRoomId}/message-actions/${messageId}`,
@@ -20,6 +24,7 @@ const ROUTES = {
     INDEX: '/create-session',
     STEP_1: '/create-session/step-1',
     STEP_2: '/create-session/step-2',
+    STEP_2_CREATE_FIELD_FORM_SHEET: '/(root)/create-session/step-2/create-field',
     STEP_2_DURATION_FORM_SHEET: '/create-session/step-2/public-field-duration',
     STEP_3: '/create-session/step-3',
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
@@ -44,8 +49,9 @@ const ROUTES = {
   IMAGE_PICKER: {
     INDEX: '/image-picker',
   },
-  INVITE_PEOPLE: {
-    INDEX: '/invite-people',
+  INVITE_FRIENDS: {
+    INDEX: '/invite-friends',
+    INDEX_UID: (sessionUid: string) => `/invite-friends/${sessionUid}`,
   },
   NOTIFICATIONS: {
     INDEX: '/notifications',
@@ -69,11 +75,13 @@ const ROUTES = {
   SESSION: {
     INDEX: '/session',
     INDEX_UID: (uid: string) => `/session/${uid}`,
+    JOINED: '/session/[id]/session-joined',
     JOINED_UID: (uid: string) => `session/${uid}/session-joined`,
     TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
   },
   SETTINGS: {
     FAVORITES: '/settings/favorites',
+    FRIENDS: '/settings/friends',
     HISTORY: '/settings/history',
     INDEX: '/settings',
     PLANNING: '/settings/planning',

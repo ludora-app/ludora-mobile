@@ -8,7 +8,7 @@ import SettingsSessionsHistoryTypeList from '../settings-sessions-history-types/
 function SessionsHistoryHeader() {
   return (
     <Box className="gap-5 pb-5">
-      <SettingsHeader titleKey="settings.history.header_title" />
+      <SettingsHeader titleKey="settings.history.header_title" className="mt-2" />
       <SettingsSessionsHistoryTypeList />
     </Box>
   )

@@ -1,17 +1,14 @@
 import { create } from 'zustand';
 
-type NotificationFilterParams = {
-  type: 'all' | 'sessions' | 'friend_requests';
-};
+import { NotificationsFindAllType } from '@/api/generated/model';
 
+type NotificationFilterParams = { type: NotificationsFindAllType | '' };
 type NotificationFilterState = {
   filters: NotificationFilterParams;
   setFilters: (params: NotificationFilterParams) => void;
 };
 
 export const useNotificationsFilterStore = create<NotificationFilterState>(set => ({
-  filters: {
-    type: 'all',
-  },
+  filters: { type: '' },
   setFilters: filters => set(state => ({ ...state, filters })),
 }));

@@ -1,4 +1,5 @@
 import { cn } from '@chillui/ui';
+import { useEffect } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { String, BoxCenter, Chip, Box, BoxRow, Icon } from '@ludo/ui';
@@ -9,7 +10,6 @@ import { useSessionTeamStore } from '@/features/session/stores/session-team.stor
 import { FindOneSessionResponseData, SessionTeamResponseData } from '@/api/generated/model';
 
 import SessionSectionAvatar from '../../session-section-avatar.component';
-import { useEffect } from 'react';
 
 type SessionSectionTeamsCardTeamProps = {
   team: SessionTeamResponseData;
@@ -57,7 +57,7 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
     if (isSideSelected) {
       setSideTeam(side);
     }
-  }, [isSideSelected]);
+  }, [isSideSelected, side, setSideTeam]);
 
   const pushAvatarToLeft = (sessionPlayersIndex: number) =>
     sessionPlayersIndex > 0 || isTeamSelected || (!isCompleteTeam && !isJoinedSession);
@@ -133,7 +133,7 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
             {team.sessionPlayers?.map((player, sessionPlayersIndex) => (
               <SessionSectionAvatar
                 key={player.userUid}
-                data={{ firstname: player?.firstname, lastname: player?.lastname, imageUrl: player?.imageUrl }}
+                data={{ firstname: player?.firstname, imageUrl: player?.imageUrl, lastname: player?.lastname }}
                 sideTeam={side}
                 size="sm"
                 style={{

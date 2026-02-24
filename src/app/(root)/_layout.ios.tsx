@@ -1,14 +1,18 @@
 import { Redirect, Stack, usePathname } from 'expo-router';
 
+import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
 
 function AppLayoutNav() {
+  const { userMe } = useUserMe()
+  const { onBoardingStatus: userOnBoardingStatus } = userMe || {}
+
   const { bottom } = useSafeArea();
   const pathname = usePathname();
 
-  const profileStatus = '';
-  const showPreferences = profileStatus === 'PENDING';
+
+  const showPreferences = userOnBoardingStatus === "INCOMPLETE";
   const isInsideOnBoarding = pathname.includes('on-boarding') || pathname.includes('image-picker');
 
   if (showPreferences && !isInsideOnBoarding) {
@@ -30,7 +34,7 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="invite-people"
+        name="invite-friends/[sessionId]/index"
         options={{
           contentStyle: {
             backgroundColor: '#FFF',

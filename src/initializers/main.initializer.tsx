@@ -2,7 +2,6 @@ import FontInitializer from './font.initializer';
 import WebsocketInitializer from './websocket.initializer';
 import SafeAreaInitializer from './safe-area-insets/safe-area.initializer';
 import PostHogIdentifierInitializer from './poshog-identifier.initializer';
-import PushNotificationsInitializer from './push-notifications.initializer';
 
 export default function MainInitializer() {
   return (
@@ -11,7 +10,7 @@ export default function MainInitializer() {
       <SafeAreaInitializer />
       <PostHogIdentifierInitializer />
       <FontInitializer />
-      <PushNotificationsInitializer />
+
     </>
   )
 }

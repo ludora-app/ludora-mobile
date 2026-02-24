@@ -7,11 +7,8 @@ export const useCreateSportPreference = () => {
 
   const mutateAsync = (sportPreferences: CreateSportPreferenceDto) => mutation.mutateAsync({ data: sportPreferences });
 
-  const mutate = (sportPreferences: CreateSportPreferenceDto) => mutation.mutate({ data: sportPreferences });
-
   return {
     ...mutation,
-    mutate,
     mutateAsync,
   };
 };

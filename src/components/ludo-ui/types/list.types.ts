@@ -22,4 +22,6 @@ export type ListProps = {
   hasRefreshControl?: boolean;
   triggerEndReachedOnStart?: boolean;
   listRef?: React.RefObject<LegendListRef>;
+  hasTopSafeArea?: boolean;
+  hasBottomSafeArea?: boolean;
 } & StrictOmit<LegendListProps<any>, 'renderItem' | 'getItemType' | 'data' | 'keyExtractor' | 'children'>;

@@ -3,17 +3,14 @@ import { useEffect, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router'
 
 import { parse } from '@/utils/json.utils';
-import { FindOneConversationResponseDataType } from '@/api/generated/model';
+import { FindOneConversationResponseDataType, ReceiverDto } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
 import { ChatRoomLocalSearchParams } from '../../types/chat-room.types';
 import { useGetChatRoomById } from '../../queries/get-chat-room-by-id.query';
 
 
-type ChatRoomReceiver = {
-  firstname: string;
-  lastname: string;
-}
+type ChatRoomReceiver = ReceiverDto
 
 export default function ChatRoomInfoInitializer() {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId)

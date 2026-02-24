@@ -5,17 +5,20 @@ import { useUserMe } from '@/queries/user-me.query';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
 import ProfilHeader from '../components/profil-header/profil-header.component';
-import ProfilSesion2 from '../components/profil-section/profil-sesion-2.component';
-import ProfilSection1 from '../components/profil-section/profil-section-1.component';
-import ProfilSection4 from '../components/profil-section/profil-section-4.component';
+import ProfilSesion2 from '../components/profil-section/profil-section-2/profil-section-2.component';
+import ProfilSection4 from '../components/profil-section/profil-section-4/profil-section-4.component';
 import ProfilSection3 from '../components/profil-section/profil-section-3/profil-section-3.component';
 import ProfilSection5 from '../components/profil-section/profil-section-5/profil-section-5.component';
+import ProfilSection1 from '../components/profil-section/profil-section-1/profil-section-1.component';
+import ProfilSesion2Skeleton from '../components/profil-section/profil-section-2/profil-section-skeleton.component';
+import ProfilSection4Skeleton from '../components/profil-section/profil-section-4/profil-section-4-skeleton.component';
+import ProfilSection1Skeleton from '../components/profil-section/profil-section-1/profil-section-1-skeleton.component';
 
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
-  const { data: userData, isRefetching: isRefetchingUser, refetch: refetchUser } = useGetUserDataById(userId as string || undefined);
+  const { data: userData, isLoading: isLoadingUser, isRefetching: isRefetchingUser, refetch: refetchUser } = useGetUserDataById(userId as string || undefined);
 
-  const { isRefetching: isRefetchingUserMe, refetch: refetchUserMe, userMe } = useUserMe(!userId);
+  const { isLoading: isLoadingUserMe, isRefetching: isRefetchingUserMe, refetch: refetchUserMe, userMe } = useUserMe(!userId);
 
   const isProfilMe = !userId;
 
@@ -31,6 +34,8 @@ export default function ProfilScreen() {
 
   const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser
 
+  const isProfilLoading = isLoadingUser || isLoadingUserMe
+
 
   return (
     <ScreenLayout>
@@ -40,19 +45,23 @@ export default function ProfilScreen() {
 
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-2 gap-4'>
           {/* Section 1 */}
-          <ProfilSection1
-            firstname={firstname}
-            lastname={lastname}
-            avatarUrl={avatarUrl}
-            sportPreferences={sportPreferences}
-            isMe={isProfilMe}
-          />
+          {isProfilLoading ? <ProfilSection1Skeleton /> :
+            <ProfilSection1
+              firstname={firstname}
+              lastname={lastname}
+              avatarUrl={avatarUrl}
+              sportPreferences={sportPreferences}
+              isMe={isProfilMe}
+
+            />}
           {/* Section 2 */}
-          <ProfilSesion2 bio={userBio} isMe={isProfilMe} />
+          {isProfilLoading ? <ProfilSesion2Skeleton /> :
+            <ProfilSesion2 bio={userBio} isMe={isProfilMe} />}
           {/* Section 3 */}
           <ProfilSection3 isMe={isProfilMe} />
           {/* Section 4 */}
-          <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} />
+          {isProfilLoading ? <ProfilSection4Skeleton /> :
+            <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} />}
           {/* Section 5 */}
           <ProfilSection5 />
         </Wrapper>

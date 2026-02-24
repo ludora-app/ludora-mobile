@@ -3,26 +3,23 @@ import { useTranslate } from '@tolgee/react';
 
 import { FiltersHeader } from '@/components/ui/filters-header';
 import { Filters } from '@/features/filters/filters/store/filters.store';
-import { homeFiltersMapper } from '@/features/home/utils/home-filters-mapper.utils';
-import { useHomeSessionFiltersStore } from '@/features/home/stores/home-sessions-filters.store';
 
+import { usePlayersFiltersStore } from '../../../stores/players-filters.store';
+import { playersFiltersMapper } from '../../../utils/players-filters-mapper.utils';
 
 export default function PlayersListHeaderSticky() {
   const { t } = useTranslate();
-  const setSessionFilter = useHomeSessionFiltersStore(state => state.setFilters);
-  const dateFilter = useHomeSessionFiltersStore(state => state.filters.date);
-  const numberOfFilters = useHomeSessionFiltersStore(state => state.numberOfFilters);
-
-  const selectedDayCarouselDate = dateFilter?.source === 'day-carousel' ? dateFilter?.date : null;
+  const setPlayersFilter = usePlayersFiltersStore(state => state.setFilters);
+  const numberOfFilters = usePlayersFiltersStore(state => state.numberOfFilters);
 
   const handleFiltersChange = (filters: Filters) => {
-    const cleanedFilters = homeFiltersMapper(filters);
-    setSessionFilter(cleanedFilters);
+    const cleanedFilters = playersFiltersMapper(filters);
+    setPlayersFilter(cleanedFilters);
   };
 
   const handleInputChange = (text: string) => {
-    setSessionFilter({
-      search: text,
+    setPlayersFilter({
+      name: text,
     });
   };
 
@@ -32,7 +29,6 @@ export default function PlayersListHeaderSticky() {
         numberOfFilters={numberOfFilters}
         source="players_suggestions"
         goBackPath="/(tabs)/players"
-        selectedDayCarouselDate={selectedDayCarouselDate}
         onFiltersChange={handleFiltersChange}
         onChangeText={handleInputChange}
         placeholder={t('players.players_list_header.input_placeholder')}

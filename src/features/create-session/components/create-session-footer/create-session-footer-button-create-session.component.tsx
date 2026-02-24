@@ -9,12 +9,12 @@ import { CreateSessionFromRequestDto } from '@/api/generated/model';
 import { useCreateSession } from '@/features/create-session/queries/create-session.query';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
-import { CreateSessionStep5ScreenParams } from '../../types/create-session-step-5.types';
 
 export default function CreateSessionFooterButtonCreateSession() {
   const router = useRouter();
   const { t } = useTranslate();
   const sessionStoreData = useCreateSessionStore(state => state.session);
+  const setCreatedSessionUid = useCreateSessionStore(state => state.setCreatedSessionUid);
   const { trackError, trackEvent } = useAnalytics();
   const { isPending: isCreatingSession, mutateAsync: createSession } = useCreateSession();
 
@@ -26,6 +26,7 @@ export default function CreateSessionFooterButtonCreateSession() {
         fieldUid: sessionStoreData.fieldUid,
         gameMode: sessionStoreData.gameMode,
         level: sessionStoreData.level,
+        sport: sessionStoreData.sport,
         startDate: sessionStoreData.startDate,
         teamAName: sessionStoreData?.teamAName,
         teamBName: sessionStoreData?.teamBName,
@@ -33,7 +34,8 @@ export default function CreateSessionFooterButtonCreateSession() {
         visibility: sessionStoreData.visibility,
       };
       const response = await createSession(sessionData);
-      const createdSessionUid = response.data.uid;
+      const createdSessionUid = response?.data?.uid;
+      setCreatedSessionUid(createdSessionUid);
       trackEvent({
         data: {
           end_date: sessionStoreData.endDate,
@@ -47,8 +49,7 @@ export default function CreateSessionFooterButtonCreateSession() {
         eventName: 'create_session_completed',
       });
       router.dismissAll();
-      const params: CreateSessionStep5ScreenParams = { sessionUid: createdSessionUid };
-      router.replace({ params, pathname: ROUTES.CREATE_SESSION.STEP_5 });
+      router.replace(ROUTES.CREATE_SESSION.STEP_5);
     } catch (error) {
       const response = error as ErrorResponse;
       trackEvent({

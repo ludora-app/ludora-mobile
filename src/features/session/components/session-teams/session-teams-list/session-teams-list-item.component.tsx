@@ -6,10 +6,11 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Chip, IconButton, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
+import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
-import { FlattenedSessionPlayer } from '@/api/generated/model';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { FindOneConversationResponseDataType, FlattenedSessionPlayer } from '@/api/generated/model';
 
 type SessionTeamsListItemProps = {
   data: FlattenedSessionPlayer;
@@ -46,6 +47,12 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
     const params: ChatRoomLocalSearchParams = {
       imageUrl: imageUrl || '',
       name: `${firstname} ${lastname}`,
+      receiver: serialize({
+        firstname,
+        lastname,
+        userUid,
+      }),
+      type: FindOneConversationResponseDataType.PRIVATE,
       userUid,
     }
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })

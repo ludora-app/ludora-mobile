@@ -16,10 +16,10 @@ export default function ProfilHeader(props: ProfilHeaderProps) {
   const { t } = useTranslate()
   const { isMe: isProfilMe } = props
 
-  const { top } = useSafeArea()
+  const { safeTop } = useSafeArea()
 
   return (
-    <Wrapper className='flex-row items-center z-10 pb-2' style={{ paddingTop: top + 20 }}>
+    <Wrapper className='flex-row items-center z-10 pb-2' style={{ paddingTop: safeTop }}>
       <BoxRowGrow className='items-center gap-3'>
         {!isProfilMe && <GoBackButton />}
         <Box className={cn({ 'mt-2': !isProfilMe })}>
@@ -34,15 +34,14 @@ export default function ProfilHeader(props: ProfilHeaderProps) {
         </Box>
       </BoxRowGrow>
       {
-        isProfilMe && <BoxRow className='items-center gap-2'>
-          <Link href="/profil/profil-edit" asChild>
-            <IconButton iconName="user-edit-regular" colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
-          </Link>
-          <Link href="/settings" asChild>
-            <IconButton iconName='setting-gear-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
-          </Link>
-          <ProfilHeaderNotification />
-        </BoxRow>
+        isProfilMe && (
+          <BoxRow className='items-center gap-2'>
+            <ProfilHeaderNotification />
+            <Link href="/settings" asChild>
+              <IconButton iconName='setting-gear-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
+            </Link>
+          </BoxRow>
+        )
       }
 
     </Wrapper >

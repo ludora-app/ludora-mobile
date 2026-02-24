@@ -6,6 +6,7 @@ export const useGetIncommingSessionMe = () => {
   const { data, error, isError, ...rest } = useSessionsFindAllMySessionsInfinite(
     {
       limit: 1,
+      ownership: "PLAYER",
       scope: 'UPCOMING',
       startDateSortOrder: 'asc',
     },

@@ -8,8 +8,8 @@ import COLORS from '@/constants/COLORS';
 import { TIconsAll } from '@/constants/ICONS';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FriendResponseDataStatus } from '@/api/generated/model';
+import { useSendFriendInvitation } from '@/queries/send-friend-invitation.query'
 import { useGetFriendRequest } from '@/features/profil/queries/friends/get-friend-request.query'
-import { useSendFriendInvitation } from '@/features/profil/queries/friends/send-friend-invitation.query'
 
 export default function ProfilSection3User() {
   const { trackError } = useAnalytics()

@@ -1,5 +1,6 @@
-import { Stack } from 'expo-router';
+import { Stack, useSegments } from 'expo-router';
 
+import { IS_ANDROID } from '@/constants/PLATFORM';
 import CreateSessionHeader from '@/features/create-session/components/create-session-header/create-session-header.component';
 import CreateSessionFooter from '@/features/create-session/components/create-session-footer/create-session-footer.component';
 
@@ -18,16 +19,31 @@ function CreateSessionLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
+      <Stack.Screen
+        name="step-2/create-field"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+            height: '100%',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.93],
+          sheetCornerRadius: 12,
+        }}
+      />
     </Stack>
   );
 }
 
 export default function CreateSessionLayout() {
+  const segments = useSegments()
+  const isSheetOpen = segments.some(s => s === 'create-field' || s === 'public-field-duration') && IS_ANDROID
   return (
     <>
       <CreateSessionHeader />
       <CreateSessionLayoutNav />
-      <CreateSessionFooter />
+      {!isSheetOpen && <CreateSessionFooter />}
     </>
   );
 }

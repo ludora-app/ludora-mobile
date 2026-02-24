@@ -2,7 +2,7 @@ import ROUTES, { RouteValues } from '@/constants/routes.constants';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 export type RootStackParamList = {
-  [ROUTES.INVITE_PEOPLE.INDEX]: { sessionUid: string };
+  [ROUTES.INVITE_FRIENDS.INDEX]: { sessionId: string };
   [ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET]: {
     fieldUid: string;
     slotUid: string;
@@ -34,6 +34,22 @@ export type RootStackParamList = {
     sender?: string;
     receiver?: string;
   };
+  [ROUTES.CHAT_ROOM.INFO_PRIVATE]: {
+    chatRoomId: string;
+    name: string;
+    imageUrl: string;
+    receiver: string;
+  };
+  [ROUTES.CHAT_ROOM.INFO_SESSION]: {
+    chatRoomId: string;
+    name: string;
+    imageUrl: string;
+    sessionUid?: string;
+  };
+  [ROUTES.CREATE_SESSION.STEP_2_CREATE_FIELD_FORM_SHEET]: {
+    sport: SessionCollectionItemDtoSport;
+    address?: string;
+  };
   [ROUTES.CREATE_SESSION.STEP_5]: {
     sessionUid: string;
   };
@@ -43,6 +59,12 @@ export type RootStackParamList = {
   [ROUTES.CHAT_ROOM.MESSAGE_ACTIONS]: {
     messageId: string;
     chatRoomId: string;
+  };
+  [ROUTES.SESSION.JOINED]: {
+    conversationUid: string;
+    name: string;
+    imageUrl: string;
+    type: string;
   };
 };
 

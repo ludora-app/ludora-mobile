@@ -3,7 +3,7 @@ import { useTranslate } from '@tolgee/react';
 
 import { cn } from '@/components/chill-ui-library';
 import { getSportImage } from '@/utils/sports.utils';
-import { SportProps } from '@/features/create-session/types/create-session-step-1.types';
+import { SportProps } from '@/constants/sports.constants';
 import { useCreateSessionFiltersFieldsStore } from '@/features/create-session/store/create-session-filters-fields.store';
 
 import { useCreateSessionStore } from '../../../../store/create-session.store';
@@ -15,14 +15,14 @@ type CreateSessionStep1Part1ItemProps = {
 export default function CreateSessionStep1Part1Item(props: CreateSessionStep1Part1ItemProps) {
   const { sport } = props;
   const { t } = useTranslate();
-  const isSelectedSport = useCreateSessionStore(state => state.session?.additionalData?.sport === sport.name);
+  const isSelectedSport = useCreateSessionStore(state => state.session?.sport === sport.name);
   const setSession = useCreateSessionStore(state => state.setSession);
   const setSessionFilters = useCreateSessionFiltersFieldsStore(state => state.setFilters);
 
   const sportImage = getSportImage(sport.name);
 
   const handlePress = (s: SportProps) => {
-    setSession({ additionalData: { sport: s.name } });
+    setSession({ sport: s.name });
     setSessionFilters({ sports: [s.name] });
   };
 

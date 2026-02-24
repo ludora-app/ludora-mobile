@@ -2,11 +2,10 @@ import { List } from '@ludo/ui';
 import { useMemo } from 'react';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
+import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
-import HomeSessionListItem from './home-session-list-item/home-session-list-item.component';
 import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
-import HomeSessionListItemSkeleton from './home-session-list-item/home-session-list-item-skeleton.component';
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
@@ -46,7 +45,7 @@ export default function HomeSessionList() {
   return (
     <List
       data={sessions}
-      ItemComponent={HomeSessionListItem}
+      ItemComponent={SessionCard}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
@@ -55,7 +54,9 @@ export default function HomeSessionList() {
       refetch={refetch}
       getFixedItemSize={index => fixedEstimatedItemsSize(index)}
       isRefetching={isRefetching}
-      SkeletonComponent={HomeSessionListItemSkeleton}
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      SkeletonComponent={SessionCardSkeleton}
       ListHeaderComponent={<HomeSessionListHeaderTopList />}
       hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
@@ -63,7 +64,7 @@ export default function HomeSessionList() {
       hasHeaderTransparent
       bounces={false}
       listHeaderComponentHeight={LIST_HEADER_HEIGHT}
-      contentContainerClassName="bg-background rounded-t-xl"
+      contentContainerClassName="bg-background rounded-t-xl px-4"
       contentContainerStyle={{ paddingBottom: bottomTab }}
       emptyResultProps={{
         className: 'mt-4',

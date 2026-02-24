@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { WrapperSafeAreaView, FormInput, Button } from '@ludo/ui';
+import { FormInput, Button, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
@@ -53,8 +53,8 @@ export default function ResetPasswordScreen() {
 
   return (
     <>
-      <HeaderGoBack title={t('auth.reset-password.title')} />
-      <WrapperSafeAreaView edges={['bottom']}>
+      <HeaderGoBack title={t('auth.reset-password.title')} hasTopSafeArea />
+      <Wrapper hasSafeArea edges={['bottom']}>
         <AuthHeader description="auth.reset-password.description" />
         <ContentWapper>
           <FormInput
@@ -73,7 +73,7 @@ export default function ResetPasswordScreen() {
           isLoading={isSendingVerificationCode}
           isDisabled={!isValid}
         />
-      </WrapperSafeAreaView>
+      </Wrapper>
     </>
   );
 }

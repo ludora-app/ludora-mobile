@@ -70,7 +70,9 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
 ) {
   const router = useRouter();
   const { field } = props;
-  const { availabilities, sport, uid: fieldUid } = field || {};
+  const { availabilities, uid: fieldUid } = field || {};
+  const sport = useCreateSessionStore(state => state.session?.sport);
+
   const [visibleSlots, setVisibleSlots] = useState<TimeSlot[]>([]);
   const filterDate = useCreateSessionFiltersFieldsStore(state => state.filters.date);
   const { endDate, selectedFieldUid, selectedSlotUid } = useCreateSessionStore(

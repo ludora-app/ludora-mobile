@@ -13,11 +13,8 @@ export const useUpdateUserMe = () => {
 
   const mutateAsync = (userMe: UpdateUserDto) => mutation.mutateAsync({ data: userMe });
 
-  const mutate = (userMe: UpdateUserDto) => mutation.mutate({ data: userMe });
-
   return {
     ...mutation,
-    mutate,
     mutateAsync,
   };
 };

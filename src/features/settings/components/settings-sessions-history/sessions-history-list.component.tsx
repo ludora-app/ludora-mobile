@@ -11,7 +11,7 @@ import SessionsHistoryHeaderSticky from './sessions-history-headers/sessions-his
 
 const LIST_ITEM_SIZE_HEIGHT = 170
 const LIST_STICKY_COMPONENT_HEIGHT = 75
-const HEADER_HEIGHT = 58
+const HEADER_HEIGHT = 62
 
 export default function SessionsHistoryList() {
   const { bottom } = useSafeArea()
@@ -46,8 +46,8 @@ export default function SessionsHistoryList() {
       hasRefreshControl
       contentContainerClassName="grow bg-background px-4"
       contentContainerStyle={{ paddingBottom: bottom }}
-      ListStickyComponentTopSafeArea
-      headerTransparent
+      hasListStickyComponentTopSafeArea
+      hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}
       getFixedItemSize={handleFixedItemsSize}
       SkeletonComponent={SessionCardSkeleton}

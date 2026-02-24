@@ -31,6 +31,8 @@ type ChatRoomMessageListItemWrapperProps = {
 export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const { children, isChatRoomGroup, messageData } = props;
+
+
   const { globalStatus: messageGlobalStatus, isSender: isMessageFromMe, uid: messageUid } = messageData || {};
   const router = useRouter();
   const { triggerHaptic } = useHaptics();

@@ -10,10 +10,10 @@ let onNotificationOpenedApp: any = null;
 let deleteToken: any = null;
 let AuthorizationStatus: any = null;
 let requestPermission: any = null;
+let onTokenRefresh: any = null;
 
 try {
   const firebaseMessaging = require('@react-native-firebase/messaging');
-  // Import modular functions
   getMessaging = firebaseMessaging.getMessaging;
   getToken = firebaseMessaging.getToken;
   onMessage = firebaseMessaging.onMessage;
@@ -22,6 +22,7 @@ try {
   deleteToken = firebaseMessaging.deleteToken;
   AuthorizationStatus = firebaseMessaging.AuthorizationStatus;
   requestPermission = firebaseMessaging.requestPermission;
+  onTokenRefresh = firebaseMessaging.onTokenRefresh;
 } catch (e) {
   console.warn('Firebase messaging not available:', e);
 }
@@ -35,6 +36,8 @@ class PushNotificationService {
   private unsubscribeOnMessage?: () => void;
 
   private unsubscribeOnNotificationOpenedApp?: () => void;
+
+  private unsubscribeOnTokenRefresh?: () => void;
 
   /**
    * Initialize push notification service
@@ -174,9 +177,7 @@ class PushNotificationService {
       this.fcmToken = token;
       console.log('🔥 FCM Token obtained:', token);
 
-      // Listen for token refresh
-      const unsubscribe = messaging.onTokenRefresh((newToken: string) => {
-        console.log('🔄 FCM Token refreshed:', newToken);
+      this.unsubscribeOnTokenRefresh = onTokenRefresh(messaging, (newToken: string) => {
         this.fcmToken = newToken;
         this.onTokenRefresh?.(newToken);
       });
@@ -217,14 +218,26 @@ class PushNotificationService {
 
       // Show local notification when app is in foreground
       if (remoteMessage.notification) {
+        const notif = remoteMessage.notification;
+        const imageUrl = notif.imageUrl ?? notif.android?.imageUrl ?? notif.image ?? null;
+
+        const content = {
+          body: notif.body || '',
+          data: remoteMessage.data,
+          priority: Notifications.AndroidNotificationPriority.HIGH,
+          sound: 'default',
+          title: notif.title || 'Notification',
+        };
+
+        // iOS: show image via attachments when URL is provided by backend
+        if (imageUrl && Platform.OS === 'ios') {
+          content.attachments = [{ identifier: null, type: 'image', url: imageUrl }];
+        }
+        // Android: image in notification is usually shown by the system when in background.
+        // In foreground we only set title/body; for big picture you'd need native config or backend to send imageUrl.
+
         await Notifications.scheduleNotificationAsync({
-          content: {
-            body: remoteMessage.notification.body || '',
-            data: remoteMessage.data,
-            priority: Notifications.AndroidNotificationPriority.HIGH,
-            sound: 'default',
-            title: remoteMessage.notification.title || 'Notification',
-          },
+          content,
           trigger: null, // Show immediately
         });
       }
@@ -290,6 +303,7 @@ class PushNotificationService {
   cleanup() {
     this.unsubscribeOnMessage?.();
     this.unsubscribeOnNotificationOpenedApp?.();
+    this.unsubscribeOnTokenRefresh?.();
   }
 
   // Callback handlers (to be set by the app)

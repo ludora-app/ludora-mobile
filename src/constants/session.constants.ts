@@ -17,17 +17,17 @@ export type SESSION_LEVEL_TYPE = {
 export const SESSION_LEVELS: SESSION_LEVEL_TYPE[] = [
   {
     code: 1,
-    icon: 'mascot-level-easy',
+    icon: 'ludo-level-easy',
     name: 'EASY',
   },
   {
     code: 2,
-    icon: 'mascot-level-medium',
+    icon: 'ludo-level-medium',
     name: 'MEDIUM',
   },
   {
     code: 3,
-    icon: 'mascot-level-hard',
+    icon: 'ludo-level-hard',
     name: 'HARD',
   },
 ];

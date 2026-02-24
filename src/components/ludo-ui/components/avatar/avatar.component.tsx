@@ -3,11 +3,11 @@ import { Avatar as AvatarChillUi, AvatarContent, AvatarImage, cn } from '@chillu
 import { AvatarProps } from '../../types/avatar.types';
 
 export default function Avatar(props: AvatarProps) {
-  const { colorVariant, contentProps, data, ...rest } = props;
+  const { className, colorVariant, contentProps, data, ...rest } = props;
   const { firstname, imageUrl, lastname } = data || {};
 
   return (
-    <AvatarChillUi {...rest} className={cn({ "border-secondary": colorVariant === "secondary" })}>
+    <AvatarChillUi {...rest} className={cn({ "border-secondary": colorVariant === "secondary" }, className)}>
       <AvatarContent firstname={firstname} lastname={lastname} colorVariant={colorVariant} {...contentProps} />
       {imageUrl && imageUrl?.length > 0 && <AvatarImage source={{ uri: imageUrl }} />}
     </AvatarChillUi>

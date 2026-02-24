@@ -26,10 +26,11 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
   );
   const { toast } = useToast();
 
-  const { avatarUrl, firstname, isInvited: isFriendInvited, lastname } = item || {};
+  const { avatarUrl, firstname, isInvited: isFriendInvited, isJoined: isFriendJoined, lastname } = item || {};
+
 
   const handleSubmit = () => {
-    if (isFriendInvited) return;
+    if (isFriendInvited || isFriendJoined) return;
     if (isFriendSelected) {
       removeFriend(item);
     } else {
@@ -45,7 +46,9 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
     }
   };
 
-  const isFriendAlreadlyInvited = isFriendInvited || isFriendSelected;
+  const isFriendAlreadlyInvited = isFriendInvited || isFriendJoined || isFriendSelected;
+
+  const shouldShowJoinedBadge = isFriendJoined && !isFriendInvited;
 
   return (
     <Wrapper fill={false} className="pb-3">
@@ -64,7 +67,14 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
                 {firstname} {lastname}
               </String>
             </Box>
-            {isFriendInvited && (
+            {
+              isFriendJoined && (
+                <String color="#666" variant="body-xs" useFastText={false}>
+                  {t('invite-friends.friend_already_joined')}
+                </String>
+              )
+            }
+            {shouldShowJoinedBadge && (
               <String color="#666" variant="body-xs" useFastText={false}>
                 {t('invite-friends.friend_already_invited')}
               </String>
@@ -74,7 +84,7 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
         <IconButton
           isDisabled={isFriendInvited}
           onPress={handleSubmit}
-          iconName={isFriendAlreadlyInvited ? 'forward-contact-regular' : 'user-add-regular'}
+          iconName={isFriendAlreadlyInvited ? "forward-contact-regular" : 'user-add-regular'}
           variant="outlined"
           iconColor={COLORS.primary}
           rounded="circle"

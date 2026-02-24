@@ -29,8 +29,6 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
   } = item || {};
 
 
-  console.log("item=====>", item);
-
   const { teamLabel } = sessionData || {};
 
   const handlePress = () => {

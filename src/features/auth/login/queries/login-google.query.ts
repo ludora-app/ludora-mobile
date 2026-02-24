@@ -5,9 +5,9 @@ import { CreateGoogleUserDto } from '@/api/generated/model';
 import { useSignIn as useGoolgleProviderSignIn } from '@/api/hooks/auth-google.hook';
 
 export default function useLoginGoogle() {
-  const {  isPending: isGoogleProviderSignInPending, mutateAsync: googleProviderSignInMutation } =
+  const { isPending: isGoogleProviderSignInPending, mutateAsync: googleProviderSignInMutation } =
     useGoolgleProviderSignIn();
-  const {  isPending: isGoogleLoginUserPending ,mutateAsync: googleLogin} = useAuthB2CCreateOrConnectGoogleUser();
+  const { isPending: isGoogleLoginUserPending, mutateAsync: googleLogin } = useAuthB2CCreateOrConnectGoogleUser();
   const { login } = useAuthHelpers();
 
   const mutateAsync = async () => {
@@ -24,11 +24,10 @@ export default function useLoginGoogle() {
     };
 
     const response = await googleLogin({ data: userData });
-    const tokens = response.data;
-    login(tokens);
+    const { accessToken, refreshToken } = response.data;
+    login({ accessToken, refreshToken });
+    return response;
   };
-
-
 
   return {
     isPending: isGoogleProviderSignInPending || isGoogleLoginUserPending,

@@ -17,6 +17,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "FieldsController_findAllMyFields": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "FieldsController_findAllVerified": {
     "query": {
       "useInfinite": true,

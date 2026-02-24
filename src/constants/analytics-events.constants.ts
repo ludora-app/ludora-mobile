@@ -12,6 +12,12 @@ export const ANALYTICS_EVENTS = {
   // Global
   API_SLOW_REQUEST: 'api_slow_request',
 
+  // Onboarding
+  ONBOARDING: {
+    ONBOARDING_COMPLETED: 'onboarding_completed',
+    ONBOARDING_FAILED: 'onboarding_failed',
+  },
+
   // Auth Flow
   AUTH: {
     // Inscription
@@ -38,6 +44,8 @@ export const ANALYTICS_EVENTS = {
   },
 
   CREATE_SESSION: {
+    CREATE_FIELD_FAILED: 'create_field_failed',
+    CREATE_FIELD_SUCCESS: 'create_field_success',
     SESSION_CREATED: 'create_session_completed',
     SESSION_FAILED: 'create_session_failed',
     STEP_1_COMPLETED: 'create_session_step_1_completed',
@@ -68,6 +76,8 @@ export const ANALYTICS_EVENTS = {
   SESSION: {
     SESSION_JOINED: 'session_joined',
     SESSION_JOINED_FAILED: 'session_joined_failed',
+    SESSION_LEFT: 'session_left_completed',
+    SESSION_LEFT_FAILED: 'session_left_failed',
     SESSION_TEAM_SELECTED: 'session_team_selected',
   },
   SETTINGS: {
@@ -79,6 +89,15 @@ export const ANALYTICS_EVENTS = {
 } as const;
 
 export interface AnalyticsEventData {
+  // onboarding events
+  [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED]: {
+    has_sport_preferences: boolean;
+    has_profile_picture: boolean;
+  };
+
   // auth events
   [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_NEW_PASSWORD_FAILED]: {
     error_message: string;
@@ -107,6 +126,9 @@ export interface AnalyticsEventData {
   };
 
   // session events
+  [ANALYTICS_EVENTS.SESSION.SESSION_LEFT]: {
+    session_uid: string;
+  };
   [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SELECTED]: {
     source_screen: string;
   };
@@ -116,6 +138,10 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.SESSION.SESSION_JOINED]: {
     session_uid: string;
     team_uid: string;
+  };
+  [ANALYTICS_EVENTS.SESSION.SESSION_LEFT_FAILED]: {
+    session_uid: string;
+    error_message: string;
   };
 
   // forgot password events
@@ -129,7 +155,13 @@ export interface AnalyticsEventData {
   // **
   // create session events
   // **
+  [ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_SUCCESS]: {
+    sport: string;
+  };
   [ANALYTICS_EVENTS.CREATE_SESSION.SESSION_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_FAILED]: {
     error_message: string;
   };
   [ANALYTICS_EVENTS.CREATE_SESSION.STEP_1_COMPLETED]: {

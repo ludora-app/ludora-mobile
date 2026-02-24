@@ -24,7 +24,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     state =>
       !!state.session?.gameMode &&
       !!state.session?.level &&
-      !!state.session?.additionalData?.sport &&
+      !!state.session?.sport &&
       !!state.session?.visibility,
   );
 
@@ -48,8 +48,8 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
 
   const handleSubmit = async () => {
     const currentSession = useCreateSessionStore.getState().session;
-    const { additionalData, endDate, fieldUid, gameMode, level, slotUid, startDate, visibility } = currentSession || {};
-    const { fieldType, price, pricePerPlayer, sport } = additionalData || {};
+    const { additionalData, endDate, fieldUid, gameMode, level, slotUid, sport, startDate, visibility } = currentSession || {};
+    const { fieldType, price, pricePerPlayer } = additionalData || {};
 
     if (activeStep === 3 && fieldType === 'partner') {
       router.push(ROUTES.CREATE_SESSION.STEP_3_PAYMENT);

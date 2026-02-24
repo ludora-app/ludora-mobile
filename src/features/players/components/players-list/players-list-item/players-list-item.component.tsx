@@ -1,19 +1,19 @@
 import { memo, useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
+import ROUTES from '@/constants/routes.constants';
 import { getSportImage } from '@/utils/sports.utils';
-import { SessionCollectionItemDtoSport } from '@/api/generated/model';
-
-import type { PlayerMock, PlayerSportPreference } from '../../mocks/players.mocks';
+import { FindAllUserSportPreferenceResponseDto, FindAllUsersResponseDataDto, SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 import PlayersListItemBanner from './players-list-item-banner.component';
 import PlayersListItemInvite from './players-list-item-invite.component';
 
-type Props = {
-  item: PlayerMock;
+type PlayersListItemProps = {
+  item: FindAllUsersResponseDataDto;
 };
 
 const styles = StyleSheet.create({
@@ -30,25 +30,28 @@ const LEVEL_COLORS: Record<number, string> = {
 
 
 
-function PlayersListItem({ item }: Props) {
+function PlayersListItem({ item }: PlayersListItemProps) {
   const {
+    bio: userBio,
     commonSports,
-    isSameCity,
-    userAvatar,
-    userBio,
-    userCity,
-    userFirstName,
-    userLastName,
-    userSportPreferences,
+    firstname,
+    imageUrl: userAvatar,
+    invitationStatus,
+    isSameCity: userIsSameCity,
+    lastname,
+    name,
+    sportPreferences: userSportPreferences,
+    uid: userUid,
+    userCity
   } = item || {};
-  const { t } = useTranslate();
 
-  const fullName = `${userFirstName} ${userLastName}`;
+  const { t } = useTranslate();
+  const router = useRouter();
   const hasSports = userSportPreferences && userSportPreferences.length > 0;
 
   const sportItems = useMemo(
     () =>
-      (userSportPreferences ?? []).map((pref: PlayerSportPreference) => ({
+      (userSportPreferences ?? []).map((pref: FindAllUserSportPreferenceResponseDto) => ({
         image: getSportImage(pref.sport as SessionCollectionItemDtoSport),
         level: pref.level,
         sport: pref.sport,
@@ -56,25 +59,30 @@ function PlayersListItem({ item }: Props) {
     [userSportPreferences],
   );
 
+  const handleCardPress = () => {
+    router.push(ROUTES.PROFIL.INDEX_UID(item.uid));
+  };
+
+
   return (
-    <Pressable style={styles.shadow} className="rounded-xl mb-3">
+    <Pressable style={styles.shadow} className="rounded-xl mb-3" onPress={handleCardPress}>
       <Box className="overflow-hidden rounded-xl border border-black/10 bg-white">
 
         {/* Ludo common points */}
-        <PlayersListItemBanner commonSports={commonSports} isSameCity={isSameCity} />
+        <PlayersListItemBanner commonSports={commonSports} isSameCity={userIsSameCity} />
 
         {/* Top section: Avatar + Name */}
         <Box className='p-3 gap-3'>
           <Box >
             <BoxRow className="items-center gap-3 pb-0">
               <Avatar
-                data={{ firstname: userFirstName, imageUrl: userAvatar ?? '', lastname: userLastName }}
+                data={{ firstname, imageUrl: userAvatar ?? '', lastname }}
                 size="lg"
               />
 
               <BoxGrow className="gap-0.5">
                 <String font="primaryExtraBold" variant="body-sm">
-                  {fullName}
+                  {name}
                 </String>
                 {userCity ? (
                   <BoxRow className="items-center gap-1">
@@ -119,11 +127,11 @@ function PlayersListItem({ item }: Props) {
             {/* Bottom section: Invite button */}
 
           </Box>
-          <PlayersListItemInvite />
+          <PlayersListItemInvite userUid={userUid} invitationStatus={invitationStatus} />
         </Box>
       </Box>
     </Pressable>
   );
 }
 
-export default memo(PlayersListItem, (prevProps, nextProps) => prevProps.item.uid === nextProps.item.uid);
+export default memo(PlayersListItem, (prevProps, nextProps) => prevProps.item.uid === nextProps.item.uid && prevProps.item.invitationStatus === nextProps.item.invitationStatus);

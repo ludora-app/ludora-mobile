@@ -12,7 +12,7 @@ export default function LoginScreen() {
 
   return (
     <>
-      <HeaderGoBack title={t('auth.login.header_title')} />
+      <HeaderGoBack title={t('auth.login.header_title')} hasTopSafeArea />
       <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']} fill>
         <BoxGrow className='mt-10'>
           <LoginEmailForm />

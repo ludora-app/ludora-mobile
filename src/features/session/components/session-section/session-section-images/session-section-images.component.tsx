@@ -25,7 +25,7 @@ export default function SessionSectionImages(props: SessionSectionImagesProps) {
 
   return (
     <Carousel>
-      <CarouselContent className="h-72 w-full">
+      <CarouselContent className="h-48 w-full">
         {sessionImages?.map((image, index) => (
           <CarouselItem key={index}>
             <Image source={image.url || ''} contentFit="cover" className="size-full" />
@@ -38,7 +38,7 @@ export default function SessionSectionImages(props: SessionSectionImagesProps) {
         </CarouselElement>
       )}
       <CarouselElement position="top" style={{ paddingTop: top }}>
-        <SessionSectionImagesHeader />
+        <SessionSectionImagesHeader sessionUid={session?.uid ?? ''} />
       </CarouselElement>
     </Carousel>
   );

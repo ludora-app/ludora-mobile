@@ -9,10 +9,12 @@ import COLORS from '@/constants/COLORS';
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
+import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useUpdateUserMe } from '@/queries/update-user-me.query';
 import { cn, LoadingIndicator } from '@/components/chill-ui-library';
 import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
+import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 
 
@@ -42,12 +44,15 @@ export default function ProfilEditAvatar() {
 
   const handleUpdateUserMeAvatar = async (file: Blob) => {
     try {
-      trackEvent({ data: { is_avatar_added: !imageUrl, is_avatar_updated: !!imageUrl }, eventName: "profil_edit_avatar_success" });
+      trackEvent({
+        data: { is_avatar_added: !imageUrl, is_avatar_updated: !!imageUrl },
+        eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_SUCCESS
+      });
       await updateUserMe({ file });
-
     } catch (error) {
+      const errorResponse = error as ErrorResponse
       trackError({ error });
-      trackEvent({ data: { error_message: error.message }, eventName: "profil_edit_avatar_failed" });
+      trackEvent({ data: { error_message: errorResponse.api_error_detail }, eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_FAILED });
     }
   }
 

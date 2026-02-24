@@ -12,7 +12,7 @@ export const useDeclineFriendRequest = (friendUid: string) => {
     });
 
   return {
-    mutate,
+    ...mutate,
     mutateAsync,
   };
 };

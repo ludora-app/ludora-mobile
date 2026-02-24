@@ -1,5 +1,7 @@
+import { cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 
+import { IS_ANDROID, IS_IOS } from '@/constants/PLATFORM';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
@@ -21,7 +23,12 @@ export default function InviteFriendsScreen() {
   useResetStoreOnUnmount(handleResetStore);
   return (
     <>
-      <HeaderGoBack title={t('invite-friends.title')} iconName="ludora-sunglass" />
+      <HeaderGoBack
+        title={t('invite-friends.title')}
+        iconName="ludora-sunglass"
+        hasTopSafeArea={IS_ANDROID}
+        className={cn(IS_IOS && 'mt-3')}
+      />
       <InviteFriendsList />
       <InviteFriendsFooter />
     </>

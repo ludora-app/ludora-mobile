@@ -10,17 +10,20 @@ import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import { FindOneSessionResponseData } from '@/api/generated/model';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+import { ConversationCollectionResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
 import { useJoinSession } from '../queries/join-session.query';
 import { useSessionTeamStore } from '../stores/session-team.store';
-import { SessionScreenLocalSearchParams } from '../types/session.types';
+import { SessionJoinedLocalParams, SessionScreenLocalSearchParams } from '../types/session.types';
 
 type SessionFooterProps = {
   session: FindOneSessionResponseData;
   scrollViewRef: React.RefObject<ScrollView>;
 };
+
+
+
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
@@ -29,7 +32,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const invalidateSessionById = useInvalidateSessionsFindOne();
   const { t } = useTranslate();
-  const { isJoined, remainingPlayers, sessionTeams } = session || {};
+  const { fieldImages, isJoined, remainingPlayers, sessionTeams, title } = session || {};
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const isSessionFull = remainingPlayers === 0;
@@ -56,9 +59,18 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
       return;
     }
     try {
-      await joinSession(teamUid);
-      router.replace(ROUTES.SESSION.JOINED_UID(sessionUid));
-      trackEvent({ data: { session_uid: sessionUid, team_uid: teamUid }, eventName: 'session_joined' });
+      const response = await joinSession(teamUid);
+
+      const { conversationUid, sessionUid: sessionUidResponse } = response?.data || {}
+
+      const params: SessionJoinedLocalParams = {
+        conversationUid,
+        imageUrl: fieldImages?.[0]?.url,
+        name: title,
+        type: ConversationCollectionResponseDataType.SESSION,
+      }
+      router.replace({ params, pathname: ROUTES.SESSION.JOINED_UID(sessionUidResponse) });
+      trackEvent({ data: { session_uid: sessionUidResponse, team_uid: teamUid }, eventName: 'session_joined' });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
@@ -66,7 +78,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
         eventName: 'session_joined_failed',
       });
       invalidateSessionById(sessionUid);
-      trackError(error);
+      trackError({ error });
     }
   };
 

@@ -13,8 +13,7 @@ import CreateSessionTitle from '../components/create-session-title-component';
 export default function CreateSessionStep4Screen() {
   const { t } = useTranslate();
   const { session } = useCreateSessionStore();
-  const { additionalData, endDate, fieldUid, gameMode, level, startDate, visibility } = session || {};
-  const { sport } = additionalData || {};
+  const { endDate, fieldUid, gameMode, level, sport, startDate, visibility } = session || {};
   const { data: fieldData, isLoading } = useGetField(fieldUid);
 
   const sessionImage = getSportImage(sport);

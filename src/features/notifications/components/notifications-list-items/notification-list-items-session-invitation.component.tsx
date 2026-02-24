@@ -4,7 +4,7 @@ import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, Button, String } from '@l
 
 import ROUTES from '@/constants/routes.constants'
 import { truncateString } from '@/utils/string.utils'
-import { NotificationResponseData } from '@/api/generated/model'
+import { NotificationResponseData, SessionInvitationData } from '@/api/generated/model'
 
 import { formatNotificationTime } from '../../utils/time.utils'
 import NotificationsListItemsContainer from './notifications-list-items-container.component'
@@ -13,23 +13,16 @@ import NotificationsListItemsContainer from './notifications-list-items-containe
 interface NotificationListItemsSessionInvitationProps {
   item: NotificationResponseData
 }
-type FriendsRequestData = {
-  SenderFirstname: string,
-  senderLastname: string,
-  SenderImageUrl: string
-  actionUrl: string,
-  senderUid: string,
-}
 
 export default function NotificationListItemsSessionInvitation(props: NotificationListItemsSessionInvitationProps) {
   const router = useRouter()
   const { t } = useTranslate()
   const { item: notification } = props
-  const { createdAt, data, isRead: isNotificationRead, type: notificationType, uid: notificationUid } = notification || {}
+  const { createdAt, isRead: isNotificationRead, metadata, type: notificationType, uid: notificationUid } = notification || {}
 
 
-  const notificationData = data as FriendsRequestData
-  const { inviterAvatar, inviterName, sessionUid } = notificationData || {}
+  const notificationData = metadata as SessionInvitationData
+  const { senderAvatar, senderFirstname, senderLastname, senderName, sessionUid } = notificationData || {}
 
   const handleSeeSession = () => {
     router.push(ROUTES.SESSION.INDEX_UID(sessionUid))
@@ -39,8 +32,9 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
     <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead}>
       <Avatar
         data={{
-          firstname: inviterName,
-          imageUrl: inviterAvatar
+          firstname: senderFirstname,
+          imageUrl: senderAvatar,
+          lastname: senderLastname
         }}
       />
       <BoxGrow className='gap-0.5'>
@@ -59,7 +53,7 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
           <BoxGrow>
             <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
               <String font="primaryBold" useFastText={false}>
-                {truncateString({ maxLength: 40, str: inviterName })}{" "}
+                {truncateString({ maxLength: 40, str: senderName })}{" "}
               </String>
               {t(`notifications.body_${notificationType}`)}
             </String>

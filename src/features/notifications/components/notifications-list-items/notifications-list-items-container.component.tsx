@@ -32,7 +32,7 @@ export default function NotificationsListItemsContainer(props: PropsWithChildren
 
   return (
 
-    <BoxRow className={cn('items-center gap-4 px-3 py-2')}>
+    <BoxRow className={cn('items-center gap-4 py-2')}>
       <Animated.View entering={FadeIn} exiting={FadeOut}
         className={cn("absolute inset-0", { "bg-primary/10": !isRead })}
       />

@@ -46,13 +46,13 @@ export default function RegisterStep2Screen() {
       const refreshToken = response?.data.refreshToken;
       login({ accessToken, refreshToken });
       trackEvent({
-        data: { method: 'email' },
+        data: { flow: 'Authentication', method: 'email' },
         eventName: 'signup_success',
       });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, method: 'email' },
+        data: { error_message: errorResponse.api_error_detail, flow: 'Authentication', method: 'email' },
         eventName: 'signup_failed',
       });
       if (errorResponse.api_error_detail === EMAIL_ALREADY_EXISTS_ERROR_MESSAGE) {
@@ -68,7 +68,7 @@ export default function RegisterStep2Screen() {
 
   return (
     <>
-      <HeaderGoBack title={t('auth.register-step-2.title')} titleProps={{ variant: 'title-1' }} />
+      <HeaderGoBack title={t('auth.register-step-2.title')} titleProps={{ variant: 'title-1' }} hasTopSafeArea />
       <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']} contentContainerClassName='pt-5'>
         <Box className="mb-5 flex-1 gap-5">
           <Box className="flex-row gap-4">

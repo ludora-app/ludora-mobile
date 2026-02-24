@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import { ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { Box, Separator, Wrapper } from '@ludo/ui';
+import { ScrollView as RNScrollView } from 'react-native';
+import { Box, Separator, Wrapper, ScrollView } from '@ludo/ui';
 
 import Loading from '@/components/ui/loading/loading.component';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
@@ -29,10 +29,10 @@ export interface SessionScreenProps {
 }
 
 export default function SessionScreen() {
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<RNScrollView>(null);
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
-  const { data: sessionData, isLoading: isLoadingSessionData } = useGetSessionById(sessionUid);
+  const { data: sessionData, isLoading: isLoadingSessionData, refetch: refetchSessionData } = useGetSessionById(sessionUid);
   const { creator, description, fieldUid, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);
@@ -45,10 +45,9 @@ export default function SessionScreen() {
     <>
       <ScrollView
         ref={scrollViewRef}
+        hasRefreshControl
+        refetch={refetchSessionData}
         className="bg-white"
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-5"
       >
         {/* SECTION 0 : CAROUSEL session */}
@@ -76,7 +75,7 @@ export default function SessionScreen() {
           {/* SECTION 7 : CREATOR */}
           <SessionSectionCreator creator={creator} />
         </Wrapper>
-      </ScrollView>
+      </ScrollView >
       <SessionFooter session={sessionData} scrollViewRef={scrollViewRef} />
     </>
   );

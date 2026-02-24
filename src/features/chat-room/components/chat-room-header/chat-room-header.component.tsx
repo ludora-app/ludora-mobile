@@ -4,6 +4,9 @@ import { useShallow } from 'zustand/react/shallow';
 import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
+import { serialize } from '@/utils/json.utils';
+import ROUTES from '@/constants/routes.constants';
+import { RootStackParamList } from '@/types/routes-params.types';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
 
@@ -14,13 +17,19 @@ const styles = StyleSheet.create({
   },
 });
 
+
+type LocalSearchParamsPrivateInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_PRIVATE];
+type LocalSearchParamsSessionInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_SESSION];
+
 export default function ChatRoomHeader() {
   const router = useRouter();
-  const { imageUrl, name, receiver, type } = useChatRoomStore(
+  const { chatRoomId, imageUrl, name, receiver, sessionUid, type } = useChatRoomStore(
     useShallow(state => ({
+      chatRoomId: state.chatRoomId,
       imageUrl: state.chatRoomInfo?.imageUrl,
       name: state.chatRoomInfo?.name,
       receiver: state.chatRoomInfo?.receiver,
+      sessionUid: state.chatRoomInfo?.sessionData?.sessionUid,
       type: state.chatRoomInfo?.type
     }))
   )
@@ -28,6 +37,32 @@ export default function ChatRoomHeader() {
 
 
   const chatRoomIsGroup = type !== "PRIVATE"
+
+  const handleInfoPress = () => {
+    if (chatRoomIsGroup) {
+      const params: LocalSearchParamsSessionInfoChatRoom = {
+        chatRoomId,
+        imageUrl,
+        name,
+        sessionUid,
+      }
+      router.push({
+        params,
+        pathname: ROUTES.CHAT_ROOM.INFO_SESSION
+      });
+    } else {
+      const params: LocalSearchParamsPrivateInfoChatRoom = {
+        chatRoomId,
+        imageUrl,
+        name,
+        receiver: serialize(receiver),
+      }
+      router.push({
+        params,
+        pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(undefined)
+      });
+    }
+  }
 
 
   return (
@@ -57,7 +92,7 @@ export default function ChatRoomHeader() {
             {name}
           </String>
         </BoxGrow>
-        <Icon name="info-circle-regular" size="lg" color={COLORS.muted} />
+        <Icon name="info-circle-regular" size="lg" color={COLORS.muted} onPress={handleInfoPress} pressEffectSize="xs" />
       </Wrapper>
     </Box>
   );

@@ -1,17 +1,16 @@
 import { useTranslate } from '@tolgee/react';
-import { useLocalSearchParams } from 'expo-router';
 import { Box, Icon, String, WrapperScrollView } from '@ludo/ui';
 
-import { SessionCard } from '@/components/ui/session-card';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
+import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
+import { useCreateSessionStore } from '../store/create-session.store';
 import CreateSessionSubtitle from '../components/create-session-subtitle-component';
-import { CreateSessionStep5ScreenParams } from '../types/create-session-step-5.types';
 
 export default function CreateSessionStep5Screen() {
-  const { sessionUid } = useLocalSearchParams<CreateSessionStep5ScreenParams>();
+  const createdSessionUid = useCreateSessionStore(state => state.createdSessionUid);
   const { t } = useTranslate();
-  const { data: createdSessionData } = useGetSessionById(sessionUid);
+  const { data: createdSessionData, isLoading: isLoadingSession } = useGetSessionById(createdSessionUid);
 
   return (
     <WrapperScrollView contentContainerClassName="pb-10">
@@ -32,7 +31,7 @@ export default function CreateSessionStep5Screen() {
       </Box>
       <Box className="mt-10">
         <CreateSessionSubtitle title={t('create-session.step-5.session_preview_title')} />
-        <SessionCard item={createdSessionData} />
+        {isLoadingSession ? <SessionCardSkeleton /> : <SessionCard item={createdSessionData} />}
       </Box>
     </WrapperScrollView>
   );

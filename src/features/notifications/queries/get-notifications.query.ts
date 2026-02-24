@@ -1,21 +1,10 @@
 import { useNotificationsFindAllInfinite } from '@generatedApi/notifications/notifications.api';
 
-import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
+import { NotificationsFindAllParams } from '@/api/generated/model';
 
-import { useNotificationsFilterStore } from '../stores/notifications-filter.store';
-
-export const useGetNotificationsMe = () => {
-  const filters = useNotificationsFilterStore(state => state.filters);
-
-  const { data, error, isError, ...rest } = useNotificationsFindAllInfinite({
+export const useGetNotificationsMe = (filters: NotificationsFindAllParams) =>
+  useNotificationsFindAllInfinite(filters, {
     query: {
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
   });
-
-  useGetMethodErrorTracking({ error, isError });
-
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
-
-  return { ...rest, items };
-};

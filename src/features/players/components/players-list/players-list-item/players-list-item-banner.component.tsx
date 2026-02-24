@@ -3,10 +3,10 @@ import { BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import COLORS from '@/constants/COLORS';
 import { getSportImage } from '@/utils/sports.utils';
-import { SessionCollectionItemDtoSport, SportPreferenceResponseDataSport } from '@/api/generated/model';
+import { FindAllUsersResponseDataDto } from '@/api/generated/model';
 
 type Props = {
-  commonSports?: SportPreferenceResponseDataSport[];
+  commonSports?: FindAllUsersResponseDataDto["commonSports"];
   isSameCity?: boolean;
 };
 
@@ -17,7 +17,7 @@ export default function PlayersListItemBanner({ commonSports, isSameCity }: Prop
   const commonSportImages = useMemo(
     () =>
       (commonSports ?? []).map(sport => ({
-        image: getSportImage(sport as SessionCollectionItemDtoSport),
+        image: getSportImage(sport),
         sport,
       })),
     [commonSports],

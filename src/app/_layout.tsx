@@ -11,7 +11,7 @@ import MainInitializer from '@/initializers/main.initializer';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 function StorybookHeader() {
-  return <HeaderGoBack className="bg-white pb-3" />;
+  return <HeaderGoBack className="bg-white pb-3" hasTopSafeArea />;
 }
 
 SplashScreen.setOptions({

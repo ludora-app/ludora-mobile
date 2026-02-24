@@ -5,29 +5,21 @@ import { MessageCollectionItemDto } from '@/api/generated/model';
 export type OptimisticMessage = MessageCollectionItemDto & {
   isSending: boolean;
   isError?: boolean;
+  conversationId: string | null;
 };
 
 interface ChatRoomOptimisticMessagesStoreState {
-  /** Map of pending optimistic messages keyed by their temp UID */
   pendingMessages: Record<string, OptimisticMessage>;
 
-  /** Add a new optimistic message to the pending queue */
   addPendingMessage: (message: OptimisticMessage) => void;
 
-  /** Remove a confirmed message from the pending queue */
   removePendingMessage: (tempUid: string) => void;
 
-  /** Update an existing pending message */
   updatePendingMessage: (tempUid: string, updates: Partial<OptimisticMessage>) => void;
 
-  /** Get all pending messages as an array */
   getPendingMessages: () => OptimisticMessage[];
 
-  /** Check if a temp UID is still pending */
   hasPendingMessage: (tempUid: string) => boolean;
-
-  /** Clear all pending messages (used on chat room unmount) */
-  clearPendingMessages: () => void;
 }
 
 export const useChatRoomOptimisticMessagesStore = create<ChatRoomOptimisticMessagesStoreState>((set, get) => ({
@@ -35,8 +27,6 @@ export const useChatRoomOptimisticMessagesStore = create<ChatRoomOptimisticMessa
     set(state => ({
       pendingMessages: { ...state.pendingMessages, [message.uid]: message },
     })),
-
-  clearPendingMessages: () => set({ pendingMessages: {} }),
 
   getPendingMessages: () => Object.values(get().pendingMessages),
 

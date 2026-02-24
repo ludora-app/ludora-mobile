@@ -35,7 +35,7 @@
   "auth.verify-code.resend_verification_code": "Resend a new code",
   "auth.verify-code.resend_verification_code_success": "Done! New code sent.",
   "auth.verify-code.resend_verification_code_timer": "Resend in {timer}s",
-  "auth.verify-code.title": "Check your email",
+  "auth.verify-code.title": "Verification Code",
   "common.apply": "Apply",
   "common.button_back": "Back",
   "common.button_cancel": "Cancel",

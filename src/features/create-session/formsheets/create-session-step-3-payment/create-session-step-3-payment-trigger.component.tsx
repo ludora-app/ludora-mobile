@@ -100,7 +100,6 @@ export default function CreateSessionStep3PaymentFormSheetTrigger() {
         await openPaymentSheet();
       }
     } catch (error: any) {
-      console.log('handlePayment', error);
       if (error.message === 'lol') {
         toast({
           message: 'Vous êtes déjà membre de cet événement',

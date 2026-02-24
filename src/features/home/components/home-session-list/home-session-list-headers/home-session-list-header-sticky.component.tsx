@@ -1,5 +1,4 @@
-import { Wrapper } from '@ludo/ui';
-import { StyleSheet } from 'react-native';
+import { Box } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
 import { FiltersHeader } from '@/components/ui/filters-header';
@@ -7,11 +6,7 @@ import { Filters } from '@/features/filters/filters/store/filters.store';
 import { homeFiltersMapper } from '@/features/home/utils/home-filters-mapper.utils';
 import { useHomeSessionFiltersStore } from '@/features/home/stores/home-sessions-filters.store';
 
-const styles = StyleSheet.create({
-  shadow: {
-    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
-  },
-});
+
 export default function HomeSessionListHeaderSticky() {
   const { t } = useTranslate();
   const setSessionFilter = useHomeSessionFiltersStore(state => state.setFilters);
@@ -32,7 +27,7 @@ export default function HomeSessionListHeaderSticky() {
   };
 
   return (
-    <Wrapper className="rounded-t-xl bg-background py-3" style={styles.shadow}>
+    <Box className="bg-background py-3">
       <FiltersHeader
         numberOfFilters={numberOfFilters}
         source="filter_sessions_all"
@@ -42,6 +37,6 @@ export default function HomeSessionListHeaderSticky() {
         onChangeText={handleInputChange}
         placeholder={t('home.session-list-header.input_placeholder')}
       />
-    </Wrapper>
+    </Box>
   );
 }

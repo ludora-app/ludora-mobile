@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { String, Box } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
-import { String, Wrapper, Box } from '@ludo/ui';
 
 import { DaysCarousel } from '@/components/ui/days-carousel';
 
@@ -24,15 +24,12 @@ function HomeSessionListHeader() {
   return (
     <Box className="gap-5 py-5">
       <DaysCarousel
-        contentContainerClassName="px-4"
         onSelect={handleDateSelect}
         initialDate={dayjs(sessionDateStore)}
       />
-      <Wrapper>
-        <String font="primaryBold" variant="body-sm">
-          {t('home.session_card_header_list_title')}
-        </String>
-      </Wrapper>
+      <String font="primaryBold" variant="body-sm">
+        {t('home.session_card_header_list_title')}
+      </String>
     </Box>
   );
 }

@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { Icon, String, Wrapper } from '@ludo/ui';
+import { Box, Icon, String, Wrapper } from '@ludo/ui';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
+import { IS_ANDROID } from '@/constants/PLATFORM';
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import { usePickImage } from '@/hooks/image-picker.hook';
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
@@ -14,6 +16,7 @@ type LocalSearchParams = RootStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 type ReturnParams = ReturnStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 
 export default function ImagePickerScreen() {
+  const { bottom } = useSafeArea();
   const router = useRouter();
   const { goBackPath } = useLocalSearchParams<LocalSearchParams>();
   const { handlePickImage, images } = usePickImage();
@@ -28,7 +31,7 @@ export default function ImagePickerScreen() {
   }, [images, goBackPath, router]);
 
   return (
-    <>
+    <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
       <FormSheetHeader title="Photo de profil" />
       <Wrapper fill={false} className="gap-4 py-4">
         <TouchableOpacity
@@ -46,6 +49,6 @@ export default function ImagePickerScreen() {
           <String>Gallerie</String>
         </TouchableOpacity>
       </Wrapper>
-    </>
+    </Box>
   );
 }

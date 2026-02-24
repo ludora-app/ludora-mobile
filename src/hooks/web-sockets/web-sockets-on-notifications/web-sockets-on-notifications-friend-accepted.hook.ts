@@ -2,6 +2,7 @@ import {
   useInvalidateFriendsFindMyFriendRequest,
   useInvalidateNotificationsFindAll,
   useInvalidateNotificationsGetUnreadCount,
+  useInvalidateUsersFindAll,
   useInvalidateUsersFindMe,
   useInvalidateUsersFindOne,
 } from '@/api/generated/invalidate-queries';
@@ -18,6 +19,7 @@ export const useWebsocketOnNotificationsFriendAccepted = () => {
   const invalidateUserMe = useInvalidateUsersFindMe();
   const invalidateFriendRequest = useInvalidateFriendsFindMyFriendRequest();
   const invalideUserByUid = useInvalidateUsersFindOne();
+  const invalidateUsersFindAll = useInvalidateUsersFindAll();
 
   const handleNotificationFriendAccepted = (notification: FriendRequestData) => {
     invalideNotificationAll();
@@ -25,6 +27,7 @@ export const useWebsocketOnNotificationsFriendAccepted = () => {
     invalidateUserMe();
     invalidateFriendRequest(notification?.senderUid || '');
     invalideUserByUid(notification?.senderUid || '');
+    invalidateUsersFindAll();
   };
 
   return handleNotificationFriendAccepted;

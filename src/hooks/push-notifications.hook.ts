@@ -37,12 +37,10 @@ export function usePushNotifications() {
 
     initializeNotifications();
 
-    // Setup token refresh handler
+    // Setup token refresh handler (initializer re-registers when fcmToken changes)
     pushNotificationService.onTokenRefresh = (newToken: string) => {
       if (mounted) {
         setFcmToken(newToken);
-        console.log('Token refreshed in hook:', newToken);
-        // TODO: Call your API to update the token on the backend
       }
     };
 

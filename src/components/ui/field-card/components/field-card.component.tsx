@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { cn, ScalePressable } from '@chillui/ui';
+import { useTranslate } from '@tolgee/react';
+import { ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
 import { ImageBackground, Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
 
@@ -7,7 +8,6 @@ import COLORS from '@/constants/COLORS';
 import { getSportImage } from '@/utils/sports.utils';
 import { convertMToKm } from '@/utils/distance.utils';
 import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
-import { useTranslate } from '@tolgee/react';
 
 const styles = StyleSheet.create({
   shadowBlack: {
@@ -31,13 +31,13 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
   const { children, field, onPress, shadowVariant = 'black' } = props;
   const { t } = useTranslate();
 
-  const { fieldImages, name, shortAddress, sport, type, userDistance = 0 } = field || {};
+  const { fieldImages, name, shortAddress, sports, type, userDistance = 0 } = field || {};
 
   const fieldImage = useMemo(() => {
     const customImage = fieldImages?.find(img => img.order === 0)?.url;
     if (customImage) return customImage;
-    return getSportImage(sport);
-  }, [fieldImages, sport]);
+    return getSportImage(sports[0]);
+  }, [fieldImages, sports]);
 
   const handleShadow = useMemo(() => {
     if (shadowVariant === 'black') {

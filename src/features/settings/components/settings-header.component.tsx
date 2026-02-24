@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { useTranslate } from '@tolgee/react'
-import { OutlinedString, Wrapper } from '@chillui/ui'
+import { cn, OutlinedString, Wrapper } from '@chillui/ui'
 
 import COLORS from '@/constants/COLORS'
 import { useSafeArea } from '@/hooks/safe-area.hook'
@@ -10,12 +10,13 @@ type SettingsHeaderProps = {
   titleKey: string
   hasTopSafeArea?: boolean
   hasHorizontalPadding?: boolean
+  className?: string
 }
 
 function SettingsHeader(props: SettingsHeaderProps) {
-  const { hasHorizontalPadding, hasTopSafeArea, titleKey } = props
+  const { className, hasHorizontalPadding, hasTopSafeArea, titleKey } = props
   const { t } = useTranslate()
-  const { top } = useSafeArea()
+  const { safeTop } = useSafeArea()
 
   if (!titleKey) {
     return null
@@ -23,7 +24,7 @@ function SettingsHeader(props: SettingsHeaderProps) {
 
 
   return (
-    <Wrapper px={hasHorizontalPadding ? 'md' : 'none'} className='flex-row items-center z-10 pb-4 gap-2' style={{ paddingTop: hasTopSafeArea ? top + 10 : 0 }}>
+    <Wrapper px={hasHorizontalPadding ? 'md' : 'none'} className={cn('flex-row items-center z-10 pb-4 gap-2', className)} style={{ paddingTop: hasTopSafeArea ? safeTop : 0 }}>
       <GoBackButton />
       <OutlinedString
         text={t(titleKey)}

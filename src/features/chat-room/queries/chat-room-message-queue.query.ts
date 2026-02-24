@@ -1,6 +1,7 @@
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { getConversationsLoadMoreMessagesQueryKey } from '@generatedApi/conversations/conversations.api';
 
+import { useUserMe } from '@/queries/user-me.query';
 import { emit, isConnected } from '@/services/websocket/websocket.client';
 import {
   ConversationCollectionResponseData,
@@ -10,6 +11,7 @@ import {
   MessageDtoType,
   PaginationResponseConversationCollectionResponseData,
   PaginationResponseMessageCollectionItemDto,
+  SenderDto,
 } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../store/chat-room.store';
@@ -61,13 +63,27 @@ export const useChatRoomMessageOptimisticQueue = () => {
   const removePendingMessage = useChatRoomOptimisticMessagesStore(store => store.removePendingMessage);
   const updatePendingMessage = useChatRoomOptimisticMessagesStore(store => store.updatePendingMessage);
   const queryClient = useQueryClient();
+  const { userMe } = useUserMe();
+
+  const currentUserSender: SenderDto | undefined = userMe
+    ? {
+        firstname: userMe.firstname,
+        imageUrl: userMe.imageUrl ?? null,
+        lastname: userMe.lastname,
+        uid: userMe.uid,
+      }
+    : undefined;
 
   const getQueryKey = () => {
     if (!chatRoomId) return undefined;
     return getConversationsLoadMoreMessagesQueryKey(chatRoomId, { limit: 10 });
   };
 
-  const updateConversationListCache = (conversationUid: string, lastMessage: MessageDto) => {
+  const updateConversationListCache = (
+    conversationUid: string,
+    lastMessage: MessageDto,
+    sender: SenderDto | null | undefined,
+  ) => {
     queryClient.setQueriesData<ConversationsInfiniteData>({ queryKey: ['/conversations/list/collection'] }, oldData => {
       if (!oldData || !oldData.pages || oldData.pages.length === 0) return oldData;
 
@@ -89,6 +105,7 @@ export const useChatRoomMessageOptimisticQueue = () => {
         const updatedConversation: ConversationCollectionResponseData = {
           ...foundItem,
           lastMessage,
+          sender: (sender as any) ?? (foundItem as any).sender,
         };
 
         // Insert at the beginning of the first page to move it to the top
@@ -109,14 +126,18 @@ export const useChatRoomMessageOptimisticQueue = () => {
     const currentQueryKey = getQueryKey();
 
     if (chatRoomId) {
-      updateConversationListCache(chatRoomId, {
-        content: messageData.content ?? '',
-        createdAt: new Date().toISOString(),
-        globalStatus: 'FAILED' as MessageDtoGlobalStatus,
-        isSender: true,
-        type: messageData.type,
-        uid: messageUid,
-      });
+      updateConversationListCache(
+        chatRoomId,
+        {
+          content: messageData.content ?? '',
+          createdAt: new Date().toISOString(),
+          globalStatus: 'FAILED' as MessageDtoGlobalStatus,
+          isSender: true,
+          type: messageData.type,
+          uid: messageUid,
+        },
+        currentUserSender,
+      );
     }
 
     if (currentQueryKey) {
@@ -173,17 +194,22 @@ export const useChatRoomMessageOptimisticQueue = () => {
       if (successResponse.conversationUid && !chatRoomId) {
         setChatRoomId(successResponse.conversationUid);
         setChatRoomUserId(null);
+        updatePendingMessage(messageUid, { conversationId: successResponse.conversationUid });
       }
 
       if (successResponse.conversationUid) {
-        updateConversationListCache(successResponse.conversationUid, {
-          content: messageData.content ?? '',
-          createdAt: new Date().toISOString(),
-          globalStatus: MessageDtoGlobalStatus.DELIVERED,
-          isSender: true,
-          type: messageData.type,
-          uid: successResponse.messageUid,
-        });
+        updateConversationListCache(
+          successResponse.conversationUid,
+          {
+            content: messageData.content ?? '',
+            createdAt: new Date().toISOString(),
+            globalStatus: MessageDtoGlobalStatus.DELIVERED,
+            isSender: true,
+            type: messageData.type,
+            uid: successResponse.messageUid,
+          },
+          currentUserSender,
+        );
       }
 
       removePendingMessage(messageUid);
@@ -232,13 +258,14 @@ export const useChatRoomMessageOptimisticQueue = () => {
     const messageUid = `temp-${new Date().getTime()}`;
     const newMessage: OptimisticMessage = {
       content,
+      conversationId: chatRoomId,
       createdAt: new Date().toISOString(),
       globalStatus: MessageCollectionItemDtoGlobalStatus.SENT,
       hasAnyRead: false,
       hasEveryoneRead: false,
       isSender: true,
       isSending: true,
-      sender: {
+      sender: currentUserSender ?? {
         firstname: 'temp-sender',
         imageUrl: 'temp-sender',
         lastname: 'temp-sender',
@@ -252,14 +279,18 @@ export const useChatRoomMessageOptimisticQueue = () => {
     addPendingMessage(newMessage);
 
     if (chatRoomId) {
-      updateConversationListCache(chatRoomId, {
-        content,
-        createdAt: newMessage.createdAt,
-        globalStatus: MessageDtoGlobalStatus.SENT,
-        isSender: true,
-        type,
-        uid: messageUid,
-      });
+      updateConversationListCache(
+        chatRoomId,
+        {
+          content,
+          createdAt: newMessage.createdAt,
+          globalStatus: MessageDtoGlobalStatus.SENT,
+          isSender: true,
+          type,
+          uid: messageUid,
+        },
+        currentUserSender,
+      );
     }
 
     const queryKey = getQueryKey();
@@ -336,14 +367,18 @@ export const useChatRoomMessageOptimisticQueue = () => {
     }
 
     if (chatRoomId) {
-      updateConversationListCache(chatRoomId, {
-        content: failedMessage.content,
-        createdAt: failedMessage.createdAt,
-        globalStatus: MessageDtoGlobalStatus.SENT,
-        isSender: true,
-        type: failedMessage.type as MessageDtoType,
-        uid: tempMessageUid,
-      });
+      updateConversationListCache(
+        chatRoomId,
+        {
+          content: failedMessage.content,
+          createdAt: failedMessage.createdAt,
+          globalStatus: MessageDtoGlobalStatus.SENT,
+          isSender: true,
+          type: failedMessage.type as MessageDtoType,
+          uid: tempMessageUid,
+        },
+        currentUserSender,
+      );
     }
 
     // Re-send the message

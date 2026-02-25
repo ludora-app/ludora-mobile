@@ -64,6 +64,13 @@ const SETTINGS_MENU = {
       label: 'settings.section_shortcuts_friends',
       route: ROUTES.SETTINGS.FRIENDS,
     },
+    {
+      description: 'settings.section_shortcuts_my_fields_description',
+      iconName: "football-field-regular",
+      id: 3,
+      label: 'settings.section_shortcuts_my_fields',
+      route: ROUTES.MY_FIELDS.INDEX,
+    },
     // {
     //   description: 'settings.section_shortcuts_favorites_description',
     //   iconName: 'heart-regular',

@@ -8,6 +8,7 @@ export type AvatarMeProps = StrictOmit<AvatarProps, 'data'>;
 
 export default function AvatarMe(props: AvatarMeProps) {
   const { userMe } = useUserMe();
+  console.log('userMe', userMe);
   const avatarUserData = {
     firstname: userMe.firstname,
     imageUrl: userMe.imageUrl,

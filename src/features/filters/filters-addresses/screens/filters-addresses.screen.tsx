@@ -15,10 +15,11 @@ export default function FiltersAddressesScreen() {
 
   const value = watch('address');
 
+
   return (
     <>
       <FiltersAddressesHeader />
-      <WrapperKeyboardAvoidingView className="mb-5" fill={false}>
+      <WrapperKeyboardAvoidingView className="my-5" fill={false}>
         <FormInput
           control={control}
           name="address"

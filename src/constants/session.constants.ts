@@ -1,4 +1,4 @@
-import { basketballBall, tennisBall, footballBall } from 'assets';
+import { basketballBall, tennisBall, footballBall, paddelBall } from 'assets';
 
 import {
   CreateSessionFromRequestDtoLevel,
@@ -58,6 +58,6 @@ export const GAMEMODES_BY_SPORT = {
 export const SPORT_IMAGES = {
   [SessionCollectionItemDtoSport.BASKETBALL]: basketballBall,
   [SessionCollectionItemDtoSport.FOOTBALL]: footballBall,
-  [SessionCollectionItemDtoSport.PADDEL]: tennisBall,
+  [SessionCollectionItemDtoSport.PADDEL]: paddelBall,
   [SessionCollectionItemDtoSport.TENNIS]: tennisBall,
 } as const;

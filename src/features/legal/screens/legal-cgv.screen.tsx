@@ -9,7 +9,6 @@ import LegalSectionTitle from '../components/legal-section-title.component'
 export default function LegalCgvScreen() {
   return (
     <LegalLayout title="Conditions Générales de Vente" subtitle="En vigueur au 25/02/2026">
-
       {/* Article 1 */}
       <Box className="gap-3">
         <LegalSectionTitle>Article 1 – Champ d&apos;application</LegalSectionTitle>

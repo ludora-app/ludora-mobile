@@ -54,8 +54,8 @@ export default function FilterFooter() {
 
   return (
     <FormSheetFooter hasBottomSafeArea>
-      <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={handleCancel} />
       <Button title={t('filters.apply_button', { activeFilters: numberOfFilters })} size="md" onPress={handleApply} />
+      <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={handleCancel} />
     </FormSheetFooter>
   );
 }

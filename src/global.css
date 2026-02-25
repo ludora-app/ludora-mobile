@@ -50,6 +50,8 @@
   --color-button-warning-content: #000;
   --color-button-white-background: #f5f7fa;
   --color-button-white-content: #000;
+  --color-button-success-background: #2ecc71;
+  --color-button-success-content: #fff;
 
   /* Font Families */
   --font-primary-bold: 'NunitoSans700Bold';

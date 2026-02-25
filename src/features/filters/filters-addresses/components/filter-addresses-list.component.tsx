@@ -9,8 +9,9 @@ import { useGetPlace } from '@/api/hooks/places.hook';
 import useGetUserLocation from '@/hooks/user-location.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
-import { useSearchPlaces } from '../hooks/search-places.hook';
+import { useSearchPlaces } from '../queries/search-places.query';
 import FilterAddressesListHeader from './filter-addresses-list-header.component';
+import FiltersAddressesListEmpty from './filters-addresses-list-empty.component';
 import FilterAddressesResultItem from './filter-addresses-result-item/filter-addresses-result-item.component';
 import { FiltersAddressesReturnParams, FiltersAddressesScreenParams, Places } from '../types/filters-addresses.types';
 import FilterAddressesResultItemSkeleton from './filter-addresses-result-item/filter-addresses-result-item-skeleton.component';
@@ -54,7 +55,7 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
           throw response.error;
         }
       } catch (error) {
-        trackError(error);
+        trackError({ error });
       }
     },
     [searchPlaces, trackError],
@@ -81,7 +82,7 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
         const params: FiltersAddressesReturnParams = { address: serialize(place) };
         router.dismissTo({ params, pathname: goBackPath });
       } catch (error) {
-        trackError(error);
+        trackError({ error });
       } finally {
         setIsFetchingPlaceDetails(false);
       }
@@ -137,6 +138,7 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
       keyboardDismissMode="on-drag"
+      ListEmptyComponent={FiltersAddressesListEmpty}
     />
   );
 }

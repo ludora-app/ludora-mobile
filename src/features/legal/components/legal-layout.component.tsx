@@ -3,9 +3,9 @@ import { ScrollView } from 'react-native'
 import { Box, ScreenLayout, String, Wrapper } from '@ludo/ui'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
-import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component'
 
 import LegalFooter from './legal-footer.component'
+import LegalHeaderComponent from './legal-header.component'
 
 type LegalLayoutProps = PropsWithChildren<{
   title: string
@@ -17,7 +17,7 @@ export default function LegalLayout({ children, subtitle, title }: LegalLayoutPr
 
   return (
     <ScreenLayout>
-      <HeaderGoBack hasTopSafeArea title={title} titleProps={{ variant: "body-2" }} />
+      <LegalHeaderComponent titleKey={title} />
       <ScrollView>
         <Wrapper fill className="bg-background rounded-t-xl z-50 pt-6 gap-6" style={{ paddingBottom: bottom + 40 }}>
           <Box className="items-center gap-1">

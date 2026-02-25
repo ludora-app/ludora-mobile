@@ -47,12 +47,11 @@ export type RootStackParamList = {
     imageUrl: string;
     sessionUid?: string;
   };
-  [ROUTES.CREATE_SESSION.STEP_2_CREATE_FIELD_FORM_SHEET]: {
-    sport: SessionCollectionItemDtoSport;
-    address?: string;
-  };
-  [ROUTES.CREATE_SESSION.STEP_5]: {
+  [ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET]: {
     sessionUid: string;
+  };
+  [ROUTES.MY_FIELDS.ADD]: {
+    sport?: SessionCollectionItemDtoSport;
   };
   [ROUTES.IMAGE_PICKER.INDEX]: {
     goBackPath: RouteValues;

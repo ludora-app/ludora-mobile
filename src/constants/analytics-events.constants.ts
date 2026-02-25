@@ -9,6 +9,10 @@ import {
 type JsonType = string | number | boolean | null | Date | { [key: string]: JsonType } | JsonType[];
 
 export const ANALYTICS_EVENTS = {
+  MY_FIELDS: {
+    ADD_FIELD_FAILED: 'add_field_failed',
+    ADD_FIELD_SUCCESS: 'add_field_success',
+  },
   // Global
   API_SLOW_REQUEST: 'api_slow_request',
 
@@ -48,8 +52,6 @@ export const ANALYTICS_EVENTS = {
   },
 
   CREATE_SESSION: {
-    CREATE_FIELD_FAILED: 'create_field_failed',
-    CREATE_FIELD_SUCCESS: 'create_field_success',
     SESSION_CREATED: 'create_session_completed',
     SESSION_FAILED: 'create_session_failed',
     STEP_1_COMPLETED: 'create_session_step_1_completed',
@@ -163,13 +165,13 @@ export interface AnalyticsEventData {
   // **
   // create session events
   // **
-  [ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_SUCCESS]: {
+  [ANALYTICS_EVENTS.MY_FIELDS.ADD_FIELD_SUCCESS]: {
     sport: string;
   };
-  [ANALYTICS_EVENTS.CREATE_SESSION.SESSION_FAILED]: {
+  [ANALYTICS_EVENTS.MY_FIELDS.ADD_FIELD_FAILED]: {
     error_message: string;
   };
-  [ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_FAILED]: {
+  [ANALYTICS_EVENTS.CREATE_SESSION.SESSION_FAILED]: {
     error_message: string;
   };
   [ANALYTICS_EVENTS.CREATE_SESSION.STEP_1_COMPLETED]: {

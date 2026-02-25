@@ -24,7 +24,6 @@ const ROUTES = {
     INDEX: '/create-session',
     STEP_1: '/create-session/step-1',
     STEP_2: '/create-session/step-2',
-    STEP_2_CREATE_FIELD_FORM_SHEET: '/(root)/create-session/step-2/create-field',
     STEP_2_DURATION_FORM_SHEET: '/create-session/step-2/public-field-duration',
     STEP_3: '/create-session/step-3',
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
@@ -58,6 +57,10 @@ const ROUTES = {
     CGV: '/legal/cgv',
     NON_DISCRIMINATION: '/legal/non-discrimination',
     PRIVACY: '/legal/privacy',
+  },
+  MY_FIELDS: {
+    ADD: '/my-fields/add',
+    INDEX: '/my-fields',
   },
   NOTIFICATIONS: {
     INDEX: '/notifications',

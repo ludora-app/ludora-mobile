@@ -81,7 +81,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
               />
 
               <BoxGrow className="gap-0.5">
-                <String font="primaryExtraBold" variant="body-sm">
+                <String font="primaryExtraBold" variant="body-sm" truncate>
                   {name}
                 </String>
                 {userCity ? (

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { cn, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { Box, BoxRow, Button, IconButton } from '@ludo/ui'
+import { Box, BoxRow, Button } from '@ludo/ui'
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { serialize } from '@/utils/json.utils';
@@ -125,12 +125,14 @@ export default function ProfilSection3User() {
           onPress={handlePressMessage}
           iconProps={{
             className: 'mr-2',
-            color: "#fff",
+            color: COLORS.primary,
             name: "message-text-solid",
             position: "left"
-          }} />
+          }}
+          variant="outlined"
+        />
       </Box>
-      <IconButton iconName='card-to-left-solid' rounded="circle" size="sm" />
+      {/* <IconButton iconName='card-to-left-solid' rounded="circle" size="sm" /> */}
     </BoxRow>
   )
 }

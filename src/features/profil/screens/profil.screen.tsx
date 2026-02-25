@@ -61,7 +61,7 @@ export default function ProfilScreen() {
           <ProfilSection3 isMe={isProfilMe} />
           {/* Section 4 */}
           {isProfilLoading ? <ProfilSection4Skeleton /> :
-            <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} />}
+            <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} isMe={isProfilMe} />}
           {/* Section 5 */}
           <ProfilSection5 />
         </Wrapper>

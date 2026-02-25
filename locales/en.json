@@ -23,7 +23,7 @@
   "auth.register-step-2.title": "Sign up",
   "auth.register.dont_have_an_account": "Do you already have an account? ",
   "auth.register.dont_have_an_account_create_account": "Log in",
-  "auth.register.email_already_exists": "Oops, This email address is already in use.",
+  "auth.register.email_already_exists": "Oops ! this email address is already in use.",
   "auth.reset-password.description": "No worries, it happens even to the best of us!\nEnter your account email address so we can help you.",
   "auth.reset-password.input_email_placeholder": "Your account email address",
   "auth.reset-password.title": "Forgot your password?",

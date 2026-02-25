@@ -1,6 +1,9 @@
-import { StyleSheet } from 'react-native'
+import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
-import { BoxCenter, BoxRowCenter, String } from '@ludo/ui'
+import { BoxRowCenter, String } from '@ludo/ui'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+
+import ROUTES from '@/constants/routes.constants';
 
 const styles = StyleSheet.create({
   shadow: {
@@ -9,28 +12,30 @@ const styles = StyleSheet.create({
 })
 
 interface ProfilSection4Props {
+  isMe: boolean;
   friendsCount: number;
   matchesCount: number;
 }
 
 export default function ProfilSection4(props: ProfilSection4Props) {
+  const router = useRouter();
   const { t } = useTranslate();
-  const { friendsCount, matchesCount } = props;
+  const { friendsCount, isMe, matchesCount } = props;
 
   return (
     <BoxRowCenter className='items-center justify-around p-2 rounded-xl bg-white' style={styles.shadow}>
-      <BoxCenter>
+      <TouchableOpacity className='items-center justify-center' onPress={() => router.push(ROUTES.SETTINGS.FRIENDS)} disabled={!isMe}>
         <String font="primaryBold">{friendsCount || 0}</String>
         <String font="primarySemiBold" variant="body-sm" colorVariant="muted">{t('common.friends')}</String>
-      </BoxCenter>
-      <BoxCenter>
+      </TouchableOpacity>
+      <TouchableOpacity className='items-center justify-center' onPress={() => router.push(ROUTES.SETTINGS.HISTORY)} disabled={!isMe}>
         <String font="primaryBold">{matchesCount || 0}</String>
         <String font="primarySemiBold" variant="body-sm" colorVariant="muted">{t('common.matches')}</String>
-      </BoxCenter>
-      <BoxCenter>
+      </TouchableOpacity>
+      {/* <BoxCenter>
         <String font="primaryBold">0</String>
         <String font="primarySemiBold" variant="body-sm" colorVariant="muted">{t('common.mvp')}</String>
-      </BoxCenter>
+      </BoxCenter> */}
     </BoxRowCenter>
   )
 }

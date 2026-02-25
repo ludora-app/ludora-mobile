@@ -116,6 +116,9 @@ function FilterLocation(props: FilterLocationProps) {
             name: 'gps-location-regular',
             position: 'left-outside',
           }}
+          loaderProps={{
+            color: "#000"
+          }}
           size="sm"
         />
       </Box>

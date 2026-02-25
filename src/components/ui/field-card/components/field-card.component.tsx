@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
-import { ImageBackground, Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
+import { ImageBackground, Box, Chip, Icon, String, BoxRow, Image } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
@@ -22,16 +22,22 @@ const styles = StyleSheet.create({
 });
 
 interface FieldCardProps {
+  showType?: boolean;
+  showSport?: boolean;
   onPress?: () => void;
   field: FieldResponseDto;
   shadowVariant?: 'primary' | 'black' | 'secondary';
 }
 
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
-  const { children, field, onPress, shadowVariant = 'black' } = props;
+  const { children, field, onPress, shadowVariant = 'black', showSport, showType } = props;
   const { t } = useTranslate();
 
   const { fieldImages, name, shortAddress, sports, type, userDistance = 0 } = field || {};
+
+  const mainSport = useMemo(() => sports[0], [sports]);
+
+  const mainSportImage = useMemo(() => getSportImage(mainSport), [mainSport]);
 
   const fieldImage = useMemo(() => {
     const customImage = fieldImages?.find(img => img.order === 0)?.url;
@@ -66,9 +72,14 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
     <Box style={handleShadow} className="rounded-xl">
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
-          {type === FieldResponseDtoType.PUBLIC && (
-            <Chip title={t(`common.field_type_${type}`)} size="2xs" className="mt-2 mr-2 ml-auto" />
-          )}
+          <BoxRow className="mt-2 mr-2 ml-auto gap-2 items-center">
+            {type === FieldResponseDtoType.PUBLIC && showType && (
+              <Chip title={t(`common.field_type_${type}`)} size="2xs" />
+            )}
+            {showSport && (
+              <Image source={mainSportImage} contentFit="cover" className="size-6" />
+            )}
+          </BoxRow>
         </ImageBackground>
       </Box>
       <Box className="overflow-hidden rounded-b-xl bg-white">

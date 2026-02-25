@@ -190,7 +190,20 @@ function AppLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
+      {/* My fields screens */}
+      <Stack.Screen
+        name="my-fields/add"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
     </Stack>
+
   );
 }
 

@@ -19,18 +19,6 @@ function CreateSessionLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
-      <Stack.Screen
-        name="step-2/create-field"
-        options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: "fitToContents",
-          sheetCornerRadius: 12,
-        }}
-      />
     </Stack>
   );
 }
@@ -38,7 +26,7 @@ function CreateSessionLayoutNav() {
 export default function CreateSessionLayout() {
   const segments = useSegments()
 
-  const isSheetOpen = segments.some(s => s === 'create-field' || s === 'public-field-duration' || s === 'filters-addresses') && IS_ANDROID
+  const isSheetOpen = segments.some(s => s === 'public-field-duration' || s === 'filters-addresses') && IS_ANDROID
   return (
     <>
       <CreateSessionHeader />

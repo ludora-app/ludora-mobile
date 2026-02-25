@@ -4,35 +4,32 @@ import { useForm } from 'react-hook-form'
 import { useTranslate } from '@tolgee/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { Box, BoxRow, Button, FormInput, Icon, String, WrapperGestureHandlerScrollView } from '@ludo/ui'
+import { BoxRow, Button, FormInput, Icon, String, WrapperGestureHandlerScrollView } from '@ludo/ui'
 
 import ROUTES from '@/constants/routes.constants'
 import COLORS from '@/constants/colors.contstants'
 import { ErrorResponse } from '@/api/orval.instance'
-import { IS_ANDROID } from '@/constants/platform.constants'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { RootStackParamList } from '@/types/routes-params.types'
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants'
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component'
 import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component'
 
-import { useAddField } from '../../queries/add-field.query'
-import { CreateFieldSchema, createFieldSchema } from '../../schemas/create-field.schema'
-import CreateFieldImages from '../../components/create-field/create-field-images.component'
-import CreateFieldAddress from '../../components/create-field/create-field-address.component'
+import { useAddField } from '../queries/add-field.query'
+import AddFieldImages from '../components/add-field/add-field-images.component'
+import AddFieldAddress from '../components/add-field/add-field-address.component'
+import { CreateFieldSchema, createFieldSchema } from '../schemas/create-field.schema'
+import AddFieldSportSelector from '../components/add-field/add-field-sport-selector.component'
 
-type LocalSearchParams = RootStackParamList[typeof ROUTES.CREATE_SESSION.STEP_2_CREATE_FIELD_FORM_SHEET]
+type LocalSearchParams = RootStackParamList[typeof ROUTES.MY_FIELDS.ADD]
 
-export default function CreateFieldFormSheet() {
-  const { sport } =
-    useLocalSearchParams<LocalSearchParams>()
-  const { t } = useTranslate()
+export default function MyFieldsAddFormSheet() {
   const router = useRouter()
+  const { t } = useTranslate()
   const { toast } = useToast()
   const { trackError, trackEvent } = useAnalytics()
-  const { isPending, mutateAsync: createField } = useAddField()
-
-  const { control, handleSubmit, setValue } = useForm<CreateFieldSchema>({
+  const { sport } = useLocalSearchParams<LocalSearchParams>()
+  const { control, handleSubmit, setValue, watch } = useForm<CreateFieldSchema>({
     defaultValues: {
       address: '',
       images: [],
@@ -43,19 +40,25 @@ export default function CreateFieldFormSheet() {
     mode: 'onChange',
     resolver: zodResolver(createFieldSchema),
   })
+  const { isPending: isAddingField, mutateAsync: createField } = useAddField()
 
   useEffect(() => {
     if (!sport) return
     setValue('sports', [sport])
   }, [sport, setValue])
 
+  const sports = watch('sports')
+
+  const showSportSelector = sports.length === 0
   const onSubmit = async (data: CreateFieldSchema) => {
     try {
-      const images = data.images.map((image) => ({
-        file: image.file,
+      const images = data.images.map(image => ({
         name: image.name,
         order: image.order,
-      })) as unknown as Blob[];
+        type: image.type,
+        uri: image.uri,
+      })) as unknown as Blob[]
+
       await createField({
         address: data.address,
         images,
@@ -67,7 +70,7 @@ export default function CreateFieldFormSheet() {
       })
       trackEvent({
         data: { sport: data.sports[0] },
-        eventName: ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_SUCCESS,
+        eventName: ANALYTICS_EVENTS.MY_FIELDS.ADD_FIELD_SUCCESS,
       })
       toast({
         message: t('create-session.create-field.success', 'Terrain ajouté avec succès'),
@@ -75,8 +78,8 @@ export default function CreateFieldFormSheet() {
       })
       router.back()
     } catch (error) {
-      const errorResponse = error as ErrorResponse;
-      const addressAlreadyExists = errorResponse.api_error_status === 409;
+      const errorResponse = error as ErrorResponse
+      const addressAlreadyExists = errorResponse.api_error_status === 409
 
       if (addressAlreadyExists) {
         toast({
@@ -86,7 +89,7 @@ export default function CreateFieldFormSheet() {
       }
       trackEvent({
         data: { error_message: errorResponse.api_error_detail },
-        eventName: ANALYTICS_EVENTS.CREATE_SESSION.CREATE_FIELD_FAILED,
+        eventName: ANALYTICS_EVENTS.MY_FIELDS.ADD_FIELD_FAILED,
       })
       if (!addressAlreadyExists) {
         trackError({ error })
@@ -94,47 +97,47 @@ export default function CreateFieldFormSheet() {
     }
   }
 
+
   return (
-    <Box collapsable={false} className="flex-1">
-      <FormSheetHeader title={t('create-session.create-field.title')} />
-      <WrapperGestureHandlerScrollView contentContainerClassName="gap-5 pb-8">
-        <Box className="mt-4 gap-5">
-          <FormInput
-            control={control}
-            name="name"
-            placeholder={t('create-session.create-field.name_placeholder')}
-            label={t('create-session.create-field.name_label')}
-            hasErrorTranslation
+    <>
+      <FormSheetHeader title={t('my-fields.add.title')} hasGoBack />
+      <WrapperGestureHandlerScrollView fill={false} contentContainerClassName="gap-5 py-5">
+        {showSportSelector && (
+          <AddFieldSportSelector
+            setValue={setValue}
+            selectedSports={sports}
           />
-          <CreateFieldAddress
-            control={control}
-            name="address"
-          />
-
-          <CreateFieldImages control={control} name="images" />
-
-          <BoxRow className="bg-primary/10 items-center gap-3 rounded-lg p-3">
-            <Icon name="warning-solid" size="md" color={COLORS.primary} />
-            <String className="flex-1" variant="body-sm">
-              {t('create-session.create-field.validation_notice')}
-            </String>
-          </BoxRow>
-        </Box>
+        )}
+        <FormInput
+          control={control}
+          name="name"
+          placeholder={t('create-session.create-field.name_placeholder')}
+          label={t('create-session.create-field.name_label')}
+          hasErrorTranslation
+        />
+        <AddFieldAddress control={control} name="address" goBackPath={ROUTES.MY_FIELDS.ADD} />
+        <AddFieldImages control={control} name="images" />
+        <BoxRow className="bg-primary/10 items-center gap-3 rounded-lg p-3">
+          <Icon name="warning-solid" size="md" color={COLORS.primary} />
+          <String className="flex-1" variant="body-sm">
+            {t('create-session.create-field.validation_notice')}
+          </String>
+        </BoxRow>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
+      <FormSheetFooter hasBottomSafeArea>
         <Button
           title={t('common.add')}
-          size="md"
           onPress={handleSubmit(onSubmit)}
-          isLoading={isPending}
+          isLoading={isAddingField}
+          size="md"
         />
         <Button
           title={t('common.button_cancel')}
           variant="outlined"
+          onPress={router.back}
           size="md"
-          onPress={() => router.back()}
         />
       </FormSheetFooter>
-    </Box>
+    </ >
   )
 }

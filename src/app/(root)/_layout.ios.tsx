@@ -192,6 +192,18 @@ function AppLayoutNav() {
       />
       {/*------------------------*/}
 
+      {/* My fields screens */}
+      <Stack.Screen
+        name="my-fields/add"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          presentation: 'modal',
+          sheetCornerRadius: 12,
+        }}
+      />
+
       <Stack.Screen
         name="chat-room/[chatRoomId]/message-actions/[messageId]/index"
         options={{

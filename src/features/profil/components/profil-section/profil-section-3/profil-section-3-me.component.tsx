@@ -11,7 +11,9 @@ export default function ProfilSection3Me() {
       <Link href={ROUTES.PROFIL.EDIT} asChild>
         <Button title={t('profil.edit_my_profile_button_title')} className='flex-1' size="sm" />
       </Link>
-      <Button title={t('profil.share_my_profile_button_title')} className='flex-1' size="sm" />
+      <Link href={ROUTES.MY_FIELDS.INDEX} asChild>
+        <Button title={t('profil.see_my_fields_button_title')} className='flex-1' size="sm" variant="outlined" />
+      </Link>
     </BoxRow>
   )
 }

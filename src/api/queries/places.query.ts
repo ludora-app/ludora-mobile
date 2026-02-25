@@ -26,7 +26,6 @@ export const POST = async ({ input, queryCountries = ['FR'] }: PostPlacesParams)
       json: requestData,
     })
     .json<PlacesResponse>();
-
   return data;
 };
 

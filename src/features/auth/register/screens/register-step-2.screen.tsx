@@ -1,10 +1,12 @@
 import { z } from 'zod';
+import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { Box, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { String, Button, FormInput, WrapperKeyboardAwareScrollView } from '@ludo/ui';
 
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { NAME_REGEX } from '@/utils/zod-schemas.utils';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
@@ -18,6 +20,7 @@ import { formSchema } from '../schemas/register-step-2.schema';
 const EMAIL_ALREADY_EXISTS_ERROR_MESSAGE = 'User already exists';
 
 export default function RegisterStep2Screen() {
+  const router = useRouter();
   const { isPending: registerPending, mutateAsync: registerUser } = useRegister();
   const { t } = useTranslate();
   const { login } = useAuthHelpers();
@@ -125,22 +128,45 @@ export default function RegisterStep2Screen() {
             isLoading={registerPending}
           />
         </Box >
-
-        <String size="sm" useFastText={false}>
+        <String size="sm" useFastText={false} onPress={() => { }}>
           {t('auth.register-step-2.acceptance_part_1')}
-          <String size="sm" useFastText={false} font="primaryBold" className="underline">
+          <String
+            size="sm"
+            useFastText={false}
+            font="primaryBold"
+            className="underline"
+            onPress={() => router.push(ROUTES.LEGAL.CGU_MENTIONS)}
+          >
             {t('auth.register-step-2.acceptance_part_2')}
           </String>
           {t('auth.register-step-2.acceptance_part_3')}
-          <String size="sm" useFastText={false} font="primaryBold" className="underline">
+          <String
+            size="sm"
+            useFastText={false}
+            font="primaryBold"
+            className="underline"
+            onPress={() => router.push(ROUTES.LEGAL.CGV)}
+          >
             {t('auth.register-step-2.acceptance_part_4')}
           </String>
           {t('auth.register-step-2.acceptance_part_5')}
-          <String size="sm" useFastText={false} font="primaryBold" className="underline">
+          <String
+            size="sm"
+            useFastText={false}
+            font="primaryBold"
+            className="underline"
+            onPress={() => router.push(ROUTES.LEGAL.CGU_MENTIONS)}
+          >
             {t('auth.register-step-2.acceptance_part_6')}
           </String>
           {t('auth.register-step-2.acceptance_part_7')}
-          <String size="sm" useFastText={false} font="primaryBold" className="underline">
+          <String
+            size="sm"
+            useFastText={false}
+            font="primaryBold"
+            className="underline"
+            onPress={() => router.push(ROUTES.LEGAL.PRIVACY)}
+          >
             {t('auth.register-step-2.acceptance_part_8')}
           </String>
         </String>

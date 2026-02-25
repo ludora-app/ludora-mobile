@@ -269,7 +269,7 @@ fs.readdir('./tools/svg-2-obj/svg', function (err, files) {
   // export const ICONS: TIcon = iconObj as const
 
   fs.writeFileSync(
-    './src/constants/ICONS.ts',
+    './src/constants/icons.constants.ts',
     `import type { TIconName as TIconNameChillUi } from '@chillui/ui';
 
 export const ICONS = ${iconObj} as const;

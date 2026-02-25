@@ -53,6 +53,11 @@ const ROUTES = {
     INDEX: '/invite-friends',
     INDEX_UID: (sessionUid: string) => `/invite-friends/${sessionUid}`,
   },
+  LEGAL: {
+    CGU_MENTIONS: '/legal/cgu-mentions',
+    CGV: '/legal/cgv',
+    PRIVACY: '/legal/privacy',
+  },
   NOTIFICATIONS: {
     INDEX: '/notifications',
   },
@@ -86,8 +91,6 @@ const ROUTES = {
     INDEX: '/settings',
     PLANNING: '/settings/planning',
     PREFERENCES: '/settings/preferences',
-    PRIVACY_POLICY: '/settings/privacy-policy',
-    TERMS: '/settings/terms',
   },
   TABS: {
     INDEX: '/(tabs)',

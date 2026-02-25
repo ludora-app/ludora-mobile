@@ -59,7 +59,7 @@ const SETTINGS_MENU = {
     },
     {
       description: 'settings.section_shortcuts_friends_description',
-      iconName: 'user-add-solid',
+      iconName: 'user-add-regular',
       id: 2,
       label: 'settings.section_shortcuts_friends',
       route: ROUTES.SETTINGS.FRIENDS,
@@ -86,14 +86,21 @@ const SETTINGS_MENU = {
       iconName: 'info-circle-regular',
       id: 1,
       label: 'settings.section_legal_terms',
-      route: ROUTES.SETTINGS.TERMS,
+      route: ROUTES.LEGAL.CGU_MENTIONS,
+    },
+    {
+      description: 'Consulte nos conditions générales de vente',
+      iconName: 'document-text-2-regular',
+      id: 2,
+      label: 'Conditions Générales de Vente',
+      route: ROUTES.LEGAL.CGV,
     },
     {
       description: 'settings.section_legal_privacy_description',
-      iconName: 'share-regular',
-      id: 2,
+      iconName: "document-normal-regular",
+      id: 3,
       label: 'settings.section_legal_privacy',
-      route: ROUTES.SETTINGS.PRIVACY_POLICY,
+      route: ROUTES.LEGAL.PRIVACY,
     }
   ],
 } as const satisfies Record<string, TSettingsMenuItem[]>

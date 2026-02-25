@@ -1,11 +1,11 @@
-import { Box } from '../../box';
 import { ViewStyle } from 'react-native';
-import { LoadingIndicatorsProps } from '../../../types';
-import { AnimatedBox } from '../../animatedBox';
 
+import { Box } from '../../box';
 import { stagger } from '../utils/utils';
+import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
+import { LoadingIndicatorsProps } from '../../../types';
 
 /**
  * CircleFade loading indicator component.

@@ -1,6 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useReducer } from 'react';
 
+import { useAnalytics } from './analytics-trackers.hook';
+
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => Promise<void>];
 
 function useAsyncState<T>(initialValue: [boolean, T | null] = [true, null]): UseStateHook<T> {
@@ -26,6 +28,7 @@ export async function setStorageItemAsync(key: string, value: string | null) {
 }
 
 export function useSecureStorageState(key: string): UseStateHook<string> {
+  const { trackError } = useAnalytics();
   const [state, setState] = useAsyncState<string>();
 
   useEffect(() => {
@@ -54,10 +57,10 @@ export function useSecureStorageState(key: string): UseStateHook<string> {
       try {
         await setStorageItemAsync(key, value);
       } catch (error) {
-        console.error(`Failed to set storage item for key "${key}":`, error);
+        trackError({ error, showToast: false });
       }
     },
-    [key, setState],
+    [key, setState, trackError],
   );
 
   return [state, setValue];

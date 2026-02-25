@@ -1,5 +1,5 @@
-import { Switch } from 'react-native';
 import { useEffect, useState } from 'react';
+import { Switch, View } from 'react-native';
 
 import { ToggleProps } from '../../../types';
 import { cn, isUndefined } from '../../../utils';
@@ -59,23 +59,23 @@ export function Toggle(props: ToggleProps) {
   };
 
   return (
-    <Switch
-      thumbColor={
-        internalValue
-          ? (thumbColorOn ?? toggleDefaultProps.thumbColorOn)
-          : (thumbColorOff ?? toggleDefaultProps.thumbColorOff)
-      }
-      trackColor={{
-        false: trackColorOff ?? toggleDefaultProps.trackColorOff,
-        true: trackColorOn ?? toggleDefaultProps.trackColorOn,
-      }}
-      ios_backgroundColor={trackColorOff}
-      onValueChange={handleChange}
-      value={internalValue}
-      disabled={isLoading || isDisabled}
-      className={cn(toggleTv({ size }), className)}
-      style={style}
-    />
+    <View className={cn(toggleTv({ size }), className)} style={style}>
+      <Switch
+        disabled={isLoading || isDisabled}
+        ios_backgroundColor={trackColorOff}
+        onValueChange={handleChange}
+        thumbColor={
+          internalValue
+            ? (thumbColorOn ?? toggleDefaultProps.thumbColorOn)
+            : (thumbColorOff ?? toggleDefaultProps.thumbColorOff)
+        }
+        trackColor={{
+          false: trackColorOff ?? toggleDefaultProps.trackColorOff,
+          true: trackColorOn ?? toggleDefaultProps.trackColorOn,
+        }}
+        value={internalValue}
+      />
+    </View>
   );
 }
 

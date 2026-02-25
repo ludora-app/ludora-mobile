@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import {
   CreateSportPreferenceData,
   CreateSportPreferenceDto,
+  SportPreferenceResponseData,
   SportPreferenceResponseDataLevel,
 } from '@/api/generated/model';
 
@@ -15,7 +16,7 @@ type PreferencesLevelData = CreateSportPreferenceData['level'];
 type PreferencesSport = CreateSportPreferenceData['sport'];
 
 type SettingsPreferencesState = CreateSportPreferenceDto & {
-  initialize: (sportPrefs: any[]) => void;
+  initialize: (sportPrefs: readonly SportPreferenceResponseData[]) => void;
   removeSportPreference: (sport: PreferencesSport) => void;
   setSportPreference: (sport: PreferencesSport, level: PreferencesLevelData) => void;
   toggleGameMode: (sport: PreferencesSport, gameMode: PreferencesGameModeData) => void;

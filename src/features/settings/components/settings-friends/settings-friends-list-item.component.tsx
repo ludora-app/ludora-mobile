@@ -2,11 +2,11 @@ import { useRouter } from 'expo-router'
 import { Pressable } from 'react-native'
 import { Avatar, Box, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui'
 
-import COLORS from '@/constants/colors.contstants'
 import { serialize } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
-import { FindOneConversationResponseDataType, FriendResponseData } from '@/api/generated/model'
+import COLORS from '@/constants/colors.contstants'
 import { RootStackParamList } from '@/types/routes-params.types'
+import { FindOneConversationResponseDataType, FriendResponseData } from '@/api/generated/model'
 
 type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
 

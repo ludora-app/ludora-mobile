@@ -4,8 +4,9 @@ import { cn, ScalePressable } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
+import { CreateSessionStep1Part4ItemProps } from '@/features/create-session/types/create-session-step-1-part-4.types';
 
-import { CreateSessionStep1Part4ItemProps } from './create-session-step-1-part-4.component';
+
 
 export default function CreateSessionStep1Part4Item(props: CreateSessionStep1Part4ItemProps) {
   const { t } = useTranslate();

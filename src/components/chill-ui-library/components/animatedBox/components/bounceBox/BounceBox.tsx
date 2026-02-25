@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useImperativeHandle, forwardRef, PropsWithChildren } from 'react';
-import {
-  createAnimatedComponent,
+import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
@@ -12,9 +11,7 @@ import {
 
 import type { BounceBoxProps, BounceBoxRef } from '../../../../types';
 
-import { Box } from '../../../box/components/Box';
 
-const AnimatedBox = createAnimatedComponent(Box);
 
 const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((props, ref) => {
   const {
@@ -41,6 +38,7 @@ const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((p
         }
       }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bounceHeight, duration, onBounce]);
 
   const startAnimation = useCallback(() => {
@@ -59,11 +57,13 @@ const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((p
     } else {
       triggerSingleBounce();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [infiniteLoop, bounceHeight, duration, bounceInterval, triggerSingleBounce]);
 
   const stopAnimation = useCallback(() => {
     cancelAnimation(translateY);
     translateY.value = withTiming(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useImperativeHandle(
@@ -89,9 +89,9 @@ const BounceBox = forwardRef<BounceBoxRef, PropsWithChildren<BounceBoxProps>>((p
   }));
 
   return (
-    <AnimatedBox className={className} style={[animatedStyle, style]} {...rest}>
+    <Animated.View className={className} style={[animatedStyle, style]} {...rest}>
       {children}
-    </AnimatedBox>
+    </Animated.View>
   );
 });
 

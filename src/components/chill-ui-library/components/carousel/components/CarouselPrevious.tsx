@@ -1,11 +1,11 @@
-import { cn } from '../../../utils';
-import { Box } from '../../box';
 import { Pressable } from 'react-native';
 import { PropsWithChildren } from 'react';
-import { Icon } from '../../icon';
-import { CarouselButtonProps } from '../../../types';
 
+import { Box } from '../../box';
+import { Icon } from '../../icon';
+import { cn } from '../../../utils';
 import { useCarousel } from './CarouselContext';
+import { CarouselButtonProps } from '../../../types';
 import { twStyles } from '../styles/Carousel.styles';
 import { carouselDefaultProps } from '../utils/defaultProps';
 

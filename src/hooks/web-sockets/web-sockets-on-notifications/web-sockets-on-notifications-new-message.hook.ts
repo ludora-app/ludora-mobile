@@ -1,13 +1,8 @@
-import { InfiniteData } from '@tanstack/react-query';
-
-import { PaginationResponseMessageCollectionItemDto } from '@/api/generated/model';
 import {
   useInvalidateConversationsFindAllByUserUid,
   useInvalidateConversationsHasUnreadMessages,
   useInvalidateConversationsLoadMoreMessages,
 } from '@/api/generated/invalidate-queries';
-
-type MessagesInfiniteData = InfiniteData<PaginationResponseMessageCollectionItemDto>;
 
 type TWebSocketMessageNewMessage = {
   conversationUid: string;

@@ -3,9 +3,9 @@ import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 import { Button, ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 
-import { TIconsAll } from '@/constants/icons.constants'
 import ROUTES from '@/constants/routes.constants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
+import { TIconsAll } from '@/constants/icons.constants'
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook'
 
 import SettingsHeader from '../components/settings-header.component'

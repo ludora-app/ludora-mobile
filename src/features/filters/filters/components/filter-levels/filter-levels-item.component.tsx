@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Pressable } from 'react-native';
+import { BounceBox, cn } from '@chillui/ui';
 import { Box, Icon, String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
-import { BounceBox, cn } from '@/components/chill-ui-library';
 import { SESSION_LEVEL_TYPE } from '@/constants/session.constants';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';

@@ -1,11 +1,11 @@
-import { cn } from '../../../utils';
-import { Box } from '../../box';
-import { SegmentedControlPanelSliderContentProps } from '../../../types';
 import { FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { PropsWithChildren, useMemo, useRef, useEffect, useState, cloneElement } from 'react';
 
+import { Box } from '../../box';
+import { cn } from '../../../utils';
 import { twStyles } from '../styles/SegmentedControl.styles';
 import { SegmentedControlPanel } from './SegmentedControlPanel';
+import { SegmentedControlPanelSliderContentProps } from '../../../types';
 import { useSegmentedControlState, useSegmentedControlActions } from '../context/SegmentedControlContext';
 
 export function SegmentedControlPanelSliderContent(

@@ -2,17 +2,13 @@ import { useTranslate } from '@tolgee/react';
 import { FadeIn } from 'react-native-reanimated';
 import { BoxRow, ReanimatedBox } from '@ludo/ui';
 
-import { TIconsAll } from '@/constants/icons.constants';
 import { CreateSessionFromRequestDtoVisibility } from '@/api/generated/model';
+import { CreateSessionStep1Part4ItemProps } from '@/features/create-session/types/create-session-step-1-part-4.types';
 
 import CreateSessionSubtitle from '../../../create-session-subtitle-component';
 import CreateSessionStep1Part4Item from './create-session-step-1-part-4-item.component';
 
-export type CreateSessionStep1Part4ItemProps = {
-  id: number;
-  icon: TIconsAll;
-  visibility: CreateSessionFromRequestDtoVisibility;
-};
+
 
 const items: CreateSessionStep1Part4ItemProps[] = [
   {

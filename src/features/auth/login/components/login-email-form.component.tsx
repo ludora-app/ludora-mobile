@@ -46,13 +46,13 @@ export default function LoginEmailForm() {
         refreshToken: response.data.refreshToken,
       });
       trackEvent({
-        data: { method: 'email' },
+        data: { flow: 'Authentication', method: 'email' },
         eventName: 'login_success',
       });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, method: 'email' },
+        data: { error_message: errorResponse.api_error_detail, flow: 'Authentication', method: 'email' },
         eventName: 'login_failed',
       });
       if (Object.values(LOGIN_ERRORS).includes(errorResponse.api_error_detail)) {

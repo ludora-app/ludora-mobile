@@ -4,7 +4,6 @@ import {
   NumericAddInput,
   NumericInput as NumericInputChillUi,
   NumericRemoveInput,
-  ScalePressable,
 } from '@chillui/ui';
 
 import { Box } from '../box';

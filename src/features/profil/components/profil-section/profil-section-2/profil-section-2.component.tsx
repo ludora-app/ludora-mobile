@@ -2,8 +2,8 @@ import { Pressable } from 'react-native'
 import { useTranslate } from '@tolgee/react';
 import { Icon, Link, String } from '@ludo/ui';
 
-import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 
 interface ProfilSesion2Props {
   bio: string

@@ -1,8 +1,8 @@
-import { cn, Slot } from '../../../utils';
-import { Box } from '../../box';
 import { PropsWithChildren } from 'react';
-import { SegmentedControlPanelProps } from '../../../types';
 
+import { Box } from '../../box';
+import { cn, Slot } from '../../../utils';
+import { SegmentedControlPanelProps } from '../../../types';
 import { twStyles } from '../styles/SegmentedControl.styles';
 import { useSegmentedControlState } from '../context/SegmentedControlContext';
 

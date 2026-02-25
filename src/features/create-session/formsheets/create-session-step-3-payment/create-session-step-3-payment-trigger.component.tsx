@@ -9,9 +9,9 @@ import StripeProvider from '@/providers/stripe.provider';
 
 export default function CreateSessionStep3PaymentFormSheetTrigger() {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const [isLoading, setIsLoading] = useState(false);
-  const amount = 10;
-  const connectedAccountId = 'connectedAccountId';
+  const [, setIsLoading] = useState(false);
+  // const amount = 10;
+  // const connectedAccountId = 'connectedAccountId';
   const { toast } = useToast();
 
   const openPaymentSheet = async () => {
@@ -29,7 +29,6 @@ export default function CreateSessionStep3PaymentFormSheetTrigger() {
         // navigation.navigate(ROUTES.partyScreenJoinConfirmation);
       }
     } catch (error: any) {
-      console.log('openPaymentSheet', error);
       if (error.code !== 'Canceled') {
         toast({
           message: 'Une erreur est survenue lors du paiement',

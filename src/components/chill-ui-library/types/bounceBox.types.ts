@@ -1,4 +1,4 @@
-import { AnimatedBoxProps } from './animatedBox.types';
+import { ViewProps, ViewStyle } from 'react-native';
 
 /**
  * Props for the BounceBox component.
@@ -7,7 +7,7 @@ import { AnimatedBoxProps } from './animatedBox.types';
  * Can be triggered manually or automatically at specified intervals.
  *
  */
-export interface BounceBoxProps extends AnimatedBoxProps {
+export interface BounceBoxProps extends ViewProps {
   /** Duration of the bounce animation in milliseconds. */
   duration?: number;
 
@@ -25,6 +25,12 @@ export interface BounceBoxProps extends AnimatedBoxProps {
 
   /** Whether to loop the animation infinitely. */
   infiniteLoop?: boolean;
+
+  /** Class name for the component. */
+  className?: string;
+
+  /** Style for the component. */
+  style?: ViewStyle;
 }
 
 /**

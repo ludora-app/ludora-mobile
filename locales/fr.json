@@ -50,6 +50,8 @@
   "chat-room.info_session_details": "Détails de la session",
   "chat-room.info_session_see_members": "Voir les membres",
   "chat-room.info_session_teams": "Équipes",
+  "chat.conversation_list_item_last_message_deleted.message_deleted": "Le message a été supprimé",
+  "chat.conversation_list_item_last_message_deleted.you_deleted_message": "Tu as supprimé ce message",
   "chat.info_private_title": "Infos",
   "chat.info_session_title": "Infos session",
   "chat.list_empty_title": "Envoyer un message",

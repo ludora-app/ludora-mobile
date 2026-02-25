@@ -1,4 +1,4 @@
-import { Places } from '@chillui/ui';
+
 import { debounce, list } from 'radash';
 import { FlatList } from 'react-native-gesture-handler';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -11,8 +11,8 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useSearchPlaces } from '../hooks/search-places.hook';
 import FilterAddressesListHeader from './filter-addresses-list-header.component';
-import { FiltersAddressesReturnParams, FiltersAddressesScreenParams } from '../types/filters-addresses.types';
 import FilterAddressesResultItem from './filter-addresses-result-item/filter-addresses-result-item.component';
+import { FiltersAddressesReturnParams, FiltersAddressesScreenParams, Places } from '../types/filters-addresses.types';
 import FilterAddressesResultItemSkeleton from './filter-addresses-result-item/filter-addresses-result-item-skeleton.component';
 
 type SkeletonItem = { type: 'skeleton'; uid: string };

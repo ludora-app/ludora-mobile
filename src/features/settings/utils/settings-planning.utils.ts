@@ -1,6 +1,6 @@
-import { CreateHourPreferenceData, HourPreferenceResponseData } from '@/api/generated/model';
+import { CreateHourPreferenceDto, HourPreferenceData } from '@/api/generated/model';
 
-type PlanningItem = HourPreferenceResponseData | CreateHourPreferenceData;
+type PlanningItem = HourPreferenceData | CreateHourPreferenceDto;
 
 /**
  * Checks if the current planning state is different from the initial planning state.

@@ -1,7 +1,6 @@
 import type { ButtonLoaderProps } from '../../../types';
 
 import { Box } from '../../box';
-import { twStyles } from '../styles/Button.styles';
 import { useButtonContext } from '../context/ButtonContext';
 import { LoadingIndicator } from '../../loadingIndicatorsKit';
 
@@ -26,7 +25,7 @@ export default function ButtonLoader(props: ButtonLoaderProps) {
   const { name = 'spinner' } = props;
 
   return (
-    <Box className={twStyles.loadingContainer}>
+    <Box>
       <LoadingIndicator name={name} size={sizingVariant} {...props} />
     </Box>
   );

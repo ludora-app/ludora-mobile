@@ -25,11 +25,11 @@ export default function CreateSessionStep2FieldCardPrivateAvailabilitiesList(
         fieldType: 'partner',
         price: availability.price,
         pricePerPlayer: availability.pricePerPlayer,
-        sport: field.sport,
       },
       endDate: availability.endTime,
       fieldUid: field.uid,
       slotUid: availability.uid,
+      sport: field.sports?.[0],
       startDate: availability.startTime,
     });
   };

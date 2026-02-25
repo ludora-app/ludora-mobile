@@ -12,7 +12,6 @@ export * from './icon-button';
 export * from './separator';
 export * from './chip';
 export * from './input';
-export * from './slider';
 export * from './badge';
 export * from './toggle';
 export * from './list';

@@ -1,9 +1,9 @@
 import { TIconsAll } from '@/constants/icons.constants';
-import { CreateHourPreferenceDataTimePeriod } from '@/api/generated/model';
+import { HourPreferenceDataTimePeriod } from '@/api/generated/model';
 
 export type PlanningSlot = {
   icon: TIconsAll;
-  id: CreateHourPreferenceDataTimePeriod;
+  id: HourPreferenceDataTimePeriod;
   label: string;
   time: string;
 };

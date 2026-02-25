@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { pushNotificationService } from '@/services/push-notification.service';
 
+import { useAnalytics } from './analytics-trackers.hook';
+
 /**
  * Hook to manage push notifications
  * Returns FCM token and notification state
  */
 export function usePushNotifications() {
+  const { trackError } = useAnalytics();
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -24,10 +27,11 @@ export function usePushNotifications() {
           setError(null);
         }
       } catch (err) {
-        console.error('Error initializing push notifications:', err);
+        const errObj = err instanceof Error ? err : new Error('Unknown error');
         if (mounted) {
-          setError(err instanceof Error ? err : new Error('Unknown error'));
+          setError(errObj);
         }
+        trackError({ error: err, showToast: false });
       } finally {
         if (mounted) {
           setIsLoading(false);
@@ -48,7 +52,7 @@ export function usePushNotifications() {
       mounted = false;
       pushNotificationService.cleanup();
     };
-  }, []);
+  }, [trackError]);
 
   return {
     error,

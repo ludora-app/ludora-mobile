@@ -1,10 +1,10 @@
 import { Easing } from 'react-native';
-import { LoadingIndicatorsProps } from '../../../types';
-import { AnimatedBox } from '../../animatedBox';
 
 import { loop } from '../utils/utils';
+import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
+import { LoadingIndicatorsProps } from '../../../types';
 
 /**
  * Pulse loading indicator component.

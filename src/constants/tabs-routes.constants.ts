@@ -1,6 +1,6 @@
 import { Href } from 'expo-router';
 
-import { TIconsAll } from './icons.constants.ts';
+import { TIconsAll } from './icons.constants';
 
 export type TabRouteNames = 'index' | 'messages' | 'players' | 'profil' | 'create-session';
 

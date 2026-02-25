@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-import { Place, PlacesResponse } from '@/components/chill-ui-library/types';
+import { Place, PlacesResponse } from '@/features/filters/filters-addresses/types/filters-addresses.types';
 
 export type PostPlacesParams = {
   input: string;

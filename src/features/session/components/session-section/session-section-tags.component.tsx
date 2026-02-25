@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { BoxRow, Chip } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
-import { SESSION_LEVELS } from '@/constants/session.constants';
 import { FindOneSessionResponseData } from '@/api/generated/model';
 
 import { useSessionTeamStore } from '../../stores/session-team.store';

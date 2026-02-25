@@ -5,10 +5,9 @@ import { Box, Icon, String } from '@ludo/ui'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useController, UseControllerProps } from 'react-hook-form'
 
-import COLORS from '@/constants/colors.contstants'
 import { parse } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
-import { Place } from '@/components/chill-ui-library/types/placesInput.types'
+import COLORS from '@/constants/colors.contstants'
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types'
 
 import { CreateFieldSchema } from '../../schemas/create-field.schema'
@@ -37,7 +36,7 @@ export default function CreateFieldAddress(props: CreateFieldAddressProps) {
   useEffect(() => {
     if (!addressParam) return
     try {
-      const place = parse(addressParam) as Place
+      const place = parse(addressParam)
       const address = place.formattedAddress
       onChangeAddress(address)
       onChangeShortAddress(place.shortFormattedAddress)

@@ -6,8 +6,8 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 
-import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';

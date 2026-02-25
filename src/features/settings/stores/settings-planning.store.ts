@@ -8,7 +8,7 @@ import { PlanningSlot } from '../types/settings-planning.types';
 type PlanningState = {
   planning: HourPreferenceData[];
   selectedDay: Dayjs;
-  setPlanning: (planning: HourPreferenceData[]) => void;
+  setPlanning: (planning: readonly HourPreferenceData[]) => void;
   setSelectedDay: (date: Dayjs) => void;
   setToggleSlot: (slot: PlanningSlot) => void;
 };
@@ -16,7 +16,7 @@ type PlanningState = {
 export const useSettingsPlanningStore = create<PlanningState>()((set, get) => ({
   planning: [],
   selectedDay: dayjs(),
-  setPlanning: planning => set({ planning }),
+  setPlanning: planning => set({ planning: [...planning] }),
   setSelectedDay: (date: Dayjs) => set({ selectedDay: date }),
   setToggleSlot: slot => {
     const state = get();

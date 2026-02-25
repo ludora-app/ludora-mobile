@@ -50,7 +50,7 @@ export const useAnalytics = () => {
   };
 
   const trackEvent = <T extends AnalyticsEvent>({ data, eventName }: AnalyticsEventWithDataType<T>) => {
-    posthog.capture(eventName, data);
+    posthog.capture(eventName, data as any);
   };
 
   const trackIdentity = (properties: TrackIdentityProperties) => {

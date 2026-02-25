@@ -1,9 +1,9 @@
-import type { RotatingBoxProps, RotatingBoxRef } from '../../../../types';
-
-import { cn } from '../../../../utils';
 import { Animated, Easing } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
 
+import type { RotatingBoxProps, RotatingBoxRef } from '../../../../types';
+
+import { cn } from '../../../../utils';
 import { AnimatedBox } from '../animatedBox/AnimatedBox';
 
 /**

@@ -4,8 +4,8 @@ import { Box, BoxRow, BoxRowCenter, BoxRowCenterBetween, Icon, String } from '@l
 import COLORS from '@/constants/colors.contstants';
 import { SESSION_LEVEL_TYPE, SESSION_LEVELS } from '@/constants/session.constants';
 
-import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import FilterLevelsItem from './filter-levels-item.component';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 export default function FilterLevels() {
   const { t } = useTranslate();

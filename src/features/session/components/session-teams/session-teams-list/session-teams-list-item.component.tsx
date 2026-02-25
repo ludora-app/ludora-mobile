@@ -5,9 +5,9 @@ import { Link, useRouter } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Chip, IconButton, String } from '@ludo/ui';
 
-import COLORS from '@/constants/colors.contstants';
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { useUserMe } from '@/queries/user-me.query';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { FindOneConversationResponseDataType, FlattenedSessionPlayer } from '@/api/generated/model';

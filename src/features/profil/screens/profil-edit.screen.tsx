@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native'
 import { useTranslate } from '@tolgee/react'
 import { Box, BoxCenter, String, Wrapper, BoxRowCenterBetween, Icon, ScreenLayout, BoxGrow, ScrollView } from '@ludo/ui'
 
-import COLORS from '@/constants/colors.contstants'
 import { formatDate } from '@/utils/time.utils'
 import ROUTES from '@/constants/routes.constants'
+import COLORS from '@/constants/colors.contstants'
 import { useUserMe } from '@/queries/user-me.query'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 

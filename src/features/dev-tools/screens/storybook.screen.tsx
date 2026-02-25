@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import WebView from 'react-native-webview';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

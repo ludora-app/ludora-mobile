@@ -1,18 +1,17 @@
 import { isString } from 'radash';
-import { Place } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 import { memo, useEffect, useMemo } from 'react';
 import { Box, Button, Icon, Separator, String, BoxRowCenterBetween } from '@ludo/ui';
 
+import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
-import { parse } from '@/utils/json.utils';
 import useGetUserLocation from '@/hooks/user-location.hook';
-import { FiltersAddressesReturnParams } from '@/features/filters/filters-addresses/types/filters-addresses.types';
+import { FiltersAddressesReturnParams, Place } from '@/features/filters/filters-addresses/types/filters-addresses.types';
 
-import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import { FiltersAddressesScreenParams } from '../../types/filters.types';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 type FilterLocationProps = FiltersAddressesReturnParams;
 

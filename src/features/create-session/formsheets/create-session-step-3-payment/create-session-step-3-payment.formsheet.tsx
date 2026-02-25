@@ -1,4 +1,3 @@
-import { useStripe } from '@stripe/stripe-react-native';
 import { BoxRowCenterBetween, Separator, String, WrapperGestureHandlerScrollView } from '@ludo/ui';
 
 import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
@@ -6,7 +5,7 @@ import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-he
 import CreateSessionStep3PaymentFormSheetTrigger from './create-session-step-3-payment-trigger.component';
 
 export default function CreateSessionStep3PaymentFormSheet() {
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  // const { initPaymentSheet, presentPaymentSheet } = useStripe();
   return (
     <>
       <FormSheetHeader title="Echauffe ta carte !" />

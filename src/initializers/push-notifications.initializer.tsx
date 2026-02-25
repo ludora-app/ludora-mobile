@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import * as Application from 'expo-application';
 
 import { IS_ANDROID } from '@/constants/platform.constants'
+import { useAnalytics } from "@/hooks/analytics-trackers.hook";
 import { RegisterDeviceDtoPlatform } from '@/api/generated/model'
 import { useRegisterDevice } from "@/queries/register-device.query";
 import { usePushNotifications } from "@/hooks/push-notifications.hook";
@@ -14,6 +15,7 @@ import {
 } from '@/utils/push-notification-navigation.utils';
 
 export default function PushNotificationsInitializer() {
+  const { trackError } = useAnalytics();
   const router = useRouter();
   const { mutateAsync: registerDevice } = useRegisterDevice();
   const { fcmToken } = usePushNotifications();
@@ -52,8 +54,10 @@ export default function PushNotificationsInitializer() {
           platform: IS_ANDROID ? RegisterDeviceDtoPlatform.ANDROID : RegisterDeviceDtoPlatform.IOS,
         });
       } catch (err) {
-        // e.g. 401 when session expired; avoid unhandled rejection
-        console.warn('Push: register device failed', err);
+        trackError({
+          error: err,
+          showToast: false,
+        });
       }
     };
     runRegister();

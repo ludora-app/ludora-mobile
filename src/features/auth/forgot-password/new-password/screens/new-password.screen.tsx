@@ -40,6 +40,7 @@ export default function NewPasswordScreen() {
       trackEvent({
         data: {
           error_message: errorResponse.api_error_detail,
+          flow: 'Authentication',
         },
         eventName: 'reset_password_new_password_failed',
       });

@@ -3,6 +3,7 @@ import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useSendVerificationCodeByEmail } from '../../reset-password/queries/send-verification-code.query';
@@ -63,11 +64,19 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     try {
       await sendVerificationCode({ data: { email: userEmail } });
       setResendCodeTime(WAITING_TIME_TO_RESEND_CODE);
+      trackEvent({
+        eventName: 'reset_password_verify_code_resend_success',
+      });
       toast({
         message: t('auth.verify-code.resend_verification_code_success'),
         variant: 'success',
       });
     } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      trackEvent({
+        data: { error_message: errorResponse.api_error_detail },
+        eventName: 'reset_password_verify_code_resend_failed',
+      });
       trackError({ error });
     }
   };

@@ -41,6 +41,10 @@ export const ANALYTICS_EVENTS = {
     // Mot de passe oublié (reset password new password)
     RESET_PASSWORD_NEW_PASSWORD_FAILED: 'reset_password_new_password_failed',
     RESET_PASSWORD_NEW_PASSWORD_SUCCESS: 'reset_password_new_password_success',
+
+    // Mot de passe oublié (reset password verify code resend)
+    RESET_PASSWORD_VERIFY_CODE_RESEND_FAILED: 'reset_password_verify_code_resend_failed',
+    RESET_PASSWORD_VERIFY_CODE_RESEND_SUCCESS: 'reset_password_verify_code_resend_success',
   },
 
   CREATE_SESSION: {
@@ -56,6 +60,7 @@ export const ANALYTICS_EVENTS = {
   FILTERS: {
     FILTER_FIELDS_APPLIED: 'filter_fields_applied',
     FILTER_SESSIONS_ALL_APPLIED: 'filter_sessions_all_applied',
+    PLAYERS_SUGGESTIONS_APPLIED: 'players_suggestions_applied',
   },
   PROFIL: {
     PROFIL_EDIT_AVATAR_FAILED: 'profil_edit_avatar_failed',
@@ -148,6 +153,9 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_VERIFY_CODE_FAILED]: {
     error_message: string;
   };
+  [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_VERIFY_CODE_RESEND_FAILED]: {
+    error_message: string;
+  };
   [ANALYTICS_EVENTS.AUTH.RESET_PASSWORD_SEND_CODE_WITH_EMAIL_FAILED]: {
     error_message: string;
   };
@@ -204,6 +212,10 @@ export interface AnalyticsEventData {
     numberOfFilters: number;
   };
   [ANALYTICS_EVENTS.FILTERS.FILTER_SESSIONS_ALL_APPLIED]: {
+    numberOfFilters: number;
+    filters: Partial<Filters>;
+  };
+  [ANALYTICS_EVENTS.FILTERS.PLAYERS_SUGGESTIONS_APPLIED]: {
     numberOfFilters: number;
     filters: Partial<Filters>;
   };

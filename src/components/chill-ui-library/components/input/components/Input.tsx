@@ -1,5 +1,5 @@
 import { TextInput } from 'react-native';
-import { forwardRef, PropsWithChildren } from 'react';
+import { forwardRef, PropsWithChildren, useMemo } from 'react';
 
 import type { InputProps } from '../../../types/input.types';
 
@@ -29,8 +29,10 @@ import { InputContext } from '../context/InputContext';
 const Input = forwardRef<TextInput, PropsWithChildren<InputProps>>((props, ref) => {
   const { children, className, ...rest } = props;
 
+  const contextValue = useMemo(() => ({} as React.ComponentProps<typeof InputContext.Provider>['value']), []);
+
   return (
-    <InputContext.Provider value={{}}>
+    <InputContext.Provider value={contextValue}>
       <Box className={className} {...rest}>
         {children}
       </Box>

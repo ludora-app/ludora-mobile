@@ -2,7 +2,7 @@ const { withAndroidManifest } = require("expo/config-plugins");
 
 function withAndroidManifestFixes(config) {
   return withAndroidManifest(config, async (cfg) => {
-    const manifest = cfg.modResults.manifest;
+    const {manifest} = cfg.modResults;
     const application = manifest.application?.[0];
 
     if (!application) return cfg;

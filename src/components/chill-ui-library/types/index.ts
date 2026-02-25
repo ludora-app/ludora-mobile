@@ -26,3 +26,4 @@ export * from './toggle.types';
 export * from './segmentedControl.types';
 export * from './avatar.types';
 export * from './numericInput.types';
+export * from './ripplePressable.types';

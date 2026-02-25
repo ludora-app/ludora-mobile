@@ -13,7 +13,7 @@ import { usePutUserHoursPreferences } from "../../queries/user-hours-preferences
 import { useRemoveUserHoursPreferences } from "../../queries/user-hours-preferences/remove-user-hours-preferences.query"
 
 type SettingsPlanningSubmitProps = {
-  initialPlanning: HourPreferenceData[]
+  initialPlanning: readonly HourPreferenceData[]
 }
 
 export default function SettingsPlanningSubmit(props: SettingsPlanningSubmitProps) {

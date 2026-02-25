@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
-import { User } from '../api/utils/api.types';
+import { FindMeUserResponseData } from '@/api/generated/model';
 
 export type WsStatus = 'disconnected' | 'connected' | 'reconnecting';
 
-type TConnectUser = Pick<User, 'id' | 'connectStatus'>;
+type TConnectUser = FindMeUserResponseData;
 
 interface IDefaultState {
   status: WsStatus;
@@ -31,7 +31,7 @@ export const useWebsocketStore = create<IDefaultState & IDefaultActions>(set => 
   addConnectedUser: (connectedUser: TConnectUser) =>
     set(state => {
       const newConnectedUsers = new Map(state.connectedUsers);
-      newConnectedUsers.set(connectedUser.id as string, connectedUser);
+      newConnectedUsers.set(connectedUser.uid, connectedUser);
       return { connectedUsers: newConnectedUsers };
     }),
   removeConnectedUser: (connectedUserId: string) =>
@@ -43,7 +43,7 @@ export const useWebsocketStore = create<IDefaultState & IDefaultActions>(set => 
   setAuthentication: value => set({ isAuthenticated: value }),
   setConnectedUsers: users =>
     set({
-      connectedUsers: new Map(users.map(user => [user.id as string, user])),
+      connectedUsers: new Map(users.map(user => [user.uid, user])),
     }),
   setStatus: value => set({ status: value }),
 }));

@@ -1,7 +1,9 @@
 import { memo } from 'react';
-import { cn, Places } from '@chillui/ui';
+import { cn } from '@chillui/ui';
 import { Box, Icon, String } from '@ludo/ui';
 import { TouchableOpacity } from 'react-native';
+
+import { Places } from '../../types/filters-addresses.types';
 
 interface FilterAddressesResultItemProps {
   item: Places;

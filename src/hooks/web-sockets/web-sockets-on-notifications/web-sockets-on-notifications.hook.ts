@@ -21,7 +21,7 @@ export const useWebsocketOnNotifications = () => {
     const { data: webSocketData, type: webSocketType } = notification || {};
     switch (webSocketType) {
       case WS_TYPES.FRIEND_REQUEST:
-        handleNotificationFriendRequests();
+        handleNotificationFriendRequests(webSocketData);
         break;
       case WS_TYPES.FRIEND_ACCEPTED:
         handleNotificationFriendAccepted(webSocketData);

@@ -5,9 +5,9 @@ import { BoxAbsolute, Icon } from '@ludo/ui';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import COLORS from '@/constants/colors.contstants';
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { useUserMe } from '@/queries/user-me.query';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';

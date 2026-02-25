@@ -44,8 +44,8 @@ export default function SettingsFavoritesList() {
       hasRefreshControl
       contentContainerClassName="grow bg-background px-4"
       contentContainerStyle={{ paddingBottom: bottom }}
-      ListStickyComponentTopSafeArea
-      headerTransparent
+      hasListStickyComponentTopSafeArea
+      hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}
       getFixedItemSize={handleFixedItemsSize}
       SkeletonComponent={SessionCardSkeleton}

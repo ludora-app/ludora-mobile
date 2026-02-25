@@ -1,9 +1,9 @@
-import { cn } from '../../../utils';
-import { Box } from '../../box';
 import { PropsWithChildren } from 'react';
-import { CarouselElementProps } from '../../../types';
 
+import { Box } from '../../box';
+import { cn } from '../../../utils';
 import { twStyles } from '../styles/Carousel.styles';
+import { CarouselElementProps } from '../../../types';
 import { carouselDefaultProps } from '../utils/defaultProps';
 
 /**

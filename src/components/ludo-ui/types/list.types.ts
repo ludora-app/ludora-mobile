@@ -12,7 +12,7 @@ export type ListProps = {
   data: any[];
   SkeletonComponent?: React.ComponentType;
   hasNextPage: boolean;
-  refetch: () => Promise<any>;
+  refetch?: () => Promise<any>;
   emptyResultProps?: EmptyResultProps;
   ListStickyComponent?: React.ComponentType | React.ReactElement;
   ListTopComponent?: React.ComponentType | React.ReactElement;

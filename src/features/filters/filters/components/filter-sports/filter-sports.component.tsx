@@ -4,8 +4,8 @@ import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 import COLORS from '@/constants/colors.contstants';
 import { SessionsFindAllSportsItem } from '@/api/generated/model';
 
-import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import FilterSportsItem from './filter-sports-item.component';
+import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 interface SportProps {
   id: number;

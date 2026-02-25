@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 
-import OnBoardingFooter from '@/features/on-boarding/components/on-boarding-footer/on-boarding-footer.component';
 import OnBoardingHeader from '@/features/on-boarding/components/on-boarding-header.component';
+import OnBoardingFooter from '@/features/on-boarding/components/on-boarding-footer/on-boarding-footer.component';
 
 function OnBoardingLayoutNav() {
   return (

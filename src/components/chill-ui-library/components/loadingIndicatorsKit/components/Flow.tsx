@@ -1,10 +1,10 @@
-import { Box } from '../../box';
 import { Animated, Easing } from 'react-native';
-import { LoadingIndicatorsProps } from '../../../types';
-import { AnimatedBox } from '../../animatedBox';
 
+import { Box } from '../../box';
 import { stagger } from '../utils/utils';
+import { AnimatedBox } from '../../animatedBox';
 import AnimationContainer from './AnimationContainer';
+import { LoadingIndicatorsProps } from '../../../types';
 
 export const defaultProps = {
   animating: true,

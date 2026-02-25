@@ -3,23 +3,25 @@ import type { Animated, TextInput } from 'react-native';
 
 import { createContext, useContext } from 'react';
 
-import type { IconProps, InputProps } from '../../../types';
+import { StringProps } from '@/components/ludo-ui/types/string.types';
 
-type InputIconAction = InputProps['leftIconAction'];
+import type { IconProps, InputFieldProps, InputProps } from '../../../types';
+
+type InputIconAction = IconProps;
 
 type InputContextValue = {
-  allow: NonNullable<InputProps['allow']>;
+  allow: NonNullable<InputFieldProps['allow']>;
   className?: string;
-  clearIconProps?: InputProps['clearIconProps'];
-  clickableAs?: InputProps['clickableAs'];
-  customRegex?: InputProps['customRegex'];
+  clearIconProps?: boolean;
+  clickableAs?: InputFieldProps['as'];
+  customRegex?: InputFieldProps['customRegex'];
   editable: boolean;
   errorClassName?: string;
-  errorIconName?: InputProps['errorIconName'];
+  errorIconName?: string;
   errorMessage?: string;
-  errorStringProps?: InputProps['errorStringProps'];
-  eyeIconProps?: InputProps['eyeIconProps'];
-  font: NonNullable<InputProps['font']>;
+  errorStringProps?: StringProps;
+  eyeIconProps?: IconProps;
+  font: NonNullable<InputFieldProps['font']>;
   hasClearIcon: boolean;
   hasError: boolean;
   hasSecureTextEntry: boolean;
@@ -27,17 +29,17 @@ type InputContextValue = {
   isDisabled: boolean;
   isStretchable: boolean;
   label?: string;
-  labelStringProps?: InputProps['labelStringProps'];
+  labelStringProps?: StringProps;
   leftIconAction?: InputIconAction;
-  lengthStringProps?: InputProps['lengthStringProps'];
+  lengthStringProps?: StringProps;
   maxLength?: number;
   multiline?: boolean;
-  onPress?: InputProps['onPress'];
-  rightIconAction?: InputProps['rightIconAction'];
+  onPress?: () => void;
+  rightIconAction?: IconProps;
   showLength?: boolean;
-  size: NonNullable<InputProps['size']>;
+  size: NonNullable<InputFieldProps['size']>;
   value?: string;
-  wrapperRef?: InputProps['wrapperRef'];
+  wrapperRef?: Ref<TextInput>;
 
   inputValue: string;
   isSecureEntry: boolean;

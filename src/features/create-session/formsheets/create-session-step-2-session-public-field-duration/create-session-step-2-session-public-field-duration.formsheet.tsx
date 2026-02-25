@@ -15,8 +15,8 @@ import {
   BoxCenter,
 } from '@ludo/ui';
 
-import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { IS_ANDROID } from '@/constants/platform.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';

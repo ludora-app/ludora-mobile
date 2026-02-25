@@ -16,7 +16,11 @@ export default function ChatConversationListItemLastMessageDeleted({ lastMessage
     <BoxRow className='gap-1'>
       <Icon name="trash-bin-regular" size="xs" color={COLORS.muted} />
       <String variant="body-sm" colorVariant="muted" truncate font="primaryRegular">
-        {isSender ? "Tu as supprimé ce message" : "Le message a été supprimé"}
+        {isSender ?
+          t('chat.conversation_list_item_last_message_deleted.you_deleted_message')
+          :
+          t('chat.conversation_list_item_last_message_deleted.message_deleted')
+        }
       </String>
     </BoxRow>
 

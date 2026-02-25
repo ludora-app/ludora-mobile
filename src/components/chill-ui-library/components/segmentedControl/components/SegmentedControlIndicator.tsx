@@ -1,9 +1,9 @@
-import { cn } from '../../../utils';
 import { useEffect } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { SegmentedControlIndicatorProps } from '../../../types';
 
+import { cn } from '../../../utils';
 import { twStyles } from '../styles/SegmentedControl.styles';
+import { SegmentedControlIndicatorProps } from '../../../types';
 import { segmentedControlDefaultProps } from '../utils/defaultProps';
 import { useSegmentedControlState } from '../context/SegmentedControlContext';
 
@@ -35,6 +35,7 @@ export function SegmentedControlIndicator(props: SegmentedControlIndicatorProps)
     animatedLeft.value = withTiming(newLeft, {
       duration: duration ?? segmentedControlDefaultProps.duration,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption, validItemsValues, itemWidth, duration]);
 
   const animatedStyle = useAnimatedStyle(() => ({

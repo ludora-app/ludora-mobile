@@ -4,15 +4,15 @@ import { useTranslate } from '@tolgee/react';
 
 import { cn } from '@/components/chill-ui-library';
 import { getSportImage } from '@/utils/sports.utils';
-import { SportProps } from '@/features/create-session/types/create-session-step-1.types';
+import { SportProps } from '@/constants/sports.constants';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
-type CreateSessionStep1Part1ItemProps = {
+type FilterSportsItemProps = {
   sport: SportProps;
 };
 
-function FilterSportsItem(props: CreateSessionStep1Part1ItemProps) {
+function FilterSportsItem(props: FilterSportsItemProps) {
   const { sport } = props;
   const { t } = useTranslate();
   const isSelectedSport = useFiltersStore(state => selectFilters(state)?.sports?.includes(sport.name));

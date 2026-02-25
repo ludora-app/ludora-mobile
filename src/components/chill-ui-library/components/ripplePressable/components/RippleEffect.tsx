@@ -1,5 +1,6 @@
 import { Animated } from 'react-native';
 import { useEffect, useRef } from 'react';
+
 import { AnimatedBox } from '../../animatedBox';
 
 /**

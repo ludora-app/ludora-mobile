@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { PlacesResponse } from '@chillui/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { PlacesResponse } from '@/features/filters/filters-addresses/types/filters-addresses.types';
 
 import { QUERY_KEY } from '../utils/api.queryKey';
 import { POST as postPlaces, PostPlacesParams, GET as getPlace } from '../queries/places.query';

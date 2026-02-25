@@ -3,6 +3,7 @@ import { Redirect, Stack, usePathname } from 'expo-router';
 import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import GeolocalisationProvider from '@/providers/geolocalisation-provider';
+import PushNotificationsInitializer from '@/initializers/push-notifications.initializer';
 
 function AppLayoutNav() {
   const { userMe } = useUserMe()
@@ -238,6 +239,7 @@ export default function AppLayout() {
   return (
     <>
       <GeolocalisationProvider />
+      <PushNotificationsInitializer />
       <AppLayoutNav />
     </>
   );

@@ -9,17 +9,17 @@ export type OptimisticMessage = MessageCollectionItemDto & {
 };
 
 interface ChatRoomOptimisticMessagesStoreState {
+  getPendingMessages: () => OptimisticMessage[];
+
+  removePendingMessage: (tempUid: string) => void;
+
+  hasPendingMessage: (tempUid: string) => boolean;
+
   pendingMessages: Record<string, OptimisticMessage>;
 
   addPendingMessage: (message: OptimisticMessage) => void;
 
-  removePendingMessage: (tempUid: string) => void;
-
   updatePendingMessage: (tempUid: string, updates: Partial<OptimisticMessage>) => void;
-
-  getPendingMessages: () => OptimisticMessage[];
-
-  hasPendingMessage: (tempUid: string) => boolean;
 }
 
 export const useChatRoomOptimisticMessagesStore = create<ChatRoomOptimisticMessagesStoreState>((set, get) => ({

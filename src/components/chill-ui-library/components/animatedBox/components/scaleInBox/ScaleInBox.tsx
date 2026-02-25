@@ -1,7 +1,7 @@
-import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types';
-
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
+
+import type { ScaleInBoxProps, ScaleInBoxRef } from '../../../../types';
 
 import { AnimatedBox } from '../animatedBox/AnimatedBox';
 

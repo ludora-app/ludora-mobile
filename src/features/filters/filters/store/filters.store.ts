@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { Place } from '@chillui/ui';
 
 import { SESSION_LEVEL_TYPE } from '@/constants/session.constants';
 import { CreateSessionFromRequestDtoGameMode, SessionsFindAllSportsItem } from '@/api/generated/model';
+
+import { Place } from '../../filters-addresses/types/filters-addresses.types';
 
 export type Filters = {
   fieldType: 'PRIVATE' | 'PUBLIC' | 'ALL';

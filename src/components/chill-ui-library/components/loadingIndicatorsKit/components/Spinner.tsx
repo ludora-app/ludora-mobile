@@ -1,11 +1,11 @@
-import { ICONS } from '../../../constants';
 import { useEffect, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
-import { LoadingIndicatorsProps } from '../../../types';
 import { Animated, Platform } from 'react-native';
-import { AnimatedBox } from '../../animatedBox';
 
+import { ICONS } from '../../../constants';
+import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
+import { LoadingIndicatorsProps } from '../../../types';
 
 /**
  * Spinner loading indicator component.

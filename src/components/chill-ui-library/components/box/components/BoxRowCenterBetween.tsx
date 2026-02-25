@@ -1,7 +1,6 @@
 import type { BoxProps } from '../../../types';
 
 import { cn } from '../../../utils';
-
 import { View as NativeView } from './View';
 import { twStyles } from '../styles/Box.styles';
 

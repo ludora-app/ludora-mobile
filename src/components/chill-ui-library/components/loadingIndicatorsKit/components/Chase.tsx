@@ -1,10 +1,10 @@
-import { LoadingIndicatorsProps } from '../../../types';
 import { Easing, ViewStyle } from 'react-native';
-import { AnimatedBox } from '../../animatedBox';
 
 import { loop, stagger } from '../utils/utils';
+import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
+import { LoadingIndicatorsProps } from '../../../types';
 
 /**
  * Chase loading indicator component.

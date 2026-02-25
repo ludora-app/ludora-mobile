@@ -1,5 +1,3 @@
-import { LoadingIndicatorProps } from '../../../types';
-
 import Flow from './Flow';
 import Fold from './Fold';
 import Grid from './Grid';
@@ -9,6 +7,7 @@ import Swing from './Swing';
 import Bounce from './Bounce';
 import Spinner from './Spinner';
 import CircleFade from './CircleFade';
+import { LoadingIndicatorProps } from '../../../types';
 import { loadingIndicatorSizes } from '../utils/loadingInficatoSizes';
 
 /**

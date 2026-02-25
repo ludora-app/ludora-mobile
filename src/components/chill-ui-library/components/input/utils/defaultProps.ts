@@ -1,6 +1,4 @@
-import { InputProps } from '../../../types';
-
-export const inputDefaultProps: Partial<InputProps> = {
+export const inputDefaultProps = {
   allow: 'all',
   editable: true,
   font: 'primaryRegular',

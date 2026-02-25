@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { io, Socket } from 'socket.io-client';
 
 class SocketService {

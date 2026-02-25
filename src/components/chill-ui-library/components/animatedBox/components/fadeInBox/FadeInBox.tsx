@@ -1,7 +1,7 @@
-import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types';
-
 import { Animated } from 'react-native';
 import { useRef, useEffect, useImperativeHandle, forwardRef, useCallback, PropsWithChildren } from 'react';
+
+import type { FadeInBoxProps, FadeInBoxRef } from '../../../../types';
 
 import { AnimatedBox } from '../animatedBox/AnimatedBox';
 

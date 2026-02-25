@@ -7,6 +7,7 @@ import { useUnRegisterDevice } from '@/queries/unRegister-device.query';
 import { useSignOut as useGoogleSignOut } from '@/api/hooks/auth-google.hook';
 import { pushNotificationService } from '@/services/push-notification.service';
 
+import { useAnalytics } from './analytics-trackers.hook';
 import { useSecureStorageState } from './secure-storage-state.hook';
 
 /**
@@ -18,6 +19,7 @@ type AuthTokens = {
 };
 
 export function useAuthHelpers() {
+  const { trackError } = useAnalytics();
   const queryClient = useQueryClient();
   const { mutateAsync: signOut } = useGoogleSignOut();
   const { mutateAsync: unregisterDeviceAsync } = useUnRegisterDevice();
@@ -39,15 +41,26 @@ export function useAuthHelpers() {
     setRefreshTokenStorage(null);
     setIsAuthenticated(false);
     resetCaches();
-    await signOut();
     queryClient.clear();
-
-    const fcmToken = await pushNotificationService.getFCMToken();
-    if (fcmToken) {
-      await unregisterDeviceAsync({ fcmToken });
+    try {
+      await signOut();
+      const fcmToken = await pushNotificationService.getFCMToken();
+      if (fcmToken) {
+        await unregisterDeviceAsync({ fcmToken });
+      }
+      await pushNotificationService.deleteToken();
+    } catch (error) {
+      trackError({ error, showToast: false });
     }
-    await pushNotificationService.deleteToken();
-  }, [queryClient, signOut, setAccessTokenStorage, setRefreshTokenStorage, setIsAuthenticated, unregisterDeviceAsync]);
+  }, [
+    queryClient,
+    signOut,
+    setAccessTokenStorage,
+    setRefreshTokenStorage,
+    setIsAuthenticated,
+    unregisterDeviceAsync,
+    trackError,
+  ]);
 
   return { login, logout };
 }

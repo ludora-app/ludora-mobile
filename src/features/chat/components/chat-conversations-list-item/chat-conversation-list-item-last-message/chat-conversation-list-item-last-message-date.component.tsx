@@ -1,6 +1,5 @@
 import { Box, String } from '@ludo/ui';
 
-import { useUserMe } from '@/queries/user-me.query';
 import { ConversationCollectionResponseData } from '@/api/generated/model';
 
 import { isMessageRead } from '../../../utils/chat.utils';
@@ -13,10 +12,9 @@ interface ChatConversationListItemLastMessageDateProps {
 export default function ChatConversationListItemLastMessageDate({
   conversation,
 }: ChatConversationListItemLastMessageDateProps) {
-  const { userMeId } = useUserMe();
   const { createdAt: lastMessageAt } = conversation?.lastMessage || {};
 
-  const isLastMessageRead = isMessageRead(conversation, userMeId);
+  const isLastMessageRead = isMessageRead(conversation);
 
   if (!lastMessageAt) {
     return null;

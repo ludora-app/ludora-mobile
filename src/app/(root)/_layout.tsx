@@ -1,21 +1,12 @@
-import { Redirect, Stack, usePathname } from 'expo-router';
+import { Stack } from 'expo-router';
 
-import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import GeolocalisationProvider from '@/providers/geolocalisation-provider';
+import GeolocalisationInitializer from '@/initializers/geolocalisation.initializer';
+import OnBoardingInitializer from '@/initializers/on-boarding/on-boarding-initializer';
 import PushNotificationsInitializer from '@/initializers/push-notifications.initializer';
 
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
-  const { userMe } = useUserMe()
-  const { onBoardingStatus: userOnBoardingStatus } = userMe || {}
-  const pathname = usePathname();
-  const showPreferences = userOnBoardingStatus === "INCOMPLETE";
-  const isInsideOnBoarding = pathname.includes('on-boarding') || pathname.includes('image-picker');
-
-  if (showPreferences && !isInsideOnBoarding) {
-    return <Redirect href="/on-boarding/step-1" />;
-  }
 
   return (
     <Stack
@@ -206,8 +197,9 @@ function AppLayoutNav() {
 export default function AppLayout() {
   return (
     <>
-      <GeolocalisationProvider />
+      <GeolocalisationInitializer />
       <PushNotificationsInitializer />
+      <OnBoardingInitializer />
       <AppLayoutNav />
     </>
   );

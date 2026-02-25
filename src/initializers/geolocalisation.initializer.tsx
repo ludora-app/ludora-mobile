@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import useGetUserLocation from '@/hooks/user-location.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
-export default function GeolocalisationProvider() {
+export default function GeolocalisationInitializer() {
   const { trackError } = useAnalytics();
   const { getCurrentLocation } = useGetUserLocation({ type: 'SESSIONS' });
 

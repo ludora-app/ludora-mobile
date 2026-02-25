@@ -155,7 +155,7 @@ export default function RegisterStep2Screen() {
             useFastText={false}
             font="primaryBold"
             className="underline"
-            onPress={() => router.push(ROUTES.LEGAL.CGU_MENTIONS)}
+            onPress={() => router.push(ROUTES.LEGAL.NON_DISCRIMINATION)}
           >
             {t('auth.register-step-2.acceptance_part_6')}
           </String>

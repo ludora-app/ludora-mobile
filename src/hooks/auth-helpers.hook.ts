@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth.store';
 import { resetCaches } from '@/utils/reset-caches.utils';
 import { useUnRegisterDevice } from '@/queries/unRegister-device.query';
+import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store';
 import { useSignOut as useGoogleSignOut } from '@/api/hooks/auth-google.hook';
 import { pushNotificationService } from '@/services/push-notification.service';
 
@@ -24,6 +25,7 @@ export function useAuthHelpers() {
   const { mutateAsync: signOut } = useGoogleSignOut();
   const { mutateAsync: unregisterDeviceAsync } = useUnRegisterDevice();
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+  const clearOnBoarding = useOnBoardingStatusStore(state => state.clear);
   const [, setAccessTokenStorage] = useSecureStorageState('access_token');
   const [, setRefreshTokenStorage] = useSecureStorageState('refresh_token');
 
@@ -40,6 +42,7 @@ export function useAuthHelpers() {
     setAccessTokenStorage(null);
     setRefreshTokenStorage(null);
     setIsAuthenticated(false);
+    clearOnBoarding();
     resetCaches();
     queryClient.clear();
     try {
@@ -53,6 +56,7 @@ export function useAuthHelpers() {
       trackError({ error, showToast: false });
     }
   }, [
+    clearOnBoarding,
     queryClient,
     signOut,
     setAccessTokenStorage,

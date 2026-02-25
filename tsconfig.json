@@ -22,6 +22,7 @@
     "src/features/create-session/screens/creat-session-step-1.screen.tsW",
     "src/features/players/screens/players.screen.tsw",
     "src/initializers/push-notifications.initializer.txs",
-    "src/constants/icons.constants.ts"
+    "src/constants/icons.constants.ts",
+    "src/initializers/on-boarding/on-boarding-status.initializertsx"
   ]
 }

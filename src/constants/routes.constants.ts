@@ -56,6 +56,7 @@ const ROUTES = {
   LEGAL: {
     CGU_MENTIONS: '/legal/cgu-mentions',
     CGV: '/legal/cgv',
+    NON_DISCRIMINATION: '/legal/non-discrimination',
     PRIVACY: '/legal/privacy',
   },
   NOTIFICATIONS: {

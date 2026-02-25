@@ -67,7 +67,6 @@ export default function ProfilSection1(props: ProfilSection1Props) {
             imageUrl: avatarUrl,
             lastname,
           }}
-          className='rounded-2xl'
           size="xl"
         />
         <BoxGrow className='gap-1'>

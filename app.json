@@ -47,7 +47,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "photosPermission": "L'application a besoin d'accéder à tes photos."
         }
       ],
       [
@@ -71,20 +71,34 @@
       "./plugins/with-non-modular-headers",
       "./plugins/with-android-manifest-fixes"
     ],
-    "name": "ludora",
+    "name": "Ludora",
     "slug": "ludora",
     "icon": "./assets/logos/app-icon.png",
     "android": {
-      "package": "com.amir398.ludora",
+      "package": "com.ludora",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.POST_NOTIFICATIONS"
       ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.webapp.io",
+              "pathPrefix": "/records"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "googleServicesFile": "./google-services.json"
     },
     "ios": {
-      "bundleIdentifier": "com.amir398.ludora",
+      "bundleIdentifier": "com.ludora",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "extra": {

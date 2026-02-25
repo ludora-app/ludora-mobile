@@ -1,7 +1,7 @@
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenter, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { SESSION_LEVEL_TYPE, SESSION_LEVELS } from '@/constants/session.constants';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
@@ -23,11 +23,11 @@ export default function FilterLevels() {
           <String variant="body-sm" font="primaryBold" truncate>
             {selectedLevels && selectedLevels.length > 0
               ? selectedLevels
-                  ?.map(
-                    (level: SESSION_LEVEL_TYPE['code'], index: number) =>
-                      `${t(`common.session_level_${level}`, '')}${index < selectedLevels.length - 1 ? ', ' : ''}`,
-                  )
-                  .join('')
+                ?.map(
+                  (level: SESSION_LEVEL_TYPE['code'], index: number) =>
+                    `${t(`common.session_level_${level}`, '')}${index < selectedLevels.length - 1 ? ', ' : ''}`,
+                )
+                .join('')
               : '-'}
           </String>
         </Box>

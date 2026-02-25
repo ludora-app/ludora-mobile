@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { RootStackParamList } from '@/types/routes-params.types';

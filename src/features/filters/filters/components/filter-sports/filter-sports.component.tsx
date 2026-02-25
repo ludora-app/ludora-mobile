@@ -1,7 +1,7 @@
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { SessionsFindAllSportsItem } from '@/api/generated/model';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
@@ -47,11 +47,11 @@ export default function FilterSports() {
           <String variant="body-sm" font="primaryBold" truncate>
             {selecteSports && selecteSports.length > 0
               ? selecteSports
-                  ?.map(
-                    (sport: SessionsFindAllSportsItem, index: number) =>
-                      `${t(`common.session_sport_${sport}`, { space: '' })}${index < selecteSports.length - 1 ? ', ' : ''}`,
-                  )
-                  .join('')
+                ?.map(
+                  (sport: SessionsFindAllSportsItem, index: number) =>
+                    `${t(`common.session_sport_${sport}`, { space: '' })}${index < selecteSports.length - 1 ? ', ' : ''}`,
+                )
+                .join('')
               : '-'}
           </String>
         </Box>

@@ -2,7 +2,7 @@ import { Icon, String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import { cn, ScalePressable } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
 import { CreateSessionStep1Part4ItemProps } from './create-session-step-1-part-4.component';

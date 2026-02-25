@@ -3,7 +3,7 @@ import { useToast } from '@chillui/ui'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { MessageCollectionItemDto } from '@/api/generated/model'
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component'

@@ -3,7 +3,7 @@ import { useTranslate } from '@tolgee/react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Avatar, Box, BoxCenter, BoxRow, Button, Image, ScreenLayout, ScrollView, String, Wrapper } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { parse } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
 import { ReceiverDto } from '@/api/generated/model'

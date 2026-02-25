@@ -5,8 +5,8 @@ import { useTranslate } from '@tolgee/react';
 import { TabTriggerSlotProps } from 'expo-router/ui';
 import { Icon, String, Box, BoxColumnCenter } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
-import { TabRoutes } from '@/constants/TABS_ROUTES';
+import COLORS from '@/constants/colors.contstants';
+import { TabRoutes } from '@/constants/tabs-routes.constants';
 import { useMessagesUnread } from '@/queries/get-has-messages-unreads.query';
 
 export type TabButtonProps = TabTriggerSlotProps & Pick<TabRoutes, 'iconName' | 'iconNameActive' | 'text'>;

@@ -12,8 +12,8 @@ import {
   CalendarTheme,
 } from '@marceloterreiro/flash-calendar';
 
-import COLORS from '@/constants/COLORS';
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import COLORS from '@/constants/colors.contstants';
+import { IS_ANDROID } from '@/constants/platform.constants';
 
 const CALENDAR_CONFIG = {
   ACTIVE_TEXT_COLOR: '#ffffff',

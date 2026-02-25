@@ -1,4 +1,4 @@
-import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
+import { TAB_ROUTES } from '@/constants/tabs-routes.constants';
 
 import TabBarButton from './tab-bar-button.component';
 

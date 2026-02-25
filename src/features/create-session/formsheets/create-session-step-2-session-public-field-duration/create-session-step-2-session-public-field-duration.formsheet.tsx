@@ -15,9 +15,9 @@ import {
   BoxCenter,
 } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';

@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { String, BoxCenter, Chip, Box, BoxRow, Icon } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { FindOneSessionResponseData, SessionTeamResponseData } from '@/api/generated/model';

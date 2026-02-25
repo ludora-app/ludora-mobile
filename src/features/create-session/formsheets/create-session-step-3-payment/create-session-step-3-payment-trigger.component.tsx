@@ -4,7 +4,7 @@ import { useToast } from '@chillui/ui';
 import * as Linking from 'expo-linking';
 import { useStripe } from '@stripe/stripe-react-native';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import StripeProvider from '@/providers/stripe.provider';
 
 export default function CreateSessionStep3PaymentFormSheetTrigger() {

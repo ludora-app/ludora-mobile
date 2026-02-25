@@ -5,7 +5,7 @@ import { useTranslate } from '@tolgee/react';
 import DatePicker from 'react-native-date-picker';
 import { FieldValues, useController } from 'react-hook-form';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useLanguages } from '@/hooks/languages.hook';
 
 import { Input } from '../input';

@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 import { Box, cn, LoadingIndicator, Pellet } from '@chillui/ui'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 
 import { useDeleteNotification } from '../../queries/delete-notification.query'

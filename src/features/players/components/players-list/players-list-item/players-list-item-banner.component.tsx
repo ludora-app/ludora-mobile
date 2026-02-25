@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { BoxRow, Icon, Image, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
 import { FindAllUsersResponseDataDto } from '@/api/generated/model';
 

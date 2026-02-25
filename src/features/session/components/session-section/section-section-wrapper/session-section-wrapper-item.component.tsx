@@ -3,7 +3,7 @@ import { Box } from '@ludo/ui';
 import { StyleSheet } from 'react-native';
 import { PropsWithChildren, useMemo } from 'react';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { cn } from '@/components/chill-ui-library';
 
 import { useSessionTeamStore } from '../../../stores/session-team.store';

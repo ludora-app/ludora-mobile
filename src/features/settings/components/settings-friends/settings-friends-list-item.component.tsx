@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 import { Pressable } from 'react-native'
 import { Avatar, Box, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { serialize } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
 import { FindOneConversationResponseDataType, FriendResponseData } from '@/api/generated/model'

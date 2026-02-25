@@ -1,6 +1,6 @@
 import { BoxRow, Icon, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { ConversationCollectionResponseDataLastMessage } from '@/api/generated/model';
 
 type ChatConversationListItemLastMessageFailedProps = {

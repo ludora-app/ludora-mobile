@@ -1,6 +1,6 @@
 import { Icon, String, BoxCenter, IconProps, StringProps } from '@ludo/ui'
 
-import { IS_ANDROID } from '@/constants/PLATFORM'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { RipplePressable } from '@/components/chill-ui-library'
 

@@ -5,7 +5,7 @@ import { Box, Icon, String } from '@ludo/ui'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useController, UseControllerProps } from 'react-hook-form'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { parse } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
 import { Place } from '@/components/chill-ui-library/types/placesInput.types'

@@ -1,6 +1,6 @@
 import { cn, WrapperKeyboardAwareScrollView as WrapperKeyboardAwareScrollViewChillUi } from '@chillui/ui';
 
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 
 import { WrapperKeyboardAwareScrollViewProps } from '../../types/wrapper-keyboard-aware-scroll-view.types';
 

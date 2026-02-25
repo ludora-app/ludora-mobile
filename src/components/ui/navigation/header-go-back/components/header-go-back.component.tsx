@@ -1,7 +1,7 @@
 import { cn } from '@chillui/ui';
 import { BoxRow, String, StringProps, Wrapper, Icon, BoxRowCenterBetween } from '@ludo/ui';
 
-import { TIconsAll } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/icons.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
 import GoBackButton from './go-back-button.component';

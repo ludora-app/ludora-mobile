@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react'
 import { cn, ScalePressable } from '@chillui/ui'
 import { BoxCenter, BoxGrow, Icon, String } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { HourPreferenceData, HourPreferenceDataType } from '@/api/generated/model'
 
 import { PlanningSlot } from '../../../types/settings-planning.types'

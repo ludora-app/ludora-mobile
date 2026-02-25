@@ -2,7 +2,7 @@ import { Wrapper } from '@ludo/ui'
 import { OutlinedString } from '@chillui/ui'
 import { useTranslate } from '@tolgee/react'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 

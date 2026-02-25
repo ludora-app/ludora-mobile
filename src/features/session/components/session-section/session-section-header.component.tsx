@@ -1,7 +1,7 @@
 import { String, BoxRow } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
-import { TIconsAll } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/icons.constants';
 
 import SessionSectionIcon from './session-section-icon.component';
 import { useSessionTeamStore } from '../../stores/session-team.store';

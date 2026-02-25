@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 import { truncateString } from '@/utils/string.utils';

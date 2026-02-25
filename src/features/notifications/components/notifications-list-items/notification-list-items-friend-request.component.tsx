@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, Button, IconButton, String } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { serialize } from '@/utils/json.utils'
 import ROUTES from '@/constants/routes.constants'
 import { truncateString } from '@/utils/string.utils'

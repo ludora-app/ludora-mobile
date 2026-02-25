@@ -9,7 +9,7 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import { useGetCreateSessionStep } from '../../hooks/create-session-step.hook';
 

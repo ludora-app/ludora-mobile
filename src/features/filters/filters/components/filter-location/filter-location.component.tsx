@@ -6,7 +6,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { Box, Button, Icon, Separator, String, BoxRowCenterBetween } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { parse } from '@/utils/json.utils';
 import useGetUserLocation from '@/hooks/user-location.hook';
 import { FiltersAddressesReturnParams } from '@/features/filters/filters-addresses/types/filters-addresses.types';

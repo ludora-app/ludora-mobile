@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react'
 import { Box, BoxRow, BoxRowCenter, IconButton, String } from '@ludo/ui'
 import { useConversationsUpdateMuteSettings } from '@generatedApi/conversations/conversations.api'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useInvalidateConversationsFindOne } from '@/api/generated/invalidate-queries'
 
 type ChatRoomInfoMuteConversationProps = {

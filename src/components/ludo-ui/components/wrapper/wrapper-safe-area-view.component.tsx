@@ -1,6 +1,6 @@
 import { cn, WrapperSafeAreaView } from '@chillui/ui'
 
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 
 import { WrapperSafeAreaProps } from '../../types/wrapper-safe-area.types';
 

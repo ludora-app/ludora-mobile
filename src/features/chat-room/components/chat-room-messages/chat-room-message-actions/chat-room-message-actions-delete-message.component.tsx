@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useToast } from '@/components/chill-ui-library'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { MessageCollectionItemDto } from '@/api/generated/model'

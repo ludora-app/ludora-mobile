@@ -5,7 +5,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { usePickImage } from '@/hooks/image-picker.hook';
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';

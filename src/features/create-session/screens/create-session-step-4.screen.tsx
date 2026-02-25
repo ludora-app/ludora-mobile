@@ -1,7 +1,7 @@
 import { useTranslate } from '@tolgee/react';
 import { Image, Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
 
-import { formatDate } from '@/utils/date.utils';
+import { formatDate } from '@/utils/time.utils';
 import { getSportImage } from '@/utils/sports.utils';
 import { useGetField } from '@/queries/get-field.query';
 import FieldCard from '@/components/ui/field-card/components/field-card.component';

@@ -4,7 +4,7 @@ import { Box, Icon, Image, String } from '@ludo/ui'
 import { Pressable, ScrollView } from 'react-native'
 import { useController, UseControllerProps } from 'react-hook-form'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { usePickImage } from '@/hooks/image-picker.hook'
 
 import { CreateFieldSchema } from '../../schemas/create-field.schema'

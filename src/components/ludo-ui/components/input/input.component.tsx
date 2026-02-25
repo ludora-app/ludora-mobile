@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input as InputChillUi, InputContainer, InputField, InputLabel, cn, Box, BoxRow } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import { Icon } from '../icon';
 import { String } from '../string';

@@ -6,7 +6,7 @@ import { EmojiType } from 'rn-emoji-keyboard';
 import { BoxRow, FormInput, Wrapper } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
 import { schema } from '../../schemas/chat-room-input.schema';

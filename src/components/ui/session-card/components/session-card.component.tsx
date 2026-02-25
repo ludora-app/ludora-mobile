@@ -5,8 +5,8 @@ import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
 import { FindOneSessionResponseData, SessionCollectionItemDto } from '@/api/generated/model';

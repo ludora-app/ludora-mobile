@@ -1,6 +1,6 @@
 import { Box, Icon, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import ChatRoomInputAudioRecorderTimer from './ChatRoomInputAudioRecorderTimer';
 import { useChatRoomInputAudioStore } from '../../../store/chatRoomInputAudioStore';

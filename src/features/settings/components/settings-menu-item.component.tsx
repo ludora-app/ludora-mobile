@@ -1,8 +1,8 @@
 import { Pressable } from 'react-native'
 import { Box, BoxGrow, BoxRow, Icon, String } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
-import { TIconsAll } from '@/constants/ICONS'
+import COLORS from '@/constants/colors.contstants'
+import { TIconsAll } from '@/constants/icons.constants'
 
 interface SettingsMenuItemProps {
   label: string

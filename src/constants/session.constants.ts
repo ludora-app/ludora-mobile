@@ -6,7 +6,7 @@ import {
   SessionCollectionItemDtoSport,
 } from '@/api/generated/model';
 
-import { TIconsAll } from './ICONS';
+import { TIconsAll } from './icons.constants.ts';
 
 export type SESSION_LEVEL_TYPE = {
   code: CreateSessionFromRequestDtoLevel;

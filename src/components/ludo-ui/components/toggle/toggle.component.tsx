@@ -1,6 +1,6 @@
 import { Toggle as ToggleChillUi } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import { ToggleProps } from '../../types/toggle.types';
 

@@ -3,7 +3,7 @@ import { Box, Image, String } from '@ludo/ui';
 import { basketPlayer, tennisPlayer, footballPlayer } from 'assets';
 import { Carousel, CarouselContent, CarouselDots, CarouselElement, CarouselItem, OutlinedString } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 const carouselItems = [
   {

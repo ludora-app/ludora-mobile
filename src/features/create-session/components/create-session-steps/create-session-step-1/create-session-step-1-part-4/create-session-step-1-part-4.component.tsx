@@ -2,7 +2,7 @@ import { useTranslate } from '@tolgee/react';
 import { FadeIn } from 'react-native-reanimated';
 import { BoxRow, ReanimatedBox } from '@ludo/ui';
 
-import { TIconsAll } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/icons.constants';
 import { CreateSessionFromRequestDtoVisibility } from '@/api/generated/model';
 
 import CreateSessionSubtitle from '../../../create-session-subtitle-component';

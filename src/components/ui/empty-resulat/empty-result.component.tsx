@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 
-import { TIconsAll } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/icons.constants';
 import { Wrapper } from '@/components/ludo-ui/components/wrapper';
 
 import Icon from '../../ludo-ui/components/icon/Icon.component';

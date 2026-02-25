@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { TouchableOpacity } from 'react-native';
 import { BoxGrow, BoxRowGrow, IconButton, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';

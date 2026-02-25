@@ -1,7 +1,7 @@
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { SessionCollectionItemDtoGameMode } from '@/api/generated/model';
 
 import FilterModesItem from './filter-modes-item.component';
@@ -23,9 +23,9 @@ export default function FilterModes() {
           <String variant="body-sm" font="primaryBold" truncate>
             {selectedGameModes?.length > 0
               ? selectedGameModes?.map(
-                  (gameMode: SessionCollectionItemDtoGameMode, index: number) =>
-                    `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
-                )
+                (gameMode: SessionCollectionItemDtoGameMode, index: number) =>
+                  `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
+              )
               : '-'}
           </String>
         </BoxRow>

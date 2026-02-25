@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
 

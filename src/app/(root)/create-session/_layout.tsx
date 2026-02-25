@@ -1,6 +1,6 @@
 import { Stack, useSegments } from 'expo-router';
 
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 import CreateSessionHeader from '@/features/create-session/components/create-session-header/create-session-header.component';
 import CreateSessionFooter from '@/features/create-session/components/create-session-footer/create-session-footer.component';
 

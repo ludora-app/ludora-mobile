@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { TabTriggerSlotProps } from 'expo-router/ui';
 
 import ROUTES from '@/constants/routes.constants';
-import { TabRoutes } from '@/constants/TABS_ROUTES';
+import { TabRoutes } from '@/constants/tabs-routes.constants';
 import { Box, ScalePressable } from '@/components/chill-ui-library';
 
 import { TAB_BAR_CONSTANTS } from '../../constants';

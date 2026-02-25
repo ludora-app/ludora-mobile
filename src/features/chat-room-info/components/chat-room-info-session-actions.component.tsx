@@ -2,7 +2,7 @@ import { Box, Button } from '@ludo/ui'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import ROUTES from '@/constants/routes.constants'
 import { ErrorResponse } from '@/api/orval.instance'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'

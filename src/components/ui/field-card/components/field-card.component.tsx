@@ -4,7 +4,7 @@ import { ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
 import { ImageBackground, Box, Chip, Icon, String, BoxRow } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
 import { convertMToKm } from '@/utils/distance.utils';
 import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';

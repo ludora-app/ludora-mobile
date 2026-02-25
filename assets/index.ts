@@ -3,6 +3,7 @@ export { default as registerImage } from './images/register-img.png';
 export { default as loginImage } from './images/login-img.png';
 export { default as ludo } from './logos/ludo.png';
 export { default as basketballBall } from './sports-balls/basketball-ball.png';
+export { default as paddelBall } from './sports-balls/paddel-ball.png';
 export { default as tennisBall } from './sports-balls/tennis-ball.png';
 export { default as footballBall } from './sports-balls/football-ball.png';
 export { default as backgroundImg } from './images/background-img.png';

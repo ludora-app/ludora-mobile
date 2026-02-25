@@ -3,7 +3,7 @@ import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import * as Application from 'expo-application';
 
-import { IS_ANDROID } from '@/constants/PLATFORM'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { RegisterDeviceDtoPlatform } from '@/api/generated/model'
 import { useRegisterDevice } from "@/queries/register-device.query";
 import { usePushNotifications } from "@/hooks/push-notifications.hook";

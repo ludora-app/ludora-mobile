@@ -1,6 +1,6 @@
 import { BoxCenter } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { LoadingIndicator } from '@/components/chill-ui-library';
 
 export default function Loading() {

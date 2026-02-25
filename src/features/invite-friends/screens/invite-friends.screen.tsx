@@ -1,7 +1,7 @@
 import { cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 
-import { IS_ANDROID, IS_IOS } from '@/constants/PLATFORM';
+import { IS_ANDROID, IS_IOS } from '@/constants/platform.constants';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 

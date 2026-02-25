@@ -2,7 +2,7 @@ import { OutlinedString } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxAbsolute, Icon } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 export default function SessionSectionTeamsCardVs() {
   const { t } = useTranslate();

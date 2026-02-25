@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react';
 import { StyleSheet, LayoutChangeEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { TAB_ROUTES } from '@/constants/TABS_ROUTES';
+import { TAB_ROUTES } from '@/constants/tabs-routes.constants';
 
 import { TAB_BAR_CONSTANTS } from '../constants';
 import TabBarItemTrigger from './tab-bar-item/tab-bar-item-trigger.component';

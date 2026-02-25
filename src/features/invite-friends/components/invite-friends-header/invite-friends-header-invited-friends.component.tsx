@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { Avatar, Box, Icon, String } from '@ludo/ui';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { FriendResponseData } from '@/api/generated/model';
 
 import { useInviteFriendsStore } from '../../stores/invite-friends.store';

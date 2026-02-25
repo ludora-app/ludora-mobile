@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { cn, OutlinedString } from '@chillui/ui';
 import { Box, Icon, IconProps, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 interface HeaderProps {
   title?: string;

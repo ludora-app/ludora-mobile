@@ -1,4 +1,4 @@
-import { IS_ANDROID } from '@/constants/PLATFORM';
+import { IS_ANDROID } from '@/constants/platform.constants';
 import { useSafeAreaStore } from '@/stores/safe-area.store';
 import { TAB_BAR_CONSTANTS } from '@/components/ui/navigation/tab-bar/constants';
 

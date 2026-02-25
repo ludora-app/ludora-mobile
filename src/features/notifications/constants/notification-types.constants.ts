@@ -1,4 +1,4 @@
-import { TIconsAll } from '@/constants/ICONS';
+import { TIconsAll } from '@/constants/icons.constants';
 
 export const SESSION_NOTIFICATION_TYPES = [
   'SESSION_INVITATION',

@@ -6,7 +6,7 @@ import { useTranslate } from '@tolgee/react';
 import { Box, BoxRowCenter, Icon, String } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
 import {

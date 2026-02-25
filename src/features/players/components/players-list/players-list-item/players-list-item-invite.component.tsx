@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { Button } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react';
 
-import COLORS from '@/constants/COLORS';
-import { TIconsAll } from '@/constants/ICONS';
+import COLORS from '@/constants/colors.contstants';
+import { TIconsAll } from '@/constants/icons.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FriendResponseDataStatus } from '@/api/generated/model';
 import { useSendFriendInvitation } from '@/queries/send-friend-invitation.query';

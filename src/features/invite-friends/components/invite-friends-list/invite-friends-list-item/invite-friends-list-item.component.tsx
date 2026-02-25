@@ -3,7 +3,7 @@ import { useTranslate } from '@tolgee/react';
 import { useShallow } from 'zustand/react/shallow';
 import { BoxRowCenterBetween, BoxRow, String, IconButton, Box, Avatar, Wrapper } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { FriendResponseData } from '@/api/generated/model';
 import { MAX_FRIENDS_TO_INVITE_LIMIT } from '@/features/invite-friends/constants/invite-friends.constants';
 

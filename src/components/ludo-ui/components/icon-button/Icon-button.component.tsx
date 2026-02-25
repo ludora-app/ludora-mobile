@@ -1,6 +1,6 @@
 import { IconButton as ChillIconButton } from '@chillui/ui';
 
-import { TIcons } from '@/constants/ICONS';
+import { TIcons } from '@/constants/icons.constants';
 
 import { IconButtonProps } from '../../types/icon-button.types';
 

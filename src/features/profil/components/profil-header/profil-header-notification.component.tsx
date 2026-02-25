@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { Badge, IconButton } from '@ludo/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query'
 
 export default function ProfilHeaderNotification() {

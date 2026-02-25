@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { cn, OutlinedString, Wrapper } from '@chillui/ui'
 
-import COLORS from '@/constants/COLORS'
+import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 

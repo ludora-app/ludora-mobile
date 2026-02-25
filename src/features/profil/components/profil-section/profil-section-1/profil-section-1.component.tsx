@@ -3,7 +3,7 @@ import { useTranslate } from '@tolgee/react';
 import { BoxGrow, BoxRowGrow } from '@chillui/ui';
 import { Avatar, BoxRow, Icon, Image, Link, String } from '@ludo/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
 import { getSportImage } from '@/utils/sports.utils';
 import { SportPreferenceResponseData } from '@/api/generated/model';

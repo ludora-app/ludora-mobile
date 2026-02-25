@@ -22,6 +22,7 @@
     "src/components/ludo-ui/components/list/utils/index.tsw",
     "src/features/create-session/screens/creat-session-step-1.screen.tsW",
     "src/features/players/screens/players.screen.tsw",
-    "src/initializers/push-notifications.initializer.txs"
+    "src/initializers/push-notifications.initializer.txs",
+    "src/constants/icons.constants.ts"
   ]
 }

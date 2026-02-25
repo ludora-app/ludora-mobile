@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { Box, BoxRow, BoxRowCenterBetween, Button, Icon, String } from '@ludo/ui';
 import Animated, { FadeIn, FadeOut, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 
 import { useFiltersStore, selectFilters } from '../../store/filters.store';

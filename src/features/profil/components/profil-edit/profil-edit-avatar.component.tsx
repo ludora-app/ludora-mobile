@@ -5,7 +5,7 @@ import { BoxAbsolute, Icon } from '@ludo/ui';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';

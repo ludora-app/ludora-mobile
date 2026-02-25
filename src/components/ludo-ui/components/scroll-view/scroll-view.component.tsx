@@ -2,7 +2,7 @@ import { cn } from '@chillui/ui';
 import { RefObject, useCallback, useState } from 'react';
 import { RefreshControl, ScrollView as RNScrollView, ScrollViewProps as RNScrollViewProps } from 'react-native';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
 export type ScrollViewProps = RNScrollViewProps & {

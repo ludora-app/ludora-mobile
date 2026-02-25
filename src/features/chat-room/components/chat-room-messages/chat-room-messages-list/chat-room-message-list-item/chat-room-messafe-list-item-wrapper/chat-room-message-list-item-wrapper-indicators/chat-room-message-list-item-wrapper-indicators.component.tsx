@@ -1,7 +1,7 @@
 import { Icon, BoxRow } from '@ludo/ui';
 import { LoadingIndicator } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
 

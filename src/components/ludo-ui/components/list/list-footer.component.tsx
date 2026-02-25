@@ -2,7 +2,7 @@ import React from 'react';
 import { list } from 'radash';
 import { cn, LoadingIndicator } from '@chillui/ui';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 import { Box } from '../box';
 

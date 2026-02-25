@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { BoxRowCenterBetween, Chip } from '@ludo/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 import ROUTES from '@/constants/routes.constants';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { SessionScreenLocalSearchParams } from '@/features/session/types/session.types';

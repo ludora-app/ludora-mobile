@@ -4,10 +4,10 @@ import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, Button, IconButton } from '@ludo/ui'
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import COLORS from '@/constants/COLORS';
-import { TIconsAll } from '@/constants/ICONS';
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
+import { TIconsAll } from '@/constants/icons.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useSendFriendInvitation } from '@/queries/send-friend-invitation.query'

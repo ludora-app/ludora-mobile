@@ -1,7 +1,7 @@
 import { IconButton } from '@ludo/ui';
 import { Share, Alert } from 'react-native';
 
-import COLORS from '@/constants/COLORS';
+import COLORS from '@/constants/colors.contstants';
 
 export default function ShareButton() {
   const handleShare = async () => {

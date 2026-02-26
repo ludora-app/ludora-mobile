@@ -85,8 +85,15 @@ class PushNotificationService {
    * Request notification permission (iOS and Android 13+)
    */
   static async requestPermission(): Promise<boolean> {
+    // On Android, Firebase's requestPermission() does NOT show the system dialog.
+    // expo-notifications properly triggers the POST_NOTIFICATIONS dialog on Android 13+ (API 33+).
+    if (Platform.OS === 'android') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      return status === 'granted';
+    }
+
     if (!getMessaging) {
-      // Fallback to expo-notifications for iOS
+      // iOS without Firebase: fallback to expo-notifications
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
 
@@ -98,6 +105,7 @@ class PushNotificationService {
       return finalStatus === 'granted';
     }
 
+    // iOS with Firebase: use Firebase which handles PROVISIONAL and AUTHORIZED
     const messaging = getMessaging();
     const authStatus = await requestPermission(messaging);
     const enabled = authStatus === AuthorizationStatus.AUTHORIZED || authStatus === AuthorizationStatus.PROVISIONAL;

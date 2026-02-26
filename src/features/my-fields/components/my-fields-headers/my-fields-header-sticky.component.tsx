@@ -23,12 +23,14 @@ const SEGMENTED_CONTROL_ITEMS: SegmentedControlItem[] = [
 ]
 
 function MyFieldsHeaderSticky() {
+  const filter = useMyFieldsFilterStore(state => state.filter)
   const setFilter = useMyFieldsFilterStore(state => state.setFilter)
 
   return (
     <Box className='py-2 bg-background'>
       <SegmentedControl
         items={SEGMENTED_CONTROL_ITEMS}
+        defaultValue={filter.status}
         onValueChange={(value) => setFilter({ status: value })}
       />
     </Box>

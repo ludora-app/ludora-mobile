@@ -198,7 +198,7 @@ function AppLayoutNav() {
             backgroundColor: '#FFF',
           },
           presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
+          sheetAllowedDetents: [0.93],
           sheetCornerRadius: 12,
         }}
       />

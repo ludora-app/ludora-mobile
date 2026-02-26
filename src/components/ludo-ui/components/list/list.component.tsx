@@ -56,7 +56,7 @@ export default function List(props: ListProps) {
     ...rest
   } = props;
 
-  const { bottom, top } = useSafeArea();
+  const { bottom, safeTop } = useSafeArea();
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
@@ -145,11 +145,11 @@ export default function List(props: ListProps) {
   const listStyle: ViewStyle | undefined = useMemo(() => {
     if ((ListStickyComponent && hasListStickyComponentTopSafeArea) || hasTopSafeArea) {
       return {
-        marginTop: top,
+        marginTop: safeTop,
       };
     }
     return undefined;
-  }, [top, ListStickyComponent, hasListStickyComponentTopSafeArea, hasTopSafeArea]);
+  }, [safeTop, ListStickyComponent, hasListStickyComponentTopSafeArea, hasTopSafeArea]);
 
   const bottomSafeAreaStyle: ViewStyle | undefined = useMemo(() => {
     if (hasBottomSafeArea && listHeaderComponentHeight) {

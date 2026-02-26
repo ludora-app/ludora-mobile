@@ -16,7 +16,7 @@ export default function HeaderScreen(props: PropsWithChildren<HeaderProps>) {
   const { children, className, hasNewSession = false, iconProps, subTitle, title } = props;
 
   return (
-    <Box className={cn('h-56 flex-row items-end overflow-hidden', className)}>
+    <Box className={cn('h-48 flex-row items-end overflow-hidden', className)}>
       <Box className="flex-1 flex-row justify-center gap-4">
         <Box className="flex-1 gap-2 pb-3 justify-center">
           <Box className="-ml-1 -mb-3 w-full">

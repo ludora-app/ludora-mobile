@@ -14,6 +14,7 @@ type OnBoardingState = {
   addGameMode: (sport: string, gameMode: CreateSportPreferenceDataGameModesItem) => void;
   profilePicture?: ImagePickerAsset;
   setProfilePicture: (profilePicture: ImagePickerAsset) => void;
+  clearAll: () => void;
 };
 
 export const useOnBoardingStore = create<OnBoardingState>()(set => ({
@@ -29,6 +30,7 @@ export const useOnBoardingStore = create<OnBoardingState>()(set => ({
         };
       }),
     })),
+  clearAll: () => set({ profilePicture: undefined, sportPreferences: [] }),
   profilePicture: undefined,
   removeSportPreference: (sport: string) =>
     set(state => ({

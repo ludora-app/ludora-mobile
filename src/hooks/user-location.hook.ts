@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import * as Location from 'expo-location';
 import { useTranslate } from '@tolgee/react';
+import { useCallback, useState } from 'react';
 import { Alert, Linking, Platform } from 'react-native'; // Importations nécessaires
 
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
@@ -19,7 +19,7 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
   const { trackError } = useAnalytics();
   const { t } = useTranslate();
 
-  const getCurrentLocation = async (): Promise<{ locationFound: boolean }> => {
+  const getCurrentLocation = useCallback(async (): Promise<{ locationFound: boolean }> => {
     setIsLoading(true);
     const { canAskAgain, status } = await Location.requestForegroundPermissionsAsync();
 
@@ -59,7 +59,7 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [setLocation, t, showAlert, type, trackError]);
 
   return { getCurrentLocation, isLoading };
 };

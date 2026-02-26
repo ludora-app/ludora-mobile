@@ -12,7 +12,7 @@ import HomeSessionListHeaderTopList from './home-session-list-headers/home-sessi
 const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
-const LIST_HEADER_HEIGHT = 224
+const LIST_HEADER_HEIGHT = 191
 
 
 export default function HomeSessionList() {
@@ -62,7 +62,6 @@ export default function HomeSessionList() {
       ListTopComponent={<HomeSessionListHeader />}
       ListStickyComponent={<HomeSessionListHeaderSticky />}
       hasHeaderTransparent
-      bounces={false}
       listHeaderComponentHeight={LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl px-4"
       contentContainerStyle={{ paddingBottom: bottomTab }}

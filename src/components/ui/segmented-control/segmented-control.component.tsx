@@ -22,18 +22,19 @@ export interface SegmentedControlItem<T> {
 }
 
 interface SegmentedControlProps<T> {
+  readonly defaultValue?: T
   readonly onValueChange: (value: T) => void
   readonly items: readonly SegmentedControlItem<T>[]
 }
 
 function SegmentedControlImpl<T extends string>(props: PropsWithChildren<SegmentedControlProps<T>>) {
-  const { children, items, onValueChange } = props
+  const { children, defaultValue, items, onValueChange } = props
   const { t } = useTranslate()
 
   return (
     <Box className='gap-3'>
       <ChillSegmentedControl>
-        <SegmentedControlTriggerContent className='h-12'>
+        <SegmentedControlTriggerContent className='h-12' defaultValue={defaultValue?.toLowerCase()}>
           {items.map((item) => (
             <SegmentedControlTrigger
               key={item.option || item.value}

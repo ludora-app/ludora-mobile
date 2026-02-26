@@ -327,6 +327,7 @@
   "notifications.title_FRIEND_REQUEST": "Demande d'ami",
   "notifications.title_SESSION_INVITATION": "Invitation à un match",
   "on-boarding.step-1.description": "Tu n'as pas de photo ? Pas de souci, on t'attribuera un avatar Ludora par défaut.",
+  "on-boarding.step-1.description_google": "On a récupéré ta photo Google. Tu veux peut-être la changer ?",
   "on-boarding.step-1.title": "Ajouter une photo de profil",
   "on-boarding.step-2.select-sport": "Sélectionner un sport",
   "on-boarding.step-2.title": "Quels sports pratiques-tu ?",

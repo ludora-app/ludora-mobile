@@ -1,7 +1,9 @@
-import '@formatjs/intl-locale/polyfill';
-import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-pluralrules/locale-data/en';
-import '@formatjs/intl-pluralrules/locale-data/fr';
+/* eslint-disable import/extensions -- @formatjs packages require .js in paths per their "exports" */
+import '@formatjs/intl-locale/polyfill.js';
+import '@formatjs/intl-pluralrules/polyfill.js';
+import '@formatjs/intl-pluralrules/locale-data/en.js';
+import '@formatjs/intl-pluralrules/locale-data/fr.js';
+/* eslint-enable import/extensions */
 import { PropsWithChildren } from 'react';
 import { FormatIcu } from '@tolgee/format-icu';
 import { Tolgee, TolgeeProvider as TolgeeProviderNative } from '@tolgee/react';

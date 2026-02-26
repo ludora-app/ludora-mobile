@@ -13,8 +13,8 @@ export default function LoginScreen() {
   return (
     <>
       <HeaderGoBack title={t('auth.login.header_title')} hasTopSafeArea />
-      <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']} fill>
-        <BoxGrow className='mt-10'>
+      <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']} contentContainerClassName='grow'>
+        <BoxGrow className='mt-10 pb-5'>
           <LoginEmailForm />
           <Separator title={t('common.or')} className="my-5" />
           <LoginSocialNetworks flow="login" />

@@ -1,6 +1,6 @@
 import { List } from '@ludo/ui'
-import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
+import { useRouter } from 'expo-router'
 
 import ROUTES from '@/constants/routes.constants'
 import { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook'

@@ -15,7 +15,7 @@ import MyFieldsHeaderSticky from '../my-fields-headers/my-fields-header-sticky.c
 
 const LIST_ITEM_SIZE_HEIGHT = 185
 const LIST_STICKY_COMPONENT_HEIGHT = 75
-const HEADER_HEIGHT = 57
+const HEADER_HEIGHT = 55
 
 export default function MyFieldsList() {
   const router = useRouter()

@@ -1,5 +1,5 @@
 // hooks/useErrorHandler.ts
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { HTTPError, TimeoutError } from 'ky';
@@ -16,46 +16,55 @@ export const useAnalytics = () => {
   const { toast } = useToast();
   const { t } = useTranslate();
 
-  const trackError = ({
-    error,
-    extra,
-    showToast = true,
-  }: {
-    error?: any;
-    extra?: Record<string, any>;
-    showToast?: boolean;
-  }) => {
-    const { error: e, ...rest } = error;
-    if (e instanceof HTTPError || e instanceof TimeoutError) {
-      posthog.captureException(e, {
-        ...rest,
-        ...extra,
-      });
-    } else {
-      posthog.captureException(error, {
-        ...extra,
-      });
-    }
-    if (showToast) {
-      toast({
-        message: t('common.error_generic'),
-        variant: 'error',
-      });
-    }
+  const trackError = useCallback(
+    ({
+      error,
+      extra,
+      showToast = true,
+    }: {
+      error?: any;
+      extra?: Record<string, any>;
+      showToast?: boolean;
+    }) => {
+      const { error: e, ...rest } = error ?? {};
+      if (e instanceof HTTPError || e instanceof TimeoutError) {
+        posthog.captureException(e, {
+          ...rest,
+          ...extra,
+        });
+      } else {
+        posthog.captureException(error, {
+          ...extra,
+        });
+      }
+      if (showToast) {
+        toast({
+          message: t('common.error_generic'),
+          variant: 'error',
+        });
+      }
 
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('Analytics error:', error);
-    }
-  };
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log('Analytics error:', error);
+      }
+    },
+    [posthog, toast, t],
+  );
 
-  const trackEvent = <T extends AnalyticsEvent>({ data, eventName }: AnalyticsEventWithDataType<T>) => {
-    posthog.capture(eventName, data as any);
-  };
+  const trackEvent = useCallback(
+    <T extends AnalyticsEvent>({ data, eventName }: AnalyticsEventWithDataType<T>) => {
+      posthog.capture(eventName, data as any);
+    },
+    [posthog],
+  );
 
-  const trackIdentity = (properties: TrackIdentityProperties) => {
-    posthog.identify(posthog.getDistinctId(), properties);
-  };
+  const trackIdentity = useCallback(
+    (properties: TrackIdentityProperties) => {
+      posthog.identify(posthog.getDistinctId(), properties);
+    },
+    [posthog],
+  );
 
   return { trackError, trackEvent, trackIdentity };
 };

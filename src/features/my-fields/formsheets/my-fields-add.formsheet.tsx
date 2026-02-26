@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { useToast } from '@chillui/ui'
 import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
@@ -29,6 +29,9 @@ export default function MyFieldsAddFormSheet() {
   const { toast } = useToast()
   const { trackError, trackEvent } = useAnalytics()
   const { sport } = useLocalSearchParams<LocalSearchParams>()
+
+  const [showSportSelector] = useState(() => !sport)
+
   const { control, handleSubmit, setValue, watch } = useForm<CreateFieldSchema>({
     defaultValues: {
       address: '',
@@ -49,7 +52,7 @@ export default function MyFieldsAddFormSheet() {
 
   const sports = watch('sports')
 
-  const showSportSelector = sports.length === 0
+
   const onSubmit = async (data: CreateFieldSchema) => {
     try {
       const images = data.images.map(image => ({
@@ -138,6 +141,6 @@ export default function MyFieldsAddFormSheet() {
           size="md"
         />
       </FormSheetFooter>
-    </ >
+    </>
   )
 }

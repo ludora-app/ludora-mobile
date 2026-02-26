@@ -17,7 +17,6 @@ export default function SessionJoinedScreen() {
 
   const handleConversationPress = () => {
     const params: ChatRoomLocalParams = {
-      chatRoomId: conversationUid,
       imageUrl,
       name,
       type,

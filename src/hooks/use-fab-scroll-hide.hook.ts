@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const SCROLL_THRESHOLD = 2
 const TOP_THRESHOLD = 20

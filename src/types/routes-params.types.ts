@@ -47,9 +47,6 @@ export type RootStackParamList = {
     imageUrl: string;
     sessionUid?: string;
   };
-  [ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET]: {
-    sessionUid: string;
-  };
   [ROUTES.MY_FIELDS.ADD]: {
     sport?: SessionCollectionItemDtoSport;
   };

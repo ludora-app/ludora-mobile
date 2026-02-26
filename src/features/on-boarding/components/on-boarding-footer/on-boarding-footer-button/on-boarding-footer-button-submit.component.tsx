@@ -18,6 +18,7 @@ export default function OnBoardingFooterButtonSubmit() {
   const { trackError, trackEvent } = useAnalytics()
   const sportPreferences = useOnBoardingStore(state => state.sportPreferences)
   const profilePicture = useOnBoardingStore(state => state.profilePicture);
+  const clearAll = useOnBoardingStore(state => state.clearAll)
   const setOnBoardingStatus = useOnBoardingStatusStore(state => state.setOnBoardingStatus)
 
   const { isPending: isCreatingSportPreference, mutateAsync: createSportPreference } = useCreateSportPreference()
@@ -48,6 +49,7 @@ export default function OnBoardingFooterButtonSubmit() {
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED,
       })
       setOnBoardingStatus("COMPLETE")
+      clearAll()
       router.replace('/')
     } catch (error) {
       const errorResponse = error as ErrorResponse

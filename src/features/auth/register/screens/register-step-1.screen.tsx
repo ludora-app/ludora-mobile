@@ -12,7 +12,7 @@ export default function RegisterStep1Screen() {
   return (
     <>
       <HeaderGoBack hasTopSafeArea />
-      <Wrapper fill hasSafeArea edges={["bottom"]}>
+      <Wrapper fill hasSafeArea edges={["bottom"]} className='pb-5'>
         <BoxGrow className='gap-10 '>
           <Box className="items-center justify-center gap-5">
             <Icon name='ludo-sunglass' className="size-32" />
@@ -43,7 +43,6 @@ export default function RegisterStep1Screen() {
             </String>
           </Pressable>
         </Link>
-
       </Wrapper>
     </>
   );

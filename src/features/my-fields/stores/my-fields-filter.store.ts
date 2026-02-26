@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import { FieldsFindAllMyFieldsParams } from '@/api/generated/model';
 
 interface MyFieldsFilterState {
-  filter: FieldsFindAllMyFieldsParams;
   reset: () => void;
+  filter: FieldsFindAllMyFieldsParams;
   setFilter: (filter: FieldsFindAllMyFieldsParams) => void;
 }
 

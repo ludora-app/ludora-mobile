@@ -39,6 +39,14 @@ export function useAuthHelpers() {
   );
 
   const logout = useCallback(async () => {
+    try {
+      const fcmToken = await pushNotificationService.getFCMToken();
+      if (fcmToken) {
+        await unregisterDeviceAsync({ fcmToken });
+      }
+    } catch (error) {
+      trackError({ error, showToast: false });
+    }
     setAccessTokenStorage(null);
     setRefreshTokenStorage(null);
     setIsAuthenticated(false);
@@ -47,10 +55,6 @@ export function useAuthHelpers() {
     queryClient.clear();
     try {
       await signOut();
-      const fcmToken = await pushNotificationService.getFCMToken();
-      if (fcmToken) {
-        await unregisterDeviceAsync({ fcmToken });
-      }
       await pushNotificationService.deleteToken();
     } catch (error) {
       trackError({ error, showToast: false });

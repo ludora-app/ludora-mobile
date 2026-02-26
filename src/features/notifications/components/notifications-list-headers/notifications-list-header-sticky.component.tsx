@@ -28,14 +28,14 @@ const SEGMENTED_CONTROL_FAVORITES: SegmentedControlItem[] = [
 ]
 
 function NotificationsListHeaderSticky() {
+  const filters = useNotificationsFilterStore(state => state.filters)
   const setFilters = useNotificationsFilterStore(state => state.setFilters)
-
-
 
   return (
     <Box className='py-2 bg-background'>
       <SegmentedControl
         items={SEGMENTED_CONTROL_FAVORITES}
+        defaultValue={filters.type}
         onValueChange={(value) => setFilters({ type: value })}
       />
     </Box>

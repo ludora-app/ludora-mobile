@@ -27,12 +27,14 @@ const SEGMENTED_CONTROL_ITEMS: SegmentedControlItem[] = [
 ]
 
 function SessionsHistoryHeaderSticky() {
+  const filter = useSettingsHistoryFilterStore(state => state.filter)
   const setFilter = useSettingsHistoryFilterStore(state => state.setFilter)
 
   return (
     <Box className='py-2 bg-background'>
       <SegmentedControl
         items={SEGMENTED_CONTROL_ITEMS}
+        defaultValue={filter.scope}
         onValueChange={(value) => setFilter({ scope: value })}
       />
     </Box>

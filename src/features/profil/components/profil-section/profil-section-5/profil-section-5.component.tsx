@@ -20,10 +20,12 @@ const OPTIONS = [
 ]
 
 export default function ProfilSection5() {
+  const selectedTab = useProfilStore(state => state.selectedTab)
   const setSelectedTab = useProfilStore(state => state.setSelectedTab)
   return (
     <SegmentedControl
       items={OPTIONS}
+      defaultValue={selectedTab}
       onValueChange={(value) => setSelectedTab(value)}
     >
       <ProfilSection5Tabs />

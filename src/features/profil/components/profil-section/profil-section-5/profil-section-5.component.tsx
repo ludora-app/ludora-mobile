@@ -1,34 +1,30 @@
+import { ReactElement, ReactNode } from 'react';
+
+import ProfilSection5Tabs from './profil-section-5-tabs.component';
+import ProfilSection5ListSegmentedControl from './profil-section-5-list-segmented-control.component';
 
 
-import { SegmentedControl } from '@/components/ui/segmented-control'
-import { ProfilTab, useProfilStore } from '@/features/profil/stores/profil.store'
+type ProfilSection5Props = {
+  header?: ReactNode;
+  isRefetching?: boolean;
+  onRefresh?: () => Promise<void>;
+}
 
-import ProfilSection5Tabs from './profil-section-5-tabs.component'
+type ListHeader = ReactElement
 
+export default function ProfilSection5({ header, isRefetching, onRefresh }: ProfilSection5Props) {
+  const listHeaderComponent: ListHeader = (
+    <>
+      {header}
+      <ProfilSection5ListSegmentedControl />
+    </>
+  )
 
-
-
-const OPTIONS = [
-  {
-    labelKey: 'common.matches',
-    value: ProfilTab.Matches,
-  },
-  {
-    labelKey: 'common.badges',
-    value: ProfilTab.Badges,
-  },
-]
-
-export default function ProfilSection5() {
-  const selectedTab = useProfilStore(state => state.selectedTab)
-  const setSelectedTab = useProfilStore(state => state.setSelectedTab)
   return (
-    <SegmentedControl
-      items={OPTIONS}
-      defaultValue={selectedTab}
-      onValueChange={(value) => setSelectedTab(value)}
-    >
-      <ProfilSection5Tabs />
-    </SegmentedControl>
+    <ProfilSection5Tabs
+      listHeaderComponent={listHeaderComponent}
+      isRefetching={isRefetching}
+      onRefresh={onRefresh}
+    />
   )
 }

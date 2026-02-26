@@ -1,6 +1,6 @@
 import { useTranslate } from '@tolgee/react'
-import { BoxRow, IconButton, Link, Wrapper } from '@ludo/ui'
-import { Box, BoxRowGrow, cn, OutlinedString } from '@chillui/ui'
+import { BoxRow, IconButton, Link } from '@ludo/ui'
+import { Box, BoxRowGrow, cn, OutlinedString, Wrapper } from '@chillui/ui'
 
 import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'

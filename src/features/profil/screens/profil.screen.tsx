@@ -1,5 +1,5 @@
+import { ScreenLayout, Wrapper } from '@ludo/ui';
 import { useLocalSearchParams } from 'expo-router';
-import { ScreenLayout, Wrapper, ScrollView } from '@ludo/ui';
 
 import { useUserMe } from '@/queries/user-me.query';
 
@@ -26,46 +26,46 @@ export default function ProfilScreen() {
 
   const handleRefetch = async () => {
     if (isProfilMe) {
-      await refetchUserMe()
+      await refetchUserMe();
     } else {
-      await refetchUser()
+      await refetchUser();
     }
-  }
+  };
 
-  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser
+  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
+  const isProfilLoading = isLoadingUser || isLoadingUserMe;
 
-  const isProfilLoading = isLoadingUser || isLoadingUserMe
-
+  const profilHeader = (
+    <>
+      <ProfilHeader isMe={isProfilMe} />
+      <Wrapper className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
+        {isProfilLoading ? <ProfilSection1Skeleton /> : (
+          <ProfilSection1
+            firstname={firstname}
+            lastname={lastname}
+            avatarUrl={avatarUrl}
+            sportPreferences={sportPreferences}
+            isMe={isProfilMe}
+          />
+        )}
+        {isProfilLoading ? <ProfilSesion2Skeleton /> : (
+          <ProfilSesion2 bio={userBio} isMe={isProfilMe} />
+        )}
+        <ProfilSection3 isMe={isProfilMe} />
+        {isProfilLoading ? <ProfilSection4Skeleton /> : (
+          <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} isMe={isProfilMe} />
+        )}
+      </Wrapper>
+    </>
+  );
 
   return (
     <ScreenLayout>
-      <ScrollView hasRefreshControl isRefetching={isRefetching} refetch={handleRefetch}>
-        {/* Header */}
-        <ProfilHeader isMe={isProfilMe} />
-
-        <Wrapper fill className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
-          {/* Section 1 */}
-          {isProfilLoading ? <ProfilSection1Skeleton /> :
-            <ProfilSection1
-              firstname={firstname}
-              lastname={lastname}
-              avatarUrl={avatarUrl}
-              sportPreferences={sportPreferences}
-              isMe={isProfilMe}
-
-            />}
-          {/* Section 2 */}
-          {isProfilLoading ? <ProfilSesion2Skeleton /> :
-            <ProfilSesion2 bio={userBio} isMe={isProfilMe} />}
-          {/* Section 3 */}
-          <ProfilSection3 isMe={isProfilMe} />
-          {/* Section 4 */}
-          {isProfilLoading ? <ProfilSection4Skeleton /> :
-            <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} isMe={isProfilMe} />}
-          {/* Section 5 */}
-          <ProfilSection5 />
-        </Wrapper>
-      </ScrollView>
-    </ScreenLayout >
+      <ProfilSection5
+        header={profilHeader}
+        isRefetching={isRefetching}
+        onRefresh={handleRefetch}
+      />
+    </ScreenLayout>
   );
 }

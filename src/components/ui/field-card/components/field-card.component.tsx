@@ -86,7 +86,7 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
         <Box>
           {/* top card content */}
           <Box className="gap-2 bg-white px-3 py-2">
-            <String font="primaryExtraBold">{name}</String>
+            <String font="primaryExtraBold" truncate>{name}</String>
             <BoxRow className="items-center gap-1">
               <Icon name="location-solid" color={handleIconColor} size="xs" />
               <Box className="no-wrap flex-1 flex-row items-center gap-2">

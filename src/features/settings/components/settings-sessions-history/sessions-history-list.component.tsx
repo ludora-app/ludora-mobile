@@ -3,6 +3,7 @@ import { List } from '@ludo/ui'
 import { useMemo } from 'react'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card'
 
 import { useGetSessionsMe } from '../../queries/get-sessions-me.query'
@@ -31,6 +32,13 @@ export default function SessionsHistoryList() {
     [],
   );
 
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottom + HEADER_HEIGHT;
+    }
+    return bottom;
+  }, [bottom]);
+
   return (
     <List
       data={items}
@@ -45,7 +53,7 @@ export default function SessionsHistoryList() {
       refetch={refetch}
       hasRefreshControl
       contentContainerClassName="grow bg-background px-4"
-      contentContainerStyle={{ paddingBottom: bottom }}
+      contentContainerStyle={{ paddingBottom }}
       hasListStickyComponentTopSafeArea
       hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}

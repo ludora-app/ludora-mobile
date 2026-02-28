@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react'
 import { useLocalSearchParams } from 'expo-router'
+import React, { ReactElement, useMemo } from 'react'
 
 import { List } from '@/components/ludo-ui'
 import { cn } from '@/components/chill-ui-library'
 import { useSafeArea } from '@/hooks/safe-area.hook'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { useProfilStore } from '@/features/profil/stores/profil.store'
 import { useGetSessionsMe } from '@/features/profil/queries/get-sessions-me.query'
 import { useGetSessionsByUserId } from '@/features/profil/queries/get-sessions-by-user-id.query'
@@ -42,6 +43,13 @@ export default function ProfilSection5MatchesList({ isRefetching: isRefetchingPr
     ])
   }
 
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottomTab + LIST_HEADER_HEIGHT;
+    }
+    return bottomTab;
+  }, [bottomTab]);
+
   return (
     <List
       data={sessions}
@@ -60,7 +68,7 @@ export default function ProfilSection5MatchesList({ isRefetching: isRefetchingPr
       hasHeaderTransparent
       ListHeaderComponent={listHeaderComponent}
       contentContainerClassName={cn("bg-background", { "rounded-t-xl": selectedTab === "matches" })}
-      contentContainerStyle={{ paddingBottom: bottomTab }}
+      contentContainerStyle={{ paddingBottom }}
       emptyResultProps={{
         className: 'mt-4',
         hasRandomTitle: true,

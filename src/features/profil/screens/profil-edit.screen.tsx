@@ -23,6 +23,7 @@ export default function ProfilEditScreen() {
   const { bottom } = useSafeArea()
   const { isRefetching, refetch, userMe } = useUserMe()
   const { bio, birthdate, email, firstname, lastname, sex: userSex } = userMe || {}
+
   const router = useRouter()
 
   const data = [

@@ -41,8 +41,9 @@ jobs:
 
       - name: 🔐 Install HashiCorp envconsul
         run: |
-          wget https://releases.hashicorp.com/envconsul/0.13.2/envconsul_0.13.2_linux_amd64.tgz
-          tar -xvzf envconsul_0.13.2_linux_amd64.tgz
+          sudo apt-get update && sudo apt-get install -y unzip
+          wget https://releases.hashicorp.com/envconsul/0.13.4/envconsul_0.13.4_linux_amd64.zip
+          unzip envconsul_0.13.4_linux_amd64.zip
           sudo mv envconsul /usr/local/bin/
 
       - name: 🎨 Generate API Hooks (with Vault)

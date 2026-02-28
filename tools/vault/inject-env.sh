@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 1. Charger .env.development (VAULT_ADDR, VAULT_ROLE_ID, VAULT_SECRET_ID, VAULT_PATH…)
+# 1. Charger .env.development s'il existe
 if [ -f .env.development ]; then
   set -a
   . ./.env.development
   set +a
-else
-  echo "❌ .env.development introuvable."
-  exit 1
 fi
 
 # 2. Vérifier que les variables AppRole sont présentes

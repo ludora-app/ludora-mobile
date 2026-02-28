@@ -1,176 +1,129 @@
-# 🧼 Ludora – React Native + Expo ⚡
+# 🧼 Ludora – Application Mobile (Frontend) ⚡
 
-// explication
+Bienvenue sur le dépôt du frontend de **Ludora**, une application mobile moderne construite avec **React Native** et **Expo**. Ce projet est optimisé pour la performance, la maintenabilité et une automatisation complète du cycle de release.
 
 ---
 
-## 🚀 Fonctionnalités incluses
+## 🛠 Tech Stack
 
-✅ [Bun](https://bun.sh) — gestionnaire de paquets ultra-rapide  
-✅ [Expo](https://expo.dev) — framework mobile cross-platform  
-✅ [TypeScript](https://www.typescriptlang.org) — typage fort pour plus de robustesse  
-✅ [Expo Router](https://expo.github.io/router/) — navigation type "Next.js" dans Expo  
-✅ [Tailwind CSS via NativeWind](https://www.nativewind.dev/) — style rapide et réactif  
-✅ [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) — pour des animations fluides  
-✅ Structure de projet claire (dossier `src/`)  
-✅ Gestion d'état avec [Zustand](https://zustand-demo.pmnd.rs/) (léger et efficace)  
-✅ ESLint + Prettier préconfigurés
+- **Framework** : [Expo SDK 54+](https://expo.dev) & [React Native](https://reactnative.dev)
+- **Gestionnaire de paquets** : [Bun](https://bun.sh) (Ultra-rapide)
+- **Navigation** : [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
+- **Style** : [NativeWind v4 / Tailwind CSS](https://www.nativewind.dev/) & Uniwind
+- **Data Fetching** : [TanStack Query v5](https://tanstack.com/query/latest) (React Query)
+- **Validation / Types** : [Zod](https://zod.dev) & TypeScript
+- **State Management** : [Zustand](https://github.com/pmndrs/zustand)
+- **Génération API** : [Orval](https://orval.dev/) (Client API typé généré depuis Swagger)
+- **Secrets & Env** : [HashiCorp Vault](https://www.vaultproject.io/) avec `envconsul`
 
 ---
 
 ## ⚙️ Prérequis
 
-### 1. Installer Bun
-
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-> 🔁 Redémarre ton terminal si la commande `bun` n’est pas reconnue.
-
-### 2. Installer Expo CLI
-
-```bash
-bun add -g expo-cli
-```
+- **Bun** : Installé sur votre machine.
+- **Expo CLI** : `bun add -g expo-cli`.
+- **Vault CLI & envconsul** : Pour la gestion des secrets en local.
+- **EAS CLI** : Pour lancer des builds sur l'infrastructure Expo.
 
 ---
 
-# 📦 Installation du starter
+## 🚀 Installation & Lancement
 
-## 🥪 Cloner le projet
+1. **Cloner le projet** :
 
-```bash
-git clone https://github.com/amir-398/react-native-starter-pack.git
-```
+   ```bash
+   git clone https://github.com/ludora-app/ludora-mobile.git
+   cd ludora-mobile
+   ```
 
-```bash
-cd react-native-starter-pack
-```
+2. **Installer les dépendances** :
 
-## 🥪 Installation des nodes modules
+   ```bash
+   bun install
+   ```
 
-```bash
-bun install
-```
-
-## 🥪 Lancer sur Android
-
-```bash
-bun android
-```
-
-> 📱 Assure-toi que ton émulateur ou ton device est connecté via `adb`.
+3. **Lancement du serveur de développement** :
+   Le script de lancement injecte automatiquement les variables d'environnement depuis Vault.
+   ```bash
+   bun start
+   ```
 
 ---
 
-## 🥪 Lancer sur Ios
+## 📡 Génération de l'API
 
-```bash
-bun ios
-```
+L'API est générée automatiquement à partir de la documentation Swagger du backend.
 
-> 📱 Assure-toi que ton émulateur ou ton device est connecté via `adb`.
+- **En local** : `bun run generate:api` (Utilise Vault pour l'auth).
+- **Dans la CI** : `bun run generate:api:ci` (Utilisé par GitHub Actions).
 
-## 🧱 Structure du projet
-
-```
-my-app/
-├── .expo/                     ← fichiers liés à Expo
-├── android/                   ← projet Android natif
-├── assets/                    ← images, polices, etc.
-├── node_modules/              ← dépendances
-├── src/                       ← cœur de l'application
-│   ├── api/                   ← requêtes API
-│   ├── app/                   ← pages (Expo Router)
-│   ├── components/            ← composants UI réutilisables
-│   ├── configs/               ← fichiers de config globaux
-│   ├── constants/             ← constantes globales
-│   ├── features/              ← features modulaire (domain-driven)
-│   ├── hooks/                 ← custom hooks
-│   ├── providers/             ← context providers globaux
-│   ├── services/              ← logique métier / intégration externe
-│   ├── stores/                ← state management (Zustand)
-│   ├── styles/                ← styles globaux / thématiques
-│   ├── types/                 ← types TypeScript partagés
-│   └── tools/                 ← helpers, outils, lib externes
-├── .env.sample                ← exemple de fichier d'environnement
-├── .gitignore                 ← fichiers ignorés par Git
-├── app.json                   ← config Expo
-├── babel.config.js            ← config Babel (avec Reanimated)
-├── bun.lock                   ← lockfile Bun
-├── index.tsx                  ← point d'entrée de l'app
-├── metro.config.js            ← config Metro bundler
-├── nativewind-env.d.ts        ← types pour NativeWind
-├── package.json               ← dépendances et scripts
-├── tailwind.config.js         ← config Tailwind CSS / NativeWind
-└── tsconfig.json              ← config TypeScript
-```
+Les fichiers générés se trouvent dans `src/api/generated/`. **Ne modifiez jamais ces fichiers manuellement.**
 
 ---
 
-## 🎨 Tailwind CSS via NativeWind
+## 📝 Standards de Développement (Conventional Commits)
 
-Déjà préconfiguré avec `nativewind`.  
-Tu peux directement utiliser les classes tailwind dans tes composants React Native :
+Ce projet utilise [commitlint](https://commitlint.js.org/) pour imposer des messages de commit standardisés.
 
-```tsx
-<Text className="text-xl font-bold text-blue-500">Hello world</Text>
+**Format** : `type(scope): description`
+
+- `feat` : Nouvelle fonctionnalité (ex: `feat(ui): add CustomButton`)
+- `fix` : Correction de bug (ex: `fix(api): handle 404 on profile`)
+- `docs` : Documentation uniquement
+- `style` : Changements esthétiques (pas de logique)
+- `refactor` : Modification du code sans changement de comportement
+- `chore` : Maintenance, mise à jour de dépendances
+
+**Hooks Git** : [Husky](https://typicode.github.io/husky/) vérifie automatiquement votre code (`lint` + `type check`) et votre message de commit avant chaque validation.
+
+---
+
+## 🚀 CI/CD & Releases Automatisées
+
+Le projet utilise **Semantic Release** pour automatiser la gestion des versions et les builds.
+
+### Pipeline GitHub Actions :
+
+À chaque push sur `main`, `staging` ou `develop` :
+
+1. **Génération API** : Les hooks React Query sont régénérés avec Vault.
+2. **Validation** : Linting et vérification TypeScript (`bun run check:all`).
+3. **Release** : Semantic Release calcule la nouvelle version, crée un Tag Git, un Changelog et met à jour `app.json`.
+4. **Build Expo (EAS)** :
+   - Sur **`main`** : Build Android Production (`build:android:prod`) envoyé sur Expo.
+   - Sur **`staging`** : Build Android Preview (`build:android:preview`) envoyé sur Expo.
+
+### Synchronisation des branches :
+
+Après une release sur `main`, les branches `staging` et `develop` sont automatiquement synchronisées par la CI (force push) pour garantir une base de code identique partout.
+
+---
+
+## 🏗 Structure du Projet
+
+```text
+├── assets/             # Images, polices et ressources statiques
+├── src/                # Cœur de l'application
+│   ├── api/            # Clients API générés et config Orval
+│   ├── app/            # Pages et Routing (Expo Router)
+│   ├── components/     # Composants UI réutilisables
+│   ├── hooks/          # Custom Hooks
+│   ├── stores/         # Gestion d'état (Zustand)
+│   ├── tools/          # Utilitaires et scripts d'injection Vault
+│   └── types/          # Types TypeScript globaux
+├── .github/workflows/  # Pipelines CI/CD
+├── app.json            # Configuration Expo
+└── package.json        # Dépendances et scripts
 ```
-
----
-
-## 🔀 Navigation avec Expo Router
-
-Ce projet utilise [Expo Router](https://expo.github.io/router/) pour une navigation **type Next.js** :
-
-- `app/index.tsx` → `/`
-- `app/about.tsx` → `/about`
-- `app/(auth)/login.tsx` → `/login` (layouts dynamiques)
-
----
-
-## 🦄 Scripts utiles
-
-| Commande             | Description             |
-| -------------------- | ----------------------- |
-| `bun start`          | Démarre le serveur Expo |
-| `bun android`        | Lance l'app sur Android |
-| `bun ios`            | Lance l'app sur ios     |
-| `bun generate-icons` | Générer les icones      |
-| `bun doctor`         | Vérifier les packages   |
-| `bun install:check`  | Corriger les packages   |
-
----
-
-## 🔐 EAS Build – Fichiers exclus du git
-
-`google-services.json` et `GoogleService-Info.plist` sont dans `.gitignore`. Pour que EAS Build les ait, crée des **secrets de type fichier** sur le projet (une fois par machine ou par compte) :
-
-```bash
-# À la racine du projet, avec les fichiers présents localement
-eas secret:create --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
-eas secret:create --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
-```
-
-`app.config.js` utilise ces variables : en local tu gardes tes fichiers, sur EAS les chemins injectés sont utilisés.
-
----
-
-## 🤝 Contribuer
-
-Tu veux améliorer le starter, proposer des features ou corriger un bug ?  
-Les PRs sont les bienvenues ! Fork → branche → PR 💙
 
 ---
 
 ## 🧞‍♂️ Auteur
 
-**Chill Starter** développé par [@hmeberbeche](https://github.com/hmeberbeche)  
-Pensé pour aller vite. Codé avec amour 💙
+Développé avec ❤️ par l'équipe **Ludora**.
 
 ---
 
 ## 📄 Licence
 
-MIT — libre à utiliser, modifier, partager 🚀
+MIT — Libre d'utilisation et de modification.

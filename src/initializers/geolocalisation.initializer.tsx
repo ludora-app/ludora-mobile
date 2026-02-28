@@ -16,7 +16,10 @@ export default function GeolocalisationInitializer() {
   }, [getCurrentLocation, trackError]);
 
   useEffect(() => {
-    getUserLocation();
+    const timer = setTimeout(() => {
+      getUserLocation();
+    }, 800);
+    return () => clearTimeout(timer);
   }, [getUserLocation]);
 
   return null;

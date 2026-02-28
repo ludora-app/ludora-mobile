@@ -11,3 +11,4 @@ export * from './wrapper-keyboard-aware-scroll-view.types';
 export * from './badge.types';
 export * from './avatar.types';
 export * from './chip.types';
+export * from './icon-button.types';

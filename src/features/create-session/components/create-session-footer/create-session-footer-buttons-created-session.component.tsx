@@ -17,13 +17,15 @@ export default function CreatedSessionFooterButtonsCreatedSession() {
     router.push(ROUTES.INVITE_FRIENDS.INDEX_UID(createdSessionUid));
   };
 
+  const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(createdSessionUid)}`;
+
   return (
     <Box className="w-full gap-4">
       <BoxRow className="items-center gap-3">
         <Box className="flex-1">
           <Button title={t('create-session.step-5.button_title_invite_people')} onPress={handleInvitePeople} />
         </Box>
-        <ShareButton />
+        <ShareButton message={t('session.share_message', { url: shareUrl })} title={t('session.share_title')} url={shareUrl} />
       </BoxRow>
       <Button title={t('create-session.step-5.button_title_back_to_home')} variant="outlined" onPress={router.back} />
     </Box>

@@ -143,6 +143,20 @@ Ce projet utilise [Expo Router](https://expo.github.io/router/) pour une navigat
 
 ---
 
+## 🔐 EAS Build – Fichiers exclus du git
+
+`google-services.json` et `GoogleService-Info.plist` sont dans `.gitignore`. Pour que EAS Build les ait, crée des **secrets de type fichier** sur le projet (une fois par machine ou par compte) :
+
+```bash
+# À la racine du projet, avec les fichiers présents localement
+eas secret:create --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+eas secret:create --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+```
+
+`app.config.js` utilise ces variables : en local tu gardes tes fichiers, sur EAS les chemins injectés sont utilisés.
+
+---
+
 ## 🤝 Contribuer
 
 Tu veux améliorer le starter, proposer des features ou corriger un bug ?  

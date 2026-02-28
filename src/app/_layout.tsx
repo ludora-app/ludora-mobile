@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 
 import { useAuthStore } from '@/stores/auth.store';
+import FontProvider from '@/providers/font-provider';
 import MainProvider from '@/providers/main.provider';
 import MainInitializer from '@/initializers/main.initializer';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
@@ -23,10 +24,6 @@ function RootLayoutNav() {
   const pathname = usePathname();
   const params = useGlobalSearchParams();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
-  useEffect(() => {
-    SplashScreen.hideAsync();
-  }, []);
 
   useEffect(() => {
     posthog.screen(pathname, params);
@@ -75,9 +72,11 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <MainProvider>
-      <MainInitializer />
-      <RootLayoutNav />
-    </MainProvider >
+    <FontProvider>
+      <MainProvider>
+        <MainInitializer />
+        <RootLayoutNav />
+      </MainProvider>
+    </FontProvider>
   );
 }

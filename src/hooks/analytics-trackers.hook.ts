@@ -1,8 +1,8 @@
 // hooks/useErrorHandler.ts
-import { useCallback, useEffect } from 'react';
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { HTTPError, TimeoutError } from 'ky';
+import { useCallback, useEffect } from 'react';
 import { usePostHog } from 'posthog-react-native';
 
 import {

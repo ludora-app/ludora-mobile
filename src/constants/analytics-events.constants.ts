@@ -85,6 +85,7 @@ export const ANALYTICS_EVENTS = {
     SESSION_JOINED_FAILED: 'session_joined_failed',
     SESSION_LEFT: 'session_left_completed',
     SESSION_LEFT_FAILED: 'session_left_failed',
+    SESSION_SHARED: 'session_shared',
     SESSION_TEAM_SELECTED: 'session_team_selected',
   },
   SETTINGS: {

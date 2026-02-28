@@ -9,6 +9,6 @@ vault {
 
 secret {
   # ton chemin Vault (le même que VAULT_PATH)
-  path      = "secret/ludora/ludora-app/dev"
+  path      = "secret/ludora/ludora-app/localhost"
   no_prefix = true
 }

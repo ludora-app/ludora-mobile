@@ -88,11 +88,11 @@ export default function ChatRoomHeader() {
               />
             )
           }
-          <String className="ml-2" colorVariant="muted" font="primaryBold">
+          <String className="ml-2" colorVariant="muted" font="primaryBold" numberOfLines={2} ellipsizeMode="tail">
             {name}
           </String>
         </BoxGrow>
-        <Icon name="info-circle-regular" size="lg" color={COLORS.muted} onPress={handleInfoPress} pressEffectSize="xs" />
+        <Icon name="info-circle-regular" size="lg" color={COLORS.muted} onPress={handleInfoPress} pressEffectSize="xs" className='ml-3' />
       </Wrapper>
     </Box>
   );

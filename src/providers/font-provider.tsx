@@ -1,4 +1,5 @@
-import { PropsWithChildren } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import { PropsWithChildren, useEffect } from 'react';
 import {
   useFonts,
   NunitoSans_300Light as NunitoSans300Light,
@@ -15,7 +16,7 @@ import {
 } from '@expo-google-fonts/nunito-sans';
 
 export default function FontProvider({ children }: PropsWithChildren) {
-  useFonts({
+  const [fontsLoaded] = useFonts({
     NunitoSans300Light,
     NunitoSans300LightItalic,
     NunitoSans400Regular,
@@ -28,6 +29,16 @@ export default function FontProvider({ children }: PropsWithChildren) {
     NunitoSans900Black,
     NunitoSans900BlackItalic,
   });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return children;
 }

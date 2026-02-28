@@ -25,7 +25,7 @@ export default function ProfilSection3User() {
   const { t } = useTranslate()
   const { data: userData } = useGetUserDataById(userId as string)
   const { isPending: isPendingFriendInvitation, mutateAsync: sendFriendInvitation } = useSendFriendInvitation(userId as string)
-  const { data: friendRequest } = useGetFriendRequest(userId as string)
+  const { data: friendRequest, isLoading: isLoadingFriendRequest } = useGetFriendRequest(userId as string)
 
   const { firstname, imageUrl: avatarUrl, lastname } = userData || {}
   const { status: invitationStatus } = friendRequest || {}
@@ -106,7 +106,7 @@ export default function ProfilSection3User() {
           title={handleFriendsBtnTitle}
           size="sm"
           onPress={handleSendFriendInvitation}
-          isLoading={isPendingFriendInvitation}
+          isLoading={isPendingFriendInvitation || isLoadingFriendRequest}
           iconProps={{
             className: 'mr-2',
             color: handleFriendBtnIconColor,

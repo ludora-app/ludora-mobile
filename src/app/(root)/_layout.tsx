@@ -1,7 +1,6 @@
 import { Stack } from 'expo-router';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import GeolocalisationInitializer from '@/initializers/geolocalisation.initializer';
 import OnBoardingInitializer from '@/initializers/on-boarding/on-boarding-initializer';
 import PushNotificationsInitializer from '@/initializers/push-notifications.initializer';
 
@@ -210,7 +209,6 @@ function AppLayoutNav() {
 export default function AppLayout() {
   return (
     <>
-      <GeolocalisationInitializer />
       <PushNotificationsInitializer />
       <OnBoardingInitializer />
       <AppLayoutNav />

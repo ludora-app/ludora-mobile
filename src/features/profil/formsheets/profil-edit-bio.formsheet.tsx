@@ -1,11 +1,10 @@
 import { z } from 'zod'
-import React from 'react'
 import { useToast } from '@chillui/ui'
 import { useRouter } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { useTranslate } from '@tolgee/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormInput, WrapperGestureHandlerScrollView } from '@ludo/ui'
+import { Box, FormInput, WrapperGestureHandlerScrollView } from '@ludo/ui'
 
 import { useUserMe } from '@/queries/user-me.query'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
@@ -16,6 +15,7 @@ import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.compo
 import { MAX_BIO_LENGTH, profilEditBioSchema } from '../schemas/profil-edit-bio.schema'
 
 export default function ProfilEditBioFormsheet() {
+
   const router = useRouter()
   const { userMe } = useUserMe()
   const { bio: userMeBio } = userMe || {}
@@ -69,12 +69,12 @@ export default function ProfilEditBioFormsheet() {
   }
 
   return (
-    <>
+    <Box collapsable={false}>
       <FormSheetHeader title={t(userMeBio ? 'profil.profil-edit.bio_title_edit' : 'profil.profil-edit.bio_title_add')} />
       <WrapperGestureHandlerScrollView fill={false} className='pt-5 pb-20 gap-2'>
         <FormInput control={control} name="bio" placeholder={t('profil.profil-edit.bio_placeholder')} label={t('profil.profil-edit.bio_label')} multiline inputContainerClassName='min-h-16' hasLengthCounter maxLength={MAX_BIO_LENGTH} />
       </WrapperGestureHandlerScrollView>
       <ProfilEditFooter handleSubmit={handleSubmit(onSubmit)} isLoading={isUpdatingUserMe} />
-    </>
+    </Box>
   )
 }

@@ -54,7 +54,13 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
       });
       return { locationFound: true };
     } catch (error) {
-      trackError(error);
+      const message = error instanceof Error ? error.message : String(error);
+      const isLocationUnavailable =
+        message.includes('Current location is unavailable') ||
+        message.includes('location services');
+      if (!isLocationUnavailable) {
+        trackError({ error, showToast: false });
+      }
       return { locationFound: false };
     } finally {
       setIsLoading(false);

@@ -1,6 +1,7 @@
 import { cn } from '@chillui/ui';
 import { IconButton } from '@ludo/ui';
-import { useRouter } from 'expo-router';
+
+import { useAppNavigation } from '@/hooks/navigation.hooks';
 
 type GoBackButtonProps = {
   className?: string;
@@ -9,13 +10,13 @@ type GoBackButtonProps = {
 
 export default function GoBackButton(props: GoBackButtonProps) {
   const { className, onPress } = props;
-  const router = useRouter();
+  const { goBack } = useAppNavigation();
 
   const handlePress = () => {
     if (onPress) {
       return onPress();
     }
-    return router.back();
+    return goBack();
   };
   return (
     <IconButton

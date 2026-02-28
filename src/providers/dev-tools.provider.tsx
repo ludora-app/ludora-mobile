@@ -7,8 +7,15 @@ import { FullWindowOverlay } from 'react-native-screens';
 import ROUTES from '@/constants/routes.constants';
 import { IS_IOS } from '@/constants/platform.constants';
 
+const apiEnv = process.env.EXPO_PUBLIC_ENV;
+
 export default function DevToolsProvider() {
   const router = useRouter();
+
+  if ((apiEnv === 'production' || apiEnv === 'preview') && !__DEV__) {
+    return null;
+  }
+
 
   const content = (
     <FloatingDevTools

@@ -1,28 +1,25 @@
-import { IconButton } from '@ludo/ui';
+import { cn } from '@chillui/ui';
 import { Share, Alert } from 'react-native';
+import { IconButton, IconButtonProps } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
 
-export default function ShareButton() {
+type ShareButtonProps = {
+  message: string;
+  title: string;
+  url: string;
+  iconButtonProps?: Omit<IconButtonProps, 'iconName'>;
+};
+
+export default function ShareButton(props: ShareButtonProps) {
+  const { iconButtonProps, message, title, url } = props;
   const handleShare = async () => {
     try {
-      const result = await Share.share({
-        // Sur Android, le lien doit être dans 'message'
-        message: 'Regarde ce que j’ai trouvé sur Ludo ! https://ton-lien.com',
-        // Sur iOS, tu peux séparer l'URL et le titre
-        title: 'Partager l’invitation',
-        url: 'https://ton-lien.com',
+      await Share.share({
+        message,
+        title,
+        url,
       });
-
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // Partagé avec un type d'activité spécifique (iOS)
-        } else {
-          // Partagé
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // Modal fermée sans partage
-      }
     } catch {
       Alert.alert('Oups', "Impossible d'ouvrir le partage.");
     }
@@ -34,7 +31,8 @@ export default function ShareButton() {
       iconName="share-solid"
       variant="outlined"
       iconColor={COLORS.primary}
-      className="rounded-full p-3"
+      className={cn('rounded-full p-3', iconButtonProps?.className)}
+      {...iconButtonProps}
     />
   );
 }

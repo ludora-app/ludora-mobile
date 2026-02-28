@@ -1,16 +1,15 @@
 import { TabList, TabSlot, TabTrigger, Tabs } from 'expo-router/ui';
 
 import { TAB_ROUTES } from '@/constants/tabs-routes.constants';
+import GeolocalisationInitializer from '@/initializers/geolocalisation.initializer';
 import TabBarCustom from '@/components/ui/navigation/tab-bar/components/tab-bar.component';
-
-
-
 
 
 
 export default function TabLayout() {
   return (
     <Tabs>
+      <GeolocalisationInitializer />
       <TabSlot />
       <TabBarCustom />
       <TabList className="hidden">

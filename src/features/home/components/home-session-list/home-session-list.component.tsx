@@ -2,6 +2,7 @@ import { List } from '@ludo/ui';
 import { useMemo } from 'react';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
+import { IS_ANDROID } from '@/constants/platform.constants';
 import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
@@ -42,6 +43,13 @@ export default function HomeSessionList() {
     [],
   );
 
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT;
+    }
+    return bottomTab;
+  }, [bottomTab]);
+
   return (
     <List
       data={sessions}
@@ -64,7 +72,7 @@ export default function HomeSessionList() {
       hasHeaderTransparent
       listHeaderComponentHeight={LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl px-4"
-      contentContainerStyle={{ paddingBottom: bottomTab }}
+      contentContainerStyle={{ paddingBottom }}
       emptyResultProps={{
         className: 'mt-4',
         hasRandomTitle: true,

@@ -27,12 +27,12 @@ export default function CreateSessionStep4Screen() {
             {t('create-session-steps.step-4.session_details_title')}
           </String>
 
-          <BoxRow className="border-ring items-center gap-10 rounded-2xl border bg-white px-8 py-3">
+          <BoxRow className="border-ring items-center gap-5 rounded-2xl border bg-white px-5 py-3">
             <Box className="items-center gap-2">
-              <Image source={sessionImage} className="size-10" />
+              <Image source={sessionImage} className="size-8" />
               <String font="primaryBold">{t(`common.game_mode_${gameMode}`, { space: ' ' })}</String>
             </Box>
-            <Box>
+            <Box className="flex-1">
               <BoxRow>
                 <String font="primaryBold">{t('common.date')} : </String>
                 <String colorVariant="primary" font="primaryBold">

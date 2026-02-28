@@ -1,12 +1,18 @@
 import { PropsWithChildren } from 'react';
 import { PostHogProvider as PostHogNativeProvider } from 'posthog-react-native';
 
+const environment = process.env.EXPO_PUBLIC_ENV || 'production';
+
 export default function PostHogProvider({ children }: PropsWithChildren) {
+
+  const isDisabled = environment === "localhost"
+
+
   return (
     <PostHogNativeProvider
       apiKey={process.env.EXPO_PUBLIC_POSTHOG_API_KEY}
       options={{
-        disabled: true,
+        disabled: isDisabled,
         enableSessionReplay: true,
         errorTracking: {
           autocapture: {

@@ -44,7 +44,7 @@ export default function SportLevelCard({
     >
       <String font="primaryBold">{sport.name}</String>
       <Image source={sportImage} className="size-16" contentFit="contain" />
-      <String variant="body-sm" font="primarySemiBold">
+      <String variant="body-sm" font="primarySemiBold" truncate>
         {level ? t(`common.user_level_${level}`) : t(translationKey)}
       </String>
       <BoxRow className="items-center gap-2">

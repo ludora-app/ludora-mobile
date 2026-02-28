@@ -35,6 +35,7 @@ export const stringTv = tv({
       muted: 'text-muted',
       neutral: 'text-neutral',
       primary: 'text-primary',
+      ring: 'text-ring',
       secondary: 'text-secondary',
       success: 'text-success',
       tertiary: 'text-tertiary',

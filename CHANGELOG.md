@@ -1,3 +1,10 @@
+## [1.0.3-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.2...v1.0.3-alpha.3) (2026-02-28)
+
+### Bug Fixes
+
+* **SCRUM-440:** Reduce next step delay to 200ms using a named constant. ([970dc8e](https://github.com/ludora-app/ludora-mobile/commit/970dc8e8cb5ba8bde8e4c12652829bf0e8ca113a))
+* **SCRUM-441:** Remove `CreateSessionStep2FieldCardWrapper` and apply minor UI/styling adjustments to field cards and list components. ([63d027d](https://github.com/ludora-app/ludora-mobile/commit/63d027dd9c4c1228a153d486949e32d3c9f3d6fd))
+
 ## [1.0.3-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.1...v1.0.3-alpha.2) (2026-02-28)
 
 ### Bug Fixes

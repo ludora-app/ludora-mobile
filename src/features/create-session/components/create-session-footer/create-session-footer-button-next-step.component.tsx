@@ -11,6 +11,8 @@ interface CreateSessionFooterButtonNextStepProps {
   activeStep: number;
 }
 
+const DELAY_TO_GO_TO_NEXT_STEP = 200;
+
 export default function CreateSessionFooterButtonNextStep(props: CreateSessionFooterButtonNextStepProps) {
   const { activeStep } = props;
   const { t } = useTranslate();
@@ -90,7 +92,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
       // the setTimeout is needed to let the formsheet close before the next step
       setTimeout(() => {
         handleSubmit();
-      }, 600);
+      }, DELAY_TO_GO_TO_NEXT_STEP);
       setCreateSession({
         additionalData: {
           autoGoToNextStep: false,

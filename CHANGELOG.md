@@ -1,3 +1,9 @@
+## [1.0.3-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.3...v1.0.3-alpha.4) (2026-03-01)
+
+### Bug Fixes
+
+* **SCRUM-441:** Move public field duration form sheet to the root layout and enhance the session step 2 list component with draw distance and empty state options. ([17ecd97](https://github.com/ludora-app/ludora-mobile/commit/17ecd97e11b4e910531db88985b6c693999a2357))
+
 ## [1.0.3-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.2...v1.0.3-alpha.3) (2026-02-28)
 
 ### Bug Fixes

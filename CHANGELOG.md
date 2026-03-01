@@ -1,3 +1,11 @@
+## [1.0.3-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.5...v1.0.3-alpha.6) (2026-03-01)
+
+### Bug Fixes
+
+* add .easignore and firebase config ([d73e418](https://github.com/ludora-app/ludora-mobile/commit/d73e4184442e78a575130bdebcea4b538cdbc266))
+* add .easignore and firebase config ([3850ca7](https://github.com/ludora-app/ludora-mobile/commit/3850ca700cc0c3e22323898816a18062a3035ae7))
+* **ci:** Pin EAS version to latest in Expo GitHub Action. ([992c68c](https://github.com/ludora-app/ludora-mobile/commit/992c68c8eceb24de0b357814ab2a0bfc8bab92b3))
+
 ## [1.0.3-next.4](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-next.3...v1.0.3-next.4) (2026-03-01)
 
 ### Bug Fixes

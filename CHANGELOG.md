@@ -1,3 +1,9 @@
+## [1.0.3-next.3](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-next.2...v1.0.3-next.3) (2026-03-01)
+
+### Bug Fixes
+
+* add .easignore and firebase config ([3850ca7](https://github.com/ludora-app/ludora-mobile/commit/3850ca700cc0c3e22323898816a18062a3035ae7))
+
 ## [1.0.3-next.2](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-next.1...v1.0.3-next.2) (2026-03-01)
 
 ### Bug Fixes

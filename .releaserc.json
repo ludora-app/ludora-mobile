@@ -71,9 +71,7 @@
       "semantic-release-expo",
       {
         "versions": {
-          "version": true,
-          "android": "versionCode",
-          "ios": "buildNumber"
+          "version": true
         }
       }
     ],

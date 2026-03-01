@@ -118,7 +118,7 @@
         }
       ],
       "googleServicesFile": "./google-services.json",
-      "versionCode": null
+      "versionCode": 0
     },
     "ios": {
       "bundleIdentifier": "com.ludora",
@@ -126,7 +126,7 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "buildNumber": "buildNumber"
+      "buildNumber": "1.0.3-next.4"
     },
     "extra": {
       "router": {

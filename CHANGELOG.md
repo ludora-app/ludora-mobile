@@ -1,3 +1,9 @@
+## [1.0.3-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.6...v1.0.3-alpha.7) (2026-03-01)
+
+### Bug Fixes
+
+* **SCRUM-432:** use `getApiUrl` utility instead of a hardcoded local API URL for the refresh token endpoint. ([4e5cd21](https://github.com/ludora-app/ludora-mobile/commit/4e5cd21197dd3bf63c44c347ad686a4539078377))
+
 ## [1.0.3-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.5...v1.0.3-alpha.6) (2026-03-01)
 
 ### Bug Fixes

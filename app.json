@@ -126,7 +126,7 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "buildNumber": "1.0.3-alpha.6"
+      "buildNumber": "1.0.3-alpha.7"
     },
     "extra": {
       "router": {

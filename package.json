@@ -8,6 +8,7 @@
     "generate:icons": "node tools/svg-2-obj/index.js",
     "inject:env": "bash tools/vault/inject-env.sh",
     "update:ip": "node tools/update-ip/update-ip.js",
+    "eas-build-pre-install": "cp $GOOGLE_SERVICES_JSON google-services.json && cp $GOOGLE_SERVICES_PLIST GoogleService-Info.plist",
     "prebuild": "bun inject:env expo prebuild",
     "android": "bun inject:env expo run:android",
     "android:prebuild": "bun inject:env expo run:android --prebuild",

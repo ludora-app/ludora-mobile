@@ -3,7 +3,6 @@
     "version": "true",
     "owner": "ludora-app",
     "scheme": "ludora",
-    "newArchEnabled": true,
     "userInterfaceStyle": "automatic",
     "orientation": "portrait",
     "web": {
@@ -112,22 +111,17 @@
               "pathPrefix": "/session"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "googleServicesFile": "./google-services.json",
-      "versionCode": null
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.ludora",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      },
-      "buildNumber": "buildNumber"
+      }
     },
     "extra": {
       "router": {

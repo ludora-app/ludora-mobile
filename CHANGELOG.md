@@ -1,3 +1,9 @@
+## [1.0.3-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.4...v1.0.3-alpha.5) (2026-03-01)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-448:** Implement store-based state management for session creation step 3, update team name validation, and enhance session detail analytics. ([e17b614](https://github.com/ludora-app/ludora-mobile/commit/e17b614dbaf849aac97915ffba763a5af6555469))
+
 ## [1.0.3-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.3...v1.0.3-alpha.4) (2026-03-01)
 
 ### Bug Fixes

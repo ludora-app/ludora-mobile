@@ -1,3 +1,9 @@
+## [1.0.3-next.2](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-next.1...v1.0.3-next.2) (2026-03-01)
+
+### Bug Fixes
+
+* **ci:** Pin EAS version to latest in Expo GitHub Action. ([992c68c](https://github.com/ludora-app/ludora-mobile/commit/992c68c8eceb24de0b357814ab2a0bfc8bab92b3))
+
 ## [1.0.3-next.1](https://github.com/ludora-app/ludora-mobile/compare/v1.0.2...v1.0.3-next.1) (2026-03-01)
 
 ### Bug Fixes

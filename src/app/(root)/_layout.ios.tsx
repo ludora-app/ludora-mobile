@@ -175,8 +175,11 @@ function AppLayoutNav() {
         name="chat-room/[chatRoomId]/index"
         options={{
           animation: "slide_from_bottom",
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
           headerShown: false,
-          presentation: "fullScreenModal"
+          presentation: "fullScreenModal",
         }}
       />
       <Stack.Screen

@@ -14,7 +14,7 @@ import { useChatRoomScrollStore } from '../../store/chat-room-scroll.store';
 import ChatRoomInputSubmitButton from './chat-room-input-submit-button.component';
 import ChatRoomInputKeyboardEmoji from './chat-room-input-keyboard-emoji.component';
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
-import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue.query';
+import { useChatRoomMessageOptimisticQueue } from '../../queries/chat-room-message-queue/chat-room-message-queue.query';
 
 
 export default function ChatRoomInput() {

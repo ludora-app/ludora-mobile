@@ -7,8 +7,8 @@ import COLORS from '@/constants/colors.contstants'
 import { MessageCollectionItemDto } from '@/api/generated/model'
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component'
-import { useChatRoomMessageOptimisticQueue } from '../../../queries/chat-room-message-queue.query'
 import { useChatRoomOptimisticMessagesStore } from '../../../store/chat-room-optimistic-messages.store'
+import { useChatRoomMessageOptimisticQueue } from '../../../queries/chat-room-message-queue/chat-room-message-queue.query'
 
 
 type ChatRoomMessageActionsRetrySendProps = {

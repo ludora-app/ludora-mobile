@@ -59,6 +59,17 @@ jobs:
           VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
           EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
 
+      - name: 🌐 Generate Translations (with Vault)
+        run: bun run generate:translations:local
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
+          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
+          EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
+
+      - name: 🖼️ Generate Icons
+        run: bun run generate:icons
+
       - name: 🛠️ Run checks (Lint & Type Check)
         run: bun run check:all
 

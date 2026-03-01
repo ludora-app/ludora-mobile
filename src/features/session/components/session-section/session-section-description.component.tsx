@@ -11,21 +11,25 @@ type SessionSectionDescriptionProps = {
 };
 
 export default function SessionSectionDescription(props: SessionSectionDescriptionProps) {
-  const { description, title = 'title' } = props;
+  const { description, title } = props;
 
-  if (!description) {
+  if (!description && !title) {
     return null;
   }
   return (
     <>
       <SessionSectionWrapper>
         <SessionSectionHeader iconName="warning-regular" title="session.description_section_title" />
-        <String font="primaryBold" variant="body-2">
-          {title}
-        </String>
-        <SessionSectionWrapper>
-          <String>{description}</String>
-        </SessionSectionWrapper>
+        {title && (
+          <String font="primaryBold" variant="body-2">
+            {title}
+          </String>
+        )}
+        {description && (
+          <SessionSectionWrapper>
+            <String>{description}</String>
+          </SessionSectionWrapper>
+        )}
       </SessionSectionWrapper>
       <Separator />
     </>

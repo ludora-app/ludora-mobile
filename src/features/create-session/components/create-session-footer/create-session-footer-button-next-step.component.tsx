@@ -38,6 +38,8 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
       (!!state.session?.slotUid || !!state.session?.additionalData?.publicFieldSlotUid),
   );
 
+  const isStep3Valid = useCreateSessionStore(state => state.isStep3Valid);
+
   const handleButtonDisabled = useMemo(() => {
     if (activeStep === 1) {
       return isStep1Valid;
@@ -45,12 +47,15 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     if (activeStep === 2) {
       return isStep2Valid;
     }
+    if (activeStep === 3) {
+      return isStep3Valid;
+    }
     return true;
-  }, [activeStep, isStep1Valid, isStep2Valid]);
+  }, [activeStep, isStep1Valid, isStep2Valid, isStep3Valid]);
 
   const handleSubmit = async () => {
     const currentSession = useCreateSessionStore.getState().session;
-    const { additionalData, endDate, fieldUid, gameMode, level, slotUid, sport, startDate, visibility } = currentSession || {};
+    const { additionalData, description, endDate, fieldUid, gameMode, level, slotUid, sport, startDate, teamAName, teamBName, title, visibility } = currentSession || {};
     const { fieldType, price, pricePerPlayer } = additionalData || {};
 
     if (activeStep === 3 && fieldType === 'partner') {
@@ -84,6 +89,19 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
         eventName: 'create_session_step_2_completed',
       });
       router.push(ROUTES.CREATE_SESSION.STEP_3);
+    }
+    if (activeStep === 3 && currentSession) {
+      trackEvent({
+        data: {
+          has_description: !!description,
+          has_team_a_name: !!teamAName,
+          has_team_b_name: !!teamBName,
+          has_title: !!title,
+          title_source: additionalData?.titleSource || 'none',
+        },
+        eventName: 'create_session_step_3_completed',
+      });
+      router.push(ROUTES.CREATE_SESSION.STEP_4);
     }
   };
 

@@ -24,7 +24,7 @@ const ROUTES = {
     INDEX: '/create-session',
     STEP_1: '/create-session/step-1',
     STEP_2: '/create-session/step-2',
-    STEP_2_DURATION_FORM_SHEET: '/create-session/step-2/public-field-duration',
+    STEP_2_DURATION_FORM_SHEET: '/public-field-duration',
     STEP_3: '/create-session/step-3',
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
     STEP_4: '/create-session/step-4',

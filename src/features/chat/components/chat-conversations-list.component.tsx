@@ -1,4 +1,4 @@
-import { List, Wrapper } from '@ludo/ui';
+import { List } from '@ludo/ui';
 import { SharedValue } from 'react-native-reanimated';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -14,6 +14,7 @@ type ChatConversationsListProps = {
 
 const ITEM_HEIGHT = 81;
 
+
 export default function ChatConversationsList({ scrollY }: ChatConversationsListProps) {
   const { bottomTab } = useSafeArea();
   const chatRoomsFilters = useChatStore(state => state.filters);
@@ -22,31 +23,31 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
 
   const scrollYRef = scrollY;
 
-  return (
-    <Wrapper>
-      <List
-        key={chatRoomsFilters.type ?? 'all'}
-        data={items}
-        ItemComponent={ChatConversationsListItem}
-        SkeletonComponent={ChatConversationsListItemSkeleton}
-        fetchNextPage={fetchNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        isLoading={isLoading}
-        isRefetching={isRefetching}
-        refetch={refetch}
-        hasRefreshControl
-        hasNextPage={hasNextPage}
-        onScroll={e => {
-          'worklet';
 
-          scrollYRef.value = e.nativeEvent.contentOffset.y;
-        }}
-        getFixedItemSize={() => ITEM_HEIGHT}
-        contentContainerClassName='pt-2'
-        contentContainerStyle={{
-          paddingBottom: bottomTab + 150,
-        }}
-      />
-    </Wrapper>
+
+  return (
+    <List
+      key={chatRoomsFilters.type ?? 'all'}
+      data={items}
+      ItemComponent={ChatConversationsListItem}
+      SkeletonComponent={ChatConversationsListItemSkeleton}
+      fetchNextPage={fetchNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      isLoading={isLoading}
+      isRefetching={isRefetching}
+      refetch={refetch}
+      hasRefreshControl
+      hasNextPage={hasNextPage}
+      onScroll={e => {
+        'worklet';
+
+        scrollYRef.value = e.nativeEvent.contentOffset.y;
+      }}
+      getFixedItemSize={() => ITEM_HEIGHT}
+      contentContainerClassName='pt-2 px-4'
+      contentContainerStyle={{
+        paddingBottom: bottomTab,
+      }}
+    />
   );
 }

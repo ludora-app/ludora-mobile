@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { List } from '@/components/ludo-ui';
 import { useSafeArea } from '@/hooks/safe-area.hook';
+import { IS_ANDROID } from '@/constants/platform.constants';
 
 import PlayersListItem from './players-list-item/players-list-item.component';
 import PlayersListHeaderSticky from './players-list-headers/players-list-header-sticky.component';
@@ -14,6 +15,13 @@ export default function PlayersList() {
   const { bottomTab } = useSafeArea();
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetUsersSuggestionByFilter();
+
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottomTab + LIST_HEADER_HEIGHT;
+    }
+    return bottomTab;
+  }, [bottomTab]);
 
   return (
     <List
@@ -32,7 +40,7 @@ export default function PlayersList() {
       listHeaderComponentHeight={LIST_HEADER_HEIGHT}
       hasListStickyComponentTopSafeArea
       hasHeaderTransparent
-      contentContainerStyle={{ paddingBottom: bottomTab }}
+      contentContainerStyle={{ paddingBottom }}
       refetch={refetch}
       hasRefreshControl
     />

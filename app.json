@@ -1,6 +1,6 @@
 {
   "expo": {
-    "version": "1.0.2",
+    "version": "true",
     "owner": "ludora-app",
     "scheme": "ludora",
     "newArchEnabled": true,
@@ -118,14 +118,16 @@
           ]
         }
       ],
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "versionCode": null
     },
     "ios": {
       "bundleIdentifier": "com.ludora",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "buildNumber": "buildNumber"
     },
     "extra": {
       "router": {

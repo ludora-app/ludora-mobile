@@ -23,36 +23,40 @@ export default function ProfilEditScreen() {
   const { bottom } = useSafeArea()
   const { isRefetching, refetch, userMe } = useUserMe()
   const { bio, birthdate, email, firstname, lastname, sex: userSex } = userMe || {}
+
   const router = useRouter()
 
   const data = [
     {
-      label: t('profil.profil-edit.name_info_title'),
+      labelKey: 'profil.profil-edit.name_info_title',
       route: ROUTES.PROFIL.EDIT_NAME,
       value: `${firstname} ${lastname}`,
     },
     {
-      label: t('profil.profil-edit.bio_info_title'),
+      isMissing: !bio,
+      labelKey: 'profil.profil-edit.bio_info_title',
       route: ROUTES.PROFIL.EDIT_BIO,
       value: bio || t('profil.profil-edit.empty_bio'),
     },
     {
-      label: t('profil.profil-edit.sex_info_title'),
+      isMissing: !userSex,
+      labelKey: 'profil.profil-edit.sex_info_title',
       route: ROUTES.PROFIL.EDIT_SEX,
       value: userSex ? t(`common.${userSex}`) : t('profil.profil-edit.empty_sex'),
     },
     {
-      label: t('profil.profil-edit.email_info_title'),
+      labelKey: 'profil.profil-edit.email_info_title',
       route: ROUTES.PROFIL.EDIT_EMAIL,
       value: email,
     },
     {
-      label: t('profil.profil-edit.birthdate_info_title'),
+      isMissing: !birthdate,
+      labelKey: 'profil.profil-edit.birthdate_info_title',
       route: ROUTES.PROFIL.EDIT_BIRTHDATE,
-      value: formatDate({ date: birthdate }),
+      value: birthdate ? formatDate({ date: birthdate }) : t('profil.profil-edit.empty_birthdate'),
     },
     {
-      label: t('profil.profil-edit.password_info_title'),
+      labelKey: 'profil.profil-edit.password_info_title',
       route: ROUTES.PROFIL.EDIT_PASSWORD,
       value: '********',
     },
@@ -76,8 +80,8 @@ export default function ProfilEditScreen() {
               {data.map((item, index) => (
                 <BoxRowCenterBetween key={index} className='gap-1'>
                   <BoxGrow>
-                    <String font="primaryBold" variant="body-2">{item.label}</String>
-                    <String truncate>{item.value}</String>
+                    <String font="primaryBold" variant="body-2">{t(item.labelKey)}</String>
+                    <String truncate colorVariant={item?.isMissing ? 'ring' : 'black'}>{item.value}</String>
                   </BoxGrow>
                   <Icon name='stylus-pen-edit-regular' color='#000' onPress={() => router.push(item.route)} />
                 </BoxRowCenterBetween>

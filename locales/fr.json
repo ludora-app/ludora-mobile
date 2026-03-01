@@ -85,6 +85,7 @@
   "common.end_date": "Heure de fin",
   "common.error.special_characters_not_allowed": "Caractères spéciaux non autorisés.",
   "common.error.too_long": "{length} caractères maximum.",
+  "common.error.too_short": "Minimum {length} caractères.",
   "common.error_generic": "Oups ! Un petit souci technique... Réessaie pour voir !",
   "common.evening": "Soir",
   "common.field_type_PRIVATE": "Terrain partenaire",

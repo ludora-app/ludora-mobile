@@ -12,44 +12,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          # 1. Déterminer la couleur selon la branche
-          if [ "${{ github.ref_name }}" = "main" ]; then COLOR=15158332;
-          elif [ "${{ github.ref_name }}" = "staging" ]; then COLOR=15105570;
+          BRANCH="${{ github.ref_name }}"
+          AUTHOR="${{ github.actor }}"
+          REPO="${{ github.repository }}"
+          MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | tr -d '"' | tr -d "'")
+
+          if [ "$BRANCH" = "main" ]; then COLOR=15158332;
+          elif [ "$BRANCH" = "staging" ]; then COLOR=15105570;
           else COLOR=3447003;
           fi
 
-          # 2. Extraction du ticket Jira (SCRUM-XXX)
-          # On cherche dans le nom de la branche OU dans le message du commit
-          TICKET=$(echo "${{ github.ref_name }} ${{ github.event.head_commit.message }}" | grep -oE "SCRUM-[0-9]+" | head -1 || echo "")
-
+          TICKET=$(echo "$BRANCH $MSG" | grep -oE "SCRUM-[0-9]+" | head -1 || echo "")
           if [ -n "$TICKET" ]; then
             JIRA_LINK="🔗 **Jira :** [$TICKET](https://hichemamir398-1740388314640.atlassian.net/browse/$TICKET)"
           else
             JIRA_LINK="🔗 **Jira :** Aucun ticket détecté"
           fi
 
-          # 3. Préparer les infos
-          AUTHOR="${{ github.actor }}"
-          REPO="${{ github.repository }}"
-          BRANCH="${{ github.ref_name }}"
-          # Nettoyage des guillemets pour éviter de casser le JSON
-          MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | sed 's/"/\\"/g')
-
-          # 4. Envoi à Discord
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d '{
-                "embeds": [{
-                  "title": "Nouveau Push sur la branche '"$BRANCH"'",
-                  "description": "💡 **Message :**\n> '"$MSG"'\n\n '"$JIRA_LINK"'",
-                  "color": '$COLOR',
-                  "fields": [
-                    { "name": "🌿 Repo", "value": "`'"$REPO"'`", "inline": true },
-                    { "name": "👤 Auteur", "value": "**'"$AUTHOR"'**", "inline": true }
-                  ],
-                  "footer": { "text": "Ludora App Frontend" },
-                  "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
-                }]
-              }' \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
+          curl -X POST -H "Content-Type: application/json" \
+          -d "{
+            \"embeds\": [{
+              \"title\": \"🚀 Nouveau Push sur $BRANCH\",
+              \"description\": \"💡 **Message :**\n> $MSG\n\n $JIRA_LINK\",
+              \"color\": $COLOR,
+              \"fields\": [
+                { \"name\": \"🌿 Repo\", \"value\": \"\`$REPO\`\", \"inline\": true },
+                { \"name\": \"👤 Auteur\", \"value\": \"**$AUTHOR**\", \"inline\": true }
+              ],
+              \"footer\": { \"text\": \"Ludora App Frontend\" },
+              \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+            }]
+          }" $DISCORD_WEBHOOK

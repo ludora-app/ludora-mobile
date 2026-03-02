@@ -1,0 +1,46 @@
+name: Discord Sync Notification
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - staging
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Message
+        run: |
+          # 1. Déterminer la couleur selon la branche
+          if [ "${{ github.ref_name }}" = "main" ]; then COLOR=15158332; # Rouge
+          elif [ "${{ github.ref_name }}" = "staging" ]; then COLOR=15105570; # Orange
+          else COLOR=3447003; # Bleu pour dev
+          fi
+
+          # 2. Préparer les infos de synchro
+          AUTHOR="${{ github.actor }}"
+          REPO="${{ github.repository }}"
+          BRANCH="${{ github.ref_name }}"
+
+          # On récupère le dernier message de commit proprement
+          MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1)
+
+          # 3. Envoi à Discord
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                "embeds": [{
+                  "title": "🔄 SYNCHRO : Nouveau Push sur '"$REPO"'",
+                  "description": "💡 **Message du commit :**\n> '"$MSG"'",
+                  "color": '$COLOR',
+                  "fields": [
+                    { "name": "🌿 Branche", "value": "`'"$BRANCH"'`", "inline": true },
+                    { "name": "👤 Auteur", "value": "**'"$AUTHOR"'**", "inline": true }
+                  ],
+                  "footer": { "text": "Ludora App Frontend" },
+                  "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
+                }]
+              }' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}

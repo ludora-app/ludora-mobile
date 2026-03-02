@@ -12,18 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
+        # On passe les deux secrets en variables d'environnement
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          WEBHOOK_PROD: ${{ secrets.DISCORD_WEBHOOK_PROD }}
+          WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
         run: |
           BRANCH="${{ github.ref_name }}"
           AUTHOR="${{ github.actor }}"
           REPO="${{ github.repository }}"
           MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | tr -d '"' | tr -d "'")
 
-          if [ "$BRANCH" = "main" ]; then COLOR=15158332;
-          elif [ "$BRANCH" = "staging" ]; then COLOR=15105570;
-          else COLOR=3447003;
+          # --- LOGIQUE DE SÉLECTION DU CANAL ---
+          if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "staging" ]; then
+            SELECTED_WEBHOOK=$WEBHOOK_PROD
+            COLOR=15158332 # Rouge/Orange pour la Prod/Staging
+          else
+            SELECTED_WEBHOOK=$WEBHOOK_DEV
+            COLOR=3447003 # Bleu pour Develop
           fi
+          # -------------------------------------
 
           TICKET=$(echo "$BRANCH $MSG" | grep -oE "SCRUM-[0-9]+" | head -1 || echo "")
           if [ -n "$TICKET" ]; then
@@ -32,6 +39,7 @@ jobs:
             JIRA_LINK="🔗 **Jira :** Aucun ticket détecté"
           fi
 
+          # On utilise $SELECTED_WEBHOOK à la fin de la commande curl
           curl -X POST -H "Content-Type: application/json" \
           -d "{
             \"embeds\": [{
@@ -45,4 +53,4 @@ jobs:
               \"footer\": { \"text\": \"Ludora App Frontend\" },
               \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
             }]
-          }" $DISCORD_WEBHOOK
+          }" $SELECTED_WEBHOOK

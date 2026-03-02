@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - develop
       - staging
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
           # 1. Déterminer la couleur selon la branche
           if [ "${{ github.ref_name }}" = "main" ]; then COLOR=15158332; # Rouge
           elif [ "${{ github.ref_name }}" = "staging" ]; then COLOR=15105570; # Orange
-          else COLOR=3447003; # Bleu pour dev
+          else COLOR=3447003; # Bleu pour develop
           fi
 
           # 2. Préparer les infos de synchro

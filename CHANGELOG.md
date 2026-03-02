@@ -4,6 +4,15 @@
 
 * **SCRUM-306:** Trim user input strings, clean session data by removing empty values, and enable dev tools in development environments. ([9778beb](https://github.com/ludora-app/ludora-mobile/commit/9778beb7f86128f6c7c368f7b27a0cafd175dcad))
 * **SCRUM-429:** Implement an optimistic message queue system for chat, including real-time updates and improved conversation list cache management. ([97cc0e1](https://github.com/ludora-app/ludora-mobile/commit/97cc0e11236911a3a2b03a30727972648029f911))
+* **SCRUM-470:** fix flicking items on filters  due to the dynamic height of the icon levels  by adding fixed height and width ([99c78e8](https://github.com/ludora-app/ludora-mobile/commit/99c78e86fe2c033dfc50513c8b6e0c17023088a8))
+* **SCRUM-474:** improve Discord notification script by using local variables and an environment variable for the webhook URL. ([075d7c9](https://github.com/ludora-app/ludora-mobile/commit/075d7c99ae341a98c743398a03de6be8d0ec9210))
+
+## [1.0.3-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.7...v1.0.3-alpha.8) (2026-03-02)
+
+### Bug Fixes
+
+* **SCRUM-306:** Trim user input strings, clean session data by removing empty values, and enable dev tools in development environments. ([9778beb](https://github.com/ludora-app/ludora-mobile/commit/9778beb7f86128f6c7c368f7b27a0cafd175dcad))
+* **SCRUM-429:** Implement an optimistic message queue system for chat, including real-time updates and improved conversation list cache management. ([97cc0e1](https://github.com/ludora-app/ludora-mobile/commit/97cc0e11236911a3a2b03a30727972648029f911))
 * **SCRUM-474:** improve Discord notification script by using local variables and an environment variable for the webhook URL. ([075d7c9](https://github.com/ludora-app/ludora-mobile/commit/075d7c99ae341a98c743398a03de6be8d0ec9210))
 
 ## [1.0.3-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.7...v1.0.3-alpha.8) (2026-03-02)

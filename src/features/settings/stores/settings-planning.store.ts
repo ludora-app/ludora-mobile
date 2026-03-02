@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import dayjs, { Dayjs } from 'dayjs';
 
+import dayjs, { Dayjs } from '@/lib/dayjs';
 import { HourPreferenceData, HourPreferenceDataTimePeriod, HourPreferenceDataType } from '@/api/generated/model';
 
 import { PlanningSlot } from '../types/settings-planning.types';

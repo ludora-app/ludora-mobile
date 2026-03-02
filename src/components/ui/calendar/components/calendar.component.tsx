@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useTolgee } from '@tolgee/react';
 import { useState, useCallback, useMemo, memo } from 'react';
 import { Box, BoxRow, Button, Icon, String } from '@ludo/ui';
@@ -12,6 +11,7 @@ import {
   CalendarTheme,
 } from '@marceloterreiro/flash-calendar';
 
+import dayjs from '@/lib/dayjs';
 import COLORS from '@/constants/colors.contstants';
 import { IS_ANDROID } from '@/constants/platform.constants';
 

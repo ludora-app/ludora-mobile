@@ -1,11 +1,4 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/fr';
-import isToday from 'dayjs/plugin/isToday';
-import isTomorrow from 'dayjs/plugin/isTomorrow';
-
-dayjs.extend(isToday);
-dayjs.extend(isTomorrow);
-dayjs.locale('fr');
+import dayjs from '@/lib/dayjs';
 
 export function formatToHour({
   date,

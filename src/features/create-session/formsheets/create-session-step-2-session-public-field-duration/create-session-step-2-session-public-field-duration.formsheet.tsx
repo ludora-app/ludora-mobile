@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +14,7 @@ import {
   BoxCenter,
 } from '@ludo/ui';
 
+import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { IS_ANDROID } from '@/constants/platform.constants';

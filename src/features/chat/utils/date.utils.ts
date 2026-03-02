@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/fr';
+import dayjs from '@/lib/dayjs';
 
 /**
  * Convertit un timestamp en format adaptatif :

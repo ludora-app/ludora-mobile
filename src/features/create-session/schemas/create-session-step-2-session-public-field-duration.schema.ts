@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import dayjs from 'dayjs';
 import { TolgeeInstance } from '@tolgee/react';
+
+import dayjs from '@/lib/dayjs';
 
 import { CREATE_SESSION } from '../constants/create-session.constants';
 

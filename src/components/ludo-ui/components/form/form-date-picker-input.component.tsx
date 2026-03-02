@@ -1,10 +1,10 @@
-import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { ScalePressable } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import DatePicker from 'react-native-date-picker';
 import { FieldValues, useController } from 'react-hook-form';
 
+import dayjs from '@/lib/dayjs';
 import COLORS from '@/constants/colors.contstants';
 import { useLanguages } from '@/hooks/languages.hook';
 

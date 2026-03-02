@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
 import { String, Box } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
+import dayjs, { Dayjs } from '@/lib/dayjs';
 import { DaysCarousel } from '@/components/ui/days-carousel';
 
 import { useHomeSessionFiltersStore } from '../../../stores/home-sessions-filters.store';

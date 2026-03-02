@@ -1,8 +1,8 @@
-import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { Box, ScreenLayout, String, Wrapper, ScrollView } from '@ludo/ui'
 
+import dayjs from '@/lib/dayjs';
 import { useSafeArea } from '@/hooks/safe-area.hook'
 
 import SettingsHeader from '../components/settings-header.component'

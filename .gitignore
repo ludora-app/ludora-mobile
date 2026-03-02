@@ -50,3 +50,6 @@ app-example
 # Firebase
 google-services.json
 GoogleService-Info.plist
+
+dev.google-services.json
+dev.GoogleService-Info.plist

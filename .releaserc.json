@@ -72,8 +72,8 @@
       {
         "versions": {
           "version": true,
-          "android": "versionCode",
-          "ios": "buildNumber"
+          "android": false,
+          "ios": false
         }
       }
     ],

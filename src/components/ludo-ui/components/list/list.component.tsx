@@ -211,7 +211,10 @@ export default function List(props: ListProps) {
       })}
       {...(hasRefreshControl && {
         refreshControl: (
-          <RefreshControl refreshing={isManualRefreshing && isRefetching} onRefresh={handleRefresh} colors={[COLORS.primary]} />
+          <RefreshControl
+            refreshing={isManualRefreshing && isRefetching}
+            onRefresh={handleRefresh}
+            colors={[COLORS.primary]} />
         )
       })}
       {...(hasRefreshControl && { onRefresh: handleRefresh })}
@@ -219,14 +222,18 @@ export default function List(props: ListProps) {
       contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
       ListFooterComponent={
         !triggerEndReachedOnStart
-          ? <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+          ? <ListFooter
+            SkeletonComponent={SkeletonComponent}
+            isFetchingNextPage={isFetchingNextPage} />
           : undefined
       }
       scrollEventThrottle={16}
       contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, bottomSafeAreaStyle, contentContainerStyle]}
       ListHeaderComponent={
         triggerEndReachedOnStart
-          ? <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+          ? <ListFooter
+            SkeletonComponent={SkeletonComponent}
+            isFetchingNextPage={isFetchingNextPage} />
           : headerComponent
       }
       {...rest}

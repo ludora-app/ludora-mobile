@@ -20,6 +20,8 @@ const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
 const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 227;
 const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;
 
+const DRAW_DISTANCE = 500;
+
 export default function CreateSessionStep2FieldsList() {
   const router = useRouter();
   const sport = useCreateSessionStore(state => state.session?.sport);
@@ -77,9 +79,10 @@ export default function CreateSessionStep2FieldsList() {
         ListHeaderComponent={CreateSessionStep2FieldsListHeader}
         ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
         onScroll={handleScroll}
-        scrollEventThrottle={16}
+        drawDistance={DRAW_DISTANCE}
         emptyResultProps={{
           hasRandomTitle: true,
+          randomOptions: 3,
           title: 'create-session-steps.step-2.no_result_title_v',
         }}
       />

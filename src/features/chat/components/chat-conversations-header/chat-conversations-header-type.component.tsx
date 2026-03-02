@@ -1,5 +1,4 @@
 import { Image, String } from '@ludo/ui';
-import { StyleSheet } from 'react-native';
 import { allChatsImg, allMatchesImg, allPlayersImg } from 'assets';
 import Animated, { useAnimatedStyle, interpolate, Extrapolation, SharedValue } from 'react-native-reanimated';
 import {
@@ -14,11 +13,7 @@ import { ConversationsFindAllByUserUidParams } from '@/api/generated/model';
 
 import { useChatStore } from '../../store/chat.store';
 
-const styles = StyleSheet.create({
-  shadow: {
-    boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
-  },
-});
+
 
 const SCROLL_DISTANCE = 100;
 
@@ -47,7 +42,7 @@ export default function ChatConversationsListHeaderType({ scrollY }: ChatConvers
   };
 
   return (
-    <Box className="rounded-b-xl py-3 bg-background" style={styles.shadow}>
+    <Box className="py-3">
       <SegmentedControl>
         <SegmentedControlTriggerContent className="border-0">
           <SegmentedControlTrigger value="option1" as="scale-pressable" onPress={() => handlePressType(undefined)}>

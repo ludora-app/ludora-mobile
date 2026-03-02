@@ -205,6 +205,11 @@ export interface AnalyticsEventData {
     level: number;
     session_visibility: string;
     start_date: string;
+    has_description: boolean;
+    has_team_a_name: boolean;
+    has_team_b_name: boolean;
+    has_title: boolean;
+    title_source: 'user' | 'suggestion' | 'none';
   };
 
   // **

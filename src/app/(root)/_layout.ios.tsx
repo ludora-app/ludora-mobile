@@ -100,6 +100,18 @@ function AppLayoutNav() {
         }}
       />
       <Stack.Screen
+        name="public-field-duration"
+        options={{
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+      <Stack.Screen
         name="profil/profil-edit/birthdate"
         options={{
           contentStyle: {
@@ -163,8 +175,11 @@ function AppLayoutNav() {
         name="chat-room/[chatRoomId]/index"
         options={{
           animation: "slide_from_bottom",
+          contentStyle: {
+            backgroundColor: '#FFF',
+          },
           headerShown: false,
-          presentation: "fullScreenModal"
+          presentation: "fullScreenModal",
         }}
       />
       <Stack.Screen

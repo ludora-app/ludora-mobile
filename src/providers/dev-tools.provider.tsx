@@ -12,7 +12,7 @@ const apiEnv = process.env.EXPO_PUBLIC_ENV;
 export default function DevToolsProvider() {
   const router = useRouter();
 
-  if ((apiEnv === 'production' || apiEnv === 'preview') && !__DEV__) {
+  if (apiEnv !== 'development' && !__DEV__) {
     return null;
   }
 

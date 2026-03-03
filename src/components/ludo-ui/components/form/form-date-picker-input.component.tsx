@@ -22,6 +22,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     inputFieldClassName,
     label,
     name,
+    onChange: onChangeData,
     placeholder,
     ...rest
   } = props;
@@ -35,6 +36,8 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     fieldState: { error },
   } = useController({ control, name });
   const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : new Date());
+
+
   const dateValue = value ? dayjs(value).format('DD/MM/YYYY') : '';
 
 
@@ -70,6 +73,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
         onConfirm={date => {
           setOpen(false);
           onChange(date);
+          onChangeData?.(date);
           setSelectedDate(date);
         }}
         onCancel={() => {

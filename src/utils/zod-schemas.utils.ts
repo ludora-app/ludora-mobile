@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { TolgeeInstance } from '@tolgee/react';
 
+import dayjs from '@/lib/dayjs';
+
 const MIN_PASSWORD_LENGTH = 8;
 export const passwordSchema = (t: TolgeeInstance['t']) =>
   z
@@ -28,13 +30,6 @@ export const birthdateSchema = (t?: TolgeeInstance['t']) =>
     .date({
       error: t?.('common.input_birthdate_invalid_required') || 'common.input_birthdate_invalid_required',
     })
-    .refine(
-      date => {
-        const minDate = new Date();
-        minDate.setFullYear(minDate.getFullYear() - 15);
-        return date <= minDate;
-      },
-      {
-        message: t?.('common.input_birthdate_invalid_age') || 'common.input_birthdate_invalid_age',
-      },
-    );
+    .refine(date => dayjs().diff(dayjs(date), 'years') >= 15, {
+      message: t?.('common.input_birthdate_invalid_age') || 'common.input_birthdate_invalid_age',
+    });

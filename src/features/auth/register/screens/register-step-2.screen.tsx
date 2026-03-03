@@ -29,10 +29,10 @@ export default function RegisterStep2Screen() {
   const registerFormSchema = formSchema(t);
   const {
     control,
-    formState: { isValid },
     handleSubmit,
+    trigger,
   } = useForm<z.infer<typeof registerFormSchema>>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     resolver: zodResolver(registerFormSchema),
   });
 
@@ -99,6 +99,7 @@ export default function RegisterStep2Screen() {
             control={control}
             placeholder={t('common.input_birthdate_placeholder')}
             label={t('common.input_birthdate_label')}
+            onChange={() => trigger('birthdate')}
           />
           <FormInput
             name="email"
@@ -108,6 +109,7 @@ export default function RegisterStep2Screen() {
           />
           <FormInput
             name="password"
+            onChangeText={() => trigger('password')}
             placeholder={t('common.input_password_placeholder')}
             control={control}
             label={t('common.input_password_label')}
@@ -124,10 +126,10 @@ export default function RegisterStep2Screen() {
             title={t('auth.register-step-2.button_title')}
             onPress={handleSubmit(onSubmit)}
             className="mt-4 w-full"
-            isDisabled={!isValid}
+            // isDisabled={!isValid}
             isLoading={registerPending}
           />
-        </Box >
+        </Box>
         <String size="sm" useFastText={false} onPress={() => { }}>
           {t('auth.register-step-2.acceptance_part_1')}
           <String
@@ -170,7 +172,7 @@ export default function RegisterStep2Screen() {
             {t('auth.register-step-2.acceptance_part_8')}
           </String>
         </String>
-      </WrapperKeyboardAwareScrollView >
+      </WrapperKeyboardAwareScrollView>
     </>
   );
 }

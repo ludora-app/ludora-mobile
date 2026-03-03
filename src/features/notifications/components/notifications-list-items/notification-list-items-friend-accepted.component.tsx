@@ -41,7 +41,7 @@ export default function NotificationListItemsFriendAccepted(props: NotificationL
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid: senderUid,
     };
-    router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
   }
 
 

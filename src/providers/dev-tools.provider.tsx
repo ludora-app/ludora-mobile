@@ -30,7 +30,7 @@ export default function DevToolsProvider() {
           id: 'dev-tools',
           launchMode: 'toggle-only',
           name: 'DevTool',
-          onPress: () => router.push(ROUTES.DEV_TOOLS.INDEX),
+          onPress: () => router.navigate(ROUTES.DEV_TOOLS.INDEX),
         },
         {
           component: undefined,
@@ -38,7 +38,7 @@ export default function DevToolsProvider() {
           id: 'storybook',
           launchMode: 'toggle-only',
           name: 'Storybook',
-          onPress: () => router.push(ROUTES.DEV_TOOLS.STORYBOOK),
+          onPress: () => router.navigate(ROUTES.DEV_TOOLS.STORYBOOK),
         },
       ]}
     />

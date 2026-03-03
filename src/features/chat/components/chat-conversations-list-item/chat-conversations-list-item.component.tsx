@@ -38,7 +38,7 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
       receiver: conversationType === "PRIVATE" ? serialize(receiver) : undefined,
       type: conversationType
     };
-    router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(chatRoomId) });
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(chatRoomId) });
   };
 
   const showLudoKingIcon = useMemo(() => conversationType === "SESSION", [conversationType]);

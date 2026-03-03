@@ -137,7 +137,7 @@ export default function RegisterStep2Screen() {
             useFastText={false}
             font="primaryBold"
             className="underline"
-            onPress={() => router.push(ROUTES.LEGAL.CGU_MENTIONS)}
+            onPress={() => router.navigate(ROUTES.LEGAL.CGU_MENTIONS)}
           >
             {t('auth.register-step-2.acceptance_part_2')}
           </String>
@@ -147,7 +147,7 @@ export default function RegisterStep2Screen() {
             useFastText={false}
             font="primaryBold"
             className="underline"
-            onPress={() => router.push(ROUTES.LEGAL.CGV)}
+            onPress={() => router.navigate(ROUTES.LEGAL.CGV)}
           >
             {t('auth.register-step-2.acceptance_part_4')}
           </String>
@@ -157,7 +157,7 @@ export default function RegisterStep2Screen() {
             useFastText={false}
             font="primaryBold"
             className="underline"
-            onPress={() => router.push(ROUTES.LEGAL.NON_DISCRIMINATION)}
+            onPress={() => router.navigate(ROUTES.LEGAL.NON_DISCRIMINATION)}
           >
             {t('auth.register-step-2.acceptance_part_6')}
           </String>
@@ -167,7 +167,7 @@ export default function RegisterStep2Screen() {
             useFastText={false}
             font="primaryBold"
             className="underline"
-            onPress={() => router.push(ROUTES.LEGAL.PRIVACY)}
+            onPress={() => router.navigate(ROUTES.LEGAL.PRIVACY)}
           >
             {t('auth.register-step-2.acceptance_part_8')}
           </String>

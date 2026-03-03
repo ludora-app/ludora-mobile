@@ -110,7 +110,7 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
         ...(isSelected && { endDate }),
       };
 
-      router.push({
+      router.navigate({
         params,
         pathname: ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET,
       });

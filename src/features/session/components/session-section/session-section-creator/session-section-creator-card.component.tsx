@@ -56,11 +56,11 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid: creatorUserUid
     };
-    router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
   };
 
   const handleCardPress = () => {
-    router.push(ROUTES.PROFIL.INDEX_UID(creatorUserUid));
+    router.navigate(ROUTES.PROFIL.INDEX_UID(creatorUserUid));
   };
 
   return (

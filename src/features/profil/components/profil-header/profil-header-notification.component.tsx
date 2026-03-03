@@ -13,7 +13,7 @@ export default function ProfilHeaderNotification() {
   const hasNotification = unreadCount > 0
 
   const handlePress = () => {
-    router.push('/notifications')
+    router.navigate('/notifications')
   }
   return (
     <Badge title={unreadCount?.toString()} show={hasNotification} side="right">

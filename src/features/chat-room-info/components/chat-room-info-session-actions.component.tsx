@@ -25,7 +25,7 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
 
 
   const handleInviteFriends = () => {
-    router.push(ROUTES.INVITE_FRIENDS.INDEX_UID(sessionUid))
+    router.navigate(ROUTES.INVITE_FRIENDS.INDEX_UID(sessionUid))
   }
 
   const handleLeaveMatch = async () => {

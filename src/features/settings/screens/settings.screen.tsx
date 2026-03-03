@@ -4,6 +4,7 @@ import { useTranslate } from '@tolgee/react'
 import { Button, ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 
 import ROUTES from '@/constants/routes.constants'
+import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { TIconsAll } from '@/constants/icons.constants'
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook'
@@ -149,6 +150,9 @@ export default function SettingsScreen() {
             title={t('settings.logout')}
             onPress={handleLogout}
             colorVariant='danger'
+            loaderProps={{
+              color: COLORS.danger
+            }}
             variant="outlined"
           />
         </Wrapper>

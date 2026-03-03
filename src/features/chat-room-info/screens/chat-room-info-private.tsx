@@ -52,7 +52,7 @@ export default function ChatRoomInfoPrivate() {
 
   const handleViewProfile = () => {
     if (userUid) {
-      router.push(ROUTES.PROFIL.INDEX_UID(userUid))
+      router.navigate(ROUTES.PROFIL.INDEX_UID(userUid))
     }
   }
 

@@ -37,7 +37,7 @@ export default function MyFieldsList() {
   )
 
   const handleAddField = () => {
-    router.push(ROUTES.MY_FIELDS.ADD)
+    router.navigate(ROUTES.MY_FIELDS.ADD)
   }
 
   const paddingBottom = useMemo(() => {

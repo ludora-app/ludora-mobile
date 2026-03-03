@@ -75,7 +75,7 @@ export default function ProfilEditAvatar() {
       goBackPath: "/profil/profil-edit",
     };
 
-    router.push({
+    router.navigate({
       params,
       pathname: '/image-picker',
     });

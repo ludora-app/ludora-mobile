@@ -29,7 +29,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       googleServicesFile: googleServicesAndroid,
       package: bundleIdentifier,
     },
-    icon: './assets/logos/app-icon.png',
     ios: {
       ...config.ios,
       bundleIdentifier,

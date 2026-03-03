@@ -16,7 +16,7 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
   const router = useRouter()
 
   const handleViewMembers = () => {
-    router.push(ROUTES.SESSION.TEAM_UID(sessionUid))
+    router.navigate(ROUTES.SESSION.TEAM_UID(sessionUid))
   }
 
   return (

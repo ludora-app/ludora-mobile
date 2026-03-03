@@ -138,7 +138,7 @@ export default function SettingsScreen() {
                     iconName={item.iconName}
                     label={t(item.label)}
                     description={t(item.description)}
-                    onPress={() => router.push(item.route)}
+                    onPress={() => router.navigate(item.route)}
                   />
                   {item.id !== items.length && <Separator />}
                 </Fragment>

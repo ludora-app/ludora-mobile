@@ -68,7 +68,7 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid: senderUid,
     };
-    router.push({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
   }
 
   return (

@@ -55,7 +55,7 @@ export default function CreateSessionStep2FieldsList() {
   );
 
   const handleAddField = () => {
-    router.push({
+    router.navigate({
       params: { sport },
       pathname: ROUTES.MY_FIELDS.ADD,
     });

@@ -83,7 +83,7 @@ export default function ProfilEditScreen() {
                     <String font="primaryBold" variant="body-2">{t(item.labelKey)}</String>
                     <String truncate colorVariant={item?.isMissing ? 'ring' : 'black'}>{item.value}</String>
                   </BoxGrow>
-                  <Icon name='stylus-pen-edit-regular' color='#000' onPress={() => router.push(item.route)} />
+                  <Icon name='stylus-pen-edit-regular' color='#000' onPress={() => router.navigate(item.route)} />
                 </BoxRowCenterBetween>
               ))}
             </Box>

@@ -39,6 +39,11 @@ export function useAuthHelpers() {
   );
 
   const logout = useCallback(async () => {
+    setIsAuthenticated(false);
+    clearOnBoarding();
+    resetCaches();
+    queryClient.clear();
+
     try {
       const fcmToken = await pushNotificationService.getFCMToken();
       if (fcmToken) {
@@ -47,12 +52,10 @@ export function useAuthHelpers() {
     } catch (error) {
       trackError({ error, showToast: false });
     }
+
     setAccessTokenStorage(null);
     setRefreshTokenStorage(null);
-    setIsAuthenticated(false);
-    clearOnBoarding();
-    resetCaches();
-    queryClient.clear();
+
     try {
       await signOut();
       await pushNotificationService.deleteToken();

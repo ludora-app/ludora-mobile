@@ -22,6 +22,11 @@ export const ANALYTICS_EVENTS = {
     ONBOARDING_FAILED: 'onboarding_failed',
   },
 
+  // Dialog Confirm
+  DIALOG_CONFIRM: {
+    DIALOG_CONFIRM_OPEN: 'dialog_confirm_open',
+  },
+
   // Auth Flow
   AUTH: {
     // Inscription
@@ -289,6 +294,13 @@ export interface AnalyticsEventData {
     is_sport_preference_added: boolean;
     is_sport_preference_removed: boolean;
     is_sport_preference_updated: boolean;
+  };
+
+  // **
+  // dialog confirm events
+  // **
+  [ANALYTICS_EVENTS.DIALOG_CONFIRM.DIALOG_CONFIRM_OPEN]: {
+    source: string;
   };
 }
 

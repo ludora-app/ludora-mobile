@@ -5,11 +5,12 @@
   "eslint.options": {
     "extensions": [".ts", ".js", ".tsx", ".jsx"]
   },
-  "eslint.runtime": "node",
+  "eslint.runtime": "/Users/hmeberbeche/.nvm/versions/node/v24.11.1/bin/node",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
     // "source.organizeImports": "explicit"
   },
+
   "tailwindCSS.classAttributes": [
     "class",
     "className",

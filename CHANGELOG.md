@@ -1,3 +1,9 @@
+## [1.0.3-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.8...v1.0.3-alpha.9) (2026-03-05)
+
+### Bug Fixes
+
+* **SCRUM-468:** restructure root stack screens with new grouping comments and update animations to fix modal to screen on ios ([#29](https://github.com/ludora-app/ludora-mobile/issues/29)) ([f380e24](https://github.com/ludora-app/ludora-mobile/commit/f380e2404b68e7129ae87388e320893d4aca6aef))
+
 ## [1.0.3-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.7...v1.0.3-alpha.8) (2026-03-05)
 
 ### Bug Fixes

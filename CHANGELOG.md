@@ -1,3 +1,9 @@
+## [1.1.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.11...v1.1.0-alpha.1) (2026-03-05)
+
+### ✨ Features
+
+* **SCRUM-479:** introduce new Dialog component and its sub-components, integrating it for confirmation flows in chat room info. ([#32](https://github.com/ludora-app/ludora-mobile/issues/32)) ([8b3ad45](https://github.com/ludora-app/ludora-mobile/commit/8b3ad45e98a2771f38aa247e1b29160362cbea28))
+
 ## [1.0.3-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.10...v1.0.3-alpha.11) (2026-03-05)
 
 ### Bug Fixes

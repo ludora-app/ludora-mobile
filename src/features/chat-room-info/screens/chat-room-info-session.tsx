@@ -40,6 +40,7 @@ export default function ChatRoomInfoSession() {
 
   return (
     <ScreenLayout>
+
       <ScrollView bounces={false} contentContainerClassName='grow'>
         <ChatRoomInfoHeader titleKey="chat.info_session_title" />
 

@@ -7,6 +7,7 @@ import COLORS from '@/constants/colors.contstants'
 import { ErrorResponse } from '@/api/orval.instance'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { FindOneSessionResponseData } from '@/api/generated/model'
+import { DialogConfirm } from '@/components/ui/dialog/dialog-confirm'
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants'
 
 import { useLeaveSession } from '../queries/leave-session.query'
@@ -53,15 +54,23 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
       />
 
       {isJoined && (
-        <Button
-          title={t('chat.info_session_leave', 'Quitter le match')}
-          iconProps={{ className: "mr-2", color: COLORS.danger, name: 'close-circle-regular', position: 'left' }}
-          colorVariant="danger"
-          variant="outlined"
-          onPress={handleLeaveMatch}
-          isLoading={isLeavingSession}
-          loaderProps={{ color: COLORS.danger }}
-        />
+        <DialogConfirm
+          title={t("chat-room.info_session_leave")}
+          content={t("chat-room.info_session_leave_content")}
+          showIcon
+          onConfirmPromise={handleLeaveMatch}
+          source="chat_room_info_private_leave_match"
+          confirmButtonTitleKey="common.leave"
+        >
+          <Button
+            title={t('chat-room.info_session_leave')}
+            iconProps={{ className: "mr-2", color: COLORS.danger, name: 'close-circle-regular', position: 'left' }}
+            colorVariant="danger"
+            variant="outlined"
+            isLoading={isLeavingSession}
+            loaderProps={{ color: COLORS.danger }}
+          />
+        </DialogConfirm>
       )}
 
     </Box>

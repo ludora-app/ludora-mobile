@@ -4,6 +4,20 @@
 
 * **SCRUM-306:** Trim user input strings, clean session data by removing empty values, and enable dev tools in development environments. ([9778beb](https://github.com/ludora-app/ludora-mobile/commit/9778beb7f86128f6c7c368f7b27a0cafd175dcad))
 * **SCRUM-429:** Implement an optimistic message queue system for chat, including real-time updates and improved conversation list cache management. ([97cc0e1](https://github.com/ludora-app/ludora-mobile/commit/97cc0e11236911a3a2b03a30727972648029f911))
+* **SCRUM-437:** Enhance profil edit screen with dynamic icons, conditional display, and routing based on user provider. ([#16](https://github.com/ludora-app/ludora-mobile/issues/16)) ([99a0b42](https://github.com/ludora-app/ludora-mobile/commit/99a0b4288454a0faddbeaac383ec320fad0f51d6))
+* **SCRUM-443:** Update navigation from `router.push` to `router.navigate` and refresh app icons. ([a65435a](https://github.com/ludora-app/ludora-mobile/commit/a65435a9bb532ba612e563ab674e71b319a4a24f))
+* **SCRUM-453:** Add danger color to the logout button loader and reorder logout logic to proactively clear authentication state and caches. ([39a2633](https://github.com/ludora-app/ludora-mobile/commit/39a2633b4d4ad08031f44f369a70c0735e10acf8))
+* **SCRUM-453:** Implement onBlur form validation with manual triggering and refine birthdate schema using dayjs. ([14db4cd](https://github.com/ludora-app/ludora-mobile/commit/14db4cdf075afd7a016277fdb45812dcd079443a))
+* **SCRUM-470:** fix flicking items on filters  due to the dynamic height of the icon levels  by adding fixed height and width ([99c78e8](https://github.com/ludora-app/ludora-mobile/commit/99c78e86fe2c033dfc50513c8b6e0c17023088a8))
+* **SCRUM-471:** fix crash on notification page due to days plugins - centralize dayjs configuration and imports into a dedicated utility file. ([71eacd8](https://github.com/ludora-app/ludora-mobile/commit/71eacd85eeae92f4b105aef3c24f503677cd78cd))
+* **SCRUM-474:** improve Discord notification script by using local variables and an environment variable for the webhook URL. ([075d7c9](https://github.com/ludora-app/ludora-mobile/commit/075d7c99ae341a98c743398a03de6be8d0ec9210))
+
+## [1.0.3-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.7...v1.0.3-alpha.8) (2026-03-05)
+
+### Bug Fixes
+
+* **SCRUM-306:** Trim user input strings, clean session data by removing empty values, and enable dev tools in development environments. ([9778beb](https://github.com/ludora-app/ludora-mobile/commit/9778beb7f86128f6c7c368f7b27a0cafd175dcad))
+* **SCRUM-429:** Implement an optimistic message queue system for chat, including real-time updates and improved conversation list cache management. ([97cc0e1](https://github.com/ludora-app/ludora-mobile/commit/97cc0e11236911a3a2b03a30727972648029f911))
 * **SCRUM-443:** Update navigation from `router.push` to `router.navigate` and refresh app icons. ([a65435a](https://github.com/ludora-app/ludora-mobile/commit/a65435a9bb532ba612e563ab674e71b319a4a24f))
 * **SCRUM-453:** Add danger color to the logout button loader and reorder logout logic to proactively clear authentication state and caches. ([39a2633](https://github.com/ludora-app/ludora-mobile/commit/39a2633b4d4ad08031f44f369a70c0735e10acf8))
 * **SCRUM-453:** Implement onBlur form validation with manual triggering and refine birthdate schema using dayjs. ([14db4cd](https://github.com/ludora-app/ludora-mobile/commit/14db4cdf075afd7a016277fdb45812dcd079443a))

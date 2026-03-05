@@ -1,3 +1,9 @@
+## [1.0.3-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.10...v1.0.3-alpha.11) (2026-03-05)
+
+### Bug Fixes
+
+* **SCRUM-480:** lift incoming session state to parent and add header title loading skeleton ([#31](https://github.com/ludora-app/ludora-mobile/issues/31)) ([a84b149](https://github.com/ludora-app/ludora-mobile/commit/a84b14972784081f07fe4c38a821bf51454fd6cf))
+
 ## [1.0.3-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.9...v1.0.3-alpha.10) (2026-03-05)
 
 ### Bug Fixes

@@ -16,6 +16,7 @@ const COLORS = {
   purpleTertiary: '#3C215A',
   ring: '#9e9e9e',
   secondary: '#864C9E',
+  success: '#10B981',
 };
 
 export default COLORS;

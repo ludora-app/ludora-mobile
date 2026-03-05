@@ -96,6 +96,8 @@ export const ANALYTICS_EVENTS = {
     SESSION_TEAM_SELECTED: 'session_team_selected',
   },
   SETTINGS: {
+    SETTINGS_DELETE_ACCOUNT_CANCEL_SUCCESS: 'settings_delete_account_cancel_success',
+    SETTINGS_DELETE_ACCOUNT_SUCCESS: 'settings_delete_account_success',
     SETTINGS_PLANNING_EDIT_FAILED: 'settings:settings_planning_edit_failed',
     SETTINGS_PLANNING_EDIT_SUCCESS: 'settings:settings_planning_edit_success',
     SETTINGS_PREFERENCES_SPORTS_EDIT_FAILED: 'settings:settings_preferences_sports_edit_failed',

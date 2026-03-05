@@ -20,6 +20,7 @@
   --color-purpleTertiary: #3c215a;
   --color-ring: #b4b4b4;
   --color-warning: #ff9800;
+  --color-success: #10b981;
 
   /* Button Colors */
   --color-button-accent-background: #cbd2d9;
@@ -50,7 +51,7 @@
   --color-button-warning-content: #000;
   --color-button-white-background: #f5f7fa;
   --color-button-white-content: #000;
-  --color-button-success-background: #2ecc71;
+  --color-button-success-background: #10b981;
   --color-button-success-content: #fff;
 
   /* Font Families */

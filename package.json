@@ -35,6 +35,7 @@
     "generate:translations:local": "bun inject:env node tools/tolgee-translation/index.mjs",
     "download:swagger": "bun inject:env node tools/generate-api/download-swagger.mjs",
     "generate:api": "rm -rf src/api/generated && bun inject:env node tools/generate-api/download-swagger.mjs && bun inject:env node tools/generate-api/orval.mjs && bun inject:env bunx orval@next && node tools/generate-api/remove-controller.mjs && node tools/generate-api/fix-rq-v5.mjs && node tools/generate-api/generate-invalidate-queries.mjs",
+    "switch:api:env": "node tools/switch-env/switch-env.mjs",
     "release": "semantic-release"
   },
   "dependencies": {

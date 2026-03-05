@@ -46,7 +46,7 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = openProp !== undefined
   const open = isControlled ? openProp : internalOpen
-  const setOpen = isControlled ? (onOpenChangeProp ?? (() => {})) : setInternalOpen
+  const setOpen = isControlled ? (onOpenChangeProp ?? (() => { })) : setInternalOpen
   const { trackEvent } = useAnalytics()
   const { t } = useTranslate()
 

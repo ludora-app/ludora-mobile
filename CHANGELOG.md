@@ -1,3 +1,9 @@
+## [1.0.3-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.9...v1.0.3-alpha.10) (2026-03-05)
+
+### Bug Fixes
+
+* **SCRUM-434:** Update optimistic message createdAt timestamp and re-insert into cache if evicted during retry. ([#30](https://github.com/ludora-app/ludora-mobile/issues/30)) ([f1c50fc](https://github.com/ludora-app/ludora-mobile/commit/f1c50fce3ccfc671ca2593e5154b2e7ac13184f3))
+
 ## [1.0.3-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.8...v1.0.3-alpha.9) (2026-03-05)
 
 ### Bug Fixes

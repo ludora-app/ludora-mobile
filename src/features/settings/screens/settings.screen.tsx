@@ -6,7 +6,6 @@ import { ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 import ROUTES from '@/constants/routes.constants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { TIconsAll } from '@/constants/icons.constants'
-import { useAuthHelpers } from '@/hooks/auth-helpers.hook'
 
 import SettingsHeader from '../components/settings-header.component'
 import SettingsSection from '../components/settings-section.component'
@@ -124,12 +123,7 @@ const SETTINGS_MENU = {
 export default function SettingsScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
-  const { logout } = useAuthHelpers()
   const router = useRouter()
-
-  const handleLogout = () => {
-    logout()
-  }
 
   return (
     <ScreenLayout>

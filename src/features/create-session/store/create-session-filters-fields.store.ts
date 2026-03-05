@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { create } from 'zustand';
 
+import dayjs from '@/lib/dayjs';
 import { FieldsFindAllVerifiedParams } from '@/api/generated/model';
 
 export type FiltersProps = Omit<FieldsFindAllVerifiedParams, 'date'> & {

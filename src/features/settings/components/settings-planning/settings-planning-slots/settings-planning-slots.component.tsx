@@ -1,6 +1,7 @@
-import dayjs from 'dayjs'
 import { Box, String } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react'
+
+import dayjs from '@/lib/dayjs';
 
 import { PlanningSlot } from '../../../types/settings-planning.types'
 import SettingsPlanningSlotsItem from './settings-planning-slots-item.component'

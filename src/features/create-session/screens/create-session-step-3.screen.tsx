@@ -82,8 +82,14 @@ export default function CreateSessionStep3Screen() {
   // Sync form values with store
   const watchedValues = watch();
   useEffect(() => {
+    const cleanedValues = {
+      description: watchedValues.description?.trim(),
+      teamAName: watchedValues.teamAName?.trim(),
+      teamBName: watchedValues.teamBName?.trim(),
+      title: watchedValues.title?.trim(),
+    };
     setCreateSessionData({
-      ...watchedValues,
+      ...cleanedValues,
       additionalData: {
         titleSource,
       },

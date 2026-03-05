@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { create } from 'zustand';
 import { isString } from 'radash';
 
+import dayjs from '@/lib/dayjs';
 import { SessionsFindAllParams } from '@/api/generated/model';
 
 export type FiltersProps = Omit<SessionsFindAllParams, 'date'> & {

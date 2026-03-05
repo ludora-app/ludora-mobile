@@ -24,11 +24,11 @@ export default function ProfilSection4(props: ProfilSection4Props) {
 
   return (
     <BoxRowCenter className='items-center justify-around p-2 rounded-xl bg-white' style={styles.shadow}>
-      <TouchableOpacity className='items-center justify-center' onPress={() => router.push(ROUTES.SETTINGS.FRIENDS)} disabled={!isMe}>
+      <TouchableOpacity className='items-center justify-center' onPress={() => router.navigate(ROUTES.SETTINGS.FRIENDS)} disabled={!isMe}>
         <String font="primaryBold">{friendsCount || 0}</String>
         <String font="primarySemiBold" variant="body-sm" colorVariant="muted">{t('common.friends')}</String>
       </TouchableOpacity>
-      <TouchableOpacity className='items-center justify-center' onPress={() => router.push(ROUTES.SETTINGS.HISTORY)} disabled={!isMe}>
+      <TouchableOpacity className='items-center justify-center' onPress={() => router.navigate(ROUTES.SETTINGS.HISTORY)} disabled={!isMe}>
         <String font="primaryBold">{matchesCount || 0}</String>
         <String font="primarySemiBold" variant="body-sm" colorVariant="muted">{t('common.matches')}</String>
       </TouchableOpacity>

@@ -33,12 +33,23 @@ export const useCreateSessionStore = create<CreateSessionStore>((set, get) => ({
   },
   setCreatedSessionUid: createdSessionUid => set({ createdSessionUid }),
   setIsStep3Valid: isStep3Valid => set({ isStep3Valid }),
-  setSession: session =>
-    set({
-      session: {
-        ...get().session,
+  setSession: session => {
+    const clean = <T extends object>(obj: T): T =>
+      Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== '' && v !== null && v !== undefined)) as T;
+
+    set(state => {
+      const newAdditionalData = clean({
+        ...state.session.additionalData,
+        ...session.additionalData,
+      });
+
+      const mergedSession = clean({
+        ...state.session,
         ...session,
-        additionalData: { ...get().session.additionalData, ...session.additionalData },
-      },
-    }),
+        additionalData: newAdditionalData,
+      });
+
+      return { session: mergedSession };
+    });
+  },
 }));

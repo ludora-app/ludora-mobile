@@ -1,10 +1,10 @@
-import dayjs from 'dayjs';
 import { list } from 'radash';
 import { FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
+import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import { FieldResponseDto } from '@/api/generated/model';
 import { RootStackParamList } from '@/types/routes-params.types';
@@ -110,7 +110,7 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
         ...(isSelected && { endDate }),
       };
 
-      router.push({
+      router.navigate({
         params,
         pathname: ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET,
       });

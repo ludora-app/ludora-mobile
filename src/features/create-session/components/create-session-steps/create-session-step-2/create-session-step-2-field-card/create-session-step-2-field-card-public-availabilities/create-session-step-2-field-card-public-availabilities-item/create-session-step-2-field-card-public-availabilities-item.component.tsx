@@ -1,15 +1,13 @@
-import dayjs from 'dayjs';
+
 import { memo } from 'react';
 import { String, BoxCenter } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
-import isBetween from 'dayjs/plugin/isBetween';
 import { Box, cn, ScalePressable } from '@chillui/ui';
 
+import dayjs from '@/lib/dayjs';
 import { FieldAvailabilityDto } from '@/api/generated/model';
 import { TimeSlot } from '@/features/create-session/types/create-session-step-2.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
-
-dayjs.extend(isBetween);
 
 type CreateSessionStep2FieldCardPublicAvailabilitiesItemProps = {
   time: TimeSlot;

@@ -1,8 +1,9 @@
 import { memo } from 'react';
-import { Dayjs } from 'dayjs';
 import { String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import { cn, ScalePressable } from '@chillui/ui';
+
+import { Dayjs } from '@/lib/dayjs';
 
 import { DayItem } from '../hooks/days-carousel.hook';
 

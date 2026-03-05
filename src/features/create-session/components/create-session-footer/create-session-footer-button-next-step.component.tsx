@@ -59,7 +59,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     const { fieldType, price, pricePerPlayer } = additionalData || {};
 
     if (activeStep === 3 && fieldType === 'partner') {
-      router.push(ROUTES.CREATE_SESSION.STEP_3_PAYMENT);
+      router.navigate(ROUTES.CREATE_SESSION.STEP_3_PAYMENT);
       return;
     }
 
@@ -73,7 +73,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
         },
         eventName: 'create_session_step_1_completed',
       });
-      router.push(ROUTES.CREATE_SESSION.STEP_2);
+      router.navigate(ROUTES.CREATE_SESSION.STEP_2);
     }
     if (activeStep === 2 && currentSession) {
       trackEvent({
@@ -88,7 +88,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
         },
         eventName: 'create_session_step_2_completed',
       });
-      router.push(ROUTES.CREATE_SESSION.STEP_3);
+      router.navigate(ROUTES.CREATE_SESSION.STEP_3);
     }
     if (activeStep === 3 && currentSession) {
       trackEvent({
@@ -101,7 +101,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
         },
         eventName: 'create_session_step_3_completed',
       });
-      router.push(ROUTES.CREATE_SESSION.STEP_4);
+      router.navigate(ROUTES.CREATE_SESSION.STEP_4);
     }
   };
 

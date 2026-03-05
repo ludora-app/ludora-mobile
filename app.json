@@ -1,6 +1,5 @@
 {
   "expo": {
-    "version": "true",
     "owner": "ludora-app",
     "scheme": "ludora",
     "userInterfaceStyle": "automatic",
@@ -55,7 +54,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/logos/app-icon.png",
+          "icon": "./assets/logos/np-icon.png",
           "color": "#ffffff",
           "sounds": []
         }
@@ -75,8 +74,12 @@
     ],
     "name": "Ludora",
     "slug": "ludora",
-    "icon": "./assets/logos/app-icon.png",
+    "icon": "./assets/logos/ic-launcher-ios.png",
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logos/ic-launcher-android.png",
+        "backgroundColor": "#FCBD1D"
+      },
       "package": "com.ludora",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -111,22 +114,18 @@
               "pathPrefix": "/session"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "googleServicesFile": "./google-services.json",
-      "versionCode": 0
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
+      "icon": "./assets/logos/ic-launcher-ios.png",
       "bundleIdentifier": "com.ludora",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      },
-      "buildNumber": "1.0.3-alpha.7"
+      }
     },
     "extra": {
       "router": {

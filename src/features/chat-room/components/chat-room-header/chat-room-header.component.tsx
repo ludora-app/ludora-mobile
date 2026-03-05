@@ -46,10 +46,7 @@ export default function ChatRoomHeader() {
         name,
         sessionUid,
       }
-      router.push({
-        params,
-        pathname: ROUTES.CHAT_ROOM.INFO_SESSION
-      });
+      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INFO_SESSION });
     } else {
       const params: LocalSearchParamsPrivateInfoChatRoom = {
         chatRoomId,
@@ -57,7 +54,7 @@ export default function ChatRoomHeader() {
         name,
         receiver: serialize(receiver),
       }
-      router.push({
+      router.navigate({
         params,
         pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(undefined)
       });

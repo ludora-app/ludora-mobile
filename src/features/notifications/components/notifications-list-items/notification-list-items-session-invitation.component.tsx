@@ -25,7 +25,7 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
   const { senderAvatar, senderFirstname, senderLastname, senderName, sessionUid } = notificationData || {}
 
   const handleSeeSession = () => {
-    router.push(ROUTES.SESSION.INDEX_UID(sessionUid))
+    router.navigate(ROUTES.SESSION.INDEX_UID(sessionUid))
   }
 
   return (

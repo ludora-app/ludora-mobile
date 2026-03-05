@@ -18,7 +18,7 @@ export default function SessionSectionTeamsHeader() {
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const handlePress = () => {
-    router.push(ROUTES.SESSION.TEAM_UID(sessionUid));
+    router.navigate(ROUTES.SESSION.TEAM_UID(sessionUid));
   };
 
   const handleIconColor = useMemo(() => {

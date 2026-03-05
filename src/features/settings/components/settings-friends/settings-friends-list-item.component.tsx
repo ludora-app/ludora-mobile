@@ -19,7 +19,7 @@ export default function SettingsFriendsListItem({ item }: SettingsFriendsListIte
   const { avatarUrl, firstname, friendUid, lastname } = item
 
   const handlePress = () => {
-    router.push(ROUTES.PROFIL.INDEX_UID(friendUid))
+    router.navigate(ROUTES.PROFIL.INDEX_UID(friendUid))
   }
 
   const handlePressChatIcon = () => {

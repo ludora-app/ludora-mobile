@@ -42,8 +42,8 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
 
   const handleOnChangeText = useCallback(
     (text: string) => {
-      onChangeText?.(text);
       onChange(text);
+      onChangeText?.(text);
     },
     [onChange, onChangeText],
   );

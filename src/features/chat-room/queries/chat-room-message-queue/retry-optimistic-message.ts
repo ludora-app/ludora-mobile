@@ -13,25 +13,61 @@ export const retryOptimisticMessage = (queryClient: QueryClient, ctx: MessageQue
 
   if (!failedMessage || !failedMessage.isError) return;
 
-  // Reset state to "sending"
-  updatePendingMessage(tempMessageUid, { isError: false, isSending: true });
+  // Reset state to "sending" with updated timestamp
+  const retryCreatedAt = new Date().toISOString();
+  updatePendingMessage(tempMessageUid, { createdAt: retryCreatedAt, isError: false, isSending: true });
 
-  // Update cache to reflect the retry
+  // Update cache to reflect the retry — re-insert if the message was evicted by a refetch
   const queryKey = ctx.getQueryKey();
   if (queryKey) {
     queryClient.setQueryData<MessagesInfiniteData>(queryKey, oldData => {
       if (!oldData) return oldData;
+
+      // Check if the message still exists in any page
+      const messageExists = oldData.pages.some(page => page.data.items.some(msg => msg.uid === tempMessageUid));
+
+      if (messageExists) {
+        // Message is still in cache — just update its status
+        return {
+          ...oldData,
+          pages: oldData.pages.map(page => ({
+            ...page,
+            data: {
+              ...page.data,
+              items: page.data.items.map(msg =>
+                msg.uid === tempMessageUid
+                  ? { ...msg, createdAt: retryCreatedAt, isError: false, isSending: true }
+                  : msg,
+              ),
+            },
+          })),
+        };
+      }
+
+      // Message was evicted by a server refetch — re-insert it into the first page
+      const updatedPages = [...oldData.pages];
+      const firstPage = updatedPages[0];
+      if (firstPage) {
+        updatedPages[0] = {
+          ...firstPage,
+          data: {
+            ...firstPage.data,
+            items: [
+              ...firstPage.data.items,
+              {
+                ...failedMessage,
+                createdAt: retryCreatedAt,
+                isError: false,
+                isSending: true,
+              } as unknown as (typeof firstPage.data.items)[number],
+            ],
+          },
+        };
+      }
+
       return {
         ...oldData,
-        pages: oldData.pages.map(page => ({
-          ...page,
-          data: {
-            ...page.data,
-            items: page.data.items.map(msg =>
-              msg.uid === tempMessageUid ? { ...msg, isError: false, isSending: true } : msg,
-            ),
-          },
-        })),
+        pages: updatedPages,
       };
     });
   }
@@ -42,7 +78,7 @@ export const retryOptimisticMessage = (queryClient: QueryClient, ctx: MessageQue
       ctx.chatRoomId,
       {
         content: failedMessage.content,
-        createdAt: failedMessage.createdAt,
+        createdAt: retryCreatedAt,
         globalStatus: MessageDtoGlobalStatus.SENT,
         isSender: true,
         type: failedMessage.type as MessageDtoType,

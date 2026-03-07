@@ -1,33 +1,39 @@
-import React from 'react'
 import { Button } from '@ludo/ui'
-import { useRouter } from 'expo-router';
+import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
+import { useCancelDeleteAccount } from '@/features/settings/queries/delete-account/delete-account-cancel.query';
 
-import { useDeleteAccount } from '../../../queries/delete-account.query';
 
 const DELETE_CANCEL_ACCOUNT_EVENT = ANALYTICS_EVENTS.SETTINGS.SETTINGS_DELETE_ACCOUNT_CANCEL_SUCCESS
 
 export default function SettingsActionsDeleteAccountCancel() {
-
-  const router = useRouter()
+  const { toast } = useToast()
   const { trackError, trackEvent } = useAnalytics()
-  const { isPending: isDeleteAccountLoading, mutateAsync: deleteAccount } = useDeleteAccount()
+  const { isPending: isDeleteAccountCancelLoading, mutateAsync: cancelDeleteAccount } =
+    useCancelDeleteAccount()
   const { t } = useTranslate()
 
   const handleAbordDeleteAccount = async () => {
     try {
-      await deleteAccount()
+      await cancelDeleteAccount()
       trackEvent({ eventName: DELETE_CANCEL_ACCOUNT_EVENT })
-      router.back()
+      toast({
+        message: t("settings.delete_account_cancel_success_message"),
+        variant: "success"
+      })
     } catch (error) {
       trackError({ error })
     }
   }
 
   return (
-    <Button title={t('settings.delete_account_abord_button')} colorVariant="success" isLoading={isDeleteAccountLoading} onPress={handleAbordDeleteAccount} />
+    <Button
+      title={t('settings.delete_account_abord_button')}
+      colorVariant="success"
+      isLoading={isDeleteAccountCancelLoading} onPress={handleAbordDeleteAccount}
+    />
   );
 }

@@ -6,10 +6,9 @@ import SettingsActionsDeleteAccountCancel from './settings-actions-delete-accoun
 import SettingsActionsDeleteAccountAction from './settings-actions-delete-account-action.component';
 
 export default function SettingsActionsDeleteAccount() {
-  const { userMe = {} } = useUserMe()
-  const { } = useUserMe || {}
-
-  const hasDeleteAccount = false
+  const { userMe } = useUserMe()
+  const { deletedAt } = userMe || {}
+  const hasDeleteAccount = !!deletedAt
 
   return (
     <>

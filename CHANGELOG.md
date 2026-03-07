@@ -1,3 +1,9 @@
+## [1.1.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.5...v1.1.0-alpha.6) (2026-03-07)
+
+### ✨ Features
+
+* **SCRUM-478:** Implement loading state for user location fetching and enable accuracy configuration for location requests. ([#38](https://github.com/ludora-app/ludora-mobile/issues/38)) ([8154fac](https://github.com/ludora-app/ludora-mobile/commit/8154fac027052b197f75447f7ce0dcc260325654))
+
 ## [1.1.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2026-03-07)
 
 ### ✨ Features

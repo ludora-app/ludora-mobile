@@ -8,6 +8,7 @@ type params = {
 
 interface SettingsFavoritesFilterState {
   filters: params;
+  reset: () => void;
   setFilters: (filters: params) => void;
 }
 
@@ -15,5 +16,6 @@ export const useSettingsFavoritesFilterStore = create<SettingsFavoritesFilterSta
   filters: {
     type: 'SESSIONS',
   },
+  reset: () => set({ filters: { type: 'SESSIONS' } }),
   setFilters: filters => set(state => ({ ...state, filters })),
 }));

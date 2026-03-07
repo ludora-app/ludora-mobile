@@ -1,3 +1,9 @@
+## [1.1.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.7...v1.1.0-alpha.8) (2026-03-07)
+
+### Performance Improvements
+
+* **SCRUM-506:** Memoize ProfilSection1 component to optimize rendering performance. ([#40](https://github.com/ludora-app/ludora-mobile/issues/40)) ([537ebbe](https://github.com/ludora-app/ludora-mobile/commit/537ebbe07577fdce4572c53fee7fb56ce2e190c3))
+
 ## [1.1.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.6...v1.1.0-alpha.7) (2026-03-07)
 
 ### ✨ Features

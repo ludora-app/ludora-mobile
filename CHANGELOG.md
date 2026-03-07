@@ -1,3 +1,9 @@
+## [1.1.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2026-03-07)
+
+### ✨ Features
+
+* **SCRUM-493:** Implement remove friend functionality and refine friend request handling with updated query invalidation. ([#37](https://github.com/ludora-app/ludora-mobile/issues/37)) ([dd3c7f3](https://github.com/ludora-app/ludora-mobile/commit/dd3c7f3047e2b2f401ccff96fed20a8bc5045ee3))
+
 ## [1.1.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2026-03-07)
 
 ### Bug Fixes

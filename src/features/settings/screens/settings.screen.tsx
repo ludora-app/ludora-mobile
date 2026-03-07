@@ -1,17 +1,16 @@
 import { Fragment } from 'react'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
-import { Button, ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
+import { ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 
 import ROUTES from '@/constants/routes.constants'
-import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { TIconsAll } from '@/constants/icons.constants'
-import { useAuthHelpers } from '@/hooks/auth-helpers.hook'
 
 import SettingsHeader from '../components/settings-header.component'
 import SettingsSection from '../components/settings-section.component'
 import SettingsMenuItem from '../components/settings-menu-item.component'
+import SettingsActions from '../components/settings-actions/settings-actions.component'
 
 
 
@@ -124,12 +123,7 @@ const SETTINGS_MENU = {
 export default function SettingsScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
-  const { logout } = useAuthHelpers()
   const router = useRouter()
-
-  const handleLogout = () => {
-    logout()
-  }
 
   return (
     <ScreenLayout>
@@ -152,16 +146,7 @@ export default function SettingsScreen() {
               ))}
             </SettingsSection>
           ))}
-
-          <Button
-            title={t('settings.logout')}
-            onPress={handleLogout}
-            colorVariant='danger'
-            loaderProps={{
-              color: COLORS.danger
-            }}
-            variant="outlined"
-          />
+          <SettingsActions />
         </Wrapper>
       </ScrollView>
     </ScreenLayout>

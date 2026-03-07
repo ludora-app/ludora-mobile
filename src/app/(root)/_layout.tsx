@@ -23,6 +23,18 @@ function AppLayoutNav() {
         }}
       />
 
+      {/* ──────────── Profil ──────────── */}
+      <Stack.Screen
+        name="profil/[id]/actions"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+
       {/* ──────────── Profil Edit ──────────── */}
       <Stack.Screen
         name="profil/profil-edit/name"

@@ -1,5 +1,6 @@
 import { isString } from 'radash';
 import { useRouter } from 'expo-router';
+import * as Location from 'expo-location';
 import { useTranslate } from '@tolgee/react';
 import { memo, useEffect, useMemo } from 'react';
 import { Box, Button, Icon, Separator, String, BoxRowCenterBetween } from '@ludo/ui';
@@ -25,6 +26,7 @@ function FilterLocation(props: FilterLocationProps) {
   const setFilters = useFiltersStore(state => state.setFilters);
 
   const { getCurrentLocation, isLoading: isLoadingUserLocation } = useGetUserLocation({
+    accuracy: Location.Accuracy.Lowest,
     showAlert: true,
     type: 'FIELDS',
   });

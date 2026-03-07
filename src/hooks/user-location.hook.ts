@@ -10,9 +10,14 @@ import { useAnalytics } from './analytics-trackers.hook';
 interface UseGetUserLocationProps {
   showAlert?: boolean;
   type?: 'SESSIONS' | 'FIELDS';
+  accuracy?: Location.Accuracy;
 }
 
-const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLocationProps) => {
+const useGetUserLocation = ({
+  accuracy = Location.Accuracy.Balanced,
+  showAlert = false,
+  type = 'FIELDS',
+}: UseGetUserLocationProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const setLocation = useUserLocationStore(state => state.setLocation);
 
@@ -45,7 +50,7 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
 
     try {
       const userLocation = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
+        accuracy,
       });
 
       setLocation({
@@ -56,8 +61,7 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       const isLocationUnavailable =
-        message.includes('Current location is unavailable') ||
-        message.includes('location services');
+        message.includes('Current location is unavailable') || message.includes('location services');
       if (!isLocationUnavailable) {
         trackError({ error, showToast: false });
       }
@@ -65,7 +69,7 @@ const useGetUserLocation = ({ showAlert = false, type = 'FIELDS' }: UseGetUserLo
     } finally {
       setIsLoading(false);
     }
-  }, [setLocation, t, showAlert, type, trackError]);
+  }, [setLocation, t, showAlert, type, trackError, accuracy]);
 
   return { getCurrentLocation, isLoading };
 };

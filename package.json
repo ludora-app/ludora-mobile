@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node tools/update-ip/update-ip.js && node tools/dev-server/dev-server.js & bun inject:env expo start --port 8086",
     "start:clear": "bun inject:env expo start --port 8086 --clear",
-    "generate:icons": "node tools/svg-2-obj/index.js",
+    "generate:icons": "node tools/svg-2-obj/index.js && eslint --fix src/constants/icons.constants.ts",
     "inject:env": "bash tools/vault/inject-env.sh",
     "update:ip": "node tools/update-ip/update-ip.js",
     "eas-build-pre-install": "cp $GOOGLE_SERVICES_JSON google-services.json && cp $GOOGLE_SERVICES_PLIST GoogleService-Info.plist && ([ -z \"$DEV_GOOGLE_SERVICES_JSON\" ] || cp $DEV_GOOGLE_SERVICES_JSON dev.google-services.json) && ([ -z \"$DEV_GOOGLE_SERVICES_PLIST\" ] || cp $DEV_GOOGLE_SERVICES_PLIST dev.GoogleService-Info.plist)",

@@ -6,7 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 
 import { ErrorResponse } from '@/api/orval.instance'
+import { useSafeArea } from '@/hooks/safe-area.hook'
 import { useToast } from '@/components/chill-ui-library'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { CreateReportDtoReason } from '@/api/generated/model'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants'
@@ -25,6 +27,7 @@ import ProfilHeaderActionReportReasonsOtherBottomSheet from '../components/profi
 const ALREADY_REPORTED_ERROR = "You already reported this user for this reason"
 
 export default function ProfilActionsFormsheet() {
+  const { bottom } = useSafeArea()
   const { t } = useTranslate()
   const router = useRouter()
   const { toast } = useToast()
@@ -93,7 +96,7 @@ export default function ProfilActionsFormsheet() {
   }
 
   return (
-    <>
+    <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
       <ProfilHeaderActionsReportHeader
         view={view}
         setView={setView}
@@ -129,6 +132,6 @@ export default function ProfilActionsFormsheet() {
         <ProfilHeaderActionReportReasonsOtherBottomSheet
           onPress={handleSubmit(handleSubmitDescription)}
         />}
-    </>
+    </Box>
   )
 }

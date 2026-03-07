@@ -1,3 +1,9 @@
+## [1.1.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2026-03-07)
+
+### ✨ Features
+
+* **SCRUM-489:** Implement user blocking functionality, a profile actions formsheet, and a blocked users management screen in settings. ([#33](https://github.com/ludora-app/ludora-mobile/issues/33)) ([80de4ed](https://github.com/ludora-app/ludora-mobile/commit/80de4ed5106f67e0d40621b1e82dbf3511208781))
+
 ## [1.1.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.0.3-alpha.11...v1.1.0-alpha.1) (2026-03-05)
 
 ### ✨ Features

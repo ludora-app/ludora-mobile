@@ -1,5 +1,6 @@
 
 import { debounce, list } from 'radash';
+import * as Location from 'expo-location';
 import { FlatList } from 'react-native-gesture-handler';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -39,6 +40,7 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
   const { data: searchPlacesData, isPending: isPendingSearchPlaces, mutateAsync: searchPlaces } = useSearchPlaces();
   const getPlace = useGetPlace();
   const { getCurrentLocation, isLoading: isLoadingUserLocation } = useGetUserLocation({
+    accuracy: Location.Accuracy.Lowest,
     showAlert: true,
     type: 'FIELDS',
   });

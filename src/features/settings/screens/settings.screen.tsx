@@ -66,23 +66,30 @@ const SETTINGS_MENU = {
       route: ROUTES.SETTINGS.FRIENDS,
     },
     {
+      description: 'settings.section_shortcuts_blocked_users_description',
+      iconName: 'fordbidden-contact-solid',
+      id: 3,
+      label: 'settings.section_shortcuts_blocked_users',
+      route: ROUTES.SETTINGS.BLOCKED_USERS,
+    },
+    {
       description: 'settings.section_shortcuts_my_fields_description',
       iconName: "football-field-regular",
-      id: 3,
+      id: 4,
       label: 'settings.section_shortcuts_my_fields',
       route: ROUTES.MY_FIELDS.INDEX,
     },
     // {
     //   description: 'settings.section_shortcuts_favorites_description',
     //   iconName: 'heart-regular',
-    //   id: 3,
+    //   id: 5,
     //   label: 'settings.section_shortcuts_favorites',
     //   route: ROUTES.SETTINGS.FAVORITES,
     // },
     {
       description: 'settings.section_shortcuts_history_description',
       iconName: 'clock-regular',
-      id: 4,
+      id: 5,
       label: 'settings.section_shortcuts_history',
       route: ROUTES.SETTINGS.HISTORY,
     }
@@ -97,10 +104,10 @@ const SETTINGS_MENU = {
       route: ROUTES.LEGAL.CGU_MENTIONS,
     },
     {
-      description: 'Consulte nos conditions générales de vente',
+      description: 'settings.section_legal_sales_terms_description',
       iconName: 'document-text-2-regular',
       id: 2,
-      label: 'Conditions Générales de Vente',
+      label: 'settings.section_legal_sales_terms',
       route: ROUTES.LEGAL.CGV,
     },
     {

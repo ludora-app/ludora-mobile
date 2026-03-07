@@ -43,7 +43,7 @@ export default function ProfilScreen() {
 
   const profilHeader = (
     <>
-      <ProfilHeader isMe={isProfilMe} />
+      <ProfilHeader isMe={isProfilMe} firstname={firstname} lastname={lastname} />
       <Wrapper className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
         {isProfilLoading ? <ProfilSection1Skeleton /> : (
           <ProfilSection1

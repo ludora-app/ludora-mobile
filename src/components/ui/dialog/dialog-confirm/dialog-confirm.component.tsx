@@ -2,7 +2,7 @@
 import { useTranslate } from '@tolgee/react'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { Box, Icon, String, Button, IconProps } from '@ludo/ui'
-import { Dialog as DialogChillUi, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@chillui/ui'
+import { cn, Dialog as DialogChillUi, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@chillui/ui'
 
 import COLORS from '@/constants/colors.contstants'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
@@ -19,10 +19,13 @@ type DialogProps = {
   showIcon?: boolean
   source: string
   confirmButtonTitleKey: string
+  centerContent?: boolean
+  priority?: 'confirm' | 'cancel'
 }
 
 export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
   const {
+    centerContent,
     children,
     confirmButtonTitleKey,
     content,
@@ -31,9 +34,11 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
     onCancel,
     onConfirm,
     onConfirmPromise,
+    priority = "cancel",
     showIcon,
     source,
-    title } = props
+    title
+  } = props
   const [open, setOpen] = useState(false)
   const { trackEvent } = useAnalytics()
   const { t } = useTranslate()
@@ -61,7 +66,7 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
 
   return (
     <DialogChillUi open={open} onOpenChange={setOpen} >
-      <DialogTrigger asChild>
+      <DialogTrigger as="pressable" asChild>
         {children}
       </DialogTrigger>
       <DialogContent>
@@ -73,7 +78,7 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
         </DialogHeader>
         <Box className='items-center py-4 px-3'>
           {showIcon && <Icon name='ludo-cry' className='size-20' {...iconProps} />}
-          <String className='text-center' font="primarySemiBold">
+          <String className={cn({ 'text-center': centerContent })} font="primarySemiBold">
             {content}
           </String>
         </Box>
@@ -82,16 +87,16 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
           <Button
             title={t('common.button_cancel')}
             colorVariant="primary"
-            variant="contained"
-            className='flex-2'
+            variant={priority === 'cancel' ? "contained" : "outlined"}
+            className={cn('flex-2', priority === 'confirm' && 'flex-1')}
             size="sm"
             onPress={handleCancel}
           />
           <Button
             title={t(confirmButtonTitleKey)}
             colorVariant="danger"
-            variant="outlined"
-            className='flex-1'
+            variant={priority === 'confirm' ? "contained" : "outlined"}
+            className={cn('flex-1', priority === 'confirm' && 'flex-2')}
             size="sm"
             onPress={handleConfirm}
             isLoading={isLoading}

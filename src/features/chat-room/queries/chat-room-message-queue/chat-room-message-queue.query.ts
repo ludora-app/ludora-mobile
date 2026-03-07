@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getConversationsLoadMoreMessagesQueryKey } from '@generatedApi/conversations/conversations.api';
 
-import { SenderDto } from '@/api/generated/model';
 import { useUserMe } from '@/queries/user-me.query';
+import { UserSimpleDisplayWithUidData } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
 import { retryOptimisticMessage } from './retry-optimistic-message';
@@ -17,7 +17,7 @@ export const useChatRoomMessageOptimisticQueue = () => {
   const queryClient = useQueryClient();
   const { userMe } = useUserMe();
 
-  const currentUserSender: SenderDto | undefined = userMe
+  const currentUserSender: UserSimpleDisplayWithUidData | undefined = userMe
     ? {
         firstname: userMe.firstname,
         imageUrl: userMe.imageUrl ?? null,

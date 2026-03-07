@@ -1,3 +1,9 @@
+## [1.1.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.6...v1.1.0-alpha.7) (2026-03-07)
+
+### ✨ Features
+
+* **SCRUM-507:** Implement reset methods for various stores and integrate them into the resetCaches utility. ([#39](https://github.com/ludora-app/ludora-mobile/issues/39)) ([dccd6f1](https://github.com/ludora-app/ludora-mobile/commit/dccd6f19c837f4f9f64b83ad33f258e6b01eb6c2))
+
 ## [1.1.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.5...v1.1.0-alpha.6) (2026-03-07)
 
 ### ✨ Features

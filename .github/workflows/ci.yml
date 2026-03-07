@@ -63,8 +63,8 @@ jobs:
 
           echo "🔍 Searching for Swagger artifact on backend branch: $REPO_BRANCH"
 
-          # 1. On récupère le dernier run ID réussi sur la branche (spécifiquement celui de la CI/CD)
-          RUN_ID=$(gh run list --repo ludora-app/ludora-back --workflow "CI/CD Pipeline" --branch "$REPO_BRANCH" --status success --limit 1 --json databaseId --jq ".[0].databaseId")
+          # 1. On récupère le dernier run ID sur la branche (permet de récupérer l'artefact même si le run a échoué plus tard)
+          RUN_ID=$(gh run list --repo ludora-app/ludora-back --workflow "CI/CD Pipeline" --branch "$REPO_BRANCH" --limit 1 --json databaseId --jq ".[0].databaseId")
 
           if [ -n "$RUN_ID" ] && [ "$RUN_ID" != "null" ]; then
             echo "📡 Downloading artifact from run ID: $RUN_ID"
@@ -73,7 +73,7 @@ jobs:
               --pattern "swagger-*" \
               --dir .artifacts
           else
-            echo "⚠️ No successful run found on branch $REPO_BRANCH"
+            echo "⚠️ No run found on branch $REPO_BRANCH"
           fi
 
           # Locate the actual swagger.json file

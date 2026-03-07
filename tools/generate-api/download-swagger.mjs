@@ -2,7 +2,7 @@ import ky from 'ky';
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
-import { getApiUrl } from './api-url.js';
+import { getApiUrl } from './api-url.mjs';
 
 const SWAGGER_URL = `${getApiUrl()}/swagger-json`;
 const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
@@ -23,23 +23,24 @@ const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
 
       try {
         const tempDir = path.resolve(process.cwd(), '.artifacts');
-        if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+        if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+        fs.mkdirSync(tempDir);
 
-        console.log(`📥 Using GH CLI to find latest successful run on branch "${branchName}"...`);
+        console.log(`📥 Using GH CLI to find latest run on branch "${branchName}"...`);
 
         const repo = 'ludora-app/ludora-back';
         const ghEnv = { ...process.env, GH_TOKEN: process.env.GH_TOKEN || process.env.GITHUB_TOKEN };
 
-        // 1. Récupérer l'ID du dernier run réussi sur la branche (spécifiquement celui de la CI/CD)
+        // 1. Récupérer l'ID du dernier run sur la branche (permet de récupérer l'artefact même si le run a échoué plus tard)
         const runId = execSync(
-          `gh run list --repo ${repo} --branch "${branchName}" --workflow "CI/CD Pipeline" --status success --limit 1 --json databaseId --jq ".[0].databaseId"`,
+          `gh run list --repo ${repo} --branch "${branchName}" --workflow "CI/CD Pipeline" --limit 1 --json databaseId --jq ".[0].databaseId"`,
           { env: ghEnv },
         )
           .toString()
           .trim();
 
         if (!runId || runId === 'null') {
-          throw new Error(`No successful runs found on branch ${branchName}`);
+          throw new Error(`No runs found on branch ${branchName}`);
         }
 
         console.log(`📡 Downloading artifact from run ID: ${runId}`);

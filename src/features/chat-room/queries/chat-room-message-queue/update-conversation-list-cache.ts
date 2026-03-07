@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { ConversationCollectionResponseData, MessageDto, SenderDto } from '@/api/generated/model';
+import { ConversationCollectionResponseData, MessageDto, UserSimpleDisplayWithUidData } from '@/api/generated/model';
 
 import { useChatStore } from '../../../chat/store/chat.store';
 import { CONVERSATIONS_LIST_QUERY_KEY, ConversationsInfiniteData } from './chat-room-message-queue.types';
@@ -9,7 +9,7 @@ export const updateConversationListCache = (
   queryClient: QueryClient,
   conversationUid: string,
   lastMessage: MessageDto,
-  sender: SenderDto | null | undefined,
+  sender: UserSimpleDisplayWithUidData | null | undefined,
 ) => {
   queryClient.setQueriesData<ConversationsInfiniteData>({ queryKey: [CONVERSATIONS_LIST_QUERY_KEY] }, oldData => {
     if (!oldData || !oldData.pages || oldData.pages.length === 0) return oldData;

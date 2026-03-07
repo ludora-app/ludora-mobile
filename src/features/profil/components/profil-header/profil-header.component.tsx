@@ -1,20 +1,22 @@
 import { useTranslate } from '@tolgee/react'
-import { BoxRow, IconButton, Link } from '@ludo/ui'
 import { Box, BoxRowGrow, cn, OutlinedString, Wrapper } from '@chillui/ui'
 
 import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 
-import ProfilHeaderNotification from './profil-header-notification.component'
+import ProfilHeaderActions from './profil-header-actions.component'
+import ProfilHeaderActionsMe from './profil-header-actions-me.component'
 
 interface ProfilHeaderProps {
   isMe: boolean
+  lastname: string
+  firstname: string
 }
 
 export default function ProfilHeader(props: ProfilHeaderProps) {
   const { t } = useTranslate()
-  const { isMe: isProfilMe } = props
+  const { firstname, isMe: isProfilMe, lastname } = props
 
   const { safeTop } = useSafeArea()
 
@@ -33,17 +35,8 @@ export default function ProfilHeader(props: ProfilHeaderProps) {
           />
         </Box>
       </BoxRowGrow>
-      {
-        isProfilMe && (
-          <BoxRow className='items-center gap-2'>
-            <ProfilHeaderNotification />
-            <Link href="/settings" asChild>
-              <IconButton iconName='setting-gear-regular' colorVariant="white" iconColor={COLORS.primary} as="scale-pressable" />
-            </Link>
-          </BoxRow>
-        )
-      }
-
+      <ProfilHeaderActionsMe isMe={isProfilMe} />
+      <ProfilHeaderActions isMe={isProfilMe} firstname={firstname} lastname={lastname} />
     </Wrapper >
   )
 }

@@ -4,7 +4,7 @@ import {
   MessageDtoType,
   PaginationResponseConversationCollectionResponseData,
   PaginationResponseMessageCollectionItemDto,
-  SenderDto,
+  UserSimpleDisplayWithUidData,
 } from '@/api/generated/model';
 
 // ─── WebSocket Types ─────────────────────────────────────────────
@@ -50,10 +50,10 @@ export interface CreateMessageDto {
 export interface MessageQueueContext {
   chatRoomId: string | null;
   chatRoomUserId: string | null;
-  currentUserSender: SenderDto | undefined;
   setChatRoomId: (id: string | null) => void;
   setChatRoomUserId: (id: string | null) => void;
   getQueryKey: () => readonly unknown[] | undefined;
+  currentUserSender: UserSimpleDisplayWithUidData | undefined;
 }
 
 // ─── Constants ───────────────────────────────────────────────────

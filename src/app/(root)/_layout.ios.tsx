@@ -84,16 +84,16 @@ function AppLayoutNav() {
           sheetCornerRadius: 12,
         }}
       />
-
-      {/* ──────────── Profil View ──────────── */}
-      {/* <Stack.Screen
-        name="profil/[id]/index"
+      <Stack.Screen
+        name="profil/[id]/actions"
         options={{
-          animation: "fade_from_bottom",
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
-          presentation: "fullScreenModal",
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
         }}
-      /> */}
+      />
 
       {/* ──────────── Filters ──────────── */}
       <Stack.Screen

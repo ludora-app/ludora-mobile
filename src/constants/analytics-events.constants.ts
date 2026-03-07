@@ -85,6 +85,7 @@ export const ANALYTICS_EVENTS = {
     PROFIL_EDIT_SEX_FAILED: 'profil_edit_sex_failed',
     PROFIL_EDIT_SEX_SUCCESS: 'profil_edit_sex_success',
     PROFIL_HEADER_ACTIONS_BLOCK_USER: 'profil_header_actions_blocked_user',
+    PROFIL_HEADER_ACTIONS_REPORT_USER: 'profil_header_actions_reported_user',
   },
   SESSION: {
     SESSION_JOINED: 'session_joined',

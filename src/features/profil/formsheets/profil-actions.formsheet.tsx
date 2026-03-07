@@ -17,6 +17,7 @@ import { useReportUser } from '../queries/report-user.query'
 import { FormSheetView, ParamsFormSheetActions } from '../types'
 import { ProfilReportDescriptionSchema, profilReportDescriptionSchema } from '../schemas/profil-report-description.schema'
 import ProfilHeaderActionsBlockUser from '../components/profil-header/profil-header-actions/profil-header-actions-block-user.component'
+import ProfilHeaderActionsRemoveFriend from '../components/profil-header/profil-header-actions/profil-header-actions-remove-friend.component'
 import ProfilHeaderActionsReportUser from '../components/profil-header/profil-header-actions/profil-header-actions-report/profil-header-actions-report-user.component'
 import ProfilHeaderActionsReportHeader from '../components/profil-header/profil-header-actions/profil-header-actions-report/profil-header-actions-report-header.component'
 import ProfilHeaderActionsReportReasons from '../components/profil-header/profil-header-actions/profil-header-actions-report/profil-header-actions-report-reasons.component'
@@ -104,6 +105,7 @@ export default function ProfilActionsFormsheet() {
       <Wrapper className='gap-4 py-4'>
         {view === 'actions' && (
           <Box className='gap-4'>
+            <ProfilHeaderActionsRemoveFriend />
             <ProfilHeaderActionsBlockUser />
             <ProfilHeaderActionsReportUser onPress={() => handleView('report-reasons')} />
           </Box>

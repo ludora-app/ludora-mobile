@@ -23,6 +23,6 @@ export const useGetFriendRequest = (userUid?: string) => {
 
   return {
     ...query,
-    data,
+    data: is404 ? undefined : data,
   };
 };

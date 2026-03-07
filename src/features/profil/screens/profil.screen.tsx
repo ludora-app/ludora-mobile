@@ -18,9 +18,19 @@ import ProfilSection1Skeleton from '../components/profil-section/profil-section-
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
   const { userMeId } = useUserMe();
-  const { data: userData, isLoading: isLoadingUser, isRefetching: isRefetchingUser, refetch: refetchUser } = useGetUserDataById(userId as string || undefined);
+  const {
+    data: userData, isLoading:
+    isLoadingUser, isRefetching:
+    isRefetchingUser,
+    refetch: refetchUser
+  } = useGetUserDataById(userId as string || undefined);
 
-  const { isLoading: isLoadingUserMe, isRefetching: isRefetchingUserMe, refetch: refetchUserMe, userMe } = useUserMe(!userId);
+  const {
+    isLoading: isLoadingUserMe,
+    isRefetching: isRefetchingUserMe,
+    refetch: refetchUserMe,
+    userMe
+  } = useUserMe(!userId);
 
   const isProfilMe = useMemo(() => {
     if (!userId) return true;
@@ -28,7 +38,15 @@ export default function ProfilScreen() {
     return false;
   }, [userId, userMeId]);
 
-  const { bio: userBio, firstname, friendsCount, imageUrl: avatarUrl, lastname, matchesCount, sportPreferences } = isProfilMe ? userMe || {} : userData || {};
+  const {
+    bio: userBio,
+    firstname,
+    friendsCount,
+    imageUrl: avatarUrl,
+    lastname,
+    matchesCount,
+    sportPreferences
+  } = isProfilMe ? userMe || {} : userData || {};
 
   const handleRefetch = async () => {
     if (isProfilMe) {

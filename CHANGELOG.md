@@ -1,3 +1,9 @@
+## [1.1.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2026-03-07)
+
+### Bug Fixes
+
+* **SCRUM-504:** Adjust safe area handling for the profil actions form sheet for android and reorder screen definitions in root layouts. ([#35](https://github.com/ludora-app/ludora-mobile/issues/35)) ([3445399](https://github.com/ludora-app/ludora-mobile/commit/34453993e03f79ec06399e358bc1da1abf6ae6d7))
+
 ## [1.1.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.2...v1.1.0-alpha.3) (2026-03-07)
 
 ### ✨ Features

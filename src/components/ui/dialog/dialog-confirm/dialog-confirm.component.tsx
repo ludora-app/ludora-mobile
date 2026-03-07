@@ -21,6 +21,8 @@ type DialogProps = {
   confirmButtonTitleKey: string
   centerContent?: boolean
   priority?: 'confirm' | 'cancel'
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
@@ -34,12 +36,17 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
     onCancel,
     onConfirm,
     onConfirmPromise,
+    onOpenChange: onOpenChangeProp,
+    open: openProp,
     priority = "cancel",
     showIcon,
     source,
     title
   } = props
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = openProp !== undefined
+  const open = isControlled ? openProp : internalOpen
+  const setOpen = isControlled ? (onOpenChangeProp ?? (() => {})) : setInternalOpen
   const { trackEvent } = useAnalytics()
   const { t } = useTranslate()
 
@@ -66,9 +73,11 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
 
   return (
     <DialogChillUi open={open} onOpenChange={setOpen} >
-      <DialogTrigger as="pressable" asChild>
-        {children}
-      </DialogTrigger>
+      {children && (
+        <DialogTrigger as="pressable" asChild>
+          {children}
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader className='items-center justify-center'>
           <DialogTitle font="primaryBold">{title}</DialogTitle>

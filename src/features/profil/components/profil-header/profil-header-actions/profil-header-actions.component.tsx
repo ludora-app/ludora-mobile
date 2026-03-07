@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import ROUTES from '@/constants/routes.constants'
 import COLORS from '@/constants/colors.contstants'
 
-import { ParamsFormSheetActions } from '../../types'
+import { ParamsFormSheetActions } from '../../../types'
 
 
 type ProfilHeaderActionsProps = {

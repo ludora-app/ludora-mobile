@@ -5,8 +5,8 @@ import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 
-import ProfilHeaderActions from './profil-header-actions.component'
 import ProfilHeaderActionsMe from './profil-header-actions-me.component'
+import ProfilHeaderActions from './profil-header-actions/profil-header-actions.component'
 
 interface ProfilHeaderProps {
   isMe: boolean

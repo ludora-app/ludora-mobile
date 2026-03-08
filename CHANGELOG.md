@@ -1,3 +1,9 @@
+## [1.1.0-alpha.18](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.17...v1.1.0-alpha.18) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-456:** Add a contact support screen to settings with form validation and CRM integration, including input component enhancements. ([#50](https://github.com/ludora-app/ludora-mobile/issues/50)) ([0d9d1dd](https://github.com/ludora-app/ludora-mobile/commit/0d9d1dd654e93814395eb9691d5be9dd10e8b66e))
+
 ## [1.1.0-alpha.17](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.16...v1.1.0-alpha.17) (2026-03-08)
 
 ### Bug Fixes

@@ -66,7 +66,7 @@ const SETTINGS_MENU = {
     },
     {
       description: 'settings.section_shortcuts_blocked_users_description',
-      iconName: 'fordbidden-contact-solid',
+      iconName: 'fordbidden-contact-regular',
       id: 3,
       label: 'settings.section_shortcuts_blocked_users',
       route: ROUTES.SETTINGS.BLOCKED_USERS,
@@ -78,13 +78,6 @@ const SETTINGS_MENU = {
       label: 'settings.section_shortcuts_my_fields',
       route: ROUTES.MY_FIELDS.INDEX,
     },
-    // {
-    //   description: 'settings.section_shortcuts_favorites_description',
-    //   iconName: 'heart-regular',
-    //   id: 5,
-    //   label: 'settings.section_shortcuts_favorites',
-    //   route: ROUTES.SETTINGS.FAVORITES,
-    // },
     {
       description: 'settings.section_shortcuts_history_description',
       iconName: 'clock-regular',

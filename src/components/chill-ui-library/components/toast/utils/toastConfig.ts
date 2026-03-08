@@ -26,7 +26,7 @@ export const variantConfig: ToastVariantTypeProps = {
     iconProps: { color: '#FFFFFF', name: 'chill-ui-warning-regular' },
     messageStringProps: { color: '#FFFFFF', size: 'sm' },
     progressBarColor: '#FFFFFF',
-    style: { backgroundColor: '#FF9800' },
+    style: { backgroundColor: '#EA580C' },
     titleStringProps: { color: '#FFFFFF', variant: 'body-2' },
   },
 };

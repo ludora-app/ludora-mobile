@@ -1,4 +1,5 @@
 import { Box, Button } from '@ludo/ui'
+import { useToast } from '@chillui/ui'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
@@ -17,10 +18,13 @@ type ChatRoomInfoSessionActionsProps = {
   session: FindOneSessionResponseData
 }
 
+const ERROR_SESSION_STARTED = "You cannot leave a session after it has started"
+
 export default function ChatRoomInfoSessionActions({ session, sessionUid }: ChatRoomInfoSessionActionsProps) {
   const { trackError, trackEvent } = useAnalytics()
   const { t } = useTranslate()
   const router = useRouter()
+  const { toast } = useToast()
   const { isPending: isLeavingSession, mutateAsync: leaveSession } = useLeaveSession(sessionUid)
   const { isJoined } = session || {}
 
@@ -36,6 +40,13 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
       trackEvent({ data: { session_uid: sessionUid }, eventName: ANALYTICS_EVENTS.SESSION.SESSION_LEFT })
     } catch (error) {
       const errorResponse = error as ErrorResponse
+      if (errorResponse.api_error_detail === ERROR_SESSION_STARTED) {
+        toast({
+          message: t("chat-room.error_session_already_started"),
+          variant: "warning"
+        })
+        return
+      }
       trackEvent({
         data: { error_message: errorResponse.api_error_detail, session_uid: sessionUid },
         eventName: ANALYTICS_EVENTS.SESSION.SESSION_LEFT_FAILED

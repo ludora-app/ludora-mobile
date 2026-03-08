@@ -45,8 +45,12 @@ export default function Input(props: InputProps) {
           placeholderTextColor={COLORS.ring}
           cursorColor="#1E1E1E"
           selectionColor="#1E1E1E"
-          style={{ color: '#000' }}
           {...inputFieldProps}
+          style={[
+            { alignSelf: 'stretch', color: '#000', flex: 1 },
+            inputFieldProps?.style,
+            inputFieldProps?.multiline && { textAlignVertical: 'top' },
+          ]}
           secureTextEntry={isSecure}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

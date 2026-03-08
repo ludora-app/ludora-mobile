@@ -1,20 +1,22 @@
 import { cn } from '@chillui/ui';
-import { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
-import { String, BoxCenter, Chip, Box, BoxRow, Icon } from '@ludo/ui';
+import { Box, BoxCenter, BoxRow, Chip, Icon, String } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { FindOneSessionResponseData, SessionTeamResponseData } from '@/api/generated/model';
 
-import SessionSectionAvatar from '../../session-section-avatar.component';
+import SessionTeamsCardAvatar from './session-teams-card-avatar.component';
 
-type SessionSectionTeamsCardTeamProps = {
-  team: SessionTeamResponseData;
-  session: FindOneSessionResponseData;
+type SessionTeamsCardTeamProps = {
+  disableSelection?: boolean;
   index: number;
+  onSelectTeam?: (teamUid: string, side: 'left' | 'right') => void;
+  selectedTeamUid?: string | null;
+  session: FindOneSessionResponseData;
+  team: SessionTeamResponseData;
+  userMeUid?: string | null;
 };
 
 const styles = StyleSheet.create({
@@ -26,66 +28,73 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCardTeamProps) {
-  const { index: itemIndex, session, team } = props;
-  const { isComplete, numberOfPlayers, teamUid } = team || {};
-  const { isJoined: isJoinedSession, maxPlayersPerTeam } = session || {};
+export default function SessionTeamsCardTeam(props: SessionTeamsCardTeamProps) {
+  const {
+    disableSelection,
+    index: itemIndex,
+    onSelectTeam,
+    selectedTeamUid,
+    session,
+    team,
+    userMeUid,
+  } = props;
+  const { sessionPlayers, teamUid } = team || {};
+  const { maxPlayersPerTeam } = session || {};
   const { t } = useTranslate();
-  const { trackEvent } = useAnalytics();
-  const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
-  const setTeamUid = useSessionTeamStore(state => state.setTeamUid);
-  const setSideTeam = useSessionTeamStore(state => state.setSideTeam);
-  const isSelectedTeam = (uid: string) => selectedTeamUid === uid;
 
   const getTeamSide = (index: number) => (index === 0 ? 'left' : 'right');
-
   const side = getTeamSide(itemIndex);
 
   const isJoinedTeam = team.isJoined;
+  const isTeamSelected = selectedTeamUid === teamUid;
+  const isAnyTeamSelected = !!selectedTeamUid;
 
-  const isTeamEmpty = numberOfPlayers === 0 && selectedTeamUid !== teamUid;
-  const isCompleteTeam = isComplete;
-  const isTeamSelected = isSelectedTeam(team.teamUid);
 
-  const displayCount = isTeamSelected && !isJoinedTeam ? numberOfPlayers + 1 : numberOfPlayers;
+  const isMeVisuallyPresent = isTeamSelected || (isJoinedTeam && !isAnyTeamSelected);
 
-  const showAddIcon = (!isCompleteTeam && !isJoinedSession && !isTeamSelected) || isTeamEmpty;
+  const filteredPlayers = useMemo(() =>
+    sessionPlayers?.filter(player => player.userUid !== userMeUid) || []
+    , [sessionPlayers, userMeUid]);
 
-  const isSideSelected = isTeamSelected || isJoinedTeam;
+  const displayCount = useMemo(() => {
+    const baseCount = filteredPlayers.length;
+    return isMeVisuallyPresent ? baseCount + 1 : baseCount;
+  }, [filteredPlayers.length, isMeVisuallyPresent]);
 
-  useEffect(() => {
-    if (isSideSelected) {
-      setSideTeam(side);
-    }
-  }, [isSideSelected, side, setSideTeam]);
+  const isPreviewComplete = displayCount >= (maxPlayersPerTeam || 0);
+
+  const showAddIcon = !isPreviewComplete && !isMeVisuallyPresent;
+
+  const showCompletedOverlay = isPreviewComplete;
 
   const pushAvatarToLeft = (sessionPlayersIndex: number) =>
-    sessionPlayersIndex > 0 || isTeamSelected || (!isCompleteTeam && !isJoinedSession);
+    sessionPlayersIndex > 0 || isMeVisuallyPresent || showAddIcon;
 
-  const handleSelectTeam = (teamUidToSelect: string) => {
-    setTeamUid(teamUidToSelect);
-    trackEvent({ data: { source_screen: '/session/[id]' }, eventName: 'session_team_selected' });
+  const handlePress = () => {
+    if (onSelectTeam) {
+      onSelectTeam(teamUid, side);
+    }
   };
 
   return (
     <Pressable
       key={team.teamUid}
       className="relative flex-1 rounded-lg"
-      onPress={() => handleSelectTeam(team.teamUid)}
-      disabled={isCompleteTeam || isJoinedSession}
+      onPress={handlePress}
+      disabled={disableSelection || (isPreviewComplete && !isMeVisuallyPresent)}
       style={({ pressed }) => [
         { opacity: pressed ? 0.9 : 1 },
         side === 'left' ? styles.leftShadow : styles.rightShadow,
       ]}
     >
-      {isCompleteTeam && (
+      {showCompletedOverlay && (
         <BoxCenter
           className={cn('absolute inset-0 z-60 bg-black/40', {
             'rounded-l-lg': side === 'left',
             'rounded-r-lg': side === 'right',
           })}
         >
-          <String font="primaryExtraBold" colorVariant="white" variant="title-1">
+          <String font="primaryExtraBold" colorVariant="white" variant="title-1" truncate>
             {t('common.completed')}
           </String>
         </BoxCenter>
@@ -93,10 +102,10 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
 
       <Chip
         title={team.teamName}
-        variant={isSideSelected ? 'contained' : 'outlined'}
+        variant={isMeVisuallyPresent ? 'contained' : 'outlined'}
         colorVariant={side === 'left' ? 'primary' : 'secondary'}
         className={cn('absolute left-1/2 z-60 max-w-[90%] -translate-x-1/2 -translate-y-1/2 transform self-start', {
-          'bg-white': !isSideSelected,
+          'bg-white': !isMeVisuallyPresent,
         })}
         size="2xs"
       />
@@ -114,24 +123,31 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
 
       <BoxCenter
         className={cn('flex-1 border bg-white px-2 py-5', {
-          'bg-primary/20': isSideSelected && side === 'left',
-          'bg-secondary/20': isSideSelected && side === 'right',
+          'bg-primary/20': isMeVisuallyPresent && side === 'left',
+          'bg-secondary/20': isMeVisuallyPresent && side === 'right',
           'border-primary rounded-l-lg': side === 'left',
           'border-secondary rounded-r-lg': side === 'right',
         })}
       >
         <BoxRow className="h-16 items-center justify-center">
           <Box className="z-50 flex-row items-center">
-            {isTeamSelected && <SessionSectionAvatar me size="sm" sideTeam={side} className="z-60" />}
+            {isMeVisuallyPresent && (
+              <SessionTeamsCardAvatar
+                me
+                size="sm"
+                sideTeam={side}
+                className="z-60"
+              />
+            )}
             {showAddIcon && (
               <Icon
                 name="add-circle-regular"
-                className={cn('z-50 size-14', { 'opacity-50': isJoinedSession })}
+                className="z-50 size-14"
                 color={side === 'right' ? COLORS.secondary : COLORS.primary}
               />
             )}
-            {team.sessionPlayers?.map((player, sessionPlayersIndex) => (
-              <SessionSectionAvatar
+            {filteredPlayers?.map((player, sessionPlayersIndex) => (
+              <SessionTeamsCardAvatar
                 key={player.userUid}
                 data={{ firstname: player?.firstname, imageUrl: player?.imageUrl, lastname: player?.lastname }}
                 sideTeam={side}
@@ -144,9 +160,9 @@ export default function SessionSectionTeamsCardTeam(props: SessionSectionTeamsCa
                 })}
               />
             ))}
-            {team.numberOfPlayers > team.sessionPlayers.length && (
+            {team.numberOfPlayers > (team.sessionPlayers?.length || 0) && (
               <String font="primaryBold" className="ml-1">
-                +{team.numberOfPlayers - team.sessionPlayers.length}
+                +{team.numberOfPlayers - (team.sessionPlayers?.length || 0)}
               </String>
             )}
           </Box>

@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
-import { Button, String } from '@ludo/ui';
+import React, { useMemo } from 'react';
+import { useToast } from '@chillui/ui';
 import { ScrollView } from 'react-native';
+import { Button, String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,6 +11,7 @@ import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { useChangeSessionTeam } from '@/queries/change-session-team.query';
 import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 import { ConversationCollectionResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
@@ -22,9 +24,6 @@ type SessionFooterProps = {
   scrollViewRef: React.RefObject<ScrollView>;
 };
 
-
-
-
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
 export default function SessionFooter({ scrollViewRef, session }: SessionFooterProps) {
@@ -32,50 +31,66 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const invalidateSessionById = useInvalidateSessionsFindOne();
   const { t } = useTranslate();
+  const { toast } = useToast()
   const { fieldImages, isJoined, remainingPlayers, sessionTeams, title } = session || {};
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
-  const isSessionFull = remainingPlayers === 0;
-
-  const canJoinSession = !isSessionFull && !isJoined;
-
   const teamUid = useSessionTeamStore(state => state.teamUid);
-
-  const { isPending: isJoiningSession, mutateAsync: joinSession } = useJoinSession(sessionUid);
+  const { isPending: isJoiningSession, mutateAsync: joinSession } = useJoinSession(sessionUid || '');
+  const { isPending: isSwitchingTeam, mutateAsync: switchTeam } = useChangeSessionTeam(sessionUid);
 
   const { trackError, trackEvent } = useAnalytics();
 
+  const joinedTeam = sessionTeams?.find(team => team.isJoined);
+  const isSwitching = !!joinedTeam && !!teamUid && joinedTeam.teamUid !== teamUid;
+
+  const isSessionFull = remainingPlayers === 0;
+  const canJoinSession = !isSessionFull && !isJoined;
+  const canSwitchTeam = !isJoiningSession && !isSwitchingTeam && isSwitching;
+
+  const showActionButton = canJoinSession || canSwitchTeam;
+
   const handleButtonTitle = useMemo(() => {
+    if (isSwitching) {
+      return t('session.footer_button_change_team');
+    }
     if (teamUid) {
       const selectedTeamName = sessionTeams?.find(team => team.teamUid === teamUid)?.teamName;
       return t('session.footer_button_join_team', { teamName: selectedTeamName });
     }
     return t('session.footer_button_select_team');
-  }, [teamUid, sessionTeams, t]);
+  }, [teamUid, sessionTeams, t, isSwitching]);
 
-  const handleJoinSession = async () => {
-    if (!teamUid) {
+  const handleAction = async () => {
+    if (!teamUid || !sessionUid) {
       scrollViewRef.current?.scrollTo({ animated: true, y: 0 });
       return;
     }
-    try {
-      const response = await joinSession(teamUid);
 
-      const { conversationUid, sessionUid: sessionUidResponse } = response?.data || {}
+    try {
+      if (isSwitching) {
+        await switchTeam(teamUid);
+        trackEvent({ eventName: 'session_team_switched' });
+        toast({ message: t('session.toast_team_switched_success'), variant: 'success' })
+        return;
+      }
+
+      const response = await joinSession(teamUid);
+      const { conversationUid, sessionUid: sessionUidResponse } = response?.data || {};
 
       const params: SessionJoinedLocalParams = {
         conversationUid,
         imageUrl: fieldImages?.[0]?.url,
         name: title,
         type: ConversationCollectionResponseDataType.SESSION,
-      }
-      router.replace({ params, pathname: ROUTES.SESSION.JOINED_UID(sessionUidResponse) });
-      trackEvent({ data: { session_uid: sessionUidResponse, team_uid: teamUid }, eventName: 'session_joined' });
+      };
+      router.replace({ params, pathname: ROUTES.SESSION.JOINED_UID(sessionUidResponse || '') });
+      trackEvent({ data: { session_uid: sessionUidResponse || '', team_uid: teamUid }, eventName: 'session_joined' });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail },
-        eventName: 'session_joined_failed',
+        data: { error_message: errorResponse.api_error_detail, session_uid: sessionUid },
+        eventName: isSwitching ? 'session_team_switch_failed' : 'session_joined_failed',
       });
       invalidateSessionById(sessionUid);
       trackError({ error });
@@ -106,7 +121,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
 
   return (
     <FormSheetFooter hasBottomSafeArea>
-      {canJoinSession && (
+      {showActionButton && (
         <AnimatedButton
           entering={FadeIn}
           title={handleButtonTitle}
@@ -116,12 +131,12 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
             name: 'flash-solid',
             position: 'right',
           }}
-          onPress={handleJoinSession}
-          isLoading={isJoiningSession}
+          onPress={handleAction}
+          isLoading={isJoiningSession || isSwitchingTeam}
           colorVariant={handleButtonColorVariant}
         />
       )}
-      {!canJoinSession && (
+      {!showActionButton && (
         <String className="text-center" colorVariant="primary" variant="body-3" font="primaryBold">
           {handleCantJoinSession()}
         </String>

@@ -11,8 +11,8 @@ import { useUserMe } from '@/queries/user-me.query';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { FindOneConversationResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
+import SessionTeamsCardAvatar from '@/components/ui/session-teams-card/session-teams-card-avatar.component';
 
-import SessionSectionAvatar from '../session-section-avatar.component';
 import SessionSectionWrapperItem from '../section-section-wrapper/session-section-wrapper-item.component';
 
 type SessionSectionCreatorCardProps = {
@@ -67,7 +67,7 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
     <TouchableOpacity onPress={handleCardPress} disabled={isCreatorMe}>
       <SessionSectionWrapperItem className="flex-row items-center justify-between">
         <BoxRowGrow className="items-center gap-2">
-          <SessionSectionAvatar data={creator} sideTeam={sideTeam} />
+          <SessionTeamsCardAvatar data={creator} sideTeam={sideTeam} />
           <BoxGrow>
             <String font="primaryBold" truncate>
               {firstname}

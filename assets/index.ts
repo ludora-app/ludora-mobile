@@ -19,3 +19,4 @@ export { default as profilRatingCard3 } from './images/profil-rating-cards/profi
 export { default as openBook } from './images/dev-tool/open-book.png';
 export { default as penTool } from './images/dev-tool/pen-tool.png';
 export { default as chatRoomBg } from './images/chat/chat-room/chat-room-bg.png';
+export { default as notFoundImg } from './images/not-found-img.png';

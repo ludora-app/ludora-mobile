@@ -4,7 +4,7 @@ import { Box, BoxAbsolute, Icon } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
 
-export default function SessionSectionTeamsCardVs() {
+export default function SessionTeamsCardVs() {
   const { t } = useTranslate();
   return (
     <BoxAbsolute className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-1">

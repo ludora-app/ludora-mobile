@@ -94,6 +94,8 @@ export const ANALYTICS_EVENTS = {
     SESSION_LEFT_FAILED: 'session_left_failed',
     SESSION_SHARED: 'session_shared',
     SESSION_TEAM_SELECTED: 'session_team_selected',
+    SESSION_TEAM_SWITCH_FAILED: 'session_team_switch_failed',
+    SESSION_TEAM_SWITCHED: 'session_team_switched',
   },
   SETTINGS: {
     SETTINGS_DELETE_ACCOUNT_CANCEL_SUCCESS: 'settings_delete_account_cancel_success',
@@ -150,16 +152,21 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SELECTED]: {
     source_screen: string;
   };
-  [ANALYTICS_EVENTS.SESSION.SESSION_JOINED_FAILED]: {
-    error_message: string;
-  };
   [ANALYTICS_EVENTS.SESSION.SESSION_JOINED]: {
     session_uid: string;
     team_uid: string;
   };
   [ANALYTICS_EVENTS.SESSION.SESSION_LEFT_FAILED]: {
+    error_message: string;
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.SESSION.SESSION_JOINED_FAILED]: {
     session_uid: string;
     error_message: string;
+  };
+  [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SWITCH_FAILED]: {
+    error_message: string;
+    session_uid: string;
   };
 
   // forgot password events

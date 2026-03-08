@@ -112,9 +112,6 @@ export default function ChatRoomInfoPrivate() {
               />
             ) : null}
           </BoxCenter>
-
-
-
         </Wrapper>
       </ScrollView>
     </ScreenLayout>

@@ -4,12 +4,12 @@ import { Avatar, AvatarProps } from '@ludo/ui';
 
 import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
 
-type SessionSectionAvatarProps = Partial<AvatarProps> & {
+type SessionTeamsCardAvatarProps = Partial<AvatarProps> & {
   me?: boolean;
-  sideTeam: 'left' | 'right';
+  sideTeam?: 'left' | 'right';
 };
 
-export default function SessionSectionAvatar(props: SessionSectionAvatarProps) {
+export default function SessionTeamsCardAvatar(props: SessionTeamsCardAvatarProps) {
   const { className, data, me = false, sideTeam, ...rest } = props;
 
   const handleBorderColor = useMemo(() => {

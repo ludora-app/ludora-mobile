@@ -1,3 +1,9 @@
+## [1.1.0-alpha.12](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.11...v1.1.0-alpha.12) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-487:** Add profile navigation to friend request notifications and ensure friend list invalidation upon acceptance. ([#44](https://github.com/ludora-app/ludora-mobile/issues/44)) ([595fa72](https://github.com/ludora-app/ludora-mobile/commit/595fa726cb79bb56783f264c2349762ee715a592))
+
 ## [1.1.0-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.10...v1.1.0-alpha.11) (2026-03-08)
 
 ### ✨ Features

@@ -1,3 +1,9 @@
+## [1.1.0-alpha.14](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.13...v1.1.0-alpha.14) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-488:** Implement warning toast for leaving started sessions and update warning toast background color. ([#46](https://github.com/ludora-app/ludora-mobile/issues/46)) ([5559cb1](https://github.com/ludora-app/ludora-mobile/commit/5559cb152d60a6a849532d60dff206f7d3004101))
+
 ## [1.1.0-alpha.13](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.12...v1.1.0-alpha.13) (2026-03-08)
 
 ### ✨ Features

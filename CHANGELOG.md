@@ -1,3 +1,9 @@
+## [1.1.0-alpha.17](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.16...v1.1.0-alpha.17) (2026-03-08)
+
+### Bug Fixes
+
+* **SCRUM-513:** Reset game mode to null when a sport is selected during session creation. ([#49](https://github.com/ludora-app/ludora-mobile/issues/49)) ([e0f929d](https://github.com/ludora-app/ludora-mobile/commit/e0f929d028f32e7e9d14966c889a7c13c82c7c3c))
+
 ## [1.1.0-alpha.16](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.15...v1.1.0-alpha.16) (2026-03-08)
 
 ### Bug Fixes

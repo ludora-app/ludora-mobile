@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router'
+import { Pressable } from 'react-native'
 import { useTranslate } from '@tolgee/react'
 import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui'
 
@@ -44,51 +45,54 @@ export default function NotificationListItemsFriendAccepted(props: NotificationL
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
   }
 
-
+  const handleNavigateToProfil = () => {
+    router.navigate(ROUTES.PROFIL.INDEX_UID(senderUid))
+  }
 
 
   return (
-    <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead} >
-      <Avatar
-        data={{
-          firstname: senderFirstname,
-          imageUrl: senderAvatar,
-          lastname: senderLastname
-        }}
-      />
-      <BoxGrow className='gap-0.5'>
-        <BoxRowCenterBetween>
-          <String
-            font="primaryBold"
-            variant="body-2"
-          >
-            {t(`notifications.title_${notificationType}`)}
-          </String>
-          <String variant="body-xs" colorVariant="muted">
-            {formatNotificationTime(createdAt, t)}
-          </String>
-        </BoxRowCenterBetween>
-        <BoxRow className='gap-1'>
-          <BoxGrow>
-            <String colorVariant="muted" numberOfLines={2} useFastText={false}>
-              <String font="primaryBold" useFastText={false}>
-                {truncateString({ maxLength: 40, str: senderName })}{" "}
-              </String>
-              {t(`notifications.body_${notificationType}`)}
+    <Pressable onPress={handleNavigateToProfil}>
+      <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead} >
+        <Avatar
+          data={{
+            firstname: senderFirstname,
+            imageUrl: senderAvatar,
+            lastname: senderLastname
+          }}
+        />
+        <BoxGrow className='gap-0.5'>
+          <BoxRowCenterBetween>
+            <String
+              font="primaryBold"
+              variant="body-2"
+            >
+              {t(`notifications.title_${notificationType}`)}
             </String>
-          </BoxGrow>
-          <IconButton
-            iconName="chatbot-regular"
-            variant="outlined"
-            iconColor={COLORS.primary}
-            colorVariant="primary"
-            rounded="circle"
-            size="xs"
-            onPress={handleOnPressChat}
-          />
-        </BoxRow>
-      </BoxGrow>
-
-    </NotificationsListItemsContainer >
+            <String variant="body-xs" colorVariant="muted">
+              {formatNotificationTime(createdAt, t)}
+            </String>
+          </BoxRowCenterBetween>
+          <BoxRow className='gap-1'>
+            <BoxGrow>
+              <String colorVariant="muted" numberOfLines={2} useFastText={false}>
+                <String font="primaryBold" useFastText={false}>
+                  {truncateString({ maxLength: 40, str: senderName })}{" "}
+                </String>
+                {t(`notifications.body_${notificationType}`)}
+              </String>
+            </BoxGrow>
+            <IconButton
+              iconName="chatbot-regular"
+              variant="outlined"
+              iconColor={COLORS.primary}
+              colorVariant="primary"
+              rounded="circle"
+              size="xs"
+              onPress={handleOnPressChat}
+            />
+          </BoxRow>
+        </BoxGrow>
+      </NotificationsListItemsContainer >
+    </Pressable>
   )
 }

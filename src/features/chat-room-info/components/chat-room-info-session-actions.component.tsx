@@ -61,13 +61,14 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
           onConfirmPromise={handleLeaveMatch}
           source="chat_room_info_private_leave_match"
           confirmButtonTitleKey="common.leave"
+          centerContent
+          isLoading={isLeavingSession}
         >
           <Button
             title={t('chat-room.info_session_leave')}
             iconProps={{ className: "mr-2", color: COLORS.danger, name: 'close-circle-regular', position: 'left' }}
             colorVariant="danger"
             variant="outlined"
-            isLoading={isLeavingSession}
             loaderProps={{ color: COLORS.danger }}
           />
         </DialogConfirm>

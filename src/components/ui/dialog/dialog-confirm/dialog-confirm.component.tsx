@@ -2,7 +2,7 @@
 import { useTranslate } from '@tolgee/react'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { Box, Icon, String, Button, IconProps } from '@ludo/ui'
-import { cn, Dialog as DialogChillUi, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@chillui/ui'
+import { cn, Dialog as DialogChillUi, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@chillui/ui'
 
 import COLORS from '@/constants/colors.contstants'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
@@ -80,7 +80,9 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
       )}
       <DialogContent>
         <DialogHeader className='items-center justify-center'>
-          <DialogTitle font="primaryBold">{title}</DialogTitle>
+          <Box className='flex-1 px-8 justify-center items-center'>
+            <String font="primaryBold" colorVariant='primary' truncate>{title}</String>
+          </Box>
           <DialogClose className='absolute right-3'>
             <Icon name="close-circle-regular" color={COLORS.primary} />
           </DialogClose>
@@ -106,6 +108,9 @@ export default function DialogConfirm(props: PropsWithChildren<DialogProps>) {
             colorVariant="danger"
             variant={priority === 'confirm' ? "contained" : "outlined"}
             className={cn('flex-1', priority === 'confirm' && 'flex-2')}
+            loaderProps={{
+              color: priority === 'confirm' ? "#FFF" : COLORS.danger
+            }}
             size="sm"
             onPress={handleConfirm}
             isLoading={isLoading}

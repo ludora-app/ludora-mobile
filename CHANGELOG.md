@@ -1,3 +1,9 @@
+## [1.1.0-alpha.16](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.15...v1.1.0-alpha.16) (2026-03-08)
+
+### Bug Fixes
+
+* **SCRUM-514:** Correctly display friend's 'already invited' and 'already joined' statuses. ([#48](https://github.com/ludora-app/ludora-mobile/issues/48)) ([f3c7692](https://github.com/ludora-app/ludora-mobile/commit/f3c7692081fca9ce64e5140c26a11da06e976e64))
+
 ## [1.1.0-alpha.15](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.14...v1.1.0-alpha.15) (2026-03-08)
 
 ### ✨ Features

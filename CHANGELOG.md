@@ -1,3 +1,9 @@
+## [1.1.0-alpha.15](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.14...v1.1.0-alpha.15) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-485:** Implement session team switching functionality and refactor session team display into a shared component. ([#47](https://github.com/ludora-app/ludora-mobile/issues/47)) ([94ab34b](https://github.com/ludora-app/ludora-mobile/commit/94ab34b5c4f9c3801b630cf523d03c274f5f56da))
+
 ## [1.1.0-alpha.14](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.13...v1.1.0-alpha.14) (2026-03-08)
 
 ### ✨ Features

@@ -102,6 +102,7 @@ export const ANALYTICS_EVENTS = {
     SETTINGS_PLANNING_EDIT_SUCCESS: 'settings:settings_planning_edit_success',
     SETTINGS_PREFERENCES_SPORTS_EDIT_FAILED: 'settings:settings_preferences_sports_edit_failed',
     SETTINGS_PREFERENCES_SPORTS_EDIT_SUCCESS: 'settings:settings_preferences_sports_edit_success',
+    SETTINGS_UNBLOCK_USER_SUCCESS: 'settings_unblock_user_success',
   },
 } as const;
 

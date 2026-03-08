@@ -1,3 +1,9 @@
+## [1.1.0-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.10...v1.1.0-alpha.11) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-510:** implement a dedicated Not Found screen and redirect to it for missing user or session data by handling 404 API responses. ([#43](https://github.com/ludora-app/ludora-mobile/issues/43)) ([727c87d](https://github.com/ludora-app/ludora-mobile/commit/727c87d0b63b28aadb130746709812f8c5f17d4b))
+
 ## [1.1.0-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.9...v1.1.0-alpha.10) (2026-03-08)
 
 ### ✨ Features

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { ScreenLayout, Wrapper } from '@ludo/ui';
-import { useLocalSearchParams } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 
+import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
@@ -19,9 +20,9 @@ export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
   const { userMeId } = useUserMe();
   const {
-    data: userData, isLoading:
-    isLoadingUser, isRefetching:
-    isRefetchingUser,
+    data: userData,
+    isLoading: isLoadingUserData,
+    isRefetching: isRefetchingUser,
     refetch: refetchUser
   } = useGetUserDataById(userId as string || undefined);
 
@@ -48,6 +49,16 @@ export default function ProfilScreen() {
     sportPreferences
   } = isProfilMe ? userMe || {} : userData || {};
 
+  const hasData = isProfilMe ? !!userMe : !!userData;
+
+  const isProfilLoading = isLoadingUserData || isLoadingUserMe;
+  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
+  const isFetching = isProfilMe ? (isLoadingUserMe || isRefetchingUserMe) : (isLoadingUserData || isRefetchingUser);
+
+  if (!hasData && !isFetching) {
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />
+  }
+
   const handleRefetch = async () => {
     if (isProfilMe) {
       await refetchUserMe();
@@ -56,8 +67,6 @@ export default function ProfilScreen() {
     }
   };
 
-  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
-  const isProfilLoading = isLoadingUser || isLoadingUserMe;
 
   const profilHeader = (
     <>
@@ -82,6 +91,9 @@ export default function ProfilScreen() {
       </Wrapper>
     </>
   );
+
+
+
 
   return (
     <ScreenLayout>

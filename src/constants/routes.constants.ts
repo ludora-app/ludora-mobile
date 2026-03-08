@@ -62,6 +62,9 @@ const ROUTES = {
     ADD: '/my-fields/add',
     INDEX: '/my-fields',
   },
+  NOT_FOUND: {
+    INDEX: '/not-found',
+  },
   NOTIFICATIONS: {
     INDEX: '/notifications',
   },

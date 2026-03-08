@@ -33,6 +33,29 @@ const SETTINGS_MENU = {
       route: ROUTES.PROFIL.EDIT,
     }
   ],
+  "settings.section_legal_title": [
+    {
+      description: 'settings.section_legal_terms_description',
+      iconName: 'info-circle-regular',
+      id: 1,
+      label: 'settings.section_legal_terms',
+      route: ROUTES.LEGAL.CGU_MENTIONS,
+    },
+    {
+      description: 'settings.section_legal_sales_terms_description',
+      iconName: 'document-text-2-regular',
+      id: 2,
+      label: 'settings.section_legal_sales_terms',
+      route: ROUTES.LEGAL.CGV,
+    },
+    {
+      description: 'settings.section_legal_privacy_description',
+      iconName: "document-normal-regular",
+      id: 3,
+      label: 'settings.section_legal_privacy',
+      route: ROUTES.LEGAL.PRIVACY,
+    }
+  ],
   "settings.section_preference_title": [
     {
       description: 'settings.section_preferences_sport_description',
@@ -86,28 +109,13 @@ const SETTINGS_MENU = {
       route: ROUTES.SETTINGS.HISTORY,
     }
   ],
-  //
-  "settings.section_legal_title": [
+  "settings.section_support_title": [
     {
-      description: 'settings.section_legal_terms_description',
-      iconName: 'info-circle-regular',
+      description: 'settings.section_support_contact_description',
+      iconName: 'conversation-box-regular',
       id: 1,
-      label: 'settings.section_legal_terms',
-      route: ROUTES.LEGAL.CGU_MENTIONS,
-    },
-    {
-      description: 'settings.section_legal_sales_terms_description',
-      iconName: 'document-text-2-regular',
-      id: 2,
-      label: 'settings.section_legal_sales_terms',
-      route: ROUTES.LEGAL.CGV,
-    },
-    {
-      description: 'settings.section_legal_privacy_description',
-      iconName: "document-normal-regular",
-      id: 3,
-      label: 'settings.section_legal_privacy',
-      route: ROUTES.LEGAL.PRIVACY,
+      label: 'settings.section_support_contact',
+      route: ROUTES.SETTINGS.CONTACT,
     }
   ],
 } as const satisfies Record<string, TSettingsMenuItem[]>

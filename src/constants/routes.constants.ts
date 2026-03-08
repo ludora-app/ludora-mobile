@@ -95,6 +95,7 @@ const ROUTES = {
   },
   SETTINGS: {
     BLOCKED_USERS: '/settings/blocked-users',
+    CONTACT: '/settings/contact',
     FAVORITES: '/settings/favorites',
     FRIENDS: '/settings/friends',
     HISTORY: '/settings/history',

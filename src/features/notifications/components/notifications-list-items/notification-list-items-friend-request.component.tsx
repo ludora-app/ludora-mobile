@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router'
+import { Pressable } from 'react-native'
 import { useTranslate } from '@tolgee/react'
 import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, Button, IconButton, String } from '@ludo/ui'
 
@@ -27,7 +28,8 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
   const { t } = useTranslate()
   const { trackError } = useAnalytics()
   const { item: notification } = props
-  const { createdAt, isRead: isNotificationRead, metadata, type: notificationType, uid: notificationUid } = notification || {}
+  const { createdAt, isRead: isNotificationRead, metadata, type: notificationType, uid: notificationUid } =
+    notification || {}
 
 
   const notificationData = metadata as FriendRequestData
@@ -35,8 +37,10 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
 
   const isAcceptedFriendRequest = invitationStatus === "ACCEPTED"
 
-  const { isPending: isLoadingAcceptFriendRequest, mutateAsync: acceptFriendRequest } = useAcceptFriendRequest(senderUid)
-  const { isPending: isLoadingDeclineFriendRequest, mutateAsync: declineFriendRequest } = useDeclineFriendRequest(senderUid)
+  const { isPending: isLoadingAcceptFriendRequest, mutateAsync: acceptFriendRequest } =
+    useAcceptFriendRequest(senderUid)
+  const { isPending: isLoadingDeclineFriendRequest, mutateAsync: declineFriendRequest } =
+    useDeclineFriendRequest(senderUid)
 
 
   const handleAcceptFriendRequest = async () => {
@@ -71,66 +75,71 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
   }
 
-  return (
-    <NotificationsListItemsContainer
-      notificationUid={notificationUid}
-      isRead={isNotificationRead}
-      onPress={handleDeclineFriendRequest}
-      isLoading={isLoadingDeclineFriendRequest}
-    >
-      <Avatar
-        data={{
-          firstname: senderFirstname,
-          imageUrl: senderAvatar,
-          lastname: senderLastname
-        }}
-      />
-      <BoxGrow className='gap-0.5'>
-        <BoxRowCenterBetween>
-          <String
-            font="primaryBold"
-            variant="body-2"
-          >
-            {t(`notifications.title_${notificationType}`)}
-          </String>
-          <String variant="body-xs" colorVariant="muted">
-            {formatNotificationTime(createdAt, t)}
-          </String>
-        </BoxRowCenterBetween>
-        {!isAcceptedFriendRequest &&
-          <BoxRow className='gap-1'>
-            <BoxGrow>
-              <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
-                <String font="primaryBold" useFastText={false}>
-                  {truncateString({ maxLength: 40, str: senderName })}{" "}
-                </String>
-                {t(`notifications.body_${notificationType}`)}
-              </String>
-            </BoxGrow>
-            <Button title={t('common.accept')} fit size='xs' onPress={handleAcceptFriendRequest} isLoading={isLoadingAcceptFriendRequest} />
-          </BoxRow>}
-        {isAcceptedFriendRequest &&
-          <BoxRow className='gap-1'>
-            <BoxGrow>
-              <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
-                {t(`notifications.body_accepted_${notificationType}`)}{' '}
-                <String font="primaryBold" useFastText={false}>
-                  {truncateString({ maxLength: 40, str: senderName })}{" "}
-                </String>
-              </String>
-            </BoxGrow>
-            <IconButton
-              iconName="chatbot-regular"
-              variant="outlined"
-              iconColor={COLORS.primary}
-              colorVariant="primary"
-              rounded="circle"
-              size="xs"
-              onPress={handleOnPressChat}
-            />
-          </BoxRow>}
-      </BoxGrow>
+  const handleNavigateToProfil = () => {
+    router.navigate(ROUTES.PROFIL.INDEX_UID(senderUid))
+  }
 
-    </NotificationsListItemsContainer >
+  return (
+    <Pressable onPress={handleNavigateToProfil}>
+      <NotificationsListItemsContainer
+        notificationUid={notificationUid}
+        isRead={isNotificationRead}
+        onPress={handleDeclineFriendRequest}
+        isLoading={isLoadingDeclineFriendRequest}
+      >
+        <Avatar
+          data={{
+            firstname: senderFirstname,
+            imageUrl: senderAvatar,
+            lastname: senderLastname
+          }}
+        />
+        <BoxGrow className='gap-0.5'>
+          <BoxRowCenterBetween>
+            <String
+              font="primaryBold"
+              variant="body-2"
+            >
+              {t(`notifications.title_${notificationType}`)}
+            </String>
+            <String variant="body-xs" colorVariant="muted">
+              {formatNotificationTime(createdAt, t)}
+            </String>
+          </BoxRowCenterBetween>
+          {!isAcceptedFriendRequest &&
+            <BoxRow className='gap-1'>
+              <BoxGrow>
+                <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                  <String font="primaryBold" useFastText={false}>
+                    {truncateString({ maxLength: 40, str: senderName })}{" "}
+                  </String>
+                  {t(`notifications.body_${notificationType}`)}
+                </String>
+              </BoxGrow>
+              <Button title={t('common.accept')} fit size='xs' onPress={handleAcceptFriendRequest} isLoading={isLoadingAcceptFriendRequest} />
+            </BoxRow>}
+          {isAcceptedFriendRequest &&
+            <BoxRow className='gap-1'>
+              <BoxGrow>
+                <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                  {t(`notifications.body_accepted_${notificationType}`)}{' '}
+                  <String font="primaryBold" useFastText={false}>
+                    {truncateString({ maxLength: 40, str: senderName })}{" "}
+                  </String>
+                </String>
+              </BoxGrow>
+              <IconButton
+                iconName="chatbot-regular"
+                variant="outlined"
+                iconColor={COLORS.primary}
+                colorVariant="primary"
+                rounded="circle"
+                size="xs"
+                onPress={handleOnPressChat}
+              />
+            </BoxRow>}
+        </BoxGrow>
+      </NotificationsListItemsContainer >
+    </Pressable>
   )
 }

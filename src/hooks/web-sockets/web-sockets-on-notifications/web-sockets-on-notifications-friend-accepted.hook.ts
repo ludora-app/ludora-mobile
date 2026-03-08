@@ -1,4 +1,5 @@
 import {
+  useInvalidateFriendsFindAllMyFriends,
   useInvalidateFriendsFindMyFriendRequest,
   useInvalidateNotificationsFindAll,
   useInvalidateNotificationsGetUnreadCount,
@@ -20,6 +21,7 @@ export const useWebsocketOnNotificationsFriendAccepted = () => {
   const invalidateFriendRequest = useInvalidateFriendsFindMyFriendRequest();
   const invalidateUsersFindAll = useInvalidateUsersFindAll();
   const invalidateUserFindOne = useInvalidateUsersFindOne();
+  const invalidateAllMyFriends = useInvalidateFriendsFindAllMyFriends();
 
   const handleNotificationFriendAccepted = (notification: FriendRequestData) => {
     invalideNotificationAll();
@@ -28,6 +30,7 @@ export const useWebsocketOnNotificationsFriendAccepted = () => {
     invalidateFriendRequest(notification?.senderUid || '');
     invalidateUserFindOne(notification?.senderUid || '');
     invalidateUsersFindAll();
+    invalidateAllMyFriends();
   };
 
   return handleNotificationFriendAccepted;

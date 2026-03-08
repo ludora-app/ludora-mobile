@@ -116,6 +116,13 @@ const SETTINGS_MENU = {
       id: 1,
       label: 'settings.section_support_contact',
       route: ROUTES.SETTINGS.CONTACT,
+    },
+    {
+      description: 'settings.section_support_faq_description',
+      iconName: 'info-circle-regular',
+      id: 2,
+      label: 'settings.section_support_faq',
+      route: ROUTES.SETTINGS.FAQ,
     }
   ],
 } as const satisfies Record<string, TSettingsMenuItem[]>

@@ -22,3 +22,4 @@ export * from './avatar';
 export * from './numericInput';
 export * from './pellet';
 export * from './dialog';
+export * from './accordion';

@@ -1,3 +1,9 @@
+## [1.1.0-alpha.19](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.18...v1.1.0-alpha.19) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-455:** Implement a new Accordion component and integrate it into a new FAQ settings screen. ([#51](https://github.com/ludora-app/ludora-mobile/issues/51)) ([d891237](https://github.com/ludora-app/ludora-mobile/commit/d891237e87faa42e839e447231abcf6e78dac796))
+
 ## [1.1.0-alpha.18](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.17...v1.1.0-alpha.18) (2026-03-08)
 
 ### ✨ Features

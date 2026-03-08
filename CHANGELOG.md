@@ -1,3 +1,9 @@
+## [1.1.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.8...v1.1.0-alpha.9) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-502:** Add fordbidden-contact-regular SVG icon, update blocked users section to use it, and round settings menu item icon containers. ([#41](https://github.com/ludora-app/ludora-mobile/issues/41)) ([cfd1dca](https://github.com/ludora-app/ludora-mobile/commit/cfd1dcabb489bc94965f1291722bf635de759687))
+
 ## [1.1.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.7...v1.1.0-alpha.8) (2026-03-07)
 
 ### Performance Improvements

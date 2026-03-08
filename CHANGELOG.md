@@ -1,3 +1,9 @@
+## [1.1.0-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.9...v1.1.0-alpha.10) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-498:** Implement unblock user functionality in settings, including a new query, refactored list item component with a confirmation dialog, and a skeleton loader. ([#42](https://github.com/ludora-app/ludora-mobile/issues/42)) ([3c04d2a](https://github.com/ludora-app/ludora-mobile/commit/3c04d2a0dd193bb5d5b4c5daac121197773d593d))
+
 ## [1.1.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.8...v1.1.0-alpha.9) (2026-03-08)
 
 ### ✨ Features

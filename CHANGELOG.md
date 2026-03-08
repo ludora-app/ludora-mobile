@@ -1,3 +1,9 @@
+## [1.1.0-alpha.13](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.12...v1.1.0-alpha.13) (2026-03-08)
+
+### ✨ Features
+
+* **SCRUM-486:** Cap displayed unread notification count at 99 and use a ROUTES constant for navigation. ([#45](https://github.com/ludora-app/ludora-mobile/issues/45)) ([fadcd02](https://github.com/ludora-app/ludora-mobile/commit/fadcd027f3c4a70e125ddc01a72d97ceca00c34e))
+
 ## [1.1.0-alpha.12](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.11...v1.1.0-alpha.12) (2026-03-08)
 
 ### ✨ Features

@@ -1,6 +1,6 @@
 {
   "name": "ludora",
-  "version": "1.1.0-alpha.12",
+  "version": "1.1.0-alpha.13",
   "main": "index.tsx",
   "scripts": {
     "start": "node tools/update-ip/update-ip.js && node tools/dev-server/dev-server.js & bun inject:env expo start --port 8086",

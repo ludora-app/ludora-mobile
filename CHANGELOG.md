@@ -1,3 +1,9 @@
+## [1.1.0-alpha.21](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.20...v1.1.0-alpha.21) (2026-03-09)
+
+### ✨ Features
+
+* **SCRUM-516:** Implement keyboard management and remove audio recording from chat input. ([#53](https://github.com/ludora-app/ludora-mobile/issues/53)) ([b864af6](https://github.com/ludora-app/ludora-mobile/commit/b864af6e34dd85e340b1b0257bd71398538c7f69))
+
 ## [1.1.0-alpha.20](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.19...v1.1.0-alpha.20) (2026-03-09)
 
 ### ✨ Features

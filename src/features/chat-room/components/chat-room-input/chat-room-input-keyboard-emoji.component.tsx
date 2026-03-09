@@ -1,24 +1,35 @@
 import { useMemo } from 'react';
-import EmojiPicker, { EmojiType, fr, en, useRecentPicksPersistence } from 'rn-emoji-keyboard';
+import { ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useShallow } from 'zustand/react/shallow';
+import { EmojiType, fr, en, useRecentPicksPersistence, EmojiKeyboard } from 'rn-emoji-keyboard';
 
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import { useLanguages } from '@/hooks/languages.hook';
 import { parse, serialize } from '@/utils/json.utils';
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
+import { useKeyboardStore } from '@/stores/keyboard.store';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 
 type ChatRoomInputKeyboardEmojiProps = {
-  onSelect: (emoji: EmojiType) => void;
+  style?: ViewStyle;
 };
 
-export default function ChatRoomInputKeyboardEmoji({ onSelect }: ChatRoomInputKeyboardEmojiProps) {
-  const { isEmojiPickerOpen, setEmojiPickerOpen } = useChatRoomInputEmojiPickerStore();
+export default function ChatRoomInputKeyboardEmoji({ style }: ChatRoomInputKeyboardEmojiProps) {
+  const { isEmojiPickerOpen, setEmojiValue } = useChatRoomInputEmojiPickerStore(
+    useShallow((state) => ({
+      isEmojiPickerOpen: state.isEmojiPickerOpen,
+      setEmojiValue: state.setEmojiValue,
+    })),
+  );
+  const isKeyboardVisible = useKeyboardStore((state) => state.isVisible);
   const { getLanguage } = useLanguages();
+  const { insetsBottom } = useSafeArea();
 
   const handlePick = (emojiObject: EmojiType) => {
-    onSelect(emojiObject);
-    setEmojiPickerOpen(false);
+    setEmojiValue(emojiObject.emoji);
   };
 
   const getKeyboardLocale = useMemo(() => {
@@ -28,18 +39,37 @@ export default function ChatRoomInputKeyboardEmoji({ onSelect }: ChatRoomInputKe
   }, [getLanguage]);
 
   useRecentPicksPersistence({
-    initialization: () => parse(mmkvStorage.getString(MMKV_STORAGE_KEY.EMOJI_PICKER_RECENT_PICKS)),
-    onStateChange: next => mmkvStorage.setItem(MMKV_STORAGE_KEY.EMOJI_PICKER_RECENT_PICKS, serialize(next)),
+    initialization: () => {
+      const data = mmkvStorage.getString(MMKV_STORAGE_KEY.EMOJI_PICKER_RECENT_PICKS);
+      return data ? parse(data) : [];
+    },
+    onStateChange: (nextState) => {
+      mmkvStorage.setItem(MMKV_STORAGE_KEY.EMOJI_PICKER_RECENT_PICKS, serialize(nextState));
+    },
   });
 
+  if (!isEmojiPickerOpen && !isKeyboardVisible) {
+    return <Animated.View style={style} />;
+  }
+
   return (
-    <EmojiPicker
-      onEmojiSelected={handlePick}
-      open={isEmojiPickerOpen}
-      onClose={() => setEmojiPickerOpen(false)}
-      translation={getKeyboardLocale}
-      enableRecentlyUsed
-      categoryPosition="top"
-    />
+    <Animated.View style={style}>
+      <Animated.View style={{ flex: 1, opacity: isEmojiPickerOpen ? 1 : 0 }}>
+        <EmojiKeyboard
+          onEmojiSelected={handlePick}
+          translation={getKeyboardLocale}
+          hideHeader
+          categoryPosition="top"
+          enableRecentlyUsed
+          styles={{
+            container: {
+              borderRadius: 0,
+              paddingBottom: insetsBottom,
+              paddingTop: 0,
+            },
+          }}
+        />
+      </Animated.View>
+    </Animated.View>
   );
 }

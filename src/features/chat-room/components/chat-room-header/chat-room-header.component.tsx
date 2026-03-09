@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { StrictOmit } from '@chillui/ui';
 import { StyleSheet } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
@@ -6,9 +7,11 @@ import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
 import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import { RootStackParamList } from '@/types/routes-params.types';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
+import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 
 
 const styles = StyleSheet.create({
@@ -23,6 +26,7 @@ type LocalSearchParamsSessionInfoChatRoom = RootStackParamList[typeof ROUTES.CHA
 
 export default function ChatRoomHeader() {
   const router = useRouter();
+  const { top } = useSafeArea()
   const { chatRoomId, imageUrl, name, receiver, sessionUid, type } = useChatRoomStore(
     useShallow(state => ({
       chatRoomId: state.chatRoomId,
@@ -33,6 +37,8 @@ export default function ChatRoomHeader() {
       type: state.chatRoomInfo?.type
     }))
   )
+  const isEmojiPickerOpen = useChatRoomInputEmojiPickerStore(state => state.isEmojiPickerOpen);
+  const setEmojiPickerOpen = useChatRoomInputEmojiPickerStore(state => state.setEmojiPickerOpen);
   const { firstname, lastname } = receiver || {}
 
 
@@ -48,25 +54,36 @@ export default function ChatRoomHeader() {
       }
       router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INFO_SESSION });
     } else {
-      const params: LocalSearchParamsPrivateInfoChatRoom = {
-        chatRoomId,
+      const params: StrictOmit<LocalSearchParamsPrivateInfoChatRoom, "chatRoomId"> = {
         imageUrl,
         name,
         receiver: serialize(receiver),
       }
       router.navigate({
         params,
-        pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(undefined)
+        pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(chatRoomId)
       });
     }
   }
 
 
   return (
-    <Box style={styles.shadow} className="relative z-50 bg-white">
-      <Wrapper className="relative flex-row items-center justify-between py-2">
+    <Box style={[styles.shadow, { paddingTop: top }]} className="bg-white">
+      <Wrapper className="flex-row items-center justify-between py-2">
         <BoxGrow className="flex-row items-center gap-1">
-          <Icon name="arrow-left-regular" size="lg" color={COLORS.muted} onPress={router.back} pressEffectSize="xs" />
+          <Icon
+            name="arrow-left-regular"
+            size="lg"
+            color={COLORS.muted}
+            onPress={() => {
+              if (isEmojiPickerOpen) {
+                setEmojiPickerOpen(false);
+              } else {
+                router.back();
+              }
+            }}
+            pressEffectSize="xs"
+          />
           {
             chatRoomIsGroup ? (
               <Avatar
@@ -85,7 +102,7 @@ export default function ChatRoomHeader() {
               />
             )
           }
-          <String className="ml-2" colorVariant="muted" font="primaryBold" numberOfLines={2} ellipsizeMode="tail">
+          <String className="ml-2" colorVariant="muted" font="primaryBold" truncate>
             {name}
           </String>
         </BoxGrow>

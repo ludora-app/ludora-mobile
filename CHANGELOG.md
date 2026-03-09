@@ -1,3 +1,9 @@
+## [1.1.0-alpha.20](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.19...v1.1.0-alpha.20) (2026-03-09)
+
+### ✨ Features
+
+* **SCRUM-477:** Update app branding assets, refine environment configuration, and add Google Services file generation from Vault. ([#52](https://github.com/ludora-app/ludora-mobile/issues/52)) ([e1d949a](https://github.com/ludora-app/ludora-mobile/commit/e1d949a5879c456f7d7d268b5ea2c70d387a820b))
+
 ## [1.1.0-alpha.19](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.18...v1.1.0-alpha.19) (2026-03-08)
 
 ### ✨ Features

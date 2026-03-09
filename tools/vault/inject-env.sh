@@ -38,7 +38,18 @@ while IFS='=' read -r name value; do
   export "$name=$value"
 done <<< "$VAULT_ENV"
 
-# 6. Vérifier qu'on a bien une commande à exécuter
+# 6. Génération des fichiers Google Service depuis Vault (Base64)
+if [ -n "${DEV_GOOGLE_SERVICES_JSON_BASE64:-}" ] && [ ! -f "dev.google-services.json" ]; then
+  echo "📥 Génération de dev.google-services.json depuis Vault..."
+  node -e "process.stdout.write(Buffer.from(process.env.DEV_GOOGLE_SERVICES_JSON_BASE64, 'base64'))" > dev.google-services.json
+fi
+
+if [ -n "${DEV_GOOGLE_SERVICES_PLIST_BASE64:-}" ] && [ ! -f "dev.GoogleService-Info.plist" ]; then
+  echo "📥 Génération de dev.GoogleService-Info.plist depuis Vault..."
+  node -e "process.stdout.write(Buffer.from(process.env.DEV_GOOGLE_SERVICES_PLIST_BASE64, 'base64'))" > dev.GoogleService-Info.plist
+fi
+
+# 7. Vérifier qu'on a bien une commande à exécuter
 if [ $# -eq 0 ]; then
   echo "⚠️ Aucune commande passée à inject-env.sh."
   echo "   Exemple : bash ./tools/vault/inject-env.sh expo start --port 8086"

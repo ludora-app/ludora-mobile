@@ -7,6 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   const isProd = env === 'production';
   const isPreview = env === 'preview';
+  const isLocalHost = env === 'localhost' || env === 'development';
 
   let name = 'Ludora';
   let bundleIdentifier = 'com.ludora';
@@ -14,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   if (isPreview) {
     name = 'Ludora Preview';
     bundleIdentifier = 'com.ludora.preview';
-  } else if (!isProd) {
+  } else if (isLocalHost) {
     name = 'Ludora Dev';
     bundleIdentifier = 'com.ludora.dev';
   }

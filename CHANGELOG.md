@@ -1,3 +1,9 @@
+## [1.1.0-alpha.22](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.21...v1.1.0-alpha.22) (2026-03-09)
+
+### ✨ Features
+
+* **SCRUM-462:** Introduce multiple Android notification channels and centralize their common configuration. ([#54](https://github.com/ludora-app/ludora-mobile/issues/54)) ([6592f81](https://github.com/ludora-app/ludora-mobile/commit/6592f8122eba1f4a3aec14619e6cd5e96014eb78))
+
 ## [1.1.0-alpha.21](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.20...v1.1.0-alpha.21) (2026-03-09)
 
 ### ✨ Features

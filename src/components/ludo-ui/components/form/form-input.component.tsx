@@ -1,13 +1,13 @@
 import type { FocusEvent } from 'react-native';
 
-import { useCallback } from 'react';
 import { useTranslate } from '@tolgee/react';
-import { useController, FieldValues } from 'react-hook-form';
+import { useCallback, forwardRef } from 'react';
+import { useController } from 'react-hook-form';
 
 import { Input } from '../input';
 import { FormInputProps } from '../../types/form-input.types';
 
-export default function FormInput<T extends FieldValues = FieldValues>(props: FormInputProps<T>) {
+const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
   const {
     className,
     control,
@@ -22,6 +22,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
     leftIconAction,
     name,
     onChangeText,
+    onFocus: onFocusProp,
     placeholder,
     rightContentProps,
     rightIconAction,
@@ -50,6 +51,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
 
   return (
     <Input
+      ref={ref}
       error={hasErrorTranslation ? t(error?.message) : error?.message}
       hasError={hasError}
       hasMessageError={hasMessageError}
@@ -57,6 +59,7 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
         className: inputFieldClassName,
         onBlur,
         onChangeText: handleOnChangeText,
+        onFocus: onFocusProp,
         placeholder,
         value,
         ...rest,
@@ -71,4 +74,8 @@ export default function FormInput<T extends FieldValues = FieldValues>(props: Fo
       hasLengthCounter={hasLengthCounter}
     />
   );
-}
+});
+
+FormInput.displayName = "FormInput"
+
+export default FormInput;

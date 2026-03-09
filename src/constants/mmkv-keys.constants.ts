@@ -8,6 +8,7 @@ export const MMKV_STORAGE_KEY = {
     GO_BACK_PATH: 'filters_screen_goback_path',
     SOURCE: 'filters_screen_source',
   },
+  KEYBOARD_STORAGE: 'keyboard-storage',
   ON_BOARDING_STORAGE: 'on-boarding-storage',
 } as const;
 

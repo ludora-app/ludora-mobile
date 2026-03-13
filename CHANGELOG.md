@@ -1,3 +1,9 @@
+## [1.1.0-alpha.23](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.22...v1.1.0-alpha.23) (2026-03-13)
+
+### Bug Fixes
+
+* **SCRUM-531:** update auth-b2-c import paths to auth-b2c across authentication queries. ([#56](https://github.com/ludora-app/ludora-mobile/issues/56)) ([8325edb](https://github.com/ludora-app/ludora-mobile/commit/8325edb7d625e179f64429eece21b30bf118ff28))
+
 ## [1.1.0-alpha.22](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.21...v1.1.0-alpha.22) (2026-03-09)
 
 ### ✨ Features

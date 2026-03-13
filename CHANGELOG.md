@@ -1,3 +1,9 @@
+## [1.1.0-alpha.24](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.23...v1.1.0-alpha.24) (2026-03-13)
+
+### ✨ Features
+
+* **SCRUM-532:** Introduce a dedicated staging API environment and URL configuration. ([#57](https://github.com/ludora-app/ludora-mobile/issues/57)) ([6015971](https://github.com/ludora-app/ludora-mobile/commit/60159715d9870722677aa281f6206021bd567239))
+
 ## [1.1.0-alpha.23](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.22...v1.1.0-alpha.23) (2026-03-13)
 
 ### Bug Fixes

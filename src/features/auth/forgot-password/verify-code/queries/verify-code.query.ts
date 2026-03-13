@@ -1,5 +1,5 @@
 import { GenerateAccessTokenFromCodeDto } from '@/api/generated/model';
-import { useAuthB2CGenerateAccessTokenFromCode } from '@/api/generated/api/auth-b2-c/auth-b2-c.api';
+import { useAuthB2CGenerateAccessTokenFromCode } from '@/api/generated/api/auth-b2c/auth-b2c.api';
 
 export const useVerifyCode = () => {
   const mutation = useAuthB2CGenerateAccessTokenFromCode();

@@ -1,4 +1,4 @@
-import { useAuthB2CCreateOrConnectGoogleUser } from '@generatedApi/auth-b2-c/auth-b2-c.api';
+import { useAuthB2CCreateOrConnectGoogleUser } from '@generatedApi/auth-b2c/auth-b2c.api';
 
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { CreateGoogleUserDto } from '@/api/generated/model';

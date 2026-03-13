@@ -1,5 +1,5 @@
 import { LoginDto } from '@api/generated/model';
-import { useAuthB2CLogin } from '@generatedApi/auth-b2-c/auth-b2-c.api';
+import { useAuthB2CLogin } from '@generatedApi/auth-b2c/auth-b2c.api';
 
 export const useLogin = () => {
   const mutation = useAuthB2CLogin();

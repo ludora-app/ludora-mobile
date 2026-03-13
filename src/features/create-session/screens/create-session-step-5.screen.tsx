@@ -16,7 +16,7 @@ export default function CreateSessionStep5Screen() {
     <WrapperScrollView contentContainerClassName="pb-10">
       <Box className="gap-4">
         <Box className="items-center">
-          <Icon name="ludora-pompom" className="size-32" />
+          <Icon name="ludo-pompom" className="size-32" />
           <String colorVariant="primary" className="text-center" font="primaryBold" variant="body-3">
             {t('create-session.step-5.subtitle')}
           </String>

@@ -1,9 +1,8 @@
-import { ludoPen } from 'assets';
 import { useToast } from '@chillui/ui';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, FormInput, ScreenLayout, String, WrapperKeyboardAwareScrollView, Wrapper, Image } from '@ludo/ui';
+import { Box, Button, FormInput, ScreenLayout, String, WrapperKeyboardAwareScrollView, Wrapper, Icon } from '@ludo/ui';
 
 import { useUserMe } from '@/queries/user-me.query';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -62,7 +61,8 @@ export default function SettingsContactScreen() {
           style={{ paddingBottom: bottom + 40 }}
         >
           <Box className="gap-2">
-            <Image source={ludoPen} className='size-28 self-center' contentFit="contain" />
+            <Icon name="ludo-pen-border" className="size-28 self-center" />
+
             <String variant="body-2" colorVariant="muted" className="leading-6 text-center">
               {t('settings.contact.description')}
             </String>

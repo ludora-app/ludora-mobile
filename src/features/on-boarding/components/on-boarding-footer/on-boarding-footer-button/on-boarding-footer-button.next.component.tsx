@@ -14,7 +14,7 @@ export default function OnBoardingFooterButtonNext() {
   const router = useRouter();
 
   const handleSubmit = () => {
-    router.push(`/on-boarding/step-${activeStep + 1}`);
+    router.navigate(`/on-boarding/step-${activeStep + 1}`);
   };
 
   const buttonTitle = useMemo(() => {

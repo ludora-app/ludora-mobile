@@ -5,7 +5,7 @@ const COLORS = {
   bluePrimary: '#97CDCC',
   blueSecondary: '#6AAFAD',
   border: '#e4e4e4',
-  danger: '#ff0000',
+  danger: '#e7000b',
   destructive: '#A52523',
   gray: '#7C7C7C',
   input: '#e4e4e4',
@@ -16,6 +16,7 @@ const COLORS = {
   purpleTertiary: '#3C215A',
   ring: '#9e9e9e',
   secondary: '#864C9E',
+  success: '#10B981',
 };
 
 export default COLORS;

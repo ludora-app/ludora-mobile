@@ -60,7 +60,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
   );
 
   const handleCardPress = () => {
-    router.push(ROUTES.PROFIL.INDEX_UID(item.uid));
+    router.navigate(ROUTES.PROFIL.INDEX_UID(item.uid));
   };
 
 

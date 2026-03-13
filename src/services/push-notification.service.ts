@@ -114,30 +114,59 @@ class PushNotificationService {
   }
 
   /**
-   * Setup Android notification channel
+   * Setup Android notification channels
    */
   static async setupAndroidChannel() {
     if (Platform.OS !== 'android') return;
 
-    await Notifications.setNotificationChannelAsync('default', {
+    const commonConfig = {
       enableVibrate: true,
       importance: Notifications.AndroidImportance.MAX,
-      lightColor: '#FF231F7C',
-      name: 'Default',
       showBadge: true,
       sound: 'default',
       vibrationPattern: [0, 250, 250, 250],
+    };
+
+    // Default channel
+    await Notifications.setNotificationChannelAsync('default', {
+      ...commonConfig,
+      lightColor: '#FF231F7C',
+      name: 'Default',
+    });
+
+    // Messages channel
+    await Notifications.setNotificationChannelAsync('messages', {
+      ...commonConfig,
+      lightColor: '#00FF00',
+      name: 'Messages',
+    });
+
+    // Social channel
+    await Notifications.setNotificationChannelAsync('social', {
+      ...commonConfig,
+      lightColor: '#0000FF',
+      name: 'Social',
+    });
+
+    // Sessions channel
+    await Notifications.setNotificationChannelAsync('sessions', {
+      ...commonConfig,
+      lightColor: '#FFA500',
+      name: 'Sessions',
+    });
+
+    // Account channel
+    await Notifications.setNotificationChannelAsync('account', {
+      ...commonConfig,
+      lightColor: '#808080',
+      name: 'Account',
     });
 
     // High priority channel for important notifications
     await Notifications.setNotificationChannelAsync('high-priority', {
-      enableVibrate: true,
-      importance: Notifications.AndroidImportance.MAX,
+      ...commonConfig,
       lightColor: '#FF0000',
       name: 'High Priority',
-      showBadge: true,
-      sound: 'default',
-      vibrationPattern: [0, 250, 250, 250],
     });
   }
 
@@ -208,8 +237,6 @@ class PushNotificationService {
         if (imageUrl && Platform.OS === 'ios') {
           content.attachments = [{ identifier: null, type: 'image', url: imageUrl }];
         }
-        // Android: image in notification is usually shown by the system when in background.
-        // In foreground we only set title/body; for big picture you'd need native config or backend to send imageUrl.
 
         await Notifications.scheduleNotificationAsync({
           content,

@@ -50,7 +50,7 @@ export default function OnBoardingStep1Screen() {
       goBackPath: '/on-boarding/step-1',
     };
 
-    router.push({
+    router.navigate({
       params,
       pathname: '/image-picker',
     });

@@ -15,72 +15,31 @@ function AppLayoutNav() {
         headerShown: false,
       }}
     >
+      {/* ──────────── Create Session ──────────── */}
       <Stack.Screen
         name="create-session"
         options={{
           animation: 'slide_from_bottom',
         }}
       />
+
+      {/* ──────────── Profil ──────────── */}
       <Stack.Screen
-        name="invite-friends/[sessionId]/index"
+        name="profil/[id]/actions"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'modal',
-        }}
-      />
-      <Stack.Screen
-        name="notifications"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="filters/index"
-        options={{
-          animation: 'slide_from_bottom',
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'modal',
-          sheetCornerRadius: 12,
-        }}
-      />
-      <Stack.Screen
-        name="filters/filters-addresses"
-        options={{
-          animation: 'slide_from_bottom',
-          contentStyle: {
-            backgroundColor: '#FFF',
-            paddingBottom: bottom,
-          },
-          headerShown: false,
-          presentation: 'modal',
-        }}
-      />
-      <Stack.Screen
-        name="filters/filters-calendar"
-        options={{
-          animation: 'slide_from_bottom',
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />
-      {/* Profil edit screens */}
+
+      {/* ──────────── Profil Edit ──────────── */}
       <Stack.Screen
         name="profil/profil-edit/name"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
@@ -90,21 +49,7 @@ function AppLayoutNav() {
       <Stack.Screen
         name="profil/profil-edit/bio"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
-        }}
-      />
-      <Stack.Screen
-        name="public-field-duration"
-        options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
@@ -114,9 +59,7 @@ function AppLayoutNav() {
       <Stack.Screen
         name="profil/profil-edit/birthdate"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
@@ -126,9 +69,7 @@ function AppLayoutNav() {
       <Stack.Screen
         name="profil/profil-edit/sex"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
@@ -138,9 +79,7 @@ function AppLayoutNav() {
       <Stack.Screen
         name="profil/profil-edit/email"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
@@ -150,95 +89,124 @@ function AppLayoutNav() {
       <Stack.Screen
         name="profil/profil-edit/password"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />
-      {/*------------------------*/}
 
-      {/* Profil view screen */}
+
+      {/* ──────────── Filters ──────────── */}
       <Stack.Screen
-        name="profil/[id]/index"
+        name="filters/index"
         options={{
-          animation: "fade_from_bottom",
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
-          presentation: "fullScreenModal",
-        }}
-      />
-      {/*------------------------*/}
-      <Stack.Screen
-        name="chat-room/[chatRoomId]/index"
-        options={{
-          animation: "slide_from_bottom",
-          headerShown: false,
-          presentation: "fullScreenModal"
+          presentation: 'modal',
+          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
-        name="chat-room/[chatRoomId]/info/private"
+        name="filters/filters-addresses"
         options={{
-          animation: "slide_from_bottom",
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#FFF', paddingBottom: bottom },
           headerShown: false,
-          presentation: "fullScreenModal"
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="filters/filters-calendar"
+        options={{
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
         }}
       />
 
-
-      {/* Session teams screen */}
+      {/* ──────────── Session ──────────── */}
       <Stack.Screen
         name="session/[id]/session-teams"
         options={{
           animation: 'slide_from_bottom',
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'modal',
         }}
       />
-      {/*------------------------*/}
-
-      {/* My fields screens */}
       <Stack.Screen
-        name="my-fields/add"
+        name="public-field-duration"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
-          presentation: 'modal',
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />
 
+      {/* ──────────── Chat Room ──────────── */}
+      <Stack.Screen
+        name="chat-room/[chatRoomId]/index"
+        options={{
+          animation: "ios_from_right",
+          contentStyle: { backgroundColor: '#FFF' },
+        }}
+      />
       <Stack.Screen
         name="chat-room/[chatRoomId]/message-actions/[messageId]/index"
         options={{
           animation: 'slide_from_right',
-          contentStyle: {
-            backgroundColor: '#fff',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
           sheetCornerRadius: 12,
         }}
       />
-      {/*------------------------*/}
 
+      {/* ──────────── Notifications ──────────── */}
+      <Stack.Screen
+        name="notifications"
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      {/* ──────────── Invite Friends ──────────── */}
+      <Stack.Screen
+        name="invite-friends/[sessionId]/index"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'modal',
+        }}
+      />
+
+      {/* ──────────── Image Picker ──────────── */}
       <Stack.Screen
         name="image-picker"
         options={{
-          contentStyle: {
-            backgroundColor: '#FFF',
-          },
+          contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
+        }}
+      />
+
+      {/* ──────────── My Fields ──────────── */}
+      <Stack.Screen
+        name="my-fields/add"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          presentation: 'modal',
           sheetCornerRadius: 12,
         }}
       />

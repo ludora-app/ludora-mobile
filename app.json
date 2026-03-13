@@ -1,6 +1,5 @@
 {
   "expo": {
-    "version": "true",
     "owner": "ludora-app",
     "scheme": "ludora",
     "userInterfaceStyle": "automatic",
@@ -37,12 +36,12 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#FFEEE5",
-          "image": "./assets/logos/big-logo.png",
+          "image": "./assets/logos/ic-launcher-ios.png",
           "dark": {
-            "image": "./assets/logos/big-logo.png",
+            "image": "./assets/logos/ic-launcher-ios.png",
             "backgroundColor": "#FFEEE5"
           },
-          "imageWidth": 100
+          "imageWidth": 130
         }
       ],
       "expo-audio",
@@ -55,7 +54,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/logos/app-icon.png",
+          "icon": "./assets/logos/ic-np-icon.png",
           "color": "#ffffff",
           "sounds": []
         }
@@ -75,8 +74,12 @@
     ],
     "name": "Ludora",
     "slug": "ludora",
-    "icon": "./assets/logos/app-icon.png",
+    "icon": "./assets/logos/ic-launcher-ios.png",
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logos/ic-launcher-android.png",
+        "backgroundColor": "#FFEEE5"
+      },
       "package": "com.ludora",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -117,6 +120,7 @@
       "googleServicesFile": "./google-services.json"
     },
     "ios": {
+      "icon": "./assets/logos/ic-launcher-ios.png",
       "bundleIdentifier": "com.ludora",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {

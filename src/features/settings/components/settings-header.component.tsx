@@ -11,10 +11,11 @@ type SettingsHeaderProps = {
   hasTopSafeArea?: boolean
   hasHorizontalPadding?: boolean
   className?: string
+  outlinedStringWidth?: number
 }
 
 function SettingsHeader(props: SettingsHeaderProps) {
-  const { className, hasHorizontalPadding, hasTopSafeArea, titleKey } = props
+  const { className, hasHorizontalPadding, hasTopSafeArea, outlinedStringWidth, titleKey } = props
   const { t } = useTranslate()
   const { safeTop } = useSafeArea()
 
@@ -24,16 +25,21 @@ function SettingsHeader(props: SettingsHeaderProps) {
 
 
   return (
-    <Wrapper px={hasHorizontalPadding ? 'md' : 'none'} className={cn('flex-row items-center z-10 pb-4 gap-2', className)} style={{ paddingTop: hasTopSafeArea ? safeTop : 0 }}>
+    <Wrapper
+      px={hasHorizontalPadding ? 'md' : 'none'}
+      className={cn('flex-row items-center z-10 pb-4 gap-2', className)}
+      style={{ paddingTop: hasTopSafeArea ? safeTop : 0 }}
+    >
       <GoBackButton />
       <OutlinedString
         text={t(titleKey)}
         fontSize={28}
+        width={outlinedStringWidth}
         fillColor="#FFFFFF"
         strokeColor={COLORS.primary}
         strokeWidth={2}
         fontFamily="NunitoSans700Bold"
-        className='mt-2'
+        className="mt-2"
       />
     </Wrapper>
   )

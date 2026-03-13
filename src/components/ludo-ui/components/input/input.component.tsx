@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Input as InputChillUi, InputContainer, InputField, InputLabel, cn, Box, BoxRow } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
@@ -7,7 +7,7 @@ import { Icon } from '../icon';
 import { String } from '../string';
 import { InputProps } from '../../types/input.types';
 
-export default function Input(props: InputProps) {
+const Input = forwardRef<any, InputProps>((props, ref) => {
   const {
     className,
     error,
@@ -42,11 +42,16 @@ export default function Input(props: InputProps) {
         {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
+          ref={ref}
           placeholderTextColor={COLORS.ring}
           cursorColor="#1E1E1E"
           selectionColor="#1E1E1E"
-          style={{ color: '#000' }}
           {...inputFieldProps}
+          style={[
+            { alignSelf: 'stretch', color: '#000', flex: 1 },
+            inputFieldProps?.style,
+            inputFieldProps?.multiline && { textAlignVertical: 'top' },
+          ]}
           secureTextEntry={isSecure}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
@@ -97,4 +102,8 @@ export default function Input(props: InputProps) {
       </BoxRow>
     </InputChillUi>
   );
-}
+});
+
+Input.displayName = "Input"
+
+export default Input;

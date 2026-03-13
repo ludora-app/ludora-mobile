@@ -1,16 +1,16 @@
 import { Fragment } from 'react'
 import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
-import { Button, ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
+import { ScreenLayout, ScrollView, Separator, Wrapper } from '@ludo/ui'
 
 import ROUTES from '@/constants/routes.constants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { TIconsAll } from '@/constants/icons.constants'
-import { useAuthHelpers } from '@/hooks/auth-helpers.hook'
 
 import SettingsHeader from '../components/settings-header.component'
 import SettingsSection from '../components/settings-section.component'
 import SettingsMenuItem from '../components/settings-menu-item.component'
+import SettingsActions from '../components/settings-actions/settings-actions.component'
 
 
 
@@ -31,6 +31,29 @@ const SETTINGS_MENU = {
       id: 1,
       label: 'settings.section_account_personal_info',
       route: ROUTES.PROFIL.EDIT,
+    }
+  ],
+  "settings.section_legal_title": [
+    {
+      description: 'settings.section_legal_terms_description',
+      iconName: 'info-circle-regular',
+      id: 1,
+      label: 'settings.section_legal_terms',
+      route: ROUTES.LEGAL.CGU_MENTIONS,
+    },
+    {
+      description: 'settings.section_legal_sales_terms_description',
+      iconName: 'document-text-2-regular',
+      id: 2,
+      label: 'settings.section_legal_sales_terms',
+      route: ROUTES.LEGAL.CGV,
+    },
+    {
+      description: 'settings.section_legal_privacy_description',
+      iconName: "document-normal-regular",
+      id: 3,
+      label: 'settings.section_legal_privacy',
+      route: ROUTES.LEGAL.PRIVACY,
     }
   ],
   "settings.section_preference_title": [
@@ -65,49 +88,41 @@ const SETTINGS_MENU = {
       route: ROUTES.SETTINGS.FRIENDS,
     },
     {
+      description: 'settings.section_shortcuts_blocked_users_description',
+      iconName: 'fordbidden-contact-regular',
+      id: 3,
+      label: 'settings.section_shortcuts_blocked_users',
+      route: ROUTES.SETTINGS.BLOCKED_USERS,
+    },
+    {
       description: 'settings.section_shortcuts_my_fields_description',
       iconName: "football-field-regular",
-      id: 3,
+      id: 4,
       label: 'settings.section_shortcuts_my_fields',
       route: ROUTES.MY_FIELDS.INDEX,
     },
-    // {
-    //   description: 'settings.section_shortcuts_favorites_description',
-    //   iconName: 'heart-regular',
-    //   id: 3,
-    //   label: 'settings.section_shortcuts_favorites',
-    //   route: ROUTES.SETTINGS.FAVORITES,
-    // },
     {
       description: 'settings.section_shortcuts_history_description',
       iconName: 'clock-regular',
-      id: 4,
+      id: 5,
       label: 'settings.section_shortcuts_history',
       route: ROUTES.SETTINGS.HISTORY,
     }
   ],
-  //
-  "settings.section_legal_title": [
+  "settings.section_support_title": [
     {
-      description: 'settings.section_legal_terms_description',
-      iconName: 'info-circle-regular',
+      description: 'settings.section_support_contact_description',
+      iconName: 'conversation-box-regular',
       id: 1,
-      label: 'settings.section_legal_terms',
-      route: ROUTES.LEGAL.CGU_MENTIONS,
+      label: 'settings.section_support_contact',
+      route: ROUTES.SETTINGS.CONTACT,
     },
     {
-      description: 'Consulte nos conditions générales de vente',
-      iconName: 'document-text-2-regular',
+      description: 'settings.section_support_faq_description',
+      iconName: 'info-circle-regular',
       id: 2,
-      label: 'Conditions Générales de Vente',
-      route: ROUTES.LEGAL.CGV,
-    },
-    {
-      description: 'settings.section_legal_privacy_description',
-      iconName: "document-normal-regular",
-      id: 3,
-      label: 'settings.section_legal_privacy',
-      route: ROUTES.LEGAL.PRIVACY,
+      label: 'settings.section_support_faq',
+      route: ROUTES.SETTINGS.FAQ,
     }
   ],
 } as const satisfies Record<string, TSettingsMenuItem[]>
@@ -116,12 +131,7 @@ const SETTINGS_MENU = {
 export default function SettingsScreen() {
   const { t } = useTranslate()
   const { bottom } = useSafeArea()
-  const { logout } = useAuthHelpers()
   const router = useRouter()
-
-  const handleLogout = () => {
-    logout()
-  }
 
   return (
     <ScreenLayout>
@@ -137,20 +147,14 @@ export default function SettingsScreen() {
                     iconName={item.iconName}
                     label={t(item.label)}
                     description={t(item.description)}
-                    onPress={() => router.push(item.route)}
+                    onPress={() => router.navigate(item.route)}
                   />
                   {item.id !== items.length && <Separator />}
                 </Fragment>
               ))}
             </SettingsSection>
           ))}
-
-          <Button
-            title={t('settings.logout')}
-            onPress={handleLogout}
-            colorVariant='danger'
-            variant="outlined"
-          />
+          <SettingsActions />
         </Wrapper>
       </ScrollView>
     </ScreenLayout>

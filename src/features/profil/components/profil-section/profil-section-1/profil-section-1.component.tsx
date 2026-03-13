@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { BoxGrow, BoxRowGrow } from '@chillui/ui';
@@ -17,7 +18,7 @@ interface ProfilSection1Props {
   sportPreferences?: readonly SportPreferenceResponseData[];
 }
 
-export default function ProfilSection1(props: ProfilSection1Props) {
+function ProfilSection1(props: ProfilSection1Props) {
   const { avatarUrl, firstname, isMe, lastname, sportPreferences } = props;
   const { t } = useTranslate();
 
@@ -77,3 +78,6 @@ export default function ProfilSection1(props: ProfilSection1Props) {
     </BoxRow>
   );
 }
+
+
+export default memo(ProfilSection1);

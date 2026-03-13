@@ -26,7 +26,6 @@ export default function ProfilSection3User() {
   const { data: userData } = useGetUserDataById(userId as string)
   const { isPending: isPendingFriendInvitation, mutateAsync: sendFriendInvitation } = useSendFriendInvitation(userId as string)
   const { data: friendRequest, isLoading: isLoadingFriendRequest } = useGetFriendRequest(userId as string)
-
   const { firstname, imageUrl: avatarUrl, lastname } = userData || {}
   const { status: invitationStatus } = friendRequest || {}
 

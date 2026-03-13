@@ -21,6 +21,8 @@ export type EmptyResultProps = {
 
 const RANDOM_OPTIONS = 3;
 
+const getRandomNumber = (nbr: number) => Math.floor(Math.random() * nbr) + 1;
+
 function EmptyResult(props: EmptyResultProps) {
   const { t } = useTranslate();
   const { center,
@@ -42,7 +44,7 @@ function EmptyResult(props: EmptyResultProps) {
     return Math.random() < 0.5 ? 'ludo-cry' : 'ludo-cry-2';
   };
 
-  const getRandomNumber = (nbr: number) => Math.floor(Math.random() * nbr) + 1;
+
 
   const handleTitle = () => {
     if (hasRandomTitle && title) {

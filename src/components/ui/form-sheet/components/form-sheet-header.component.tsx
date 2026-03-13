@@ -8,6 +8,7 @@ type FormSheetHeaderProps = {
   title?: string;
   hasShadow?: boolean;
   hasGoBack?: boolean;
+  goBackAction?: () => void;
 };
 
 const styles = StyleSheet.create({
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 export default function FormSheetHeader(props: FormSheetHeaderProps) {
-  const { hasGoBack, hasShadow = true, title } = props;
+  const { goBackAction, hasGoBack, hasShadow = true, title } = props;
 
   const showShadow = hasShadow && !!title;
   return (
@@ -26,7 +27,7 @@ export default function FormSheetHeader(props: FormSheetHeaderProps) {
       <Box className={cn(hasGoBack && 'relative my-1 items-center justify-center')}>
         {hasGoBack && (
           <Box className="absolute left-3">
-            <GoBackButton />
+            <GoBackButton onPress={goBackAction} />
           </Box>
         )}
         {title && (

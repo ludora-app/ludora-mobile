@@ -1,12 +1,14 @@
+import KeyboardInitializer from './keyboard.initializer';
 import WebsocketInitializer from './websocket.initializer';
-import SafeAreaInitializer from './safe-area-insets/safe-area.initializer';
 import PostHogIdentifierInitializer from './poshog-identifier.initializer';
+import SafeAreaInitializer from './safe-area-insets/safe-area.initializer';
 
 export default function MainInitializer() {
   return (
     <>
       <WebsocketInitializer />
       <SafeAreaInitializer />
+      <KeyboardInitializer />
       <PostHogIdentifierInitializer />
     </>
   );

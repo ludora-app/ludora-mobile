@@ -16,7 +16,7 @@ type ChatRoomMessageListItemWrapperTimeProps = {
 export default function ChatRoomMessageListItemWrapperTime({ messageData }: ChatRoomMessageListItemWrapperTimeProps) {
   const { createdAt } = messageData || {};
   return (
-    <String variant="body-xs" colorVariant="muted">
+    <String variant="body-xs" colorVariant="muted" font="primarySemiBold">
       {formatMessageTime(createdAt)}
     </String>
   );

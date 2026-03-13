@@ -9,6 +9,7 @@ import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { useUserMe } from '@/queries/user-me.query';
+import { IS_IOS } from '@/constants/platform.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { FindOneConversationResponseDataType, FlattenedSessionPlayer } from '@/api/generated/model';
 
@@ -55,11 +56,15 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid,
     }
-    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+    if (IS_IOS) {
+      router.replace({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+    } else {
+      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+    }
   };
 
   return (
-    <Link href={ROUTES.PROFIL.INDEX_UID(userUid)} asChild disabled={isMe}>
+    <Link href={ROUTES.PROFIL.INDEX_UID(userUid)} asChild disabled={isMe} replace={IS_IOS}>
       <Pressable
         className={cn('mb-4 rounded-xl border p-2', {
           'border-primary/20': teamSide === 'left',

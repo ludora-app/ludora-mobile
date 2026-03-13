@@ -6,15 +6,18 @@ import { IS_ANDROID } from '@/constants/platform.constants';
 import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
+import { useGetIncommingSessionMe } from '../../queries/get-incomming-session-me.query';
 import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
+
 const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
-const LIST_HEADER_HEIGHT = 191
 
+const LIST_HEADER_HEIGHT = 191
+const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
 
 export default function HomeSessionList() {
   const {
@@ -26,6 +29,11 @@ export default function HomeSessionList() {
     items: sessions,
     refetch,
   } = useGetAllSessionsByFilter();
+  const { data: IncommingSessionMe, isLoading: IncommingSessionMeIsLoading } = useGetIncommingSessionMe();
+
+  const showSessionCard = !!IncommingSessionMe?.uid;
+
+  const hasNewSession = showSessionCard && !IncommingSessionMeIsLoading;
 
   const { bottomTab } = useSafeArea();
 
@@ -65,12 +73,16 @@ export default function HomeSessionList() {
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
       SkeletonComponent={SessionCardSkeleton}
-      ListHeaderComponent={<HomeSessionListHeaderTopList />}
+      ListHeaderComponent={
+        <HomeSessionListHeaderTopList
+          hasNewSession={hasNewSession}
+          IncommingSessionMe={IncommingSessionMe} />
+      }
       hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}
       ListStickyComponent={<HomeSessionListHeaderSticky />}
       hasHeaderTransparent
-      listHeaderComponentHeight={LIST_HEADER_HEIGHT}
+      listHeaderComponentHeight={hasNewSession ? LIST_HEADER_HEIGHT_WITH_SESSION : LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl px-4"
       contentContainerStyle={{ paddingBottom }}
       emptyResultProps={{

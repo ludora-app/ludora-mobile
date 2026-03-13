@@ -1,8 +1,9 @@
-import { Dayjs } from 'dayjs';
 import { cn } from '@chillui/ui';
 import { debounce } from 'radash';
 import { FlatList, useWindowDimensions, ViewToken } from 'react-native';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { Dayjs } from '@/lib/dayjs';
 
 import { useDateCarousel } from '../hooks/days-carousel.hook';
 import DateCarouselItem from './days-carousel-item.component';

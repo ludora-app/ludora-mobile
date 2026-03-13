@@ -17,7 +17,7 @@ export default function SettingsMenuItem(props: SettingsMenuItemProps) {
   return (
     <Pressable onPress={onPress}>
       <BoxRow className='items-center py-4 gap-2'>
-        <Box className="size-10 items-center justify-center rounded-xl bg-primary/10">
+        <Box className="size-10 items-center justify-center rounded-full bg-primary/10">
           <Icon
             name={iconName}
             color={COLORS.primary}

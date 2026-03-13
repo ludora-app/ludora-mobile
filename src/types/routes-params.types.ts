@@ -63,6 +63,12 @@ export type RootStackParamList = {
     imageUrl: string;
     type: string;
   };
+
+  [ROUTES.PROFIL.ACTIONS]: {
+    firstname: string;
+    lastname: string;
+    id?: string;
+  };
 };
 
 export type ReturnStackParamList = {

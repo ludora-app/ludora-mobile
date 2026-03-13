@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { cn } from '@chillui/ui';
 import { Box, Icon, String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import { TouchableOpacity } from 'react-native';
+import { cn, LoadingIndicator } from '@chillui/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { FiltersAddressesReturnParams, FiltersAddressesScreenParams } from '../types/filters-addresses.types';
@@ -35,8 +35,10 @@ function FilterAddressesListHeader(props: FilterAddressesListHeaderProps) {
       onPress={handlePress}
       disabled={isLoading}
     >
+
       <Box className="rounded-full bg-ring/30 p-4">
-        <Icon name="target-regular" color="#000" />
+        {!isLoading && <Icon name="target-regular" color="#000" />}
+        {isLoading && <LoadingIndicator name="swing" color="#000" />}
       </Box>
       <Box>
         <String>{t('filter-addresses.header_title')}</String>

@@ -1,5 +1,6 @@
-import dayjs, { Dayjs } from 'dayjs';
 import { useLayoutState } from '@shopify/flash-list';
+
+import dayjs, { Dayjs } from '@/lib/dayjs';
 // import 'dayjs/locale/fr'; // TODO: put in index or app ??
 import { useMemo, useCallback, useEffect } from 'react';
 

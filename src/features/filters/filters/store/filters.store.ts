@@ -30,6 +30,7 @@ interface FiltersStoreInstance {
 
 interface FiltersStore {
   resetFilters: () => void;
+  clearAllFilters: () => void;
   currentSource: FilterSource;
   setCurrentSource: (source: FilterSource) => void;
   instances: Record<FilterSource, FiltersStoreInstance>;
@@ -58,7 +59,18 @@ const calculateNumberOfFilters = (filters: Partial<Filters>): number =>
   }).length;
 
 export const useFiltersStore = create<FiltersStore>((set, get) => ({
+  clearAllFilters: () => {
+    set({
+      instances: {
+        filter_fields: createDefaultInstance(),
+        filter_sessions_all: createDefaultInstance(),
+        players_suggestions: createDefaultInstance(),
+      },
+    });
+  },
+
   currentSource: 'filter_sessions_all',
+
   instances: {
     filter_fields: createDefaultInstance(),
     filter_sessions_all: createDefaultInstance(),

@@ -37,7 +37,7 @@ export default function ResetPasswordScreen() {
       trackEvent({
         eventName: 'reset_password_send_code_with_email_success',
       });
-      router.push({ params: { email: data.email.toLowerCase() }, pathname: ROUTES.AUTH.VERIFY_CODE });
+      router.navigate({ params: { email: data.email.toLowerCase() }, pathname: ROUTES.AUTH.VERIFY_CODE });
       // TODO : ADD ERROR HANDLING WHEN USER HAD ATTEMPS TOO MANY TIMES
     } catch (error) {
       const errorResponse = error as ErrorResponse;

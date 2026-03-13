@@ -62,7 +62,7 @@ export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props:
       selectedDayCarouselDate,
       source,
     };
-    router.push({ params, pathname: ROUTES.FILTERS.FILTER });
+    router.navigate({ params, pathname: ROUTES.FILTERS.FILTER });
   };
 
   return (

@@ -1,0 +1,43 @@
+import { cn } from '@chillui/ui';
+import React, { useMemo } from 'react';
+import { Avatar, AvatarProps } from '@ludo/ui';
+
+import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
+
+type SessionTeamsCardAvatarProps = Partial<AvatarProps> & {
+  me?: boolean;
+  sideTeam?: 'left' | 'right';
+};
+
+export default function SessionTeamsCardAvatar(props: SessionTeamsCardAvatarProps) {
+  const { className, data, me = false, sideTeam, ...rest } = props;
+
+  const handleBorderColor = useMemo(() => {
+    if (!sideTeam) {
+      return 'border-muted';
+    }
+    return sideTeam === 'left' ? 'border-primary' : 'border-secondary';
+  }, [sideTeam]);
+
+  const handleColorVariant = useMemo(() => {
+    if (!sideTeam) {
+      return 'muted';
+    }
+    return sideTeam === 'left' ? 'primary' : 'secondary';
+  }, [sideTeam]);
+
+  return me ? (
+    <AvatarMe
+      {...rest}
+      className={cn(handleBorderColor, className)}
+      contentProps={{ colorVariant: handleColorVariant }}
+    />
+  ) : (
+    <Avatar
+      data={data}
+      {...rest}
+      className={cn(handleBorderColor, className)}
+      contentProps={{ colorVariant: handleColorVariant }}
+    />
+  );
+}

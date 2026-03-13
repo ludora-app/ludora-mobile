@@ -48,7 +48,9 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
 
   const isFriendAlreadlyInvited = isFriendInvited || isFriendJoined || isFriendSelected;
 
-  const shouldShowJoinedBadge = isFriendJoined && !isFriendInvited;
+  const shouldShowAlreadyInvited = isFriendInvited && !isFriendJoined;
+
+  const shouldShowIsJoinded = isFriendJoined
 
   return (
     <Wrapper fill={false} className="pb-3">
@@ -68,13 +70,13 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
               </String>
             </Box>
             {
-              isFriendJoined && (
+              shouldShowIsJoinded && (
                 <String color="#666" variant="body-xs" useFastText={false}>
                   {t('invite-friends.friend_already_joined')}
                 </String>
               )
             }
-            {shouldShowJoinedBadge && (
+            {shouldShowAlreadyInvited && (
               <String color="#666" variant="body-xs" useFastText={false}>
                 {t('invite-friends.friend_already_invited')}
               </String>

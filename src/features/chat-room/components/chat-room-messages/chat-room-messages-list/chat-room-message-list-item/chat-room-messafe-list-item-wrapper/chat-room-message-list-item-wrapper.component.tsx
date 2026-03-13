@@ -55,7 +55,7 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
       withSpring(1, { damping: 10, stiffness: 200 }),
     );
     triggerHaptic('selection');
-    router.push(ROUTES.CHAT_ROOM.MESSAGE_ACTIONS_UID({ chatRoomId, messageId: messageUid }));
+    router.navigate(ROUTES.CHAT_ROOM.MESSAGE_ACTIONS_UID({ chatRoomId, messageId: messageUid }));
   };
 
   return (

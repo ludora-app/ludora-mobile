@@ -39,7 +39,7 @@ export default function SessionScreen() {
     isRefetching: isRefetchingSessionData,
     refetch: refetchSessionData
   } = useGetSessionById(sessionUid);
-  const { creator, description, fieldUid, title } = sessionData || {};
+  const { creator, description, fieldUid, sport, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);
 
@@ -79,7 +79,7 @@ export default function SessionScreen() {
           <SessionSectionDescription description={description} title={title} />
 
           {/* SECTION 6 : FIELD */}
-          <SessionSectionFieldDetail fieldUid={fieldUid} />
+          <SessionSectionFieldDetail fieldUid={fieldUid} sport={sport} />
           <Separator />
 
           {/* SECTION 7 : CREATOR */}

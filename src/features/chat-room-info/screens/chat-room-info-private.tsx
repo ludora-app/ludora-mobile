@@ -68,7 +68,7 @@ export default function ChatRoomInfoPrivate() {
             <Avatar
               data={{
                 firstname,
-                imageUrl: avatarUrl,
+                imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
                 lastname,
               }}
               size="2xl"

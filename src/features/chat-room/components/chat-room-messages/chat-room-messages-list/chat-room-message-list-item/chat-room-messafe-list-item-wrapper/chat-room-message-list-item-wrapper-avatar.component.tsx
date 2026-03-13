@@ -21,7 +21,7 @@ export default function ChatRoomMessageListItemWrapperAvatar({
       size="xs"
       data={{
         firstname: senderFirstName,
-        imageUrl: senderImageUrl,
+        imageUrl: senderImageUrl ? { uri: senderImageUrl } : undefined,
         lastname: senderLastName,
       }}
     />

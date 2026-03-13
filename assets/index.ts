@@ -17,3 +17,7 @@ export { default as openBook } from './images/dev-tool/open-book.png';
 export { default as penTool } from './images/dev-tool/pen-tool.png';
 export { default as chatRoomBg } from './images/chat/chat-room/chat-room-bg.png';
 export { default as notFoundImg } from './images/not-found-img.png';
+export { default as basketPlaceHolder } from './images/sports-placeholder/basket-placeholder.jpg';
+export { default as footballPlaceHolder } from './images/sports-placeholder/football-placeholder.jpg';
+export { default as padelPlaceHolder } from './images/sports-placeholder/padel-placeholder.jpg';
+export { default as tennisPlaceHolder } from './images/sports-placeholder/tennis-placeholder.jpg';

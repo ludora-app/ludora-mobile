@@ -6,14 +6,15 @@ import SessionSectionWrapper from '../section-section-wrapper/session-section-wr
 
 type SessionSectionFieldDetailProps = {
   fieldUid: FindOneSessionResponseData['fieldUid'];
+  sport: FindOneSessionResponseData['sport'];
 };
 
 export default function SessionSectionFieldDetail(props: SessionSectionFieldDetailProps) {
-  const { fieldUid } = props;
+  const { fieldUid, sport } = props;
   return (
     <SessionSectionWrapper>
       <SessionSectionHeader title="session.session_field_detail_title" iconName="card-detail-regular" />
-      <SessionSectionFieldDetailCard fieldUid={fieldUid} />
+      <SessionSectionFieldDetailCard fieldUid={fieldUid} sport={sport} />
     </SessionSectionWrapper>
   );
 }

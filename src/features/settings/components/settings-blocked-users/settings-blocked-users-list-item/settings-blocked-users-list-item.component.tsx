@@ -34,7 +34,7 @@ export default function SettingsBlockedUsersListItem({ item }: SettingsBlockedUs
         <Avatar
           data={{
             firstname,
-            imageUrl,
+            imageUrl: imageUrl ? { uri: imageUrl } : undefined,
             lastname,
           }}
         />

@@ -14,7 +14,7 @@ export default function CreatedSessionFooterButtonsCreatedSession() {
   const { t } = useTranslate();
 
   const handleInvitePeople = () => {
-    router.push(ROUTES.INVITE_FRIENDS.INDEX_UID(createdSessionUid));
+    router.navigate(ROUTES.INVITE_FRIENDS.INDEX_UID(createdSessionUid));
   };
 
   const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(createdSessionUid)}`;

@@ -1,11 +1,4 @@
-import dayjs from 'dayjs';
-import isToday from 'dayjs/plugin/isToday';
-import isYesterday from 'dayjs/plugin/isYesterday';
-import 'dayjs/locale/fr';
-
-dayjs.extend(isToday);
-dayjs.extend(isYesterday);
-dayjs.locale('fr');
+import dayjs from '@/lib/dayjs';
 
 export const formatMessageTime = (date?: string | Date) => {
   if (!date) return '';

@@ -1,5 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
-
+import dayjs, { Dayjs } from '@/lib/dayjs';
 import { DaysCarousel } from '@/components/ui/days-carousel';
 import { useCreateSessionFiltersFieldsStore } from '@/features/create-session/store/create-session-filters-fields.store';
 

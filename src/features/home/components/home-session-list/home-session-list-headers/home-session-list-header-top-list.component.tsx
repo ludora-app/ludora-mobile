@@ -7,27 +7,29 @@ import COLORS from '@/constants/colors.contstants';
 import { useUserMe } from '@/queries/user-me.query';
 import { truncateString } from '@/utils/string.utils';
 import { SessionCard } from '@/components/ui/session-card';
+import { SessionCollectionItemDto } from '@/api/generated/model';
 import HeaderScreen from '@/components/ui/header/components/header-screen.component';
-import { useGetIncommingSessionMe } from '@/features/home/queries/get-incomming-session-me.query';
 
-function HomeSessionListHeaderTopList() {
+
+type HomeSessionListHeaderTopListProps = {
+  IncommingSessionMe: SessionCollectionItemDto;
+  hasNewSession: boolean;
+}
+
+function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) {
+  const { hasNewSession, IncommingSessionMe } = props
   const { t } = useTranslate();
-  const { data: IncommingSessionMe, isLoading: IncommingSessionMeIsLoading } = useGetIncommingSessionMe();
-  const { userMe } = useUserMe();
-
-  const hasNewSession = !!IncommingSessionMe?.uid;
-
-  const showSessionCard = hasNewSession && !IncommingSessionMeIsLoading;
-
+  const { isLoading: isLoadingUserMe, userMe } = useUserMe();
 
   return (
     <HeaderScreen
+      isTitleLoading={isLoadingUserMe}
       title={t('home.header.title', { username: truncateString({ maxLength: 8, str: userMe?.firstname ?? '' }) })}
-      subTitle={t(showSessionCard ? 'home.header.sub_title_incoming_session' : 'home.header.sub_title')}
-      hasNewSession={showSessionCard}
+      subTitle={t(hasNewSession ? 'home.header.sub_title_incoming_session' : 'home.header.sub_title')}
+      hasNewSession={hasNewSession}
     >
-      {showSessionCard && <SessionCard item={IncommingSessionMe} isNextSession />}
-      {!showSessionCard && (
+      {hasNewSession && <SessionCard item={IncommingSessionMe} isNextSession />}
+      {!hasNewSession && (
         <Button
           title={t('home.header.button_create_match')}
           colorVariant="inverted"

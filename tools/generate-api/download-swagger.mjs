@@ -1,22 +1,77 @@
 import ky from 'ky';
 import fs from 'fs';
 import path from 'path';
-import { getApiUrl } from './api-url.js';
+import { execSync } from 'child_process';
+import { getApiUrl } from './api-url.mjs';
 
 const SWAGGER_URL = `${getApiUrl()}/swagger-json`;
-const basicAuth = Buffer.from(`${process.env.SWAGGER_USER}:${process.env.SWAGGER_PASSWORD}`).toString('base64');
+const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
 
 (async () => {
   try {
-    console.log('📥 Downloading Swagger from:', SWAGGER_URL);
+    let swagger;
+    let localFile = process.env.SWAGGER_FILE;
 
-    const res = await ky.get(SWAGGER_URL, {
-      headers: {
-        Authorization: `Basic ${basicAuth}`,
-      },
-    });
+    // Si on n'est pas en localhost et qu'on n'a pas de fichier local déjà fourni (via CI par exemple)
+    // on essaye de télécharger l'artefact GitHub correspondant à l'env
+    if (env !== 'localhost' && !localFile) {
+      console.log(`🌐 Env is "${env}", trying to fetch artifact from GitHub...`);
 
-    const swagger = await res.json();
+      let branchName = 'main';
+      if (env === 'development') branchName = 'dev';
+      if (env === 'preview' || env === 'staging') branchName = 'staging';
+
+      try {
+        const tempDir = path.resolve(process.cwd(), '.artifacts');
+        if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+        fs.mkdirSync(tempDir);
+
+        console.log(`📥 Using GH CLI to find latest run on branch "${branchName}"...`);
+
+        const repo = 'ludora-app/ludora-back';
+        const ghEnv = { ...process.env, GH_TOKEN: process.env.GH_TOKEN || process.env.GITHUB_TOKEN };
+
+        // 1. Récupérer l'ID du dernier run sur la branche (permet de récupérer l'artefact même si le run a échoué plus tard)
+        const runId = execSync(
+          `gh run list --repo ${repo} --branch "${branchName}" --workflow "CI/CD Pipeline" --limit 1 --json databaseId --jq ".[0].databaseId"`,
+          { env: ghEnv },
+        )
+          .toString()
+          .trim();
+
+        if (!runId || runId === 'null') {
+          throw new Error(`No runs found on branch ${branchName}`);
+        }
+
+        console.log(`📡 Downloading artifact from run ID: ${runId}`);
+
+        // 2. Télécharger l'artefact du run trouvé
+        execSync(`gh run download ${runId} --repo ${repo} --pattern "swagger-*" --dir "${tempDir}"`, {
+          stdio: 'inherit',
+          env: ghEnv,
+        });
+
+        const files = fs.readdirSync(tempDir, { recursive: true });
+        const swaggerPath = files.find(f => f.endsWith('swagger.json'));
+
+        if (swaggerPath) {
+          localFile = path.resolve(tempDir, swaggerPath);
+          console.log('✅ Found artifact at:', localFile);
+        }
+      } catch (err) {
+        console.warn('⚠️ Could not fetch from GitHub (gh cli missing or error). Falling back to HTTP download.');
+      }
+    }
+
+    if (localFile && fs.existsSync(localFile)) {
+      console.log('📄 Using local Swagger file:', localFile);
+      const fileContent = fs.readFileSync(localFile, 'utf8');
+      swagger = JSON.parse(fileContent);
+    } else {
+      console.log('📥 Downloading Swagger from:', SWAGGER_URL);
+      const res = await ky.get(SWAGGER_URL);
+      swagger = await res.json();
+    }
 
     // Collecter tous les tags utilisés dans les opérations
     const usedTags = new Set();

@@ -1,7 +1,8 @@
 import { List } from '@ludo/ui'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
 import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query'
 
@@ -44,6 +45,13 @@ export default function NotificationsList() {
     return undefined
   }, [isLoading, isSuccess, unreadCount, handleMarkAllNotificationsAsRead]);
 
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottom + HEADER_HEIGHT;
+    }
+    return bottom;
+  }, [bottom]);
+
 
   return (
     <List
@@ -62,7 +70,7 @@ export default function NotificationsList() {
       contentContainerClassName="bg-background px-3"
       hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}
-      contentContainerStyle={{ paddingBottom: bottom + HEADER_HEIGHT }}
+      contentContainerStyle={{ paddingBottom }}
       emptyResultProps={{
         hasRandomTitle: true,
         randomOptions: 3,

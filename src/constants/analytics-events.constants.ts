@@ -22,6 +22,11 @@ export const ANALYTICS_EVENTS = {
     ONBOARDING_FAILED: 'onboarding_failed',
   },
 
+  // Dialog Confirm
+  DIALOG_CONFIRM: {
+    DIALOG_CONFIRM_OPEN: 'dialog_confirm_open',
+  },
+
   // Auth Flow
   AUTH: {
     // Inscription
@@ -79,6 +84,8 @@ export const ANALYTICS_EVENTS = {
     PROFIL_EDIT_PASSWORD_SUCCESS: 'profil_edit_password_success',
     PROFIL_EDIT_SEX_FAILED: 'profil_edit_sex_failed',
     PROFIL_EDIT_SEX_SUCCESS: 'profil_edit_sex_success',
+    PROFIL_HEADER_ACTIONS_BLOCK_USER: 'profil_header_actions_blocked_user',
+    PROFIL_HEADER_ACTIONS_REPORT_USER: 'profil_header_actions_reported_user',
   },
   SESSION: {
     SESSION_JOINED: 'session_joined',
@@ -87,12 +94,17 @@ export const ANALYTICS_EVENTS = {
     SESSION_LEFT_FAILED: 'session_left_failed',
     SESSION_SHARED: 'session_shared',
     SESSION_TEAM_SELECTED: 'session_team_selected',
+    SESSION_TEAM_SWITCH_FAILED: 'session_team_switch_failed',
+    SESSION_TEAM_SWITCHED: 'session_team_switched',
   },
   SETTINGS: {
+    SETTINGS_DELETE_ACCOUNT_CANCEL_SUCCESS: 'settings_delete_account_cancel_success',
+    SETTINGS_DELETE_ACCOUNT_SUCCESS: 'settings_delete_account_success',
     SETTINGS_PLANNING_EDIT_FAILED: 'settings:settings_planning_edit_failed',
     SETTINGS_PLANNING_EDIT_SUCCESS: 'settings:settings_planning_edit_success',
     SETTINGS_PREFERENCES_SPORTS_EDIT_FAILED: 'settings:settings_preferences_sports_edit_failed',
     SETTINGS_PREFERENCES_SPORTS_EDIT_SUCCESS: 'settings:settings_preferences_sports_edit_success',
+    SETTINGS_UNBLOCK_USER_SUCCESS: 'settings_unblock_user_success',
   },
 } as const;
 
@@ -140,16 +152,21 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SELECTED]: {
     source_screen: string;
   };
-  [ANALYTICS_EVENTS.SESSION.SESSION_JOINED_FAILED]: {
-    error_message: string;
-  };
   [ANALYTICS_EVENTS.SESSION.SESSION_JOINED]: {
     session_uid: string;
     team_uid: string;
   };
   [ANALYTICS_EVENTS.SESSION.SESSION_LEFT_FAILED]: {
+    error_message: string;
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.SESSION.SESSION_JOINED_FAILED]: {
     session_uid: string;
     error_message: string;
+  };
+  [ANALYTICS_EVENTS.SESSION.SESSION_TEAM_SWITCH_FAILED]: {
+    error_message: string;
+    session_uid: string;
   };
 
   // forgot password events
@@ -205,6 +222,11 @@ export interface AnalyticsEventData {
     level: number;
     session_visibility: string;
     start_date: string;
+    has_description: boolean;
+    has_team_a_name: boolean;
+    has_team_b_name: boolean;
+    has_title: boolean;
+    title_source: 'user' | 'suggestion' | 'none';
   };
 
   // **
@@ -284,6 +306,13 @@ export interface AnalyticsEventData {
     is_sport_preference_added: boolean;
     is_sport_preference_removed: boolean;
     is_sport_preference_updated: boolean;
+  };
+
+  // **
+  // dialog confirm events
+  // **
+  [ANALYTICS_EVENTS.DIALOG_CONFIRM.DIALOG_CONFIRM_OPEN]: {
+    source: string;
   };
 }
 

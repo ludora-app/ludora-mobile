@@ -25,7 +25,7 @@ export default function InviteFriendsScreen() {
     <>
       <HeaderGoBack
         title={t('invite-friends.title')}
-        iconName="ludora-sunglass"
+        iconName="ludo-sunglass"
         hasTopSafeArea={IS_ANDROID}
         className={cn(IS_IOS && 'mt-3')}
       />

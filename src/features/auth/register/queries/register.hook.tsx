@@ -1,4 +1,4 @@
-import { useAuthB2CRegister } from '@generatedApi/auth-b2-c/auth-b2-c.api';
+import { useAuthB2CRegister } from '@generatedApi/auth-b2c/auth-b2c.api';
 
 import { RegisterB2CWithFileDto } from '@/api/generated/model';
 

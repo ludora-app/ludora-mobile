@@ -49,9 +49,11 @@ export default function FilterLevelsItem(props: CreateSessionStep1Part2LevelItem
 
   return (
     <Pressable key={difficulty.code} className="items-center gap-1" onPress={handleSelect}>
-      <BounceBox autoStart infiniteLoop bounceInterval={1500} duration={1500} bounceHeight={5} style={animatedStyle}>
-        <Icon name={difficulty.icon} className="size-full" />
-      </BounceBox>
+      <Box style={{ height: LEVEL_ICON_SIZE_SELECTED, width: LEVEL_ICON_SIZE_SELECTED }} className="items-center justify-end">
+        <BounceBox autoStart infiniteLoop bounceInterval={1500} duration={1500} bounceHeight={5} style={animatedStyle}>
+          <Icon name={difficulty.icon} className="size-full" />
+        </BounceBox>
+      </Box>
       <Box className={cn('h-2 w-full rounded-full bg-[#D9D9D9]', isSelectedLevel && 'bg-[#69B42E]')} />
       <String position="center" size="xs">
         {t(`common.session_level_${difficulty.code}`, '')}

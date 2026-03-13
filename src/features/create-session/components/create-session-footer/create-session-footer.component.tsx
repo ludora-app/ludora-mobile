@@ -7,13 +7,9 @@ import CreatedSessionFooterButtonsCreatedSession from './create-session-footer-b
 
 export default function CreateSessionFooter() {
   const { activeStep } = useGetCreateSessionStep();
-  const showNextStepButton = activeStep < 3;
+  const showNextStepButton = activeStep <= 3;
   const showCreateSessionButton = activeStep === 4;
   const showCreatedSessionButtons = activeStep === 5;
-
-  if (activeStep === 3) {
-    return null;
-  }
 
   return (
     <FormSheetFooter hasBottomSafeArea>

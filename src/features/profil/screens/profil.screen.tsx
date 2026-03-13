@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { ScreenLayout, Wrapper } from '@ludo/ui';
-import { useLocalSearchParams } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 
+import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
@@ -18,9 +19,19 @@ import ProfilSection1Skeleton from '../components/profil-section/profil-section-
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
   const { userMeId } = useUserMe();
-  const { data: userData, isLoading: isLoadingUser, isRefetching: isRefetchingUser, refetch: refetchUser } = useGetUserDataById(userId as string || undefined);
+  const {
+    data: userData,
+    isLoading: isLoadingUserData,
+    isRefetching: isRefetchingUser,
+    refetch: refetchUser
+  } = useGetUserDataById(userId as string || undefined);
 
-  const { isLoading: isLoadingUserMe, isRefetching: isRefetchingUserMe, refetch: refetchUserMe, userMe } = useUserMe(!userId);
+  const {
+    isLoading: isLoadingUserMe,
+    isRefetching: isRefetchingUserMe,
+    refetch: refetchUserMe,
+    userMe
+  } = useUserMe(!userId);
 
   const isProfilMe = useMemo(() => {
     if (!userId) return true;
@@ -28,7 +39,25 @@ export default function ProfilScreen() {
     return false;
   }, [userId, userMeId]);
 
-  const { bio: userBio, firstname, friendsCount, imageUrl: avatarUrl, lastname, matchesCount, sportPreferences } = isProfilMe ? userMe || {} : userData || {};
+  const {
+    bio: userBio,
+    firstname,
+    friendsCount,
+    imageUrl: avatarUrl,
+    lastname,
+    matchesCount,
+    sportPreferences
+  } = isProfilMe ? userMe || {} : userData || {};
+
+  const hasData = isProfilMe ? !!userMe : !!userData;
+
+  const isProfilLoading = isLoadingUserData || isLoadingUserMe;
+  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
+  const isFetching = isProfilMe ? (isLoadingUserMe || isRefetchingUserMe) : (isLoadingUserData || isRefetchingUser);
+
+  if (!hasData && !isFetching) {
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />
+  }
 
   const handleRefetch = async () => {
     if (isProfilMe) {
@@ -38,12 +67,10 @@ export default function ProfilScreen() {
     }
   };
 
-  const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
-  const isProfilLoading = isLoadingUser || isLoadingUserMe;
 
   const profilHeader = (
     <>
-      <ProfilHeader isMe={isProfilMe} />
+      <ProfilHeader isMe={isProfilMe} firstname={firstname} lastname={lastname} />
       <Wrapper className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
         {isProfilLoading ? <ProfilSection1Skeleton /> : (
           <ProfilSection1
@@ -64,6 +91,9 @@ export default function ProfilScreen() {
       </Wrapper>
     </>
   );
+
+
+
 
   return (
     <ScreenLayout>

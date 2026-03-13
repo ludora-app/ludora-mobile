@@ -1,3 +1,4 @@
+import { useChatStore } from '@/features/chat/store/chat.store';
 import {
   useInvalidateConversationsFindAllByUserUid,
   useInvalidateConversationsHasUnreadMessages,
@@ -19,9 +20,14 @@ export const useWebsocketOnNotificationsNewMessage = () => {
   const handleNotificationNewMessage = async (notification: TWebSocketMessageNewMessage) => {
     const { conversationUid } = notification || {};
 
-    invalidateConversationsFindAllByUserUid();
+    await invalidateConversationsFindAllByUserUid();
     invaliteConversationHasUnreadMessages();
     invalidateMessagesFindAllByChatroomId(conversationUid);
+
+    // Scroll the conversation list to the top after the refetch
+    setTimeout(() => {
+      useChatStore.getState().scrollToTop?.();
+    }, 100);
   };
 
   return handleNotificationNewMessage;

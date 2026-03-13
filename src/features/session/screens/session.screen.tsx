@@ -1,8 +1,9 @@
 import { useRef } from 'react';
-import { useLocalSearchParams } from 'expo-router';
 import { ScrollView as RNScrollView } from 'react-native';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Box, Separator, Wrapper, ScrollView } from '@ludo/ui';
 
+import ROUTES from '@/constants/routes.constants';
 import Loading from '@/components/ui/loading/loading.component';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
@@ -32,13 +33,22 @@ export default function SessionScreen() {
   const scrollViewRef = useRef<RNScrollView>(null);
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
-  const { data: sessionData, isLoading: isLoadingSessionData, refetch: refetchSessionData } = useGetSessionById(sessionUid);
+  const {
+    data: sessionData,
+    isLoading: isLoadingSessionData,
+    isRefetching: isRefetchingSessionData,
+    refetch: refetchSessionData
+  } = useGetSessionById(sessionUid);
   const { creator, description, fieldUid, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);
 
   if (isLoadingSessionData) {
     return <Loading />;
+  }
+
+  if (!sessionData && !isLoadingSessionData && !isRefetchingSessionData) {
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />
   }
 
   return (

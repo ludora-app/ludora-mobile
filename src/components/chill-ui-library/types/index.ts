@@ -27,3 +27,5 @@ export * from './segmentedControl.types';
 export * from './avatar.types';
 export * from './numericInput.types';
 export * from './ripplePressable.tw.types';
+export * from './dialog.types';
+export * from './accordion.types';

@@ -1,18 +1,18 @@
-import ky from 'ky';
-import { getApiUrl } from './api-url.js';
-
-const SWAGGER_URL = `${getApiUrl()}/swagger-json`;
+import fs from 'fs';
+import path from 'path';
 
 const PAGINATION_KEYWORDS = ['collection'];
 
-const basicAuth = Buffer.from(`${process.env.SWAGGER_USER}:${process.env.SWAGGER_PASSWORD}`).toString('base64');
 export default async function getOrvalOperations() {
-  const res = await ky.get(SWAGGER_URL, {
-    headers: {
-      Authorization: `Basic ${basicAuth}`,
-    },
-  });
-  const swagger = await res.json();
+  const rootPath = process.cwd();
+  const swaggerFile = path.resolve(rootPath, 'tools/generate-api/swagger.json');
+
+  if (!fs.existsSync(swaggerFile)) {
+    console.warn('⚠️ Swagger file not found at:', swaggerFile);
+    return {};
+  }
+
+  const swagger = JSON.parse(fs.readFileSync(swaggerFile, 'utf8'));
 
   const operations = {};
 

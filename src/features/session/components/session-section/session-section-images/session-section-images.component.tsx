@@ -21,7 +21,7 @@ export default function SessionSectionImages(props: SessionSectionImagesProps) {
   const sportImage = useMemo(() => getSportImage(sport), [sport]);
 
   const sessionImages: FindOneSessionResponseData['fieldImages'] =
-    fieldImages && fieldImages?.length > 0 ? fieldImages : [{ url: sportImage }];
+    fieldImages && fieldImages?.length > 0 ? fieldImages : [{ order: 1, url: sportImage }];
 
   return (
     <Carousel>

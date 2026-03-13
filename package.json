@@ -1,13 +1,14 @@
 {
   "name": "ludora",
-  "version": "1.0.0",
+  "version": "1.1.0-alpha.24",
   "main": "index.tsx",
   "scripts": {
     "start": "node tools/update-ip/update-ip.js && node tools/dev-server/dev-server.js & bun inject:env expo start --port 8086",
     "start:clear": "bun inject:env expo start --port 8086 --clear",
-    "generate:icons": "node tools/svg-2-obj/index.js",
-    "inject:env": "sh tools/vault/inject-env.sh",
+    "generate:icons": "node tools/svg-2-obj/index.js && eslint --fix src/constants/icons.constants.ts",
+    "inject:env": "bash tools/vault/inject-env.sh",
     "update:ip": "node tools/update-ip/update-ip.js",
+    "eas-build-pre-install": "cp $GOOGLE_SERVICES_JSON google-services.json && cp $GOOGLE_SERVICES_PLIST GoogleService-Info.plist && ([ -z \"$DEV_GOOGLE_SERVICES_JSON\" ] || cp $DEV_GOOGLE_SERVICES_JSON dev.google-services.json) && ([ -z \"$DEV_GOOGLE_SERVICES_PLIST\" ] || cp $DEV_GOOGLE_SERVICES_PLIST dev.GoogleService-Info.plist)",
     "prebuild": "bun inject:env expo prebuild",
     "android": "bun inject:env expo run:android",
     "android:prebuild": "bun inject:env expo run:android --prebuild",
@@ -33,7 +34,9 @@
     "check:all": "bun run lint:fix && bun run ts:check",
     "generate:translations:local": "bun inject:env node tools/tolgee-translation/index.mjs",
     "download:swagger": "bun inject:env node tools/generate-api/download-swagger.mjs",
-    "generate:api": "rm -rf src/api/generated && bun inject:env node tools/generate-api/download-swagger.mjs && bun inject:env node tools/generate-api/orval.mjs && bun inject:env bunx orval@next && node tools/generate-api/remove-controller.mjs && node tools/generate-api/fix-rq-v5.mjs && node tools/generate-api/generate-invalidate-queries.mjs"
+    "generate:api": "rm -rf src/api/generated && bun inject:env node tools/generate-api/download-swagger.mjs && bun inject:env node tools/generate-api/orval.mjs && bun inject:env bunx orval@next && node tools/generate-api/remove-controller.mjs && node tools/generate-api/fix-rq-v5.mjs && node tools/generate-api/generate-invalidate-queries.mjs",
+    "switch:api:env": "node tools/switch-env/switch-env.mjs",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@buoy-gg/core": "2.1.6",
@@ -115,7 +118,16 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^13.1.4",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/react": "~19.1.10",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "cross-env": "^10.1.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -131,6 +143,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "react-native-webview": "13.15.0",
+    "semantic-release": "^25.0.3",
     "typescript": "~5.9.2"
   },
   "private": true

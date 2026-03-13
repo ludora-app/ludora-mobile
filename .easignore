@@ -1,0 +1,42 @@
+# EAS ignore file (overrides .gitignore during EAS build)
+
+# dependencies
+node_modules/
+android/
+ios/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# typescript
+*.tsbuildinfo
+
+app-example
+
+# We EXCEPT (allow) these even if they are in .gitignore
+!/src/api/generated
+!/src/api/generated/**/*
+!/tools/generate-api/swagger.json

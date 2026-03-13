@@ -29,5 +29,5 @@ export default function SessionSectionFieldDetailCard(props: SessionSectionField
 
 
 
-  return <FieldCard field={fieldData} shadowVariant={handleShadowVariant} />;
+  return fieldData && <FieldCard field={fieldData} shadowVariant={handleShadowVariant} />;
 }

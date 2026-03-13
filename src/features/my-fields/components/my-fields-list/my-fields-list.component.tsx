@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router'
 
 import ROUTES from '@/constants/routes.constants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
+import { IS_ANDROID } from '@/constants/platform.constants'
 import { FieldCardSkeleton } from '@/components/ui/field-card'
 import { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook'
 
@@ -36,8 +37,15 @@ export default function MyFieldsList() {
   )
 
   const handleAddField = () => {
-    router.push(ROUTES.MY_FIELDS.ADD)
+    router.navigate(ROUTES.MY_FIELDS.ADD)
   }
+
+  const paddingBottom = useMemo(() => {
+    if (IS_ANDROID) {
+      return bottom + HEADER_HEIGHT;
+    }
+    return bottom;
+  }, [bottom]);
 
   return (
     <>
@@ -54,7 +62,7 @@ export default function MyFieldsList() {
         refetch={refetch}
         hasRefreshControl
         contentContainerClassName="grow bg-background px-4 rounded-t-xl"
-        contentContainerStyle={{ paddingBottom: bottom }}
+        contentContainerStyle={{ paddingBottom }}
         hasHeaderTransparent
         hasTopSafeArea
         listHeaderComponentHeight={HEADER_HEIGHT}

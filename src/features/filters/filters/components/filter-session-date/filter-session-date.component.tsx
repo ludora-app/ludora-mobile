@@ -1,10 +1,11 @@
-import dayjs from 'dayjs';
+
 import { memo, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { Box, BoxRowCenter, Icon, String } from '@ludo/ui';
 
+import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 

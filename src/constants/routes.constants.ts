@@ -24,7 +24,7 @@ const ROUTES = {
     INDEX: '/create-session',
     STEP_1: '/create-session/step-1',
     STEP_2: '/create-session/step-2',
-    STEP_2_DURATION_FORM_SHEET: '/create-session/step-2/public-field-duration',
+    STEP_2_DURATION_FORM_SHEET: '/public-field-duration',
     STEP_3: '/create-session/step-3',
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
     STEP_4: '/create-session/step-4',
@@ -62,6 +62,9 @@ const ROUTES = {
     ADD: '/my-fields/add',
     INDEX: '/my-fields',
   },
+  NOT_FOUND: {
+    INDEX: '/not-found',
+  },
   NOTIFICATIONS: {
     INDEX: '/notifications',
   },
@@ -71,6 +74,8 @@ const ROUTES = {
     STEP_3: '/on-boarding/step-3',
   },
   PROFIL: {
+    ACTIONS: '/profil/[id]/actions',
+    ACTIONS_UID: (uid: string) => `/profil/${uid}/actions`,
     EDIT: '/profil/profil-edit',
     EDIT_BIO: '/profil/profil-edit/bio',
     EDIT_BIRTHDATE: '/profil/profil-edit/birthdate',
@@ -89,6 +94,9 @@ const ROUTES = {
     TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
   },
   SETTINGS: {
+    BLOCKED_USERS: '/settings/blocked-users',
+    CONTACT: '/settings/contact',
+    FAQ: '/settings/faq',
     FAVORITES: '/settings/favorites',
     FRIENDS: '/settings/friends',
     HISTORY: '/settings/history',

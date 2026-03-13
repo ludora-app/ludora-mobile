@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
 import { TolgeeInstance } from '@tolgee/react';
+
+import dayjs from '@/lib/dayjs';
 
 export const formatNotificationTime = (date: string, t: TolgeeInstance['t']) => {
   const dayjsData = dayjs(date);

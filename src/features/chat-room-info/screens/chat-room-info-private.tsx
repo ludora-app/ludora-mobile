@@ -47,12 +47,13 @@ export default function ChatRoomInfoPrivate() {
   const { firstname, lastname } = receiverData || userData || {}
 
   const displayName = name || [userFirstname, userLastname].filter(Boolean).join(' ')
+
   const avatarUrl = imageUrl || userImageUrl
   const hasSports = sportPreferences && sportPreferences.length > 0
 
   const handleViewProfile = () => {
     if (userUid) {
-      router.push(ROUTES.PROFIL.INDEX_UID(userUid))
+      router.navigate(ROUTES.PROFIL.INDEX_UID(userUid))
     }
   }
 
@@ -62,7 +63,6 @@ export default function ChatRoomInfoPrivate() {
     <ScreenLayout>
       <ScrollView bounces={false}>
         <ChatRoomInfoHeader titleKey="chat.info_private_title" />
-
         <Wrapper fill className='bg-background rounded-t-xl z-50 pt-6 gap-6'>
           <BoxCenter className='gap-3'>
             <Avatar
@@ -75,7 +75,7 @@ export default function ChatRoomInfoPrivate() {
               className='rounded-2xl'
             />
             <Box className='items-center gap-1'>
-              <String variant="body-1" font="primaryBold">{displayName}</String>
+              <String variant="body-1" font="primaryBold" truncate>{displayName}</String>
             </Box>
             {hasSports ? (
               <Box className='gap-2'>
@@ -112,9 +112,6 @@ export default function ChatRoomInfoPrivate() {
               />
             ) : null}
           </BoxCenter>
-
-
-
         </Wrapper>
       </ScrollView>
     </ScreenLayout>

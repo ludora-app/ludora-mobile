@@ -4,6 +4,7 @@ interface ChatRoomInputState {
   emojiValue: string;
   emojiCount: number;
   isEmojiPickerOpen: boolean;
+  toggleEmojiPicker: () => void;
   setEmojiValue: (value: string) => void;
   setEmojiPickerOpen: (value: boolean) => void;
 }
@@ -17,6 +18,9 @@ const useChatRoomInputEmojiPickerStore = create<ChatRoomInputState>((set, get) =
   },
   setEmojiValue: value => {
     set({ emojiCount: get().emojiCount + 1, emojiValue: value });
+  },
+  toggleEmojiPicker: () => {
+    set({ isEmojiPickerOpen: !get().isEmojiPickerOpen });
   },
 }));
 

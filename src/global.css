@@ -6,7 +6,7 @@
   --color-accent: #ce3728;
   --color-background: #f2f4f8;
   --color-border: #e4e4e4;
-  --color-danger: #ff0000;
+  --color-danger: oklch(57.7% 0.245 27.325);
   --color-darkLight: #0000001a;
   --color-destructive: #a52523;
   --color-error: #ff3333;
@@ -20,11 +20,12 @@
   --color-purpleTertiary: #3c215a;
   --color-ring: #b4b4b4;
   --color-warning: #ff9800;
+  --color-success: #10b981;
 
   /* Button Colors */
   --color-button-accent-background: #cbd2d9;
   --color-button-accent-content: #ff0000;
-  --color-button-danger-background: #ff0000;
+  --color-button-danger-background: oklch(57.7% 0.245 27.325);
   --color-button-danger-content: #fff;
   --color-button-dark-background: #000;
   --color-button-dark-content: #fff;
@@ -50,7 +51,7 @@
   --color-button-warning-content: #000;
   --color-button-white-background: #f5f7fa;
   --color-button-white-content: #000;
-  --color-button-success-background: #2ecc71;
+  --color-button-success-background: #10b981;
   --color-button-success-content: #fff;
 
   /* Font Families */

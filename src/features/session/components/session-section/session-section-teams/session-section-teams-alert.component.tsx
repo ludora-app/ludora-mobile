@@ -22,6 +22,9 @@ export default function SessionSectionTeamsAlert({ session }: SessionTeamsCardJo
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
   const selectedTeamName = teamUid && sessionTeams?.find(team => team.teamUid === teamUid)?.teamName;
 
+  const joinedTeam = sessionTeams?.find(team => team.isJoined);
+  const isSwitchingTeam = !!joinedTeam && !!teamUid && joinedTeam.teamUid !== teamUid;
+
   const handleRemainingPlayers = () => {
     if (teamUid) {
       return remainingPlayers - 1;
@@ -41,7 +44,7 @@ export default function SessionSectionTeamsAlert({ session }: SessionTeamsCardJo
       </String>
       {!!selectedTeamName && (
         <AnimatedString colorVariant={handleColorVariant} useFastText={false} entering={FadeIn} truncate>
-          {t('session.teams_card_joined_team')}{' '}
+          {t(isSwitchingTeam ? 'session.teams_card_switching_team' : 'session.teams_card_joined_team')}{' '}
           <String font="primaryExtraBold" colorVariant={handleColorVariant} useFastText={false}>
             {selectedTeamName}
           </String>

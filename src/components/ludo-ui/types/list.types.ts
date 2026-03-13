@@ -9,7 +9,7 @@ export type ListProps = {
   isLoading: boolean;
   isRefetching: boolean;
   ItemComponent: React.ComponentType<{ item: any }>;
-  data: any[];
+  data: any[] | readonly any[];
   SkeletonComponent?: React.ComponentType;
   hasNextPage: boolean;
   refetch?: () => Promise<any>;

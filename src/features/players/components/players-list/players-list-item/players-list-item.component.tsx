@@ -76,7 +76,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
           <Box >
             <BoxRow className="items-center gap-3 pb-0">
               <Avatar
-                data={{ firstname, imageUrl: userAvatar ?? '', lastname }}
+                data={{ firstname, imageUrl: userAvatar ? { uri: userAvatar } : undefined, lastname }}
                 size="lg"
               />
 

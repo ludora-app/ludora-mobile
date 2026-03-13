@@ -44,7 +44,7 @@ export default function SettingsFriendsListItem({ item }: SettingsFriendsListIte
           <Avatar
             data={{
               firstname,
-              imageUrl: avatarUrl,
+              imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
               lastname,
             }}
           />

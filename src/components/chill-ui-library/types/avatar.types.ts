@@ -1,7 +1,7 @@
 import type { VariantProps } from 'tailwind-variants';
 import type { StyleProp, ViewStyle } from 'react-native';
 
-import { ImageProps } from 'react-native';
+import { ImageProps } from 'expo-image';
 
 import type { avatarTv } from '../components/avatar/styles/Avatar.styles';
 

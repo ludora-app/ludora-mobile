@@ -7,8 +7,8 @@ import { Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
-import { getSportImage } from '@/utils/sports.utils';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
+import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
 import { FindOneSessionResponseData, SessionCollectionItemDto } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
@@ -40,12 +40,14 @@ export default function SessionCard(props: SessionCardProps) {
 
   const sessionImage = useMemo(() => sport && getSportImage(sport), [sport]);
 
+  const sessionPlaceholder = useMemo(() => sport && getSportPlaceHolder(sport), [sport]);
+
   return (
     <Link href={ROUTES.SESSION.INDEX_UID(id)} asChild>
       <Pressable style={styles.shadow} className="z-10 rounded-xl">
         {!isNextSession && (
           <Box className="h-16 overflow-hidden rounded-t-xl">
-            <Image source={sessionImage} contentFit="cover" className="size-full" />
+            <Image source={sessionPlaceholder} contentFit="cover" className="size-full" />
           </Box>
         )}
         <Box
@@ -60,7 +62,7 @@ export default function SessionCard(props: SessionCardProps) {
               <String font="primaryExtraBold">{t(`common.game_mode_${gameMode}`, { space: '' })}</String>
             </Box>
 
-            <BoxGrow className="gap-1.5 bg-white px-3 py-2">
+            <BoxGrow className="gap-1.5 bg-white p-2">
               <BoxRow className="items-center gap-1">
                 <BoxRow className="max-w-1/2 items-center">
                   <String variant="body-xs" font="primaryBold" colorVariant="primary" truncate>
@@ -84,16 +86,16 @@ export default function SessionCard(props: SessionCardProps) {
                   </String>
                 </BoxRow>
               </BoxRow>
-              <BoxRow className="items-center gap-4">
-                <BoxRow className="items-center gap-1">
+              <BoxRow className="items-center gap-1">
+                <BoxRow className="items-center gap-1 w-1/2">
                   <Icon name="calendar-2-regular" color={COLORS.primary} size="sm" />
-                  <String variant="body-sm" font="primaryExtraBold">
+                  <String variant="body-sm" font="primaryExtraBold" truncate>
                     {formatDateShort({ date: startDate })}
                   </String>
                 </BoxRow>
-                <BoxRow className="items-center gap-1">
+                <BoxRow className="items-center gap-1 w-1/2">
                   <Icon name="clock-regular" color={COLORS.primary} size="sm" />
-                  <String variant="body-sm" font="primaryExtraBold">
+                  <String variant="body-sm" font="primaryExtraBold" truncate>
                     {t('session-card.session_time', {
                       end_time: formatToHour({ date: endDate }),
                       start_time: formatToHour({ date: startDate }),
@@ -104,7 +106,7 @@ export default function SessionCard(props: SessionCardProps) {
               <BoxRow className="items-center gap-1">
                 <Icon name="location-solid" color={COLORS.primary} size="xs" />
                 <Box className="flex-1">
-                  <String variant="body-xs" numberOfLines={1} ellipsizeMode="tail">
+                  <String variant="body-xs" truncate>
                     {fieldShortAddress}
                   </String>
                 </Box>
@@ -113,7 +115,7 @@ export default function SessionCard(props: SessionCardProps) {
             </BoxGrow>
 
             {/* right card content */}
-            <Box className="items-center justify-center pr-4">
+            <Box className="items-center justify-center pr-1">
               <Icon name="chevron-right-regular" color="#000" size="sm" />
             </Box>
           </BoxRow>

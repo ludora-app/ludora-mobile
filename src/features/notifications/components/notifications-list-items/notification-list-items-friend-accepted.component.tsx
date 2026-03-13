@@ -56,7 +56,7 @@ export default function NotificationListItemsFriendAccepted(props: NotificationL
         <Avatar
           data={{
             firstname: senderFirstname,
-            imageUrl: senderAvatar,
+            imageUrl: senderAvatar ? { uri: senderAvatar } : undefined,
             lastname: senderLastname
           }}
         />

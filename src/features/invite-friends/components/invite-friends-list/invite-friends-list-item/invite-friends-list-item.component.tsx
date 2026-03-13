@@ -59,7 +59,7 @@ export default function InviteFriendsListItem(props: InviteFriendsListItemProps)
           <Avatar
             data={{
               firstname,
-              imageUrl: avatarUrl,
+              imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
               lastname,
             }}
           />

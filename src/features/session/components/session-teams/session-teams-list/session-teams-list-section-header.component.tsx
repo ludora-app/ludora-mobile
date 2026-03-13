@@ -48,7 +48,7 @@ export default function SessionTeamsListSectionHeader(props: SessionTeamsListHea
     <BoxRowCenterBetween className="mb-4 gap-2">
       <BoxRowCenter className="flex-1 gap-2">
         <Avatar
-          data={{ firstname: teamName, imageUrl: '' }}
+          data={{ firstname: teamName, imageUrl: undefined }}
           className={cn('rounded-lg', avatarColor)}
           contentProps={{
             color: '#FFF',

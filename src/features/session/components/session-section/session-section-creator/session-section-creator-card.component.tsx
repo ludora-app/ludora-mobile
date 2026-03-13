@@ -67,7 +67,7 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
     <TouchableOpacity onPress={handleCardPress} disabled={isCreatorMe}>
       <SessionSectionWrapperItem className="flex-row items-center justify-between">
         <BoxRowGrow className="items-center gap-2">
-          <SessionTeamsCardAvatar data={creator} sideTeam={sideTeam} />
+          <SessionTeamsCardAvatar data={{ ...creator, imageUrl: imageUrl ? { uri: imageUrl } : undefined }} sideTeam={sideTeam} />
           <BoxGrow>
             <String font="primaryBold" truncate>
               {firstname}

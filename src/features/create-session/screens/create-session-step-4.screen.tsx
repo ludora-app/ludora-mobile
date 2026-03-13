@@ -80,7 +80,7 @@ export default function CreateSessionStep4Screen() {
           <String className="mb-3" font="primaryBold">
             {t('create-session-steps.step-4.field_chosen_title')}
           </String>
-          {isLoading ? <FieldCardSkeleton /> : <FieldCard field={fieldData} />}
+          {isLoading ? <FieldCardSkeleton /> : <FieldCard field={fieldData} sportImage={sport} showType showSport />}
         </Box>
       </Box>
     </WrapperScrollView>

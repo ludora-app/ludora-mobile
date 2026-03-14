@@ -149,7 +149,7 @@ export default function SessionTeamsCardTeam(props: SessionTeamsCardTeamProps) {
             {filteredPlayers?.map((player, sessionPlayersIndex) => (
               <SessionTeamsCardAvatar
                 key={player.userUid}
-                data={{ firstname: player?.firstname, imageUrl: player?.imageUrl, lastname: player?.lastname }}
+                data={{ firstname: player?.firstname, imageUrl: player?.imageUrl ? { uri: player.imageUrl } : undefined, lastname: player?.lastname }}
                 sideTeam={side}
                 size="sm"
                 style={{

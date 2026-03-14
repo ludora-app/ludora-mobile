@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image } from 'react-native';
+
+import { Image } from '@/components/ludo-ui/components/image';
 
 import { cn } from '../../../utils';
 import { twStyles } from '../styles/Avatar.styles';

@@ -74,7 +74,7 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
       >
         <BoxRow className="items-center gap-2">
           <Avatar
-            data={{ firstname, imageUrl, lastname }}
+            data={{ firstname, imageUrl: imageUrl ? { uri: imageUrl } : undefined, lastname }}
             className={avatarColor}
             contentProps={{ colorVariant }}
           />

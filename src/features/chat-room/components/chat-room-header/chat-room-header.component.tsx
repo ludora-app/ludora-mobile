@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { ImageSource } from 'expo-image';
 import { StrictOmit } from '@chillui/ui';
 import { StyleSheet } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
@@ -8,7 +9,9 @@ import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
+import { getSportPlaceHolder } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
@@ -27,12 +30,13 @@ type LocalSearchParamsSessionInfoChatRoom = RootStackParamList[typeof ROUTES.CHA
 export default function ChatRoomHeader() {
   const router = useRouter();
   const { top } = useSafeArea()
-  const { chatRoomId, imageUrl, name, receiver, sessionUid, type } = useChatRoomStore(
+  const { chatRoomId, imageUrl, name, receiver, sessionSport, sessionUid, type } = useChatRoomStore(
     useShallow(state => ({
       chatRoomId: state.chatRoomId,
       imageUrl: state.chatRoomInfo?.imageUrl,
       name: state.chatRoomInfo?.name,
       receiver: state.chatRoomInfo?.receiver,
+      sessionSport: state.chatRoomInfo?.sessionData?.sport,
       sessionUid: state.chatRoomInfo?.sessionData?.sessionUid,
       type: state.chatRoomInfo?.type
     }))
@@ -43,6 +47,13 @@ export default function ChatRoomHeader() {
 
 
   const chatRoomIsGroup = type !== "PRIVATE"
+
+  const getAvatarImage = (): ImageSource | undefined => {
+    if (imageUrl) return { uri: imageUrl };
+    if (chatRoomIsGroup && sessionSport) return getSportPlaceHolder(sessionSport as SessionCollectionItemDtoSport) as ImageSource;
+    return undefined;
+  };
+  const avatarImage = getAvatarImage();
 
   const handleInfoPress = () => {
     if (chatRoomIsGroup) {
@@ -89,14 +100,14 @@ export default function ChatRoomHeader() {
               <Avatar
                 data={{
                   firstname: name,
-                  imageUrl,
+                  imageUrl: avatarImage,
                 }}
               />
             ) : (
               <Avatar
                 data={{
                   firstname,
-                  imageUrl,
+                  imageUrl: avatarImage,
                   lastname,
                 }}
               />

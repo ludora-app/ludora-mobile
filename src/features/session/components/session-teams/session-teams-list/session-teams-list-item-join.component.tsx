@@ -56,7 +56,7 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
           )}
           {isSelectedTeam && (
             <Avatar
-              data={{ ...userMe, imageUrl: userMe?.imageUrl }}
+              data={{ ...userMe, imageUrl: userMe?.imageUrl ? { uri: userMe.imageUrl } : undefined }}
               className={cn(avatarColor)}
               contentProps={{
                 colorVariant: avatarContentColorVariant,

@@ -33,7 +33,7 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
       <Avatar
         data={{
           firstname: senderFirstname,
-          imageUrl: senderAvatar,
+          imageUrl: senderAvatar ? { uri: senderAvatar } : undefined,
           lastname: senderLastname
         }}
       />

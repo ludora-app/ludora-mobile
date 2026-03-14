@@ -42,7 +42,7 @@ export default function InviteFriendsHeaderInvitedFriends() {
       <Box>
         <Avatar
           key={item.friendUid}
-          data={{ firstname: item.firstname, imageUrl: item.avatarUrl, lastname: item.lastname }}
+          data={{ firstname: item.firstname, imageUrl: item.avatarUrl ? { uri: item.avatarUrl } : undefined, lastname: item.lastname }}
         />
         <Icon
           name="close-circle-bulk"

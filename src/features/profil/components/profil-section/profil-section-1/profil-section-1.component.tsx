@@ -65,7 +65,7 @@ function ProfilSection1(props: ProfilSection1Props) {
         <Avatar
           data={{
             firstname,
-            imageUrl: avatarUrl,
+            imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
             lastname,
           }}
           size="xl"

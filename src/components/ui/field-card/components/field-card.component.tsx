@@ -5,9 +5,9 @@ import { PropsWithChildren, useMemo } from 'react';
 import { ImageBackground, Box, Chip, Icon, String, BoxRow, Image } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { getSportImage } from '@/utils/sports.utils';
 import { convertMToKm } from '@/utils/distance.utils';
-import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
+import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
+import { FieldResponseDto, FieldResponseDtoType, SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   shadowBlack: {
@@ -26,24 +26,25 @@ interface FieldCardProps {
   showSport?: boolean;
   onPress?: () => void;
   field: FieldResponseDto;
+  sportImage?: SessionCollectionItemDtoSport
   shadowVariant?: 'primary' | 'black' | 'secondary';
 }
 
 export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
-  const { children, field, onPress, shadowVariant = 'black', showSport, showType } = props;
+  const { children, field, onPress, shadowVariant = 'black', showSport, showType, sportImage } = props;
   const { t } = useTranslate();
 
   const { fieldImages, name, shortAddress, sports, type, userDistance = 0 } = field || {};
 
-  const mainSport = useMemo(() => sports[0], [sports]);
 
-  const mainSportImage = useMemo(() => getSportImage(mainSport), [mainSport]);
+  const effectiveSport = sportImage ?? (sports?.[0] as SessionCollectionItemDtoSport);
+  const mainSportPlaceholder = useMemo(() => getSportPlaceHolder(effectiveSport), [effectiveSport]);
 
   const fieldImage = useMemo(() => {
     const customImage = fieldImages?.find(img => img.order === 0)?.url;
     if (customImage) return customImage;
-    return getSportImage(sports[0]);
-  }, [fieldImages, sports]);
+    return mainSportPlaceholder;
+  }, [fieldImages, mainSportPlaceholder]);
 
   const handleShadow = useMemo(() => {
     if (shadowVariant === 'black') {
@@ -73,11 +74,13 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
       <Box className="h-16 overflow-hidden rounded-t-xl">
         <ImageBackground source={fieldImage} contentFit="cover" className="h-16">
           <BoxRow className="mt-2 mr-2 ml-auto gap-2 items-center">
-            {type === FieldResponseDtoType.PUBLIC && showType && (
-              <Chip title={t(`common.field_type_${type}`)} size="2xs" />
-            )}
             {showSport && (
-              <Image source={mainSportImage} contentFit="cover" className="size-6" />
+              sports.map((sport, index) => (
+                <Image source={getSportImage(sport as SessionCollectionItemDtoSport)} contentFit="cover" className="size-6" key={index} />
+              ))
+            )}
+            {type === FieldResponseDtoType.PUBLIC && showType && (
+              <Chip title={t(`common.session_visibility_${type}`)} size="2xs" />
             )}
           </BoxRow>
         </ImageBackground>

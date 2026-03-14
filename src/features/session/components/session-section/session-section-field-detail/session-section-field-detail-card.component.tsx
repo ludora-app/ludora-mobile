@@ -8,10 +8,11 @@ import FieldCardSkeletonComponent from '@/components/ui/field-card/components/fi
 
 type SessionSectionFieldDetailCardProps = {
   fieldUid: FindOneSessionResponseData['fieldUid'];
+  sport: FindOneSessionResponseData['sport'];
 };
 
 export default function SessionSectionFieldDetailCard(props: SessionSectionFieldDetailCardProps) {
-  const { fieldUid } = props;
+  const { fieldUid, sport } = props;
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const { data: fieldData, isLoading: fieldDataLoading } = useGetField(fieldUid);
@@ -29,5 +30,5 @@ export default function SessionSectionFieldDetailCard(props: SessionSectionField
 
 
 
-  return fieldData && <FieldCard field={fieldData} shadowVariant={handleShadowVariant} />;
+  return fieldData && <FieldCard field={fieldData} shadowVariant={handleShadowVariant} showType sportImage={sport} />;
 }

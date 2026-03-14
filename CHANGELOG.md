@@ -1,3 +1,9 @@
+## [1.1.0-alpha.26](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.25...v1.1.0-alpha.26) (2026-03-14)
+
+### ✨ Features
+
+* **SCRUM-537:** Implement auto-play and looping for the welcome carousel, initialize planning days with the selected date, and set a dark status bar style for specific screens. ([#61](https://github.com/ludora-app/ludora-mobile/issues/61)) ([3813998](https://github.com/ludora-app/ludora-mobile/commit/3813998e4326a8d1c0e0ac7b7ce38676e1c7fa28))
+
 ## [1.1.0-alpha.25](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0-alpha.24...v1.1.0-alpha.25) (2026-03-13)
 
 ### ✨ Features

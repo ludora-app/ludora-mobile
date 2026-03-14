@@ -57,7 +57,7 @@ const carouselItems: CarouselItemProps[] = [
 export default function WelcomeCarousel() {
   const { t } = useTranslate();
   return (
-    <Carousel className="flex-1">
+    <Carousel className="flex-1" autoPlay autoPlayLoop>
       <CarouselContent>
         {carouselItems.map(item => (
           <CarouselItem key={item.id} className="items-center justify-center px-5 pb-10">

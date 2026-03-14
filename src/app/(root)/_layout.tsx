@@ -20,9 +20,9 @@ function AppLayoutNav() {
         name="create-session"
         options={{
           animation: 'slide_from_bottom',
+          statusBarStyle: "dark",
         }}
       />
-
       {/* ──────────── Profil ──────────── */}
       <Stack.Screen
         name="profil/[id]/actions"
@@ -160,6 +160,7 @@ function AppLayoutNav() {
         options={{
           contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
+          statusBarStyle: "dark",
         }}
       />
       <Stack.Screen

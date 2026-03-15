@@ -1,3 +1,9 @@
+## [1.2.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.1...v1.2.0-alpha.2) (2026-03-15)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-540:** Relocate legal settings section configuration. ([#66](https://github.com/ludora-app/ludora-mobile/issues/66)) ([cc31026](https://github.com/ludora-app/ludora-mobile/commit/cc3102603917715ed57f511ad9adff6fb4bff06f))
+
 ## [1.2.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.1-alpha.1...v1.2.0-alpha.1) (2026-03-15)
 
 ### ✨ Features

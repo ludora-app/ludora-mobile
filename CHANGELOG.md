@@ -1,3 +1,9 @@
+## [1.1.1-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0...v1.1.1-alpha.1) (2026-03-15)
+
+### Bug Fixes
+
+* **SCRUM-538:** update contact form loading state and simplify ludo-pen-border SVG by inlining styles. ([#64](https://github.com/ludora-app/ludora-mobile/issues/64)) ([1016de1](https://github.com/ludora-app/ludora-mobile/commit/1016de130c3737ef1f5bc6c3262d5b8dce97527e))
+
 ## [1.1.0](https://github.com/ludora-app/ludora-mobile/compare/v1.0.2...v1.1.0) (2026-03-14)
 
 ### ✨ Features

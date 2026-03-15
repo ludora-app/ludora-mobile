@@ -3,6 +3,7 @@ import { String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
+import dayjs from '@/lib/dayjs';
 import { FindOneSessionResponseData } from '@/api/generated/model';
 
 import { useSessionTeamStore } from '../../../stores/session-team.store';
@@ -26,16 +27,28 @@ export default function SessionSectionTeamsAlert({ session }: SessionTeamsCardJo
   const isSwitchingTeam = !!joinedTeam && !!teamUid && joinedTeam.teamUid !== teamUid;
 
   const handleRemainingPlayers = () => {
-    if (teamUid) {
+    if (teamUid && !joinedTeam) {
       return remainingPlayers - 1;
     }
     return remainingPlayers;
   };
 
+  const isFinished = useMemo(() => {
+    if (!session?.endDate) return false;
+    return dayjs().isAfter(dayjs(session.endDate));
+  }, [session.endDate]);
+
   const handleColorVariant = useMemo(() => {
     if (!sideTeam) return 'dark';
     return sideTeam === 'left' ? 'primary' : 'secondary';
   }, [sideTeam]);
+
+  if (isFinished) return null;
+
+  const handleJoinedMessage = () => {
+    if (isSwitchingTeam) return t('session.teams_card_switching_team');
+    return t('session.teams_card_joined_team');
+  };
 
   return (
     <SessionSectionWrapperItem className="mt-1 items-center justify-center p-2">
@@ -44,7 +57,7 @@ export default function SessionSectionTeamsAlert({ session }: SessionTeamsCardJo
       </String>
       {!!selectedTeamName && (
         <AnimatedString colorVariant={handleColorVariant} useFastText={false} entering={FadeIn} truncate>
-          {t(isSwitchingTeam ? 'session.teams_card_switching_team' : 'session.teams_card_joined_team')}{' '}
+          {handleJoinedMessage()}{' '}
           <String font="primaryExtraBold" colorVariant={handleColorVariant} useFastText={false}>
             {selectedTeamName}
           </String>

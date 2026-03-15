@@ -7,6 +7,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 
+import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
@@ -45,10 +46,21 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   const isSwitching = !!joinedTeam && !!teamUid && joinedTeam.teamUid !== teamUid;
 
   const isSessionFull = remainingPlayers === 0;
-  const canJoinSession = !isSessionFull && !isJoined;
-  const canSwitchTeam = !isJoiningSession && !isSwitchingTeam && isSwitching;
 
-  const showActionButton = canJoinSession || canSwitchTeam;
+  const isFinished = useMemo(() => {
+    if (!session?.endDate) return false;
+    return dayjs().isAfter(dayjs(session.endDate));
+  }, [session?.endDate]);
+
+  const isStarted = useMemo(() => {
+    if (!session?.startDate) return false;
+    return dayjs().isAfter(dayjs(session.startDate));
+  }, [session?.startDate]);
+
+  const canJoinSession = !isSessionFull && !isJoined;
+  const canSwitchTeam = isSwitching;
+
+  const showActionButton = (canJoinSession || canSwitchTeam) && !isFinished;
 
   const handleButtonTitle = useMemo(() => {
     if (isSwitching) {
@@ -98,8 +110,12 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   };
 
   const handleCantJoinSession = () => {
+    if (isFinished) {
+      return t('session.footer_session_finished');
+    }
+
     if (isJoined) {
-      return t('session.footer_button_already_joined');
+      return isStarted ? t('session.footer_session_started') : t('session.footer_button_already_joined');
     }
 
     return t('session.footer_button_session_full');
@@ -119,6 +135,11 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
     return '#fff';
   }, [sideTeam]);
 
+  const handleMessageColorVariant = useMemo(() => {
+    if (!isJoined) return 'dark';
+    return sideTeam === 'left' ? 'primary' : 'secondary';
+  }, [isJoined, sideTeam]);
+
   return (
     <FormSheetFooter hasBottomSafeArea>
       {showActionButton && (
@@ -137,7 +158,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
         />
       )}
       {!showActionButton && (
-        <String className="text-center" colorVariant="primary" variant="body-3" font="primaryBold">
+        <String className="text-center" colorVariant={handleMessageColorVariant} variant="body-3" font="primaryBold">
           {handleCantJoinSession()}
         </String>
       )}

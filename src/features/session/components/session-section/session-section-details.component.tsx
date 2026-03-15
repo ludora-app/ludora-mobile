@@ -1,4 +1,5 @@
 import { useTranslate } from '@tolgee/react';
+import { Linking, Platform, Pressable } from 'react-native';
 import { BoxRow, Box, BoxGrow, Image, String } from '@ludo/ui';
 
 import { getSportImage } from '@/utils/sports.utils';
@@ -14,19 +15,38 @@ type SessionSectionDetailsProps = {
 };
 
 export default function SessionSectionDetails({ session }: SessionSectionDetailsProps) {
-  const { endDate, fieldShortAddress, gameMode, sessionTeams, sport, startDate, userDistance } = session || {};
+  const { endDate,
+    fieldLatitude,
+    fieldLongitude,
+    fieldShortAddress,
+    gameMode,
+    sessionTeams,
+    sport,
+    startDate,
+    userDistance } = session || {};
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
   const { t } = useTranslate();
 
   const sportImage = getSportImage(sport);
 
+  const handleOpenMaps = () => {
+    const latLng = `${fieldLatitude},${fieldLongitude}`;
+    const label = fieldShortAddress;
+    const url = Platform.select({
+      android: `geo:0,0?q=${latLng}(${label})`,
+      ios: `maps:0,0?q=${label}@${latLng}`,
+    });
+
+    Linking.openURL(url || `https://www.google.com/maps/search/?api=1&query=${latLng}`);
+  };
+
   return (
     <SessionSectionWrapperItem className="flex-row items-center gap-3">
       <Box className="items-center">
-        <Image source={sportImage} className="size-12" />
+        <Image source={sportImage} className="size-8" />
         <String font="primaryBold">{t(`common.game_mode_${gameMode}`, { space: '' })}</String>
       </Box>
-      <BoxGrow className="gap-1">
+      <BoxGrow className="gap-2">
         <BoxRow className="items-center gap-1">
           <Box className="max-w-[45%]">
             <String font="primaryExtraBold" variant="body-2" colorVariant="primary" truncate>
@@ -44,14 +64,14 @@ export default function SessionSectionDetails({ session }: SessionSectionDetails
             </String>
           </Box>
         </BoxRow>
-        <BoxRow className="items-center gap-4">
-          <BoxRow className="items-center gap-1">
+        <BoxRow className="items-center flex-wrap">
+          <BoxRow className="items-center gap-1 mr-2">
             <SessionSectionIcon sideTeam={sideTeam} name="calendar-2-regular" />
-            <String font="primaryExtraBold">{formatDateShort({ date: startDate })}</String>
+            <String font="primaryExtraBold" size="sm">{formatDateShort({ date: startDate })}</String>
           </BoxRow>
           <BoxRow className="items-center gap-1">
             <SessionSectionIcon sideTeam={sideTeam} name="clock-regular" />
-            <String font="primaryExtraBold">
+            <String font="primaryExtraBold" size="sm">
               {t('session-card.session_time', {
                 end_time: formatToHour({ date: endDate }),
                 start_time: formatToHour({ date: startDate }),
@@ -59,11 +79,16 @@ export default function SessionSectionDetails({ session }: SessionSectionDetails
             </String>
           </BoxRow>
         </BoxRow>
-        <BoxRow className="items-center gap-1">
-          <SessionSectionIcon sideTeam={sideTeam} name="location-solid" />
-          <String>{fieldShortAddress}</String>
-          {userDistance && <String variant="body-xs"> {`(${userDistance} ${t('common.km').toLowerCase()})`}</String>}
-        </BoxRow>
+        <Pressable onPress={handleOpenMaps} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
+          <BoxRow className="items-center gap-1">
+            <SessionSectionIcon sideTeam={sideTeam} name="location-solid" />
+            <String size="sm" className="underline">{fieldShortAddress}</String>
+            {userDistance &&
+              <String variant="body-xs" truncate>
+                {`(${userDistance} ${t('common.km').toLowerCase()})`}
+              </String>}
+          </BoxRow>
+        </Pressable>
       </BoxGrow>
     </SessionSectionWrapperItem>
   );

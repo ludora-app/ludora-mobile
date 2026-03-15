@@ -19,11 +19,10 @@ export default function SettingsContactScreen() {
   const schema = contactSchema(t);
   const { trackError } = useAnalytics();
   const { userMe } = useUserMe();
-  const { mutateAsync: sendContactMessage } = useSendContactMessage();
+  const { isPending: isSendingMessage, mutateAsync: sendContactMessage } = useSendContactMessage();
 
   const {
     control,
-    formState: { isSubmitting },
     handleSubmit,
     reset,
   } = useForm({
@@ -90,7 +89,7 @@ export default function SettingsContactScreen() {
           <Button
             title={t('settings.contact.button_send')}
             onPress={handleSubmit(onSubmit)}
-            isLoading={isSubmitting}
+            isLoading={isSendingMessage}
             size="lg"
             className="mt-4"
           />

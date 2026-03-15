@@ -9,10 +9,11 @@ type SessionTeamsListItemProps = {
   item: SessionTeamResponseData;
   hasUserJoinedATeam: boolean;
   teamSide: 'left' | 'right';
+  isStarted?: boolean;
 };
 
 export default function SessionTeamsListSection(props: SessionTeamsListItemProps) {
-  const { hasUserJoinedATeam, item: sessionTeam, teamSide } = props;
+  const { hasUserJoinedATeam, isStarted, item: sessionTeam, teamSide } = props;
 
   const { sessionPlayers } = sessionTeam || {};
 
@@ -32,7 +33,7 @@ export default function SessionTeamsListSection(props: SessionTeamsListItemProps
           hasRandomTitle
         />
       )}
-      {!hasUserJoinedATeam && <SessionTeamsListItemJoin teams={sessionTeam} teamSide={teamSide} />}
+      {!hasUserJoinedATeam && <SessionTeamsListItemJoin teams={sessionTeam} teamSide={teamSide} isStarted={isStarted} />}
     </>
   );
 }

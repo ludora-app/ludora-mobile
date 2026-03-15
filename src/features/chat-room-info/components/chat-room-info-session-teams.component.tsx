@@ -4,6 +4,7 @@ import { useTranslate } from '@tolgee/react'
 import React, { useMemo, useState } from 'react'
 import { Box, BoxRow, Button, String } from '@ludo/ui'
 
+import dayjs from '@/lib/dayjs'
 import ROUTES from '@/constants/routes.constants'
 import { useUserMe } from '@/queries/user-me.query'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
@@ -27,6 +28,11 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
 
   const { isPending: isSwitching, mutateAsync: switchTeam } = useChangeSessionTeam(sessionUid)
 
+  const isFinished = useMemo(() => {
+    if (!session?.endDate) return false
+    return dayjs().isAfter(dayjs(session.endDate))
+  }, [session.endDate])
+
   const joinedTeam = useMemo(() => session.sessionTeams?.find(team => team.isJoined), [session.sessionTeams])
   const isSwitchingTeam = !!joinedTeam && !!selectedTeamUid && joinedTeam.teamUid !== selectedTeamUid
 
@@ -35,6 +41,7 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
   }
 
   const handleSelectTeam = (teamUid: string) => {
+    if (isFinished) return
     if (joinedTeam?.teamUid === teamUid || selectedTeamUid === teamUid) {
       setSelectedTeamUid(null)
       return
@@ -43,7 +50,7 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
   }
 
   const handleSwitchTeam = async () => {
-    if (!selectedTeamUid || !isSwitchingTeam) return
+    if (!selectedTeamUid || !isSwitchingTeam || isFinished) return
     try {
       await switchTeam(selectedTeamUid)
       toast({ message: t('session.toast_team_switched_success'), variant: 'success' })
@@ -72,11 +79,11 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
         session={session}
         selectedTeamUid={selectedTeamUid}
         onSelectTeam={handleSelectTeam}
-        disableSelection={isSwitching}
+        disableSelection={isSwitching || isFinished}
         userMeUid={userMeId}
       />
 
-      {isSwitchingTeam && (
+      {isSwitchingTeam && !isFinished && (
         <Button
           title={t('session.footer_button_change_team')}
           onPress={handleSwitchTeam}

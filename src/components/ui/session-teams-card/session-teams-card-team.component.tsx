@@ -142,7 +142,7 @@ export default function SessionTeamsCardTeam(props: SessionTeamsCardTeamProps) {
             {showAddIcon && (
               <Icon
                 name="add-circle-regular"
-                className="z-50 size-14"
+                className={cn('z-50 size-14', { 'opacity-30': disableSelection })}
                 color={side === 'right' ? COLORS.secondary : COLORS.primary}
               />
             )}

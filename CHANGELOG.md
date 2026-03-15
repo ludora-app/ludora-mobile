@@ -1,3 +1,9 @@
+## [1.2.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.1-alpha.1...v1.2.0-alpha.1) (2026-03-15)
+
+### ✨ Features
+
+* **SCRUM-539:** Prevent team selection and joining after a session has ended or started. ([#65](https://github.com/ludora-app/ludora-mobile/issues/65)) ([31b46b5](https://github.com/ludora-app/ludora-mobile/commit/31b46b5b7611051ed53698c0c6a14868a4d6f8c0))
+
 ## [1.1.1-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0...v1.1.1-alpha.1) (2026-03-15)
 
 ### Bug Fixes

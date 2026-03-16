@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
+import dayjs from '@/lib/dayjs';
 import { useUserMe } from '@/queries/user-me.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
@@ -19,16 +20,25 @@ export default function SessionSectionTeamsCard({ session }: SessionSectionTeams
 
   const joinedTeam = session.sessionTeams?.find(team => team.isJoined);
 
+  const isFinished = useMemo(() => {
+    if (!session?.endDate) return false;
+    return dayjs().isAfter(dayjs(session.endDate));
+  }, [session.endDate]);
+
+  const teamUid = useSessionTeamStore(state => state.teamUid);
+
   useEffect(() => {
-    if (joinedTeam) {
-      const side = session.sessionTeams?.[0]?.teamUid === joinedTeam.teamUid ? 'left' : 'right';
-      setSideTeam(side);
+    if (!teamUid && joinedTeam) {
+      setSideTeam(joinedTeam.teamUid === session.sessionTeams?.[0]?.teamUid ? 'left' : 'right');
     }
-  }, [joinedTeam, session.sessionTeams, setSideTeam]);
+  }, [joinedTeam, session.sessionTeams, setSideTeam, teamUid]);
 
   const handleSelectTeam = (teamUidToSelect: string, side: 'left' | 'right') => {
+    if (isFinished) return;
+    
     if (joinedTeam?.teamUid === teamUidToSelect || selectedTeamUid === teamUidToSelect) {
       setTeamUid(null);
+      setSideTeam(null);
       return;
     }
 
@@ -42,7 +52,7 @@ export default function SessionSectionTeamsCard({ session }: SessionSectionTeams
       session={session}
       selectedTeamUid={selectedTeamUid}
       onSelectTeam={handleSelectTeam}
-      disableSelection={false}
+      disableSelection={isFinished}
       userMeUid={userMeId}
     />
   );

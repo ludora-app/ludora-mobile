@@ -1,3 +1,27 @@
+## [1.2.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.2...v1.2.0-alpha.3) (2026-03-16)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-541:** Integrate Google Sign-In plugin and enhance Places API queries ([#67](https://github.com/ludora-app/ludora-mobile/issues/67)) ([46cd2b2](https://github.com/ludora-app/ludora-mobile/commit/46cd2b2173e3f8b6a5c1f018503139dc2b0be17a))
+
+## [1.2.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.1...v1.2.0-alpha.2) (2026-03-15)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-540:** Relocate legal settings section configuration. ([#66](https://github.com/ludora-app/ludora-mobile/issues/66)) ([cc31026](https://github.com/ludora-app/ludora-mobile/commit/cc3102603917715ed57f511ad9adff6fb4bff06f))
+
+## [1.2.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.1-alpha.1...v1.2.0-alpha.1) (2026-03-15)
+
+### ✨ Features
+
+* **SCRUM-539:** Prevent team selection and joining after a session has ended or started. ([#65](https://github.com/ludora-app/ludora-mobile/issues/65)) ([31b46b5](https://github.com/ludora-app/ludora-mobile/commit/31b46b5b7611051ed53698c0c6a14868a4d6f8c0))
+
+## [1.1.1-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0...v1.1.1-alpha.1) (2026-03-15)
+
+### Bug Fixes
+
+* **SCRUM-538:** update contact form loading state and simplify ludo-pen-border SVG by inlining styles. ([#64](https://github.com/ludora-app/ludora-mobile/issues/64)) ([1016de1](https://github.com/ludora-app/ludora-mobile/commit/1016de130c3737ef1f5bc6c3262d5b8dce97527e))
+
 ## [1.1.0](https://github.com/ludora-app/ludora-mobile/compare/v1.0.2...v1.1.0) (2026-03-14)
 
 ### ✨ Features

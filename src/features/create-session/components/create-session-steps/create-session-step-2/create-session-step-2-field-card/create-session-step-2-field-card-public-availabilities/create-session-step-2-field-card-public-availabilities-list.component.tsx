@@ -29,15 +29,16 @@ const getNextSlots = (startDate: dayjs.Dayjs | null, count: number, selectedDate
     const dateToUse = selectedDate ? dayjs(selectedDate) : now;
     const isToday = dateToUse.isSame(now, 'day');
 
-    if (isToday) {
-      const currentMinutes = now.minute();
-      const roundedMinutes = Math.ceil(currentMinutes / 30) * 30;
+    const minStart = dateToUse.hour(7).minute(0).second(0).millisecond(0);
+
+    if (isToday && now.isAfter(minStart)) {
+      const roundedMinutes = Math.ceil(now.minute() / 30) * 30;
       current = now.hour(now.hour()).minute(roundedMinutes).second(0).millisecond(0);
-      if (current.isBefore(now) || current.isSame(now)) {
+      if (!current.isAfter(now)) {
         current = current.add(30, 'minute');
       }
     } else {
-      current = dateToUse.hour(7).minute(0).second(0).millisecond(0);
+      current = minStart;
     }
   }
 

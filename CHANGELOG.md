@@ -1,3 +1,13 @@
+## [1.2.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.3...v1.2.0-alpha.4) (2026-03-16)
+
+### Bug Fixes
+
+* **SCRUM-544:** Adjust time slot calculation to ensure proper availability handling for today ([#73](https://github.com/ludora-app/ludora-mobile/issues/73)) ([e2d706f](https://github.com/ludora-app/ludora-mobile/commit/e2d706f6417a71f4027603e3d4742edd6e1c2f08))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-542:** Update sports placeholder images and session card component ([#68](https://github.com/ludora-app/ludora-mobile/issues/68)) ([bb65fcc](https://github.com/ludora-app/ludora-mobile/commit/bb65fcc2f34e67299d4f48b9c07849473bce8a63))
+
 ## [1.2.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.2...v1.2.0-alpha.3) (2026-03-16)
 
 ### ♻️ Code Refactoring

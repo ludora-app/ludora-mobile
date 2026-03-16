@@ -1,9 +1,9 @@
 
-import { debounce, list } from 'radash';
+import { list } from 'radash';
 import * as Location from 'expo-location';
 import { FlatList } from 'react-native-gesture-handler';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { serialize } from '@/utils/json.utils';
 import { useGetPlace } from '@/api/hooks/places.hook';
@@ -63,16 +63,11 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
     [searchPlaces, trackError],
   );
 
-  const debouncedSearchRef = useRef(
-    debounce({ delay: 300 }, (searchValue: string) => {
-      handleSearch(searchValue);
-    }),
-  );
-
   useEffect(() => {
     if (inputValue) {
-      debouncedSearchRef.current(inputValue);
+      handleSearch(inputValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   const onSelectAddress = useCallback(

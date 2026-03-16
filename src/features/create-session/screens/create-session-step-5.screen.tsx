@@ -22,12 +22,6 @@ export default function CreateSessionStep5Screen() {
           </String>
         </Box>
         <String className="text-center">{t('create-session.step-5.description')}</String>
-        <String useFastText={false}>
-          {t('create-session.step-5.quote_part_1')}
-          <String colorVariant="primary" useFastText={false} font="primaryBold">
-            {t('create-session.step-5.quote_part_2')}
-          </String>
-        </String>
       </Box>
       <Box className="mt-10">
         <CreateSessionSubtitle title={t('create-session.step-5.session_preview_title')} />

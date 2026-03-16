@@ -9,7 +9,11 @@ import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
 import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
-import { FindOneSessionResponseData, SessionCollectionItemDto } from '@/api/generated/model';
+import {
+  FindOneSessionResponseData,
+  SessionCollectionItemDto,
+  SessionCollectionItemDtoSport,
+} from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   shadow: {
@@ -17,37 +21,45 @@ const styles = StyleSheet.create({
   },
 });
 
+type SessionData = SessionCollectionItemDto | FindOneSessionResponseData;
+
 interface SessionCardProps {
+  item: SessionData;
   isNextSession?: boolean;
-  item: SessionCollectionItemDto | FindOneSessionResponseData;
 }
 
-export default function SessionCard(props: SessionCardProps) {
-  const { isNextSession = false, item: session } = props;
-  const {
-    endDate,
-    fieldShortAddress,
-    gameMode,
-    maxPlayersPerTeam,
-    sessionTeams,
-    sport,
-    startDate,
-    uid: id,
-    userDistance,
-  } = session || {};
+function getFieldImage(session: SessionData): string | undefined {
+  if ('fieldImage' in session) return session.fieldImage;
+  if ('fieldImages' in session) return session.fieldImages?.[0]?.url;
+  return undefined;
+}
 
+function getSessionImage(session: SessionData, sport: SessionCollectionItemDtoSport) {
+  return getFieldImage(session) ?? getSportPlaceHolder(sport);
+}
+
+function formatTeamCount(players?: number, max?: number) {
+  if (players == null || max == null) return '';
+  return ` (${players}/${max})`;
+}
+
+export default function SessionCard({ isNextSession = false, item: session }: SessionCardProps) {
   const { t } = useTranslate();
+  const { endDate, fieldShortAddress, gameMode, maxPlayersPerTeam, sessionTeams, sport, startDate, uid, userDistance } =
+    session;
 
-  const sessionImage = useMemo(() => sport && getSportImage(sport), [sport]);
+  const sportImage = useMemo(() => getSportImage(sport), [sport]);
+  const sessionImage = useMemo(() => getSessionImage(session, sport), [session, sport]);
 
-  const sessionPlaceholder = useMemo(() => sport && getSportPlaceHolder(sport), [sport]);
+  const teamA = sessionTeams?.[0];
+  const teamB = sessionTeams?.[1];
 
   return (
-    <Link href={ROUTES.SESSION.INDEX_UID(id)} asChild>
+    <Link href={ROUTES.SESSION.INDEX_UID(uid)} asChild>
       <Pressable style={styles.shadow} className="z-10 rounded-xl">
         {!isNextSession && (
           <Box className="h-16 overflow-hidden rounded-t-xl">
-            <Image source={sessionPlaceholder} contentFit="cover" className="size-full" />
+            <Image source={sessionImage} contentFit="cover" className="size-full" />
           </Box>
         )}
         <Box
@@ -56,9 +68,8 @@ export default function SessionCard(props: SessionCardProps) {
           })}
         >
           <BoxRow>
-            {/* left card content */}
             <Box className="items-center justify-center bg-[#F5F5F5] p-4">
-              <Image source={sessionImage} className="size-7" />
+              <Image source={sportImage} className="size-7" />
               <String font="primaryExtraBold">{t(`common.game_mode_${gameMode}`, { space: '' })}</String>
             </Box>
 
@@ -66,34 +77,34 @@ export default function SessionCard(props: SessionCardProps) {
               <BoxRow className="items-center gap-1">
                 <BoxRow className="max-w-1/2 items-center">
                   <String variant="body-xs" font="primaryBold" colorVariant="primary" truncate>
-                    {sessionTeams?.[0]?.teamName}
+                    {teamA?.teamName}
                   </String>
                   <String variant="body-xs" font="primaryBold" colorVariant="primary">
-                    {` (${sessionTeams?.[0]?.numberOfPlayers}/${maxPlayersPerTeam})`}
+                    {formatTeamCount(teamA?.numberOfPlayers, maxPlayersPerTeam)}
                   </String>
                 </BoxRow>
                 <Box>
                   <String variant="body-xs" font="primaryBold">
-                    {`${t('common.vs').toUpperCase()}`}
+                    {t('common.vs').toUpperCase()}
                   </String>
                 </Box>
                 <BoxRow className="max-w-1/2 items-center">
                   <String variant="body-xs" font="primaryBold" colorVariant="secondary" truncate>
-                    {sessionTeams?.[1]?.teamName}
+                    {teamB?.teamName}
                   </String>
                   <String variant="body-xs" font="primaryBold" colorVariant="secondary">
-                    {` (${sessionTeams?.[1]?.numberOfPlayers}/${maxPlayersPerTeam})`}
+                    {formatTeamCount(teamB?.numberOfPlayers, maxPlayersPerTeam)}
                   </String>
                 </BoxRow>
               </BoxRow>
               <BoxRow className="items-center gap-1">
-                <BoxRow className="items-center gap-1 w-1/2">
+                <BoxRow className="w-1/2 items-center gap-1">
                   <Icon name="calendar-2-regular" color={COLORS.primary} size="sm" />
                   <String variant="body-sm" font="primaryExtraBold" truncate>
                     {formatDateShort({ date: startDate })}
                   </String>
                 </BoxRow>
-                <BoxRow className="items-center gap-1 w-1/2">
+                <BoxRow className="w-1/2 items-center gap-1">
                   <Icon name="clock-regular" color={COLORS.primary} size="sm" />
                   <String variant="body-sm" font="primaryExtraBold" truncate>
                     {t('session-card.session_time', {
@@ -110,11 +121,10 @@ export default function SessionCard(props: SessionCardProps) {
                     {fieldShortAddress}
                   </String>
                 </Box>
-                <String variant="body-xs"> {userDistance ? `(${userDistance} km)` : ''}</String>
+                {userDistance ? <String variant="body-xs">({userDistance} km)</String> : null}
               </BoxRow>
             </BoxGrow>
 
-            {/* right card content */}
             <Box className="items-center justify-center pr-1">
               <Icon name="chevron-right-regular" color="#000" size="sm" />
             </Box>

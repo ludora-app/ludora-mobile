@@ -1,31 +1,18 @@
-import { useForm } from 'react-hook-form';
-import { useTranslate } from '@tolgee/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormInput, WrapperKeyboardAvoidingView } from '@ludo/ui';
+import { useState } from 'react';
+import { WrapperKeyboardAvoidingView } from '@ludo/ui';
 
 import FilterAddressesList from '../components/filter-addresses-list.component';
 import FiltersAddressesHeader from '../components/filters-addresses-header.component';
-import { FiltersAddressesSchema, filtersAddressesSchema } from '../schemas/filters-addresses.schema';
+import FiltersAddressesListInput from '../components/filters-addresses-list-input.component';
 
 export default function FiltersAddressesScreen() {
-  const { t } = useTranslate();
-  const { control, watch } = useForm<FiltersAddressesSchema>({
-    resolver: zodResolver(filtersAddressesSchema),
-  });
-
-  const value = watch('address');
-
+  const [value, setValue] = useState('');
 
   return (
     <>
       <FiltersAddressesHeader />
       <WrapperKeyboardAvoidingView className="my-5" fill={false}>
-        <FormInput
-          control={control}
-          name="address"
-          placeholder={t('filters-addresses.formsheet_input_placeholder')}
-          autoFocus
-        />
+        <FiltersAddressesListInput onChange={setValue} />
         <FilterAddressesList inputValue={value} />
       </WrapperKeyboardAvoidingView>
     </>

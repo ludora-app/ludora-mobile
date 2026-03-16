@@ -3,7 +3,7 @@ import { ConfigContext, ExpoConfig } from 'expo/config';
 import packageJson from './package.json';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  const env = process.env.EXPO_PUBLIC_ENV || 'development';
+  const env = process.env.EXPO_PUBLIC_ENV || 'production';
 
   const isProd = env === 'production';
   const isPreview = env === 'preview';

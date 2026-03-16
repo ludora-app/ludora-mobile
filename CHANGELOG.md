@@ -1,3 +1,9 @@
+## [1.2.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.2...v1.2.0-alpha.3) (2026-03-16)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-541:** Integrate Google Sign-In plugin and enhance Places API queries ([#67](https://github.com/ludora-app/ludora-mobile/issues/67)) ([46cd2b2](https://github.com/ludora-app/ludora-mobile/commit/46cd2b2173e3f8b6a5c1f018503139dc2b0be17a))
+
 ## [1.2.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-alpha.1...v1.2.0-alpha.2) (2026-03-15)
 
 ### ♻️ Code Refactoring

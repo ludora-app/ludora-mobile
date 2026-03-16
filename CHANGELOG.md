@@ -1,3 +1,10 @@
+## [1.2.0-next.2](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0-next.1...v1.2.0-next.2) (2026-03-16)
+
+### Bug Fixes
+
+* **SCRUM-544:** Adjust time slot calculation to ensure proper availability handling for today ([#73](https://github.com/ludora-app/ludora-mobile/issues/73)) ([e2d706f](https://github.com/ludora-app/ludora-mobile/commit/e2d706f6417a71f4027603e3d4742edd6e1c2f08))
+* **SCRUM-544:** Adjust time slot calculation to ensure proper availability handling for today ([#73](https://github.com/ludora-app/ludora-mobile/issues/73)) ([#74](https://github.com/ludora-app/ludora-mobile/issues/74)) ([b27c172](https://github.com/ludora-app/ludora-mobile/commit/b27c1729e07f39a8207d368980334c56487c1108))
+
 ## [1.2.0-next.1](https://github.com/ludora-app/ludora-mobile/compare/v1.1.0...v1.2.0-next.1) (2026-03-16)
 
 ### ✨ Features

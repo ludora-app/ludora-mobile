@@ -98,7 +98,7 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
           <BoxRowCenterBetween>
             <String
               font="primaryBold"
-              variant="body-2"
+              variant="body-1"
             >
               {t(`notifications.title_${notificationType}`)}
             </String>
@@ -109,7 +109,7 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
           {!isAcceptedFriendRequest &&
             <BoxRow className='gap-1'>
               <BoxGrow>
-                <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                <String variant="body-sm" colorVariant="muted" numberOfLines={2} useFastText={false}>
                   <String font="primaryBold" useFastText={false}>
                     {truncateString({ maxLength: 40, str: senderName })}{" "}
                   </String>
@@ -121,7 +121,7 @@ export default function NotificationListItemsFriendRequest(props: NotificationLi
           {isAcceptedFriendRequest &&
             <BoxRow className='gap-1'>
               <BoxGrow>
-                <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+                <String variant="body-sm" colorVariant="muted" numberOfLines={2} useFastText={false}>
                   {t(`notifications.body_accepted_${notificationType}`)}{' '}
                   <String font="primaryBold" useFastText={false}>
                     {truncateString({ maxLength: 40, str: senderName })}{" "}

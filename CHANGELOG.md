@@ -1,3 +1,9 @@
+## [1.3.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.2.4...v1.3.0-alpha.1) (2026-03-17)
+
+### ✨ Features
+
+* **SCRUM-546:** Update typography variants for notification list item ([#80](https://github.com/ludora-app/ludora-mobile/issues/80)) ([066cff9](https://github.com/ludora-app/ludora-mobile/commit/066cff9f0ef6b36ef29ed3725462e977a0aa687c))
+
 ## [1.2.1](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0...v1.2.1) (2026-03-16)
 
 ### Bug Fixes

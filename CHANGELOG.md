@@ -1,3 +1,9 @@
+## [1.3.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.1...v1.3.0-alpha.2) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-548:** implement internationalization for various UI components and error messages ([#81](https://github.com/ludora-app/ludora-mobile/issues/81)) ([c4930c7](https://github.com/ludora-app/ludora-mobile/commit/c4930c7bd9cb7e0e771fac977774d81b5cdefc3c))
+
 ## [1.3.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.2.4...v1.3.0-alpha.1) (2026-03-17)
 
 ### ✨ Features

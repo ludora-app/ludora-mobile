@@ -5,7 +5,6 @@ import { FlatList, Keyboard } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { KeyboardToolbar } from 'react-native-keyboard-controller';
 import {
   String,
   FormInput,
@@ -34,6 +33,8 @@ import {
 
 /** Fallback si le footer n’a pas encore été mesuré (1er frame). */
 const FOOTER_HEIGHT_FALLBACK = 90;
+
+const KEYBOARD_BOTTOM_OFFSET = 80;
 
 const generateRandomTitleSuggestions = () => {
 
@@ -112,123 +113,120 @@ export default function CreateSessionStep3Screen() {
   };
 
   return (
-    <>
-      <WrapperKeyboardAwareScrollView
-        contentContainerClassName="gap-5 pb-10"
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-        bottomOffset={80}
-      >
-        <Box>
-          <CreateSessionTitle title={t('create-session-steps.step-3.title')} />
+    <WrapperKeyboardAwareScrollView
+      contentContainerClassName="gap-5 pb-10"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bottomOffset={KEYBOARD_BOTTOM_OFFSET}
+      hasKeyboardToolbar
+      keyboardToolbarProps={{
+        offset: { closed: 0, opened: toolbarOpenedOffset },
+      }}
+    >
+      <Box>
+        <CreateSessionTitle title={t('create-session-steps.step-3.title')} />
+        <String colorVariant="muted" variant="body-sm">
+          {t('create-session-steps.step-3.description')}
+        </String>
+      </Box>
+      <Box>
+        <CreateSessionStep3SectionTitle
+          iconName="type-text-square-regular"
+          title="create-session-steps-step-3.section_session_title"
+        />
+        <FormInput
+          control={control}
+          name="title"
+          placeholder={t('create-session-steps-step-3.section_session_title_placeholder')}
+          maxLength={TITLE_MAX_LENGTH}
+          hasLengthCounter
+          returnKeyType="next"
+        />
+        <Box className="gap-2">
           <String colorVariant="muted" variant="body-sm">
-            {t('create-session-steps.step-3.description')}
+            {t('create-session-steps-step-3.section_session_title_suggestions')}
           </String>
+          <FlatList
+            data={suggestions}
+            renderItem={({ item }) => (
+              <Chip
+                colorVariant="muted"
+                size="2xs"
+                title={t(item.title)}
+                titleProps={{
+                  color: '#000',
+                  colorVariant: 'dark',
+                }}
+                iconProps={{
+                  className: 'mr-1',
+                  color: '#000',
+                  name: 'stars-regular',
+                  position: 'left',
+                }}
+                onPress={() => handlePressSuggestion(item.title)}
+              />
+            )}
+            keyExtractor={item => item.id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerClassName="items-center gap-2"
+          />
         </Box>
-        <Box>
-          <CreateSessionStep3SectionTitle
-            iconName="type-text-square-regular"
-            title="create-session-steps-step-3.section_session_title"
-          />
-          <FormInput
-            control={control}
-            name="title"
-            placeholder={t('create-session-steps-step-3.section_session_title_placeholder')}
-            maxLength={TITLE_MAX_LENGTH}
-            hasLengthCounter
-            returnKeyType="next"
-          />
-          <Box className="gap-2">
-            <String colorVariant="muted" variant="body-sm">
-              {t('create-session-steps-step-3.section_session_title_suggestions')}
-            </String>
-            <FlatList
-              data={suggestions}
-              renderItem={({ item }) => (
-                <Chip
-                  colorVariant="muted"
-                  size="2xs"
-                  title={t(item.title)}
-                  titleProps={{
-                    color: '#000',
-                    colorVariant: 'dark',
-                  }}
-                  iconProps={{
-                    className: 'mr-1',
-                    color: '#000',
-                    name: 'stars-regular',
-                    position: 'left',
-                  }}
-                  onPress={() => handlePressSuggestion(item.title)}
-                />
-              )}
-              keyExtractor={item => item.id.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerClassName="items-center gap-2"
+      </Box>
+      <Box>
+        <CreateSessionStep3SectionTitle
+          iconName="text-align-right-regular"
+          title="create-session-steps-step-3.section_session_description"
+        />
+        <FormInput
+          control={control}
+          name="description"
+          multiline
+          maxLength={DESCRIPTION_MAX_LENGTH}
+          hasLengthCounter
+          placeholder={t('create-session-steps-step-3.section_session_description_placeholder')}
+          returnKeyType="next"
+          blurOnSubmit={false}
+        />
+      </Box>
+      <Box>
+        <CreateSessionStep3SectionTitle
+          iconName="people-regular"
+          title="create-session-steps-step-3.section_session_teams_names"
+        />
+        <BoxRowCenterBetween className="gap-3">
+          <BoxGrow className="gap-1">
+            <BoxRow className="items-end">
+              <Icon name="ludo-king" size="xl" />
+              <String>{t('create-session-steps-step-3.section_session_teams_names_team_1')}</String>
+            </BoxRow>
+            <FormInput
+              control={control}
+              name="teamAName"
+              placeholder={t('create-session-steps-step-3.section_session_teams_names_team_1_placeholder')}
+              maxLength={TEAM_NAME_MAX_LENGTH}
+              hasLengthCounter
+              returnKeyType="next"
             />
-          </Box>
-        </Box>
-        <Box>
-          <CreateSessionStep3SectionTitle
-            iconName="text-align-right-regular"
-            title="create-session-steps-step-3.section_session_description"
-          />
-          <FormInput
-            control={control}
-            name="description"
-            multiline
-            maxLength={DESCRIPTION_MAX_LENGTH}
-            hasLengthCounter
-            placeholder={t('create-session-steps-step-3.section_session_description_placeholder')}
-            returnKeyType="next"
-            blurOnSubmit={false}
-          />
-        </Box>
-        <Box>
-          <CreateSessionStep3SectionTitle
-            iconName="people-regular"
-            title="create-session-steps-step-3.section_session_teams_names"
-          />
-          <BoxRowCenterBetween className="gap-3">
-            <BoxGrow className="gap-1">
-              <BoxRow className="items-end">
-                <Icon name="ludo-king" size="xl" />
-                <String>{t('create-session-steps-step-3.section_session_teams_names_team_1')}</String>
-              </BoxRow>
-              <FormInput
-                control={control}
-                name="teamAName"
-                placeholder={t('create-session-steps-step-3.section_session_teams_names_team_1_placeholder')}
-                maxLength={TEAM_NAME_MAX_LENGTH}
-                hasLengthCounter
-                returnKeyType="next"
-              />
-            </BoxGrow>
-            <BoxGrow className="gap-1">
-              <BoxRow className="items-end">
-                <Icon name="ludo-king-2" size="xl" />
-                <String>{t('create-session-steps-step-3.section_session_teams_names_team_2')}</String>
-              </BoxRow>
-              <FormInput
-                control={control}
-                name="teamBName"
-                className="flex-1"
-                placeholder={t('create-session-steps-step-3.section_session_teams_names_team_2_placeholder')}
-                maxLength={TEAM_NAME_MAX_LENGTH}
-                hasLengthCounter
-                returnKeyType="done"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-            </BoxGrow>
-          </BoxRowCenterBetween>
-        </Box>
-      </WrapperKeyboardAwareScrollView>
-      <KeyboardToolbar
-        doneText={t('common.finish')}
-        insets={{ left: insets.left, right: insets.right }}
-        offset={{ closed: 0, opened: toolbarOpenedOffset }}
-      />
-    </>
+          </BoxGrow>
+          <BoxGrow className="gap-1">
+            <BoxRow className="items-end">
+              <Icon name="ludo-king-2" size="xl" />
+              <String>{t('create-session-steps-step-3.section_session_teams_names_team_2')}</String>
+            </BoxRow>
+            <FormInput
+              control={control}
+              name="teamBName"
+              className="flex-1"
+              placeholder={t('create-session-steps-step-3.section_session_teams_names_team_2_placeholder')}
+              maxLength={TEAM_NAME_MAX_LENGTH}
+              hasLengthCounter
+              returnKeyType="done"
+              onSubmitEditing={() => Keyboard.dismiss()}
+            />
+          </BoxGrow>
+        </BoxRowCenterBetween>
+      </Box>
+    </WrapperKeyboardAwareScrollView >
   );
 }

@@ -6,11 +6,11 @@ import { passwordSchema } from '@/utils/zod-schemas.utils';
 export const formSchema = (t: TolgeeInstance['t']) =>
   z
     .object({
-      confirmPassword: passwordSchema(t),
+      confirmPassword: z.string({ error: t('common.input_confirm_password_invalid_required') }),
       newPassword: passwordSchema(t),
     })
     .refine(data => data.newPassword === data.confirmPassword, {
-      message: 'Les mots de passe ne correspondent pas',
+      message: t('common.input_confirm_password_invalid_match'),
       path: ['confirmPassword'],
     });
 

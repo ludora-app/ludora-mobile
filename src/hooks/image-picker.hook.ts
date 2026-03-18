@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { useToast } from '@chillui/ui';
+import { useTranslate } from '@tolgee/react';
 import * as ImagePicker from 'expo-image-picker';
 
 import { pickImageImplementation } from '@/utils/image-picker.utils';
 
-// Constantes pour identifier l'erreur de permission
+import { useAnalytics } from './analytics-trackers.hook';
+
 const USER_REJECTED_PERMISSIONS = 'User rejected permissions';
 
-// Messages d'erreur
 const ERROR_MESSAGES: Record<string, string> = {
-  default: 'Une erreur inconnue est survenue.',
-  'file-extension-not-allowed':
-    'Fichier non autorisé. Veuillez sélectionner une image au format JPG, JPEG, PNG ou GIF.',
-  'image-too-large': 'Image trop grande. Veuillez choisir une image inférieure à 10MB.',
-  [USER_REJECTED_PERMISSIONS]:
-    "Permission refusée. Veuillez autoriser l'accès à l'appareil photo ou à la bibliothèque.",
+  default: 'image-picker.error.default',
+  'file-extension-not-allowed': 'image-picker.error.file_extension_not_allowed',
+  'image-too-large': 'image-picker.error.image_too_large',
+  [USER_REJECTED_PERMISSIONS]: 'image-picker.error.user_rejected_permissions',
 };
 
 /**
@@ -23,11 +22,10 @@ const ERROR_MESSAGES: Record<string, string> = {
  */
 export function usePickImage() {
   const { toast } = useToast();
+  const { t } = useTranslate();
+  const { trackError } = useAnalytics();
 
-  // selected images
   const [images, setImages] = useState<ImagePicker.ImagePickerAsset[] | null>(null);
-
-  // indicates if an operation is in progress
   const [isPending, setIsPending] = useState(false);
 
   /**
@@ -37,11 +35,10 @@ export function usePickImage() {
     setIsPending(true);
 
     try {
-      // try to retrieve the assets
       const pickedAssets = await pickImageImplementation(isCamera, isMultiple);
-      // even if `pickedAssets` is `null` (cancellation), update the state (possibly null)
       setImages(pickedAssets);
     } catch (err) {
+      trackError({ error: err, showToast: false });
       // in case of error, determine the corresponding message
       let errorMessage = ERROR_MESSAGES.default;
       if (err instanceof Error) {
@@ -50,21 +47,17 @@ export function usePickImage() {
 
       // display the error toast
       toast({
-        message: errorMessage,
+        message: t(errorMessage),
         position: 'top',
         variant: 'error',
       });
 
-      // reset the images list
       setImages(null);
     } finally {
       setIsPending(false);
     }
   };
 
-  /**
-   * reset the images list
-   */
   const clearImages = () => {
     setImages(null);
   };

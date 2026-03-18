@@ -19,6 +19,8 @@ import { formSchema } from '../schemas/register-step-2.schema';
 
 const EMAIL_ALREADY_EXISTS_ERROR_MESSAGE = 'User already exists';
 
+const KEYBOARD_BOTTOM_OFFSET = 80;
+
 export default function RegisterStep2Screen() {
   const router = useRouter();
   const { isPending: registerPending, mutateAsync: registerUser } = useRegister();
@@ -72,7 +74,15 @@ export default function RegisterStep2Screen() {
   return (
     <>
       <HeaderGoBack title={t('auth.register-step-2.title')} titleProps={{ variant: 'title-1' }} hasTopSafeArea />
-      <WrapperKeyboardAwareScrollView hasSafeArea edges={['bottom']} contentContainerClassName='pt-5'>
+      <WrapperKeyboardAwareScrollView
+        hasSafeArea
+        edges={['bottom']}
+        contentContainerClassName='pt-5'
+        hasKeyboardToolbar
+        bottomOffset={KEYBOARD_BOTTOM_OFFSET}
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
         <Box className="mb-5 flex-1 gap-5">
           <Box className="flex-row gap-4">
             <Box className="flex-1">

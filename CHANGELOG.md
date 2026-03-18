@@ -1,3 +1,9 @@
+## [1.3.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.2...v1.3.0-alpha.3) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-552:** Enhance image picker robustness by preventing concurrent calls, retaining selection on cancel, improving image validation, and handling camera availability. ([#82](https://github.com/ludora-app/ludora-mobile/issues/82)) ([9309076](https://github.com/ludora-app/ludora-mobile/commit/9309076fbbba9af830b3b966e6c1d712e2cf3871))
+
 ## [1.3.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.1...v1.3.0-alpha.2) (2026-03-18)
 
 ### ✨ Features

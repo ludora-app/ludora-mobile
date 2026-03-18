@@ -28,7 +28,7 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
 
   const isCodeValid = code && code.length > 0;
   const isShowingResendCountdown = resendCodeTime > 0;
-  const isButtonDisabled = isShowingResendCountdown ? true : !isCodeValid;
+  const isButtonDisabled = !isCodeValid && isShowingResendCountdown;
 
   const buttonMessage = useMemo(() => {
     if (isCodeValid) {
@@ -95,6 +95,7 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     <Button
       title={buttonMessage}
       isDisabled={isButtonDisabled}
+      hasDisabledOpacity
       onPress={handleSubmit}
       className="w-full"
       isLoading={isLoading || isSendingVerificationCode}

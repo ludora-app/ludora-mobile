@@ -42,7 +42,7 @@ export default function SportLevelCard({
       })}
       style={isSelected ? styles.selectedShadow : styles.shadow}
     >
-      <String font="primaryBold">{sport.name}</String>
+      <String font="primaryBold">{t(`common.session_sport_${sport.name}`).toUpperCase()}</String>
       <Image source={sportImage} className="size-16" contentFit="contain" />
       <String variant="body-sm" font="primarySemiBold" truncate>
         {level ? t(`common.user_level_${level}`) : t(translationKey)}

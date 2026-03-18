@@ -1,15 +1,14 @@
-import { useState } from 'react';
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import * as ImagePicker from 'expo-image-picker';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { pickImageImplementation } from '@/utils/image-picker.utils';
+import { pickImageImplementation, USER_REJECTED_PERMISSIONS } from '@/utils/image-picker.utils';
 
 import { useAnalytics } from './analytics-trackers.hook';
 
-const USER_REJECTED_PERMISSIONS = 'User rejected permissions';
-
 const ERROR_MESSAGES: Record<string, string> = {
+  'camera-not-available': 'image-picker.error.camera_not_available',
   default: 'image-picker.error.default',
   'file-extension-not-allowed': 'image-picker.error.file_extension_not_allowed',
   'image-too-large': 'image-picker.error.image_too_large',
@@ -17,8 +16,13 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 /**
- * custom hook to manage the selection of images.
- * - uses a toast to display the errors, instead of returning them.
+ * Hook de sélection d'images via caméra ou médiathèque.
+ *
+ * Comportement :
+ * - Les erreurs sont affichées via un toast (non remontées).
+ * - Si l'utilisateur annule (null), les images précédemment sélectionnées sont conservées.
+ * - Un double appel pendant un pick en cours est ignoré.
+ * - Les mises à jour de state sont abandonnées si le composant est démonté.
  */
 export function usePickImage() {
   const { toast } = useToast();
@@ -28,39 +32,53 @@ export function usePickImage() {
   const [images, setImages] = useState<ImagePicker.ImagePickerAsset[] | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  /**
-   * open the camera or the library to select images.
-   */
-  const handlePickImage = async ({ isCamera, isMultiple }: { isCamera: boolean; isMultiple: boolean }) => {
-    setIsPending(true);
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-    try {
-      const pickedAssets = await pickImageImplementation(isCamera, isMultiple);
-      setImages(pickedAssets);
-    } catch (err) {
-      trackError({ error: err, showToast: false });
-      // in case of error, determine the corresponding message
-      let errorMessage = ERROR_MESSAGES.default;
-      if (err instanceof Error) {
-        errorMessage = ERROR_MESSAGES[err.message] || ERROR_MESSAGES.default;
+  const handlePickImage = useCallback(
+    async ({ isCamera, isMultiple }: { isCamera: boolean; isMultiple: boolean }) => {
+      // Empêche les appels concurrents
+      if (isPending) return;
+
+      if (isMountedRef.current) setIsPending(true);
+
+      try {
+        const pickedAssets = await pickImageImplementation(isCamera, isMultiple);
+
+        if (!isMountedRef.current) return;
+
+        // null = l'utilisateur a annulé : on conserve la sélection précédente
+        if (pickedAssets !== null) {
+          setImages(pickedAssets);
+        }
+      } catch (err: unknown) {
+        if (!isMountedRef.current) return;
+
+        trackError({ error: err, showToast: false });
+
+        const errorKey = err instanceof Error ? err.message : '';
+        const messageKey = ERROR_MESSAGES[errorKey] ?? ERROR_MESSAGES.default;
+
+        toast({
+          message: t(messageKey),
+          position: 'top',
+          variant: 'error',
+        });
+      } finally {
+        if (isMountedRef.current) setIsPending(false);
       }
+    },
+    [isPending, t, toast, trackError],
+  );
 
-      // display the error toast
-      toast({
-        message: t(errorMessage),
-        position: 'top',
-        variant: 'error',
-      });
-
-      setImages(null);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  const clearImages = () => {
+  const clearImages = useCallback(() => {
     setImages(null);
-  };
+  }, []);
 
   return {
     clearImages,

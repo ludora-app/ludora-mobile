@@ -1,3 +1,9 @@
+## [1.3.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.3...v1.3.0-alpha.4) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-555:** Update keyboard behavior in List component, adjust EmptyResult margin, and enhance FormSheetFooter with layout support ([#83](https://github.com/ludora-app/ludora-mobile/issues/83)) ([c8e77b5](https://github.com/ludora-app/ludora-mobile/commit/c8e77b52fc8a20b80747f6a432316ce4e78620b6))
+
 ## [1.3.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.2...v1.3.0-alpha.3) (2026-03-18)
 
 ### ✨ Features

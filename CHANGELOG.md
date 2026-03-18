@@ -1,3 +1,9 @@
+## [1.3.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.4...v1.3.0-alpha.5) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-556:** Enhance WrapperKeyboardAwareScrollView with keyboard toolbar support, update type definitions and add Keyboard tool to register screen ([#84](https://github.com/ludora-app/ludora-mobile/issues/84)) ([9e11403](https://github.com/ludora-app/ludora-mobile/commit/9e11403502017a6207ffffbb96f5ee1c0063ab91))
+
 ## [1.3.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.3...v1.3.0-alpha.4) (2026-03-18)
 
 ### ✨ Features

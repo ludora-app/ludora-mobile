@@ -1,6 +1,6 @@
 import { Wrapper } from '@ludo/ui';
 import { PropsWithChildren } from 'react';
-import { StyleSheet } from 'react-native';
+import { LayoutChangeEvent, StyleSheet } from 'react-native';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
@@ -14,11 +14,12 @@ const styles = StyleSheet.create({
 });
 type FormSheetFooterProps = {
   hasBottomSafeArea?: boolean;
+  onLayout?: (event: LayoutChangeEvent) => void;
   shadowVariant?: 'black' | 'primary';
 };
 
 export default function FormSheetFooter(props: PropsWithChildren<FormSheetFooterProps>) {
-  const { children, hasBottomSafeArea = false, shadowVariant = 'black' } = props;
+  const { children, hasBottomSafeArea = false, onLayout, shadowVariant = 'black' } = props;
   const { bottom } = useSafeArea();
   return (
     <Wrapper
@@ -28,6 +29,7 @@ export default function FormSheetFooter(props: PropsWithChildren<FormSheetFooter
         hasBottomSafeArea && { paddingBottom: bottom },
       ]}
       fill={false}
+      onLayout={onLayout}
     >
       {children}
     </Wrapper>

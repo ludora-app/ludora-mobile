@@ -34,6 +34,7 @@ function EmptyResult(props: EmptyResultProps) {
     title,
     variant } = props;
 
+
   const getIconName = (): TIconsAll => {
     if (iconNames) {
       return iconNames[Math.floor(Math.random() * iconNames.length)];
@@ -58,7 +59,7 @@ function EmptyResult(props: EmptyResultProps) {
 
   const iconName = getIconName();
   return (
-    <Wrapper className={cn('items-center gap-4', className, { "mt-14": !center })}>
+    <Wrapper className={cn('items-center gap-4', className, { "mt-10": !center })}>
       <Icon name={iconName} className={cn('size-36', iconClassName)} />
       <String className="text-center">{handleTitle()}</String>
     </Wrapper>

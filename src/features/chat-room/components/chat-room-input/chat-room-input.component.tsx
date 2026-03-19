@@ -5,13 +5,14 @@ import { useShallow } from 'zustand/react/shallow';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BoxRow, FormInput, Wrapper } from '@ludo/ui';
 import { Keyboard, TextInput as RNTextInput } from 'react-native';
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { useKeyboardStore } from '@/stores/keyboard.store';
 
 import { schema } from '../../schemas/chat-room-input.schema';
+import { useChatRoomStore } from '../../store/chat-room.store';
 import { useChatRoomScrollStore } from '../../store/chat-room-scroll.store';
 import ChatRoomInputSubmitButton from './chat-room-input-submit-button.component';
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
@@ -26,12 +27,17 @@ export default function ChatRoomInput() {
   const [cursorPosition, setCursorPosition] = useState(0);
   const inputRef = useRef<RNTextInput>(null);
 
-  const { emojiCount, emojiValue, isEmojiPickerOpen, toggleEmojiPicker } =
+  const chatRoomId = useChatRoomStore(state => state.chatRoomId);
+  const chatRoomUserId = useChatRoomStore(state => state.chatRoomUserId);
+
+  const { clearPendingEmoji, emojiCount, emojiValue, isEmojiPickerOpen, resetEmojiPickerOnConversationChange, toggleEmojiPicker } =
     useChatRoomInputEmojiPickerStore(
-      useShallow((state) => ({
+      useShallow(state => ({
+        clearPendingEmoji: state.clearPendingEmoji,
         emojiCount: state.emojiCount,
         emojiValue: state.emojiValue,
         isEmojiPickerOpen: state.isEmojiPickerOpen,
+        resetEmojiPickerOnConversationChange: state.resetEmojiPickerOnConversationChange,
         toggleEmojiPicker: state.toggleEmojiPicker,
       })),
     );
@@ -56,6 +62,11 @@ export default function ChatRoomInput() {
   const { addOptimisticMessageToQueue } = useChatRoomMessageOptimisticQueue();
   const scrollToEnd = useChatRoomScrollStore((state) => state.scrollToEnd);
 
+  const conversationKey = chatRoomId ?? chatRoomUserId ?? null;
+  useEffect(() => {
+    resetEmojiPickerOnConversationChange();
+  }, [conversationKey, resetEmojiPickerOnConversationChange]);
+
   useLayoutEffect(() => {
     if (emojiCount > 0 && emojiValue) {
       const currentMessage = watch('message') || '';
@@ -67,6 +78,7 @@ export default function ChatRoomInput() {
 
       const newPosition = cursorPosition + emojiValue.length;
       setCursorPosition(newPosition);
+      clearPendingEmoji();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emojiCount]);
@@ -75,6 +87,7 @@ export default function ChatRoomInput() {
     addOptimisticMessageToQueue(values.message, 'TEXT');
     setValue('message', '');
     setCursorPosition(0);
+    clearPendingEmoji();
     setTimeout(() => scrollToEnd?.(), 100);
   };
 

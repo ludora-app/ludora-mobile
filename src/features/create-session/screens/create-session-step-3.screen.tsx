@@ -17,7 +17,6 @@ import {
   WrapperKeyboardAwareScrollView,
 } from '@ludo/ui';
 
-import { useSafeArea } from '@/hooks/safe-area.hook';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import { useCreateSessionLayoutStore } from '@/features/create-session/store/create-session-layout.store';
 
@@ -51,7 +50,6 @@ const generateRandomTitleSuggestions = () => {
 };
 
 export default function CreateSessionStep3Screen() {
-  const insets = useSafeArea();
   const footerHeight = useCreateSessionLayoutStore(state => state.footerHeight);
   const toolbarOpenedOffset = footerHeight > 0 ? footerHeight : FOOTER_HEIGHT_FALLBACK;
   const { t } = useTranslate();

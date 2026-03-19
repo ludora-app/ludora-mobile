@@ -1,3 +1,9 @@
+## [1.3.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.5...v1.3.0-alpha.6) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-557:** Enhance HeaderScreen component with new props for left content styling and icon customization; adjust layout in home and players list components for improved UI consistency. ([#85](https://github.com/ludora-app/ludora-mobile/issues/85)) ([4ab100a](https://github.com/ludora-app/ludora-mobile/commit/4ab100a975ab3787a4134ea5f88e4015500c5e26))
+
 ## [1.3.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.4...v1.3.0-alpha.5) (2026-03-18)
 
 ### ✨ Features

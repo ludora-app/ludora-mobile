@@ -1,3 +1,9 @@
+## [1.3.0-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.9...v1.3.0-alpha.10) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-549:** Add associated domains for universal links ([#89](https://github.com/ludora-app/ludora-mobile/issues/89)) ([caea1c8](https://github.com/ludora-app/ludora-mobile/commit/caea1c80aee9e3d351c6f86a65aacb3ad4a64b22))
+
 ## [1.3.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.8...v1.3.0-alpha.9) (2026-03-19)
 
 ### ✨ Features

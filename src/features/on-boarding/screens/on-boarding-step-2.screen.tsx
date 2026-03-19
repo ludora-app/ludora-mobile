@@ -11,7 +11,7 @@ export default function OnBoardingStep2Screen() {
   const { t } = useTranslate();
 
   return (
-    <WrapperScrollView contentContainerClassName="gap-8 pt-8">
+    <WrapperScrollView contentContainerClassName="gap-8 pt-8 pb-4">
       <String variant="body-3" font="primaryBold" className="text-center">
         {t('on-boarding.step-2.title')}
       </String>

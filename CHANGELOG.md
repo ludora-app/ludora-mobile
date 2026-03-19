@@ -1,3 +1,9 @@
+## [1.3.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.7...v1.3.0-alpha.8) (2026-03-19)
+
+### Bug Fixes
+
+* **SCRUM-559:** Update button titles in WelcomeFooter component for consistency with common translations ([#87](https://github.com/ludora-app/ludora-mobile/issues/87)) ([943ff46](https://github.com/ludora-app/ludora-mobile/commit/943ff46269e1d297c0078c1ccb27af69bbdfdc19))
+
 ## [1.3.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.6...v1.3.0-alpha.7) (2026-03-19)
 
 ### Bug Fixes

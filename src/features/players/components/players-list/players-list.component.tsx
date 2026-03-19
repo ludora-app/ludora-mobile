@@ -9,7 +9,7 @@ import PlayersListHeaderSticky from './players-list-headers/players-list-header-
 import { useGetUsersSuggestionByFilter } from '../../queries/get-users-suggestion-by-filter.query';
 import PlayersListHeaderTopList from './players-list-headers/players-list-header-top-list.component';
 
-const LIST_HEADER_HEIGHT = 152;
+const LIST_HEADER_HEIGHT = 156;
 
 export default function PlayersList() {
   const { bottomTab } = useSafeArea();

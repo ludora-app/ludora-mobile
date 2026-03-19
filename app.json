@@ -117,7 +117,8 @@
       "icon": "./assets/logos/ic-launcher-ios.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"]
     },
     "extra": {
       "router": {

@@ -1,5 +1,5 @@
 import { cn } from '@chillui/ui';
-import { profilRatingCard1 } from 'assets'
+// import { profilRatingCard1 } from 'assets'
 import { useTranslate } from '@tolgee/react';
 import { VariantProps } from 'tailwind-variants';
 import { Box, BoxRow, Image, String } from '@ludo/ui'
@@ -26,7 +26,7 @@ export default function RatingCard(props: RatingCardProps) {
           {t("common.coming_soon")}
         </String>
       </Box>
-      <Image source={profilRatingCard1} className='absolute top-0 left-0 right-0 bottom-0' contentFit='contain' />
+      {/* <Image source={profilRatingCard1} className='absolute top-0 left-0 right-0 bottom-0' contentFit='contain' /> */}
       <Box className={cn('h-2/3 items-center justify-center', ratingCardRatesContainerSizeTv({ size }))}>
         <Image source={{ uri: "https://picsum.photos/200/300" }} className={cn('absolute rounded-full opacity-50', ratingCardUserImageTv({ size }))} />
         <Image source={sportImage} className={ratingCardSportImageTv({ size })} />

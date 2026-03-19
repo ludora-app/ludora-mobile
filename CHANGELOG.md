@@ -1,3 +1,9 @@
+## [1.3.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.6...v1.3.0-alpha.7) (2026-03-19)
+
+### Bug Fixes
+
+* **SCRUM-560:** Add digit requirement to password schema validation ([#86](https://github.com/ludora-app/ludora-mobile/issues/86)) ([c0dbcb2](https://github.com/ludora-app/ludora-mobile/commit/c0dbcb27f506cc515a7679fd6444118f581f91f7))
+
 ## [1.3.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.5...v1.3.0-alpha.6) (2026-03-19)
 
 ### ✨ Features

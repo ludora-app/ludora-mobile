@@ -1,3 +1,9 @@
+## [1.3.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.8...v1.3.0-alpha.9) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-553:** Enhance emoji picker functionality by adding reset on conversation change and clearing pending emojis ([#88](https://github.com/ludora-app/ludora-mobile/issues/88)) ([19f02f0](https://github.com/ludora-app/ludora-mobile/commit/19f02f04f9f2af95fe4d6da12113f0ca54f9377e))
+
 ## [1.3.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.7...v1.3.0-alpha.8) (2026-03-19)
 
 ### Bug Fixes

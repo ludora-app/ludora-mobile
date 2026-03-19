@@ -1,3 +1,9 @@
+## [1.3.0-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.10...v1.3.0-alpha.11) (2026-03-19)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-561:** remove unused images and update imports in rating card component ([#90](https://github.com/ludora-app/ludora-mobile/issues/90)) ([7e5f5f7](https://github.com/ludora-app/ludora-mobile/commit/7e5f5f7f20608634f543e79228ccab1ef90b9eb6))
+
 ## [1.3.0-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.9...v1.3.0-alpha.10) (2026-03-19)
 
 ### ✨ Features

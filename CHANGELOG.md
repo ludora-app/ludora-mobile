@@ -1,3 +1,13 @@
+## [1.3.0-alpha.12](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.11...v1.3.0-alpha.12) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-564:** Implement error tracking for several queries, add a chat room message read fallback initializer, and remove the rn-emoji-keyboard dependency. ([#93](https://github.com/ludora-app/ludora-mobile/issues/93)) ([71e4d6a](https://github.com/ludora-app/ludora-mobile/commit/71e4d6a66293076d8a4bd360067d5beae339e95c))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-563:** update layout and styling for sport level card component; adjust padding in onboarding screens ([#91](https://github.com/ludora-app/ludora-mobile/issues/91)) ([4bf42bb](https://github.com/ludora-app/ludora-mobile/commit/4bf42bb630468c2f21f0c5ff131c2e102fed92ae))
+
 ## [1.3.0-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.10...v1.3.0-alpha.11) (2026-03-19)
 
 ### ♻️ Code Refactoring

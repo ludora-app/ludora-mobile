@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useToast } from '@chillui/ui'
-import { useRouter } from 'expo-router'
 import * as Clipboard from 'expo-clipboard'
 import { useTranslate } from '@tolgee/react'
 
@@ -13,13 +12,10 @@ type ChatRoomMessageActionsCopyMessageProps = {
   message: MessageCollectionItemDto
 }
 
-
-const WAIT_TIME_BEFORE_CLOSING_MODAL = 200
-
-export default function ChatRoomMessageActionsCopyMessage({ message }: ChatRoomMessageActionsCopyMessageProps) {
+export default function ChatRoomMessageActionsItemCopyMessage(props: ChatRoomMessageActionsCopyMessageProps) {
+  const { message } = props
   const { content: messageContent } = message || {}
   const { t } = useTranslate()
-  const router = useRouter()
   const { toast } = useToast()
   const [isCopying, setIsCopying] = useState(false)
 
@@ -33,10 +29,7 @@ export default function ChatRoomMessageActionsCopyMessage({ message }: ChatRoomM
       title: t('chat-room.chat-room-messages.copied_message'),
       variant: 'info',
     })
-    setTimeout(() => {
-      setIsCopying(false)
-      router.back()
-    }, WAIT_TIME_BEFORE_CLOSING_MODAL)
+    setIsCopying(false)
   }
 
   return (

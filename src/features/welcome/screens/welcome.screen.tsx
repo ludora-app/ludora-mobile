@@ -5,6 +5,7 @@ import WelcomeFooter from '../components/welcome-footer.component';
 import WelcomeCarousel from '../components/welcome-carousel.component';
 
 export default function WelcomeComponent() {
+
   return (
     // top2 : #ede9d0
     <BoxGrow className="bg-[#ffe7d6]">

@@ -1,30 +1,27 @@
-import { useMemo } from 'react';
-import { ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { useShallow } from 'zustand/react/shallow';
+import { Box } from '@ludo/ui';
+import { PropsWithChildren, useMemo } from 'react';
+import { OverKeyboardView } from 'react-native-keyboard-controller';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import { EmojiType, fr, en, useRecentPicksPersistence, EmojiKeyboard } from 'rn-emoji-keyboard';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { useLanguages } from '@/hooks/languages.hook';
 import { parse, serialize } from '@/utils/json.utils';
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
-import { useKeyboardStore } from '@/stores/keyboard.store';
 import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 
 type ChatRoomInputKeyboardEmojiProps = {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function ChatRoomInputKeyboardEmoji({ style }: ChatRoomInputKeyboardEmojiProps) {
-  const { isEmojiPickerOpen, setEmojiValue } = useChatRoomInputEmojiPickerStore(
-    useShallow((state) => ({
-      isEmojiPickerOpen: state.isEmojiPickerOpen,
-      setEmojiValue: state.setEmojiValue,
-    })),
-  );
-  const isKeyboardVisible = useKeyboardStore((state) => state.isVisible);
+export default function ChatRoomInputKeyboardEmoji(props: PropsWithChildren<ChatRoomInputKeyboardEmojiProps>) {
+  const { children, style } = props;
+  const isEmojiPickerOpen = useChatRoomInputEmojiPickerStore((state) => state.isEmojiPickerOpen);
+  const setEmojiPickerOpen = useChatRoomInputEmojiPickerStore((state) => state.setEmojiPickerOpen);
+  const setEmojiValue = useChatRoomInputEmojiPickerStore((state) => state.setEmojiValue);
   const { getLanguage } = useLanguages();
   const { insetsBottom } = useSafeArea();
 
@@ -48,28 +45,37 @@ export default function ChatRoomInputKeyboardEmoji({ style }: ChatRoomInputKeybo
     },
   });
 
-  if (!isEmojiPickerOpen && !isKeyboardVisible) {
-    return <Animated.View style={style} />;
-  }
-
   return (
-    <Animated.View style={style}>
-      <Animated.View style={{ flex: 1, opacity: isEmojiPickerOpen ? 1 : 0 }}>
-        <EmojiKeyboard
-          onEmojiSelected={handlePick}
-          translation={getKeyboardLocale}
-          hideHeader
-          categoryPosition="top"
-          enableRecentlyUsed
-          styles={{
-            container: {
-              borderRadius: 0,
-              paddingBottom: insetsBottom,
-              paddingTop: 0,
-            },
-          }}
-        />
-      </Animated.View>
-    </Animated.View>
+    <OverKeyboardView visible={isEmojiPickerOpen}>
+      <GestureHandlerRootView className="flex-1">
+        <TouchableWithoutFeedback
+          onPress={() => setEmojiPickerOpen(false)}
+        >
+          <Box className="flex-1 justify-end">
+            {children}
+            <Box
+              style={style}
+              className='bg-white'
+              onStartShouldSetResponder={() => true}
+            >
+              <EmojiKeyboard
+                onEmojiSelected={handlePick}
+                translation={getKeyboardLocale}
+                hideHeader
+                categoryPosition="top"
+                enableRecentlyUsed
+                styles={{
+                  container: {
+                    borderRadius: 0,
+                    paddingBottom: insetsBottom,
+                    paddingTop: 0,
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+        </TouchableWithoutFeedback>
+      </GestureHandlerRootView>
+    </OverKeyboardView>
   );
 }

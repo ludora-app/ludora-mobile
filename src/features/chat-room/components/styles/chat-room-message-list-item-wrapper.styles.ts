@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 export const chatRoomMessageListItemWrapperTv = tv({
-  base: 'rounded-lg p-2',
+  base: 'rounded-lg p-2 shrink',
   compoundVariants: [
     {
       className: 'bg-transparent border border-primary',

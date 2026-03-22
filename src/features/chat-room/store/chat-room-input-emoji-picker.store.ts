@@ -5,11 +5,9 @@ interface ChatRoomInputState {
   emojiCount: number;
   isEmojiPickerOpen: boolean;
   toggleEmojiPicker: () => void;
+  clearPendingEmoji: () => void;
   setEmojiValue: (value: string) => void;
   setEmojiPickerOpen: (value: boolean) => void;
-  /** Après insertion dans le champ : évite de réinjecter l’emoji au remount / changement de focus. */
-  clearPendingEmoji: () => void;
-  /** Nouvelle conversation : pending + fermeture du picker emoji. */
   resetEmojiPickerOnConversationChange: () => void;
 }
 
@@ -18,15 +16,25 @@ const useChatRoomInputEmojiPickerStore = create<ChatRoomInputState>((set, get) =
   emojiCount: 0,
   emojiValue: '',
   isEmojiPickerOpen: false,
-  resetEmojiPickerOnConversationChange: () => set({ emojiCount: 0, emojiValue: '', isEmojiPickerOpen: false }),
+  resetEmojiPickerOnConversationChange: () =>
+    set({
+      emojiCount: 0,
+      emojiValue: '',
+      isEmojiPickerOpen: false,
+    }),
   setEmojiPickerOpen: value => {
-    set({ isEmojiPickerOpen: value });
+    set({
+      isEmojiPickerOpen: value,
+    });
   },
   setEmojiValue: value => {
     set({ emojiCount: get().emojiCount + 1, emojiValue: value });
   },
   toggleEmojiPicker: () => {
-    set({ isEmojiPickerOpen: !get().isEmojiPickerOpen });
+    const nextOpen = !get().isEmojiPickerOpen;
+    set({
+      isEmojiPickerOpen: nextOpen,
+    });
   },
 }));
 

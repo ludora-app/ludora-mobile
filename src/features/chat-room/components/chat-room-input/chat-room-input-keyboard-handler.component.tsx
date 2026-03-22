@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { AppState, BackHandler } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
+import { useSharedValue } from 'react-native-reanimated';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useKeyboardStore } from '@/stores/keyboard.store';
 
 import ChatRoomInputKeyboardEmoji from './chat-room-input-keyboard-emoji.component';
 import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 
-export default function ChatRoomInputKeyboardHandler() {
+export default function ChatRoomInputKeyboardHandler({ children }: PropsWithChildren) {
   const persistedKeyboardHeight = useKeyboardStore((state) => state.height);
   const setKeyboardHeight = useKeyboardStore((state) => state.setHeight);
   const setKeyboardVisible = useKeyboardStore((state) => state.setIsVisible);
@@ -22,9 +22,9 @@ export default function ChatRoomInputKeyboardHandler() {
     const backAction = () => {
       if (isEmojiPickerOpen) {
         setEmojiPickerOpen(false);
-        return true; // On retourne true pour dire qu'on a géré l'événement
+        return true;
       }
-      return false; // Sinon on laisse la navigation faire son travail
+      return false;
     };
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -32,7 +32,6 @@ export default function ChatRoomInputKeyboardHandler() {
     return () => backHandler.remove();
   }, [isEmojiPickerOpen, setEmojiPickerOpen]);
 
-  // Cleanup effect: ferme le picker quand on quitte la page ou que l'app passe en background
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState !== 'active') {
@@ -56,7 +55,6 @@ export default function ChatRoomInputKeyboardHandler() {
         if (e.height > 0) {
           scheduleOnRN(setKeyboardHeight, e.height);
           scheduleOnRN(setKeyboardVisible, true);
-          scheduleOnRN(setEmojiPickerOpen, false);
         } else {
           scheduleOnRN(setKeyboardVisible, false);
         }
@@ -67,15 +65,17 @@ export default function ChatRoomInputKeyboardHandler() {
         heightSV.value = e.height;
       },
     },
-    [setKeyboardHeight, setKeyboardVisible, setEmojiPickerOpen],
+    [setKeyboardHeight, setKeyboardVisible],
   );
 
-  const animatedHeightStyle = useAnimatedStyle(() => {
-    const pickerHeight = isEmojiPickerOpen ? persistedKeyboardHeight : 0;
-    return {
-      height: Math.max(heightSV.value, pickerHeight),
-    };
-  }, [isEmojiPickerOpen, persistedKeyboardHeight]);
 
-  return <ChatRoomInputKeyboardEmoji style={animatedHeightStyle} />;
+  return (
+    <ChatRoomInputKeyboardEmoji
+      style={{
+        height: Math.max(heightSV.value, persistedKeyboardHeight),
+      }}
+    >
+      {children}
+    </ChatRoomInputKeyboardEmoji>
+  )
 }

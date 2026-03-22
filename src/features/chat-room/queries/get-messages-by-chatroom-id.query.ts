@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversations/conversations.api';
 
 import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
@@ -36,6 +36,18 @@ export const useGetMessagesByChatroomId = () => {
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
   }, [data?.pages, pendingMessages, chatRoomId]);
+
+  useEffect(() => {
+    if (!data?.pages) return;
+    const serverUids = new Set(data.pages.flatMap(page => page.data.items).map(item => item.uid));
+    const { pendingMessages: currentPending, removePendingMessage } =
+      useChatRoomOptimisticMessagesStore.getState();
+    Object.keys(currentPending).forEach(uid => {
+      if (serverUids.has(uid) && !currentPending[uid].isSending) {
+        removePendingMessage(uid);
+      }
+    });
+  }, [data?.pages]);
 
   return { ...rest, items };
 };

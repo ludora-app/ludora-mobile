@@ -6,6 +6,7 @@ import {
 } from '@generatedApi/conversations/conversations.api';
 
 import { useToast } from '@/components/chill-ui-library';
+import { MessageCollectionItemDtoGlobalStatus } from '@/api/generated/model';
 
 import { MessagesInfiniteData } from './chat-room-message-queue.types';
 import { useChatRoomOptimisticMessagesStore } from '../../store/chat-room-optimistic-messages.store';
@@ -34,7 +35,11 @@ export const useDeleteMessageMutation = (chatRoomId: string) => {
             ...page,
             data: {
               ...page.data,
-              items: page.data.items.filter(item => item.uid !== messageUid),
+              items: page.data.items.map(item =>
+                item.uid === messageUid
+                  ? { ...item, globalStatus: MessageCollectionItemDtoGlobalStatus.DELETED }
+                  : item,
+              ),
             },
           })),
         };

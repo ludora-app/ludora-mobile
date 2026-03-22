@@ -20,7 +20,6 @@ export default function useLoginGoogle() {
       firstname: givenName,
       imageUrl: photo,
       lastname: familyName,
-      provider: 'GOOGLE',
     };
 
     const response = await googleLogin({ data: userData });

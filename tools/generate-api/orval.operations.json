@@ -1,10 +1,4 @@
 {
-  "UsersController_findAll": {
-    "query": {
-      "useInfinite": true,
-      "useInfiniteQueryParam": "cursor"
-    }
-  },
   "ConversationsController_findAllByUserUid": {
     "query": {
       "useInfinite": true,
@@ -90,6 +84,12 @@
     }
   },
   "NotificationsController_findAll": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "UsersController_findAll": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

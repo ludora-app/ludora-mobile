@@ -40,10 +40,10 @@ export const useGetMessagesByChatroomId = () => {
   useEffect(() => {
     if (!data?.pages) return;
     const serverUids = new Set(data.pages.flatMap(page => page.data.items).map(item => item.uid));
-    const { pendingMessages: currentPending, removePendingMessage } =
-      useChatRoomOptimisticMessagesStore.getState();
+    const { pendingMessages: currentPending, removePendingMessage } = useChatRoomOptimisticMessagesStore.getState();
     Object.keys(currentPending).forEach(uid => {
-      if (serverUids.has(uid) && !currentPending[uid].isSending) {
+      const msg = currentPending[uid];
+      if (serverUids.has(uid) && !msg.isSending && !msg.isError) {
         removePendingMessage(uid);
       }
     });

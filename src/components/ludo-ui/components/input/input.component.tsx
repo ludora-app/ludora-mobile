@@ -2,6 +2,7 @@ import { forwardRef, useState } from 'react';
 import { Input as InputChillUi, InputContainer, InputField, InputLabel, cn, Box, BoxRow } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
+import { IS_IOS } from '@/constants/platform.constants';
 
 import { Icon } from '../icon';
 import { String } from '../string';
@@ -45,7 +46,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
           ref={ref}
           placeholderTextColor={COLORS.ring}
           cursorColor={COLORS.primary}
-          selectionColor={`${COLORS.primary}70`}
+          selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
+          selectionHandleColor={COLORS.primary}
           {...inputFieldProps}
           style={[
             { alignSelf: 'stretch', color: '#000', flex: 1 },

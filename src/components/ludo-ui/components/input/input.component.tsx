@@ -44,8 +44,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         <InputField
           ref={ref}
           placeholderTextColor={COLORS.ring}
-          cursorColor="#1E1E1E"
-          selectionColor="#1E1E1E"
+          cursorColor={COLORS.primary}
+          selectionColor={`${COLORS.primary}70`}
           {...inputFieldProps}
           style={[
             { alignSelf: 'stretch', color: '#000', flex: 1 },

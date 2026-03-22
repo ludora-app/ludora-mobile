@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversations/conversations.api';
 
 import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
+import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
 import { useChatRoomStore } from '../store/chat-room.store';
 import { useChatRoomOptimisticMessagesStore } from '../store/chat-room-optimistic-messages.store';
@@ -15,11 +16,17 @@ export const useGetMessagesByChatroomId = () => {
     limit: LIMIT_MESSAGES,
   };
 
-  const { data, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
+  const { data, error, isError, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
     query: {
       enabled: !!chatRoomId,
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
+  });
+
+  useGetMethodErrorTracking({
+    error,
+    extra: { context: 'useGetMessagesByChatroomId' },
+    isError,
   });
 
   const items = useMemo(() => {

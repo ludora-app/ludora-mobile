@@ -37,7 +37,7 @@ export default function ChatRoomMessageListItemWrapperIndicators({
     return (
       <BoxRow className="flex-row items-center">
         <Icon name="check-solid" size="xs" color={hasEveryoneRead ? COLORS.primary : COLORS.muted} />
-        <Icon name="check-solid" size="xs" className="-ml-2" color={hasEveryoneRead ? COLORS.primary : COLORS.muted} />
+        <Icon name="check-solid" size="xs" className="-ml-2.5" color={hasEveryoneRead ? COLORS.primary : COLORS.muted} />
       </BoxRow>
     );
   }

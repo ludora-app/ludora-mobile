@@ -1,3 +1,4 @@
+import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import { ImageSource } from 'expo-image';
 import { StrictOmit } from '@chillui/ui';
@@ -14,7 +15,6 @@ import { RootStackParamList } from '@/types/routes-params.types';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../../store/chat-room.store';
-import useChatRoomInputEmojiPickerStore from '../../store/chat-room-input-emoji-picker.store';
 
 
 const styles = StyleSheet.create({
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 
 type LocalSearchParamsPrivateInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_PRIVATE];
 type LocalSearchParamsSessionInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_SESSION];
+const BLUR_INTENSITY = 70;
 
 export default function ChatRoomHeader() {
   const router = useRouter();
@@ -41,8 +42,6 @@ export default function ChatRoomHeader() {
       type: state.chatRoomInfo?.type
     }))
   )
-  const isEmojiPickerOpen = useChatRoomInputEmojiPickerStore(state => state.isEmojiPickerOpen);
-  const setEmojiPickerOpen = useChatRoomInputEmojiPickerStore(state => state.setEmojiPickerOpen);
   const { firstname, lastname } = receiver || {}
 
 
@@ -79,46 +78,46 @@ export default function ChatRoomHeader() {
 
 
   return (
-    <Box style={[styles.shadow, { paddingTop: top }]} className="bg-white">
-      <Wrapper className="flex-row items-center justify-between py-2">
-        <BoxGrow className="flex-row items-center gap-1">
-          <Icon
-            name="arrow-left-regular"
-            size="lg"
-            color={COLORS.muted}
-            onPress={() => {
-              if (isEmojiPickerOpen) {
-                setEmojiPickerOpen(false);
-              } else {
+    <BlurView
+      intensity={BLUR_INTENSITY}
+      experimentalBlurMethod="dimezisBlurView"
+    >
+      <Box style={[styles.shadow, { paddingTop: top }]}>
+        <Wrapper className="flex-row items-center justify-between py-2">
+          <BoxGrow className="flex-row items-center gap-1">
+            <Icon
+              name="arrow-left-regular"
+              size="lg"
+              color={COLORS.muted}
+              onPress={() => {
                 router.back();
-              }
-            }}
-            pressEffectSize="xs"
-          />
-          {
-            chatRoomIsGroup ? (
-              <Avatar
-                data={{
-                  firstname: name,
-                  imageUrl: avatarImage,
-                }}
-              />
-            ) : (
-              <Avatar
-                data={{
-                  firstname,
-                  imageUrl: avatarImage,
-                  lastname,
-                }}
-              />
-            )
-          }
-          <String className="ml-2" colorVariant="muted" font="primaryBold" truncate>
-            {name}
-          </String>
-        </BoxGrow>
-        <Icon name="info-circle-regular" size="lg" color={COLORS.muted} onPress={handleInfoPress} pressEffectSize="xs" className='ml-3' />
-      </Wrapper>
-    </Box>
+              }}
+              pressEffectSize="xs"
+            />
+            {
+              chatRoomIsGroup ? (
+                <Avatar
+                  data={{
+                    firstname: name,
+                    imageUrl: avatarImage,
+                  }}
+                />
+              ) : (
+                <Avatar
+                  data={{
+                    firstname,
+                    imageUrl: avatarImage,
+                    lastname,
+                  }}
+                />
+              )
+            }
+            <String className="ml-2" colorVariant="muted" font="primaryBold" truncate>
+              {name}
+            </String>
+          </BoxGrow>
+          <Icon name="info-circle-regular" size="lg" color={COLORS.muted} onPress={handleInfoPress} pressEffectSize="xs" className='ml-3' />
+        </Wrapper>
+      </Box></BlurView>
   );
 }

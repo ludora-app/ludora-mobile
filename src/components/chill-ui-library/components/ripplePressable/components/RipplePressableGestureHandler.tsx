@@ -1,7 +1,10 @@
-import { Pressable, View } from 'react-native';
+
+import { View } from 'react-native';
+import { withUniwind } from 'uniwind';
+import { Pressable } from 'react-native-gesture-handler';
 import { useState, useRef, PropsWithChildren } from 'react';
 
-import { RipplePressableProps } from '@/components/chill-ui-library/types';
+import { RipplePressableGestureHandlerProps } from '@/components/chill-ui-library/types';
 
 import { cn } from '../../../utils';
 import { RippleEffect } from './RippleEffect';
@@ -31,7 +34,9 @@ import { extractBorderRadius } from '../utils/extractBorder';
  * @returns RipplePressable component with ripple animation
  * @throws Error if no children are provided
  */
-function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
+
+const StyledPressable = withUniwind(Pressable)
+function RipplePressable(props: PropsWithChildren<RipplePressableGestureHandlerProps>) {
   const {
     children,
     className,
@@ -94,7 +99,7 @@ function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
   };
 
   return (
-    <Pressable
+    <StyledPressable
       {...rest}
       ref={containerRef}
       onPress={handlePress}
@@ -116,7 +121,7 @@ function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
             effectColor={effectColor}
           />
         ))}
-    </Pressable>
+    </StyledPressable>
   );
 }
 

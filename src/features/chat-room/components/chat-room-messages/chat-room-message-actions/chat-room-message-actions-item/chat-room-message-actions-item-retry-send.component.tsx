@@ -1,36 +1,27 @@
 import { useState } from 'react'
 import { useToast } from '@chillui/ui'
-import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
 import COLORS from '@/constants/colors.contstants'
 import { MessageCollectionItemDto } from '@/api/generated/model'
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component'
-import { useChatRoomOptimisticMessagesStore } from '../../../store/chat-room-optimistic-messages.store'
-import { useChatRoomMessageOptimisticQueue } from '../../../queries/chat-room-message-queue/chat-room-message-queue.query'
-
+import { useChatRoomOptimisticMessagesStore } from '../../../../store/chat-room-optimistic-messages.store'
+import { useChatRoomMessageOptimisticQueue } from '../../../../queries/chat-room-message-queue/chat-room-message-queue.query'
 
 type ChatRoomMessageActionsRetrySendProps = {
   message: MessageCollectionItemDto
 }
 
-const WAIT_TIME_BEFORE_CLOSING_MODAL = 200
-
-const WAIT_TIME_BEFORE_RETRY = 400
-
-export default function ChatRoomMessageActionsRetrySend({ message }: ChatRoomMessageActionsRetrySendProps) {
+export default function ChatRoomMessageActionsItemRetrySend({ message }: ChatRoomMessageActionsRetrySendProps) {
   const { isSender: isSenderMe, uid: messageId } = message || {}
   const { t } = useTranslate()
-  const router = useRouter()
   const { toast } = useToast()
   const [isRetrying, setIsRetrying] = useState(false)
   const { retryOptimisticMessage } = useChatRoomMessageOptimisticQueue()
   const isFailedMessage = useChatRoomOptimisticMessagesStore(
     store => messageId ? store.pendingMessages[messageId]?.isError === true : false,
   )
-
-
 
   if (!isFailedMessage || !isSenderMe) return null
 
@@ -42,13 +33,8 @@ export default function ChatRoomMessageActionsRetrySend({ message }: ChatRoomMes
       title: t('chat.message_retry_sent'),
       variant: 'info',
     })
-    setTimeout(() => {
-      router.back()
-      setTimeout(() => {
-        retryOptimisticMessage(messageId)
-        setIsRetrying(false)
-      }, WAIT_TIME_BEFORE_RETRY)
-    }, WAIT_TIME_BEFORE_CLOSING_MODAL)
+    retryOptimisticMessage(messageId)
+    setIsRetrying(false)
   }
 
   return (

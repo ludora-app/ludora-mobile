@@ -10,7 +10,7 @@ export default function ChatRoomMessageListItemContentString({ messageData }: Ch
   const { content: messageContent } = messageData || {};
 
   return (
-    <String color="#FFF" size="sm" font="primarySemiBold">
+    <String color="#FFF" font="primarySemiBold">
       {messageContent}
     </String>
   );

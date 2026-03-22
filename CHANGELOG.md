@@ -1,3 +1,9 @@
+## [1.3.0-alpha.14](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.13...v1.3.0-alpha.14) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-568:** enhance button disabled state with opacity and refine input selection styling for iOS. ([#95](https://github.com/ludora-app/ludora-mobile/issues/95)) ([7792f6f](https://github.com/ludora-app/ludora-mobile/commit/7792f6f31c9cfb0a7f54a556604ccb9986c1bc00))
+
 ## [1.3.0-alpha.13](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.12...v1.3.0-alpha.13) (2026-03-22)
 
 ### ✨ Features

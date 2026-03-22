@@ -119,5 +119,5 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStep2Valid, autoGoToNextStep]);
-  return <Button title={t('common.button_next')} isDisabled={!handleButtonDisabled} onPress={handleSubmit} />;
+  return <Button title={t('common.button_next')} isDisabled={!handleButtonDisabled} hasDisabledOpacity onPress={handleSubmit} />;
 }

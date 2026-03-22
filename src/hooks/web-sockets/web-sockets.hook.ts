@@ -15,7 +15,7 @@ export const useWebsocketConnection = () => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const { userMeId } = useUserMe(isAuthenticated);
 
-  const { setAuthentication, setStatus } = useWebsocketStore();
+  const { setAuthentication, setStatus, tokenVersion } = useWebsocketStore();
   const { appState } = useAppState({ onlyIos: true });
 
   const handleActionAuthentication = useCallback(
@@ -59,5 +59,5 @@ export const useWebsocketConnection = () => {
       off('notification');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appState, userMeId]);
+  }, [appState, userMeId, tokenVersion]);
 };

@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { getApiUrl } from '@/utils/api-url.utils';
 import { useAuthStore } from '@/stores/auth.store';
+import { useWebsocketStore } from '@/stores/websocket.store';
 
 import { POST as refreshTokenPost } from './queries/refresh-token.query';
 
@@ -23,6 +24,8 @@ async function handleRefreshToken(refreshToken: string): Promise<string | null> 
 
     await SecureStore.setItemAsync('access_token', accessToken);
     await SecureStore.setItemAsync('refresh_token', newRefreshToken);
+
+    useWebsocketStore.getState().incrementTokenVersion();
 
     return accessToken;
   } catch {

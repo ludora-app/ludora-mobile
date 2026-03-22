@@ -1,3 +1,9 @@
+## [1.3.0-alpha.15](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.14...v1.3.0-alpha.15) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-578:** Introduce token versioning to the WebSocket store to ensure re-authentication after token refresh. ([#96](https://github.com/ludora-app/ludora-mobile/issues/96)) ([da91d66](https://github.com/ludora-app/ludora-mobile/commit/da91d669441233f435fe1705aea9ff4e44b9c654))
+
 ## [1.3.0-alpha.14](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.13...v1.3.0-alpha.14) (2026-03-22)
 
 ### ✨ Features

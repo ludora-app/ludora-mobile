@@ -1,4 +1,3 @@
-import { Box } from '@ludo/ui';
 import { useMemo } from 'react';
 import { BlurView } from 'expo-blur';
 import { KeyboardStickyView, useKeyboardHandler } from 'react-native-keyboard-controller';
@@ -8,11 +7,12 @@ import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID, IS_IOS } from '@/constants/platform.constants';
 
 import ChatRoomInput from './chat-room-input.component';
-import ChatRoomInputKeyboardHandler from './chat-room-input-keyboard-handler.component';
 
 
 const ANDROID_SAFE_AREA_BOTTOM = 5;
 const IOS_INPUT_BOTTOM_PADDING = 15;
+
+const BLUR_INTENSITY = 70;
 
 export default function ChatRoomInputWrapper() {
   const { insetsBottom } = useSafeArea();
@@ -64,9 +64,8 @@ export default function ChatRoomInputWrapper() {
   return (
     <KeyboardStickyView>
       <BlurView
-        intensity={10}
+        intensity={BLUR_INTENSITY}
         experimentalBlurMethod="dimezisBlurView"
-        blurReductionFactor={6}
       >
         <Animated.View
           style={animatedStyle}
@@ -75,22 +74,6 @@ export default function ChatRoomInputWrapper() {
           <ChatRoomInput />
         </Animated.View>
       </BlurView>
-      <ChatRoomInputKeyboardHandler>
-        <BlurView
-          intensity={10}
-          experimentalBlurMethod="dimezisBlurView"
-          blurReductionFactor={6}
-        >
-          <Box
-            className="flex-row items-center gap-2 pt-2 px-4 relative z-50"
-            style={{
-              paddingBottom: inputBottomPaddingKeyboardOpened,
-            }}
-          >
-            <ChatRoomInput />
-          </Box>
-        </BlurView>
-      </ChatRoomInputKeyboardHandler>
     </KeyboardStickyView>
   );
 }

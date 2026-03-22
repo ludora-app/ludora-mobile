@@ -76,9 +76,8 @@ export default function ChatRoomMessagesList() {
             fetchNextPage();
           }
         }}
-        contentContainerClassName='grow'
+        contentContainerClassName='grow px-4 pt-4'
         onStartReachedThreshold={0.5}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
         ListEmptyComponent={ChatRoomMessagesListEmpty}
       />
 

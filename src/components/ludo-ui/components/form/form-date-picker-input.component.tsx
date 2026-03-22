@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ScalePressable } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import DatePicker from 'react-native-date-picker';

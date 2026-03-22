@@ -10,4 +10,4 @@ export const schema = (t: TolgeeInstance['t']) =>
       .trim(),
   });
 
-export type ChatRoomInputSchema = z.infer<typeof schema>;
+export type ChatRoomInputSchema = z.infer<ReturnType<typeof schema>>;

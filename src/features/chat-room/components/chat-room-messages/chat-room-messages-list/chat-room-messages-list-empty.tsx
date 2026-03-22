@@ -12,6 +12,10 @@ export default function ChatRoomMessagesListEmpty() {
         iconNames={["ludo-sunglass", "ludo-eating-pizza"]}
         randomOptions={3}
         title="chat-room.chat-room-messages-list-empty.title_v"
+        className='mb-6'
+        stringProps={{
+          font: "primarySemiBold"
+        }}
       />
     </Wrapper>
   )

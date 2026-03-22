@@ -1,3 +1,9 @@
+## [1.3.0-alpha.13](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.12...v1.3.0-alpha.13) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-567:** update input cursor and selection colors. ([#94](https://github.com/ludora-app/ludora-mobile/issues/94)) ([ee4f4db](https://github.com/ludora-app/ludora-mobile/commit/ee4f4db9a3e77338c1a8ef132eb2a05c0672191e))
+
 ## [1.3.0-alpha.12](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.11...v1.3.0-alpha.12) (2026-03-22)
 
 ### ✨ Features

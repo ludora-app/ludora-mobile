@@ -4,7 +4,7 @@ import { Button, String, Box, Link, Icon, BoxGrow, Separator, Wrapper } from '@l
 
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
-import LoginSocialGoogle from '../../login/components/login-social-networks/login-social-google.component';
+import LoginSocialNetworks from '../../login/components/login-social-networks/login-social-networks.component';
 
 export default function RegisterStep1Screen() {
   const { t } = useTranslate();
@@ -32,7 +32,7 @@ export default function RegisterStep1Screen() {
               position: "left-outside",
             }} />
             <Separator title={t('common.or')} />
-            <LoginSocialGoogle flow="register" />
+            <LoginSocialNetworks flow="register" />
           </Box>
         </BoxGrow>
         <Link href="/auth/login" asChild replace>

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { BlurView } from 'expo-blur';
+import BlurView from '@sbaiahmed1/react-native-blur';
 import { KeyboardStickyView, useKeyboardHandler } from 'react-native-keyboard-controller';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -8,11 +8,10 @@ import { IS_ANDROID, IS_IOS } from '@/constants/platform.constants';
 
 import ChatRoomInput from './chat-room-input.component';
 
-
 const ANDROID_SAFE_AREA_BOTTOM = 5;
 const IOS_INPUT_BOTTOM_PADDING = 15;
 
-const BLUR_INTENSITY = 70;
+const BLUR_INTENSITY = 40;
 
 export default function ChatRoomInputWrapper() {
   const { insetsBottom } = useSafeArea();
@@ -46,7 +45,6 @@ export default function ChatRoomInputWrapper() {
     return insetsBottom + (IS_ANDROID ? ANDROID_SAFE_AREA_BOTTOM : 0);
   }, [insetsBottom]);
 
-
   const animatedStyle = useAnimatedStyle(() => {
     const bottomPadding = interpolate(
       keyboardProgress.value,
@@ -60,17 +58,10 @@ export default function ChatRoomInputWrapper() {
     };
   });
 
-
   return (
     <KeyboardStickyView>
-      <BlurView
-        intensity={BLUR_INTENSITY}
-        experimentalBlurMethod="dimezisBlurView"
-      >
-        <Animated.View
-          style={animatedStyle}
-          className="flex-row items-center gap-2 pt-2 px-4 relative z-50"
-        >
+      <BlurView blurType="light" blurAmount={BLUR_INTENSITY}>
+        <Animated.View style={animatedStyle} className="relative z-50 flex-row items-center gap-2 px-4 pt-2">
           <ChatRoomInput />
         </Animated.View>
       </BlurView>

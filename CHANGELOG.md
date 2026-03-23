@@ -1,3 +1,9 @@
+## [1.3.0-alpha.18](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.17...v1.3.0-alpha.18) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-584:** replace `expo-blur` with `@sbaiahmed1/react-native-blur` for blur effects and adjust blur intensity. ([#99](https://github.com/ludora-app/ludora-mobile/issues/99)) ([061eef3](https://github.com/ludora-app/ludora-mobile/commit/061eef3555eb1004af485b5c6ab20a4891416ebf))
+
 ## [1.3.0-alpha.17](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.16...v1.3.0-alpha.17) (2026-03-23)
 
 ### ✨ Features

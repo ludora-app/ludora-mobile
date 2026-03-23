@@ -58,8 +58,10 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
   return (
     <Button
       iconProps={{
+        className: "mr-1",
         name: 'google-colored',
-        position: "left-outside",
+        position: "left",
+        size: "xs"
       }}
       onPress={handleSubmit}
       variant="outlined"
@@ -67,7 +69,8 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
       title={t(`auth.${flow}.button_google_title`)}
       className="w-full border-[#747775] border bg-white"
       titleProps={{
-        className: "text-[#1F1F1F]"
+        className: "text-[#1F1F1F]",
+        size: "lg"
       }}
       loaderProps={{
         color: "#1F1F1F",

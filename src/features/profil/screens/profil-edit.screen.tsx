@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
 
 type DataItems = {
   labelKey: string
-  route: string
+  route?: string
   value: string
   icon: TIconsAll
   isMissing?: boolean
-  iconColor: string
+  iconColor?: string
   show?: boolean
   iconClassname?: string
 }
@@ -39,6 +39,17 @@ export default function ProfilEditScreen() {
 
 
   const router = useRouter()
+
+  const providerConfig = ((): { icon: TIconsAll; iconClassname?: string; iconColor?: string } => {
+    switch (provider) {
+      case 'GOOGLE':
+        return { icon: 'google-colored', iconClassname: 'mr-2', iconColor: undefined }
+      case 'APPLE':
+        return { icon: 'apple-solid', iconClassname: 'mr-2.5', iconColor: '#000', }
+      default:
+        return { icon: 'stylus-pen-edit-regular', iconColor: '#000' }
+    }
+  })()
 
   const data: DataItems[] = [
     {
@@ -68,11 +79,9 @@ export default function ProfilEditScreen() {
       value: userSex ? t(`common.${userSex}`) : t('profil.profil-edit.empty_sex')
     },
     {
-      icon: provider === "GOOGLE" ? "google-colored" : "stylus-pen-edit-regular",
-      iconClassname: provider === "GOOGLE" ? "mr-2" : "",
-      iconColor: provider === "GOOGLE" ? undefined : "#000",
+      ...providerConfig,
       labelKey: 'profil.profil-edit.email_info_title',
-      route: provider === "LUDORA" && ROUTES.PROFIL.EDIT_EMAIL,
+      route: provider === "LUDORA" ? ROUTES.PROFIL.EDIT_EMAIL : undefined,
       show: true,
       value: email
     },
@@ -112,7 +121,7 @@ export default function ProfilEditScreen() {
             <Box className='gap-5'>
               {data.map((item, index) => (
                 item.show && (
-                  <BoxRowCenterBetween key={index} className='gap-1'>
+                  <BoxRowCenterBetween key={index} className='gap-2'>
                     <BoxGrow>
                       <String font="primaryBold" variant="body-2">{t(item.labelKey)}</String>
                       <String truncate colorVariant={item?.isMissing ? 'ring' : 'black'}>{item.value}</String>

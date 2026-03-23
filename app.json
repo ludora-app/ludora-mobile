@@ -56,8 +56,7 @@
         "expo-notifications",
         {
           "icon": "./assets/logos/ic-np-icon.png",
-          "color": "#ffffff",
-          "sounds": []
+          "color": "#ffffff"
         }
       ],
       [
@@ -71,7 +70,8 @@
       "expo-asset",
       "@react-native-firebase/app",
       "./plugins/with-non-modular-headers",
-      "./plugins/with-android-manifest-fixes"
+      "./plugins/with-android-manifest-fixes",
+      "expo-apple-authentication"
     ],
     "name": "Ludora",
     "slug": "ludora",
@@ -124,7 +124,8 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"]
+      "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"],
+      "usesAppleSignIn": true
     },
     "extra": {
       "router": {

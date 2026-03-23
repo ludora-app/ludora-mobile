@@ -9,9 +9,9 @@ type LoginSocialNetworksProps = {
 
 export default function LoginSocialNetworks({ flow }: LoginSocialNetworksProps) {
   return (
-    <Box className='gap-4'>
-      <LoginSocialGoogle flow={flow} />
+    <Box className="gap-4">
       <LoginSocialApple flow={flow} />
+      <LoginSocialGoogle flow={flow} />
     </Box>
   );
 }

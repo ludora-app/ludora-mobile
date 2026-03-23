@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
 import { ErrorResponse } from '@/api/orval.instance';
+import { IS_IOS } from '@/constants/platform.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { useLoginApple } from '../../queries/login-apple.query';
-
 
 const styles = StyleSheet.create({
   button: {
@@ -21,6 +22,13 @@ type LoginSocialAppleProps = {
 export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
   const { trackError, trackEvent } = useAnalytics();
   const { mutateAsync: appleLogin } = useLoginApple();
+  const [isAppleAuthAvailable, setIsAppleAuthAvailable] = useState(false);
+
+  useEffect(() => {
+    if (IS_IOS) {
+      AppleAuthentication.isAvailableAsync().then(setIsAppleAuthAvailable);
+    }
+  }, []);
 
   const handlePress = async () => {
     try {
@@ -30,7 +38,7 @@ export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
-      const response = await appleLogin(credential)
+      const response = await appleLogin(credential);
       const isNewUser = response?.data?.isNewUser;
       if (isNewUser) {
         trackEvent({
@@ -59,6 +67,10 @@ export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
         trackError({ error });
       }
     }
+  };
+
+  if (!isAppleAuthAvailable) {
+    return null;
   }
 
   return (
@@ -69,6 +81,5 @@ export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
       style={styles.button}
       onPress={handlePress}
     />
-
-  )
+  );
 }

@@ -1,3 +1,9 @@
+## [1.3.0-alpha.17](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.16...v1.3.0-alpha.17) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-577:** Implement Apple social login and integrate it into a… ([#98](https://github.com/ludora-app/ludora-mobile/issues/98)) ([e050f74](https://github.com/ludora-app/ludora-mobile/commit/e050f74b726def0a15714677c706eb316a5ae410))
+
 ## [1.3.0-alpha.16](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.15...v1.3.0-alpha.16) (2026-03-23)
 
 ### ✨ Features

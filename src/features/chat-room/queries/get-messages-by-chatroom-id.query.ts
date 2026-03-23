@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversations/conversations.api';
 
-import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
+import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../store/chat-room.store';
 import { useChatRoomOptimisticMessagesStore } from '../store/chat-room-optimistic-messages.store';

@@ -1,7 +1,6 @@
-import { Easing, ViewStyle } from 'react-native';
+import { Animated, Easing, ViewStyle } from 'react-native';
 
 import { loop, stagger } from '../utils/utils';
-import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
 import { LoadingIndicatorsProps } from '../../../types';
@@ -72,7 +71,7 @@ export default function Chase(props: LoadingIndicatorsProps) {
       animating={animating}
     >
       {values => (
-        <AnimatedBox
+        <Animated.View
           style={[
             {
               alignItems: 'center',
@@ -96,7 +95,7 @@ export default function Chase(props: LoadingIndicatorsProps) {
           {...rest}
         >
           {values?.chaseDot?.map((value, index) => (
-            <AnimatedBox
+            <Animated.View
               key={index}
               style={[
                 circleStyle,
@@ -120,7 +119,7 @@ export default function Chase(props: LoadingIndicatorsProps) {
               ]}
             />
           ))}
-        </AnimatedBox>
+        </Animated.View>
       )}
     </AnimationContainer>
   );

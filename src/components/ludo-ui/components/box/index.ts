@@ -13,7 +13,6 @@ import {
   BoxRowCenterBetween,
   BoxRowGrow,
   BoxStack,
-  ReanimatedBox,
 } from '@chillui/ui';
 
 export {
@@ -31,5 +30,4 @@ export {
   BoxRowBetween,
   BoxRowCenterBetween,
   BoxRowGrow,
-  ReanimatedBox,
 };

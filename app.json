@@ -40,6 +40,12 @@
       ],
       "expo-audio",
       [
+        "expo-image",
+        {
+          "disableLibdav1d": true
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "photosPermission": "L'application a besoin d'accéder à tes photos.",

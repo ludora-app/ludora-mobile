@@ -3,7 +3,6 @@ import Svg, { Path } from 'react-native-svg';
 import { Animated, Platform } from 'react-native';
 
 import { ICONS } from '../../../constants';
-import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import { LoadingIndicatorsProps } from '../../../types';
 
@@ -48,10 +47,10 @@ export default function Spinner(props: LoadingIndicatorsProps) {
   });
 
   return (
-    <AnimatedBox style={{ height: size, transform: [{ rotate: spin }], width: size }}>
+    <Animated.View style={{ height: size, transform: [{ rotate: spin }], width: size }}>
       <Svg focusable={false} viewBox={ICONS['circle-notch-solid']?.viewBox} color={color} width={size} height={size}>
         <Path d={ICONS['circle-notch-solid']?.path[0]} fill={color} />
       </Svg>
-    </AnimatedBox>
+    </Animated.View>
   );
 }

@@ -1,2 +1,7 @@
+#!/usr/bin/env sh
+
+# On rajoute le chemin de bun au PATH pour que l'interface VS Code le trouve
+export PATH="$HOME/.bun/bin:$PATH"
+
 bun lint
 bun ts:check

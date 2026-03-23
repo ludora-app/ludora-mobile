@@ -1,7 +1,6 @@
-import { Easing } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
 import { loop } from '../utils/utils';
-import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
 import { LoadingIndicatorsProps } from '../../../types';
@@ -67,7 +66,7 @@ export default function Swing(props: LoadingIndicatorsProps) {
       animating={animating}
     >
       {values => (
-        <AnimatedBox
+        <Animated.View
           style={[
             {
               alignItems: 'center',
@@ -90,7 +89,7 @@ export default function Swing(props: LoadingIndicatorsProps) {
           ]}
           {...rest}
         >
-          <AnimatedBox
+          <Animated.View
             style={[
               circleStyle,
               {
@@ -107,7 +106,7 @@ export default function Swing(props: LoadingIndicatorsProps) {
               },
             ]}
           />
-          <AnimatedBox
+          <Animated.View
             style={[
               circleStyle,
               {
@@ -124,7 +123,7 @@ export default function Swing(props: LoadingIndicatorsProps) {
               },
             ]}
           />
-        </AnimatedBox>
+        </Animated.View>
       )}
     </AnimationContainer>
   );

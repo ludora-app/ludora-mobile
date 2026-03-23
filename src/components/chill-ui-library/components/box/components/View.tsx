@@ -1,9 +1,8 @@
 import type { ViewProps as NativeViewProps } from 'react-native';
 
 import { withUniwind } from 'uniwind';
+import { View as NativeView } from 'react-native';
 import { ReactElement, createElement } from 'react';
-import ReanimatedAnimated from 'react-native-reanimated';
-import { Animated, View as NativeView } from 'react-native';
 
 /**
  * Props for View components that include className support
@@ -18,25 +17,6 @@ function FastView(props: NativeViewProps): ReactElement {
 }
 
 const StyledFastView = withUniwind(FastView);
-
-const FastAnimatedView = Animated.createAnimatedComponent(FastView);
-
-const FastReanimatedView = ReanimatedAnimated.createAnimatedComponent(FastView);
-
-/**
- * Props for AnimatedView components that include className support
- */
-export type AnimatedViewProps = React.ComponentProps<typeof Animated.View>;
-
-export type ReanimatedViewProps = React.ComponentProps<typeof ReanimatedAnimated.View>;
-export interface AnimatedViewPropsWithClassName extends AnimatedViewProps {
-  className?: string;
-  useFastView?: boolean;
-}
-
-export interface ReanimatedViewPropsWithClassName extends ReanimatedViewProps {
-  useFastView?: boolean;
-}
 
 /**
  * View component that provides a high-performance view container.
@@ -63,40 +43,4 @@ export function View(props: ViewProps) {
   }
 
   return <NativeView {...rest}>{children}</NativeView>;
-}
-
-/**
- * AnimatedView component that provides animated view capabilities.
- * Automatically detects NativeWind availability and falls back to StyleSheet if needed.
- *
- * @example
- * ```tsx
- * // With NativeWind
- * <AnimatedView className="p-4 bg-blue-500">
- *   <String>Animated Content</String>
- * </AnimatedView>
- *
- * // Without NativeWind (fallback)
- * <AnimatedView style={{ padding: 16, backgroundColor: '#3B82F6' }}>
- *   <String>Animated Content</String>
- * </AnimatedView>
- * ```
- */
-export function AnimatedView(props: AnimatedViewPropsWithClassName) {
-  const { children, useFastView = true, ...rest } = props;
-
-  if (useFastView) {
-    return <FastAnimatedView {...rest}>{children}</FastAnimatedView>;
-  }
-
-  return <Animated.View {...rest}>{children}</Animated.View>;
-}
-
-export function ReanimatedView(props: ReanimatedViewPropsWithClassName) {
-  const { children, useFastView = true, ...rest } = props;
-  if (useFastView) {
-    return <FastReanimatedView {...rest}>{children}</FastReanimatedView>;
-  }
-
-  return <ReanimatedAnimated.View {...rest}>{children}</ReanimatedAnimated.View>;
 }

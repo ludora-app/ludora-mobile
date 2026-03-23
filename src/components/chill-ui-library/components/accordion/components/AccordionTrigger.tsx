@@ -9,7 +9,6 @@ import { Box } from '../../box';
 import { Icon } from '../../icon';
 import { String } from '../../string';
 import { cn, isString } from '../../../utils';
-import { AnimatedBox } from '../../animatedBox';
 import { useAccordion } from './AccordionContext';
 import { twStyles } from '../styles/Accordion.styles';
 import { RipplePressable } from '../../ripplePressable';
@@ -90,14 +89,17 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
   const renderContent = () => (
     <>
       {hasCollapseIcon && iconPosition === 'left' && (
-        <AnimatedBox
+        <Animated.View
           style={{
             transform: [{ rotate: animatedRotation }],
           }}
           pointerEvents="none"
         >
-          <Icon name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'} color={COLORS.primary} />
-        </AnimatedBox>
+          <Icon
+            name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'}
+            color={COLORS.primary}
+          />
+        </Animated.View>
       )}
 
       {isString(children) ? (
@@ -123,14 +125,17 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
       )}
 
       {hasCollapseIcon && iconPosition === 'right' && (
-        <AnimatedBox
+        <Animated.View
           style={{
             transform: [{ rotate: animatedRotation }],
           }}
           pointerEvents="none"
         >
-          <Icon name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'} color={COLORS.primary} />
-        </AnimatedBox>
+          <Icon
+            name={isOpen ? collapseIcon || 'angle-down-solid' : expandIcon || 'angle-down-solid'}
+            color={COLORS.primary}
+          />
+        </Animated.View>
       )}
     </>
   );
@@ -159,7 +164,11 @@ export default function AccordionTrigger(props: PropsWithChildren<AccordionTrigg
     case 'pressable':
       return <Pressable {...commonProps}>{renderContent()}</Pressable>;
     case 'ripple-pressable':
-      return <RipplePressable {...commonProps} effectColor='#00000030'>{renderContent()}</RipplePressable>;
+      return (
+        <RipplePressable {...commonProps} effectColor="#00000030">
+          {renderContent()}
+        </RipplePressable>
+      );
     case 'touchable-opacity':
     default:
       return <TouchableOpacity {...commonProps}>{renderContent()}</TouchableOpacity>;

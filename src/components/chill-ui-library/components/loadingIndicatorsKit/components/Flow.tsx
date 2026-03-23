@@ -2,7 +2,6 @@ import { Animated, Easing } from 'react-native';
 
 import { Box } from '../../box';
 import { stagger } from '../utils/utils';
-import { AnimatedBox } from '../../animatedBox';
 import AnimationContainer from './AnimationContainer';
 import { LoadingIndicatorsProps } from '../../../types';
 
@@ -71,7 +70,7 @@ export default function Flow(props: LoadingIndicatorsProps) {
           {...rest}
         >
           {values.flow.map((value, index) => (
-            <AnimatedBox
+            <Animated.View
               key={index}
               style={{
                 backgroundColor: color,

@@ -1,3 +1,9 @@
+## [1.3.0-alpha.16](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.15...v1.3.0-alpha.16) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-583:** update expo dependencies. ([#97](https://github.com/ludora-app/ludora-mobile/issues/97)) ([69680fa](https://github.com/ludora-app/ludora-mobile/commit/69680fad3a321fbc69d9eaa8663afda3d87255f8))
+
 ## [1.3.0-alpha.15](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.14...v1.3.0-alpha.15) (2026-03-22)
 
 ### ✨ Features

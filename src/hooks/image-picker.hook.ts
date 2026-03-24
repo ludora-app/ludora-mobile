@@ -1,6 +1,7 @@
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import * as ImagePicker from 'expo-image-picker';
+import { Alert, Linking, Platform } from 'react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { pickImageImplementation, USER_REJECTED_PERMISSIONS } from '@/utils/image-picker.utils';
@@ -63,6 +64,23 @@ export function usePickImage() {
 
         const errorKey = err instanceof Error ? err.message : '';
         const messageKey = ERROR_MESSAGES[errorKey] ?? ERROR_MESSAGES.default;
+
+        if (errorKey === USER_REJECTED_PERMISSIONS) {
+          Alert.alert(t('common.permission_required'), t(messageKey), [
+            { style: 'cancel', text: t('common.button_cancel') },
+            {
+              onPress: () => {
+                if (Platform.OS === 'ios') {
+                  Linking.openURL('app-settings:');
+                } else {
+                  Linking.openSettings();
+                }
+              },
+              text: t('common.button_open_settings'),
+            },
+          ]);
+          return;
+        }
 
         toast({
           message: t(messageKey),

@@ -14,7 +14,8 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Autoriser $(PRODUCT_NAME) à accéder à votre position."
+          "locationWhenInUsePermission": "Ludora a besoin d'accéder à ta position pour te montrer les matchs et terrains de sport à proximité.",
+          "locationAlwaysAndWhenInUsePermission": "Ludora a besoin d'accéder à ta position pour te montrer les matchs et terrains de sport à proximité."
         }
       ],
       "expo-secure-store",
@@ -48,8 +49,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "L'application a besoin d'accéder à tes photos.",
-          "cameraPermission": "L'application a besoin d'accéder à ta caméra."
+          "photosPermission": "Ludora a besoin d'accéder à tes photos pour te permettre d'ajouter des images dans l'application (ex: photo de profil, vue d'un terrain).",
+          "cameraPermission": "Ludora a besoin d'accéder à ta caméra pour te permettre de prendre et partager des photos dans l'application (ex: photo de profil, vue d'un terrain)."
         }
       ],
       [
@@ -125,7 +126,8 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"],
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "requireFullScreen": true
     },
     "extra": {
       "router": {

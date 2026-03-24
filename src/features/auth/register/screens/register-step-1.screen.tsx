@@ -2,20 +2,22 @@ import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { Button, String, Box, Link, Icon, BoxGrow, Separator, Wrapper } from '@ludo/ui';
 
+import { useSafeArea } from '@/hooks/safe-area.hook';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 import LoginSocialNetworks from '../../login/components/login-social-networks/login-social-networks.component';
 
 export default function RegisterStep1Screen() {
   const { t } = useTranslate();
+  const { bottom } = useSafeArea();
 
   return (
     <>
       <HeaderGoBack hasTopSafeArea />
-      <Wrapper fill hasSafeArea edges={["bottom"]} className='pb-5'>
-        <BoxGrow className='gap-10 '>
+      <Wrapper fill style={{ paddingBottom: bottom }}>
+        <BoxGrow className="gap-10">
           <Box className="items-center justify-center gap-5">
-            <Icon name='ludo-sunglass' className="size-32" />
+            <Icon name="ludo-sunglass" className="size-32" />
             <Box className="items-center justify-center gap-3 px-10">
               <String variant="title-1" className="text-center" font="primaryBold">
                 {t('auth.register-step-1.create_account_title')}
@@ -27,10 +29,16 @@ export default function RegisterStep1Screen() {
           </Box>
 
           <Box className="gap-4">
-            <Button title={t('auth.register-step-1.register_with_email')} redirect="/auth/register/step-2" className="w-full" size="lg" iconProps={{
-              name: 'email-solid',
-              position: "left-outside",
-            }} />
+            <Button
+              title={t('auth.register-step-1.register_with_email')}
+              redirect="/auth/register/step-2"
+              className="w-full"
+              size="lg"
+              iconProps={{
+                name: 'email-solid',
+                position: 'left-outside',
+              }}
+            />
             <Separator title={t('common.or')} />
             <LoginSocialNetworks flow="register" />
           </Box>

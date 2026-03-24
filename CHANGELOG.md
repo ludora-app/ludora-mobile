@@ -1,3 +1,9 @@
+## [1.3.0-alpha.19](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.18...v1.3.0-alpha.19) (2026-03-24)
+
+### ✨ Features
+
+* **SCRUM-585:** update permission messages for location, photos, and camera, and add iOS fullscreen requirement. ([#100](https://github.com/ludora-app/ludora-mobile/issues/100)) ([2d3d81f](https://github.com/ludora-app/ludora-mobile/commit/2d3d81ff8bdd53ed789897f419a8561797d67a80))
+
 ## [1.3.0-alpha.18](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.17...v1.3.0-alpha.18) (2026-03-23)
 
 ### ✨ Features

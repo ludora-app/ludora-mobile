@@ -41,7 +41,7 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
         <BoxRowCenterBetween>
           <String
             font="primaryBold"
-            variant="body-2"
+            variant="body-1"
           >
             {t(`notifications.title_${notificationType}`)}
           </String>
@@ -51,7 +51,7 @@ export default function NotificationListItemsSessionInvitation(props: Notificati
         </BoxRowCenterBetween>
         <BoxRow className='gap-1'>
           <BoxGrow>
-            <String variant="body-1" colorVariant="muted" numberOfLines={2} useFastText={false}>
+            <String variant="body-sm" colorVariant="muted" numberOfLines={2} useFastText={false}>
               <String font="primaryBold" useFastText={false}>
                 {truncateString({ maxLength: 40, str: senderName })}{" "}
               </String>

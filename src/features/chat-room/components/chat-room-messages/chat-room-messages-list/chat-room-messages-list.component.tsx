@@ -1,6 +1,6 @@
-import { Box } from '@ludo/ui';
+import { BoxGrow } from '@ludo/ui';
 import { FlashList } from '@shopify/flash-list';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Loading from '@/components/ui/loading/loading.component';
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -8,14 +8,16 @@ import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
 
 import ChatRoomMessagesListEmpty from './chat-room-messages-list-empty';
 import { useChatRoomScrollStore } from '../../../store/chat-room-scroll.store';
+import VirtualizedListScrollView from './virtualized-list-scroll-view.component';
 import { useGetMessagesByChatroomId } from '../../../queries/get-messages-by-chatroom-id.query';
 import ChatRoomMessagesListScrollButton from './chat-room-messages-list-scroll-button.component';
 import ChatRoomMessageListItem from './chat-room-message-list-item/chat-room-message-list-item.component';
+import ChatRoomMessageActionsMenu from '../chat-room-message-actions/chat-room-message-actions-menu.component';
 
 export default function ChatRoomMessagesList() {
-  const isChatRoomGroup = useChatRoomStore(state => state.chatRoomInfo?.type === 'SESSION' || state.chatRoomInfo?.type === 'GROUP')
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, items } =
-    useGetMessagesByChatroomId();
+  const isChatRoomGroup =
+    useChatRoomStore(state => state.chatRoomInfo?.type === 'SESSION' || state.chatRoomInfo?.type === 'GROUP');
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, items } = useGetMessagesByChatroomId();
 
   // @ts-ignore - FlashList typing is throwing a "value used as type" error in this context
   const listRef = useRef<FlashList<MessageCollectionItemDto>>(null);
@@ -39,23 +41,33 @@ export default function ChatRoomMessagesList() {
       setShowScrollButton(shouldShow);
     }
   };
+  const memoList = useCallback(
+    (props: any) => <VirtualizedListScrollView {...props} />,
+    [],
+  );
 
   if (isLoading) {
     return <Loading />;
   }
 
 
+
   return (
-    <Box className="flex-1 z-40">
+    <BoxGrow>
       <FlashList
         ref={listRef}
         data={items}
-        renderItem={({ item }) => <ChatRoomMessageListItem item={item} isChatRoomGroup={isChatRoomGroup} />}
-        keyExtractor={(item) => item.uid}
+        renderItem={({ item }) => (
+          <ChatRoomMessageListItem item={item} isChatRoomGroup={isChatRoomGroup} />
+        )}
+        keyExtractor={item => item.uid}
         maintainVisibleContentPosition={{
           autoscrollToBottomThreshold: 0.2,
           startRenderingFromBottom: true,
         }}
+        renderScrollComponent={memoList}
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
         onScroll={handleScroll}
         scrollEventThrottle={16}
         viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
@@ -64,11 +76,8 @@ export default function ChatRoomMessagesList() {
             fetchNextPage();
           }
         }}
-        contentContainerClassName='grow'
+        contentContainerClassName='grow px-4 pt-4'
         onStartReachedThreshold={0.5}
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 16, paddingHorizontal: 16, paddingTop: 8 }}
         ListEmptyComponent={ChatRoomMessagesListEmpty}
       />
 
@@ -76,6 +85,8 @@ export default function ChatRoomMessagesList() {
         isVisible={showScrollButton}
         onPress={() => listRef.current?.scrollToEnd({ animated: true })}
       />
-    </Box>
+
+      <ChatRoomMessageActionsMenu />
+    </BoxGrow>
   );
 }

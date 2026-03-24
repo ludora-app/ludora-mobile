@@ -202,7 +202,8 @@ export default function List(props: ListProps) {
       {...(onEndReached && { onEndReached })}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
-      keyboardDismissMode="on-drag"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
       style={[listStyle, style]}
       {...(hasHeaderTransparent && !!listHeaderComponentHeight && {
         stickyHeaderConfig: {
@@ -218,7 +219,6 @@ export default function List(props: ListProps) {
         )
       })}
       {...(hasRefreshControl && { onRefresh: handleRefresh })}
-      keyboardShouldPersistTaps="always"
       contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
       ListFooterComponent={
         !triggerEndReachedOnStart

@@ -2,7 +2,11 @@ import { VariantProps } from 'tailwind-variants';
 import { ComponentType, RefObject } from 'react';
 import { ViewProps, ScrollViewProps, ScrollView } from 'react-native';
 import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
-import { KeyboardAvoidingViewProps, KeyboardStickyViewProps } from 'react-native-keyboard-controller';
+import {
+  KeyboardAvoidingViewProps,
+  KeyboardStickyViewProps,
+  KeyboardAwareScrollViewProps,
+} from 'react-native-keyboard-controller';
 
 import { wrapperTv } from '../components/wrapper/styles/Wrapper.styles';
 
@@ -63,7 +67,7 @@ export type WrapperKeyboardAvoidingStickyViewProps = WrapperBaseProps & Keyboard
  * Props for WrapperKeyboardAwareScrollView component
  */
 export type WrapperKeyboardAwareScrollViewProps = WrapperBaseProps &
-  ScrollViewProps & {
+  KeyboardAwareScrollViewProps & {
     /** Bottom offset for keyboard */
     bottomOffset?: number;
     /** Content container className */

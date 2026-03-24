@@ -159,17 +159,6 @@ function AppLayoutNav() {
           contentStyle: { backgroundColor: '#FFF' },
         }}
       />
-      <Stack.Screen
-        name="chat-room/[chatRoomId]/message-actions/[messageId]/index"
-        options={{
-          animation: 'slide_from_right',
-          contentStyle: { backgroundColor: '#FFF' },
-          headerShown: false,
-          presentation: 'formSheet',
-          sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
-        }}
-      />
 
       {/* ──────────── Notifications ──────────── */}
       <Stack.Screen

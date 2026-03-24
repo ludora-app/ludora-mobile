@@ -10,7 +10,7 @@ export default function OnBoardingStep3Screen() {
   const sportPreferences = useOnBoardingStore(state => state.sportPreferences);
   const hasSelectedSportPreference = sportPreferences.length > 0;
   return (
-    <WrapperScrollView contentContainerClassName="gap-8 pt-8">
+    <WrapperScrollView contentContainerClassName="gap-8 pt-8 pb-4">
       <String variant="body-3" font="primaryBold" className="text-center">
         {t('on-boarding.step-3.title')}
       </String>

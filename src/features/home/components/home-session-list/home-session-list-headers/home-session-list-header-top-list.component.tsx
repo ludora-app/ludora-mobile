@@ -1,5 +1,6 @@
-import { memo } from 'react';
+import { cn } from '@chillui/ui';
 import { Button } from '@ludo/ui';
+import { memo, useMemo } from 'react';
 import { useTranslate } from '@tolgee/react';
 
 import ROUTES from '@/constants/routes.constants';
@@ -16,17 +17,51 @@ type HomeSessionListHeaderTopListProps = {
   hasNewSession: boolean;
 }
 
+const MAX_USERNAME_LENGTH = 10;
+
 function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) {
   const { hasNewSession, IncommingSessionMe } = props
   const { t } = useTranslate();
   const { isLoading: isLoadingUserMe, userMe } = useUserMe();
+  const { firstname } = userMe || {};
+
+  const userNameLength = firstname?.length ?? 0;
+
+  const iconClassName = useMemo(() => {
+    if (hasNewSession) {
+      if (userNameLength > 8) {
+        return 'size-24';
+      }
+      if (userNameLength > 6) {
+        return 'size-26';
+      }
+      return 'size-28';
+    }
+    if (userNameLength > 8) {
+      return 'size-28';
+    }
+    if (userNameLength > 6) {
+      return 'size-26';
+    }
+    return 'size-34';
+  }, [userNameLength, hasNewSession]);
+
+  const leftContentClassName = useMemo(() => {
+    if (userNameLength > 6) {
+      return 'pb-6';
+    }
+    return 'pb-3';
+  }, [userNameLength]);
 
   return (
     <HeaderScreen
       isTitleLoading={isLoadingUserMe}
-      title={t('home.header.title', { username: truncateString({ maxLength: 8, str: userMe?.firstname ?? '' }) })}
+      title={t('home.header.title', { username: truncateString({ maxLength: MAX_USERNAME_LENGTH, str: firstname ?? '' }) })}
+      iconProps={{ className: iconClassName }}
       subTitle={t(hasNewSession ? 'home.header.sub_title_incoming_session' : 'home.header.sub_title')}
       hasNewSession={hasNewSession}
+      leftContentClassName={!hasNewSession && leftContentClassName}
+      className={cn("items-end h-44", { 'h-52': hasNewSession })}
     >
       {hasNewSession && <SessionCard item={IncommingSessionMe} isNextSession />}
       {!hasNewSession && (

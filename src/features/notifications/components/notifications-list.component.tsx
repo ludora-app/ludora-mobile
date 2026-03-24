@@ -12,7 +12,7 @@ import NotificationsListItems from './notifications-list-items/notifications-lis
 import NotificationListHeader from './notifications-list-headers/notification-list-header.component'
 import NotificationsListHeaderSticky from './notifications-list-headers/notifications-list-header-sticky.component'
 
-const COUNT_DOWN_TO_MARK_ALL_AS_READ = 2000
+const COUNT_DOWN_TO_MARK_ALL_AS_READ = 1000
 const HEADER_HEIGHT = 62
 
 export default function NotificationsList() {

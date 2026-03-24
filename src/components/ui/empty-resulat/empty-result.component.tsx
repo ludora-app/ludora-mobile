@@ -3,10 +3,10 @@ import { cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 
 import { TIconsAll } from '@/constants/icons.constants';
-import { Wrapper } from '@/components/ludo-ui/components/wrapper';
-
-import Icon from '../../ludo-ui/components/icon/Icon.component';
-import String from '../../ludo-ui/components/string/string.component';
+import { Icon } from "@/components/ludo-ui/components/icon";
+import { StringProps } from "@/components/ludo-ui/types/string.types"
+import String from "@/components/ludo-ui/components/string/string.component";
+import { Wrapper } from "@/components/chill-ui-library/components/wrapper/components/Wrapper";
 
 export type EmptyResultProps = {
   title?: string;
@@ -17,6 +17,7 @@ export type EmptyResultProps = {
   randomOptions?: number;
   iconNames?: TIconsAll[];
   center?: boolean;
+  stringProps?: StringProps;
 };
 
 const RANDOM_OPTIONS = 3;
@@ -25,14 +26,18 @@ const getRandomNumber = (nbr: number) => Math.floor(Math.random() * nbr) + 1;
 
 function EmptyResult(props: EmptyResultProps) {
   const { t } = useTranslate();
-  const { center,
+  const {
+    center,
     className,
     hasRandomTitle,
     iconClassName,
     iconNames,
     randomOptions = RANDOM_OPTIONS,
+    stringProps,
     title,
-    variant } = props;
+    variant
+  } = props;
+
 
   const getIconName = (): TIconsAll => {
     if (iconNames) {
@@ -58,9 +63,9 @@ function EmptyResult(props: EmptyResultProps) {
 
   const iconName = getIconName();
   return (
-    <Wrapper className={cn('items-center gap-4', className, { "mt-14": !center })}>
+    <Wrapper className={cn('items-center gap-4', className, { "mt-10": !center })}>
       <Icon name={iconName} className={cn('size-36', iconClassName)} />
-      <String className="text-center">{handleTitle()}</String>
+      <String className="text-center" {...stringProps}>{handleTitle()}</String>
     </Wrapper>
   );
 }

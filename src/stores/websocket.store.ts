@@ -8,11 +8,13 @@ type TConnectUser = FindMeUserResponseData;
 
 interface IDefaultState {
   status: WsStatus;
+  tokenVersion: number;
   isAuthenticated: boolean;
   connectedUsers: Map<string, TConnectUser>;
 }
 
 interface IDefaultActions {
+  incrementTokenVersion: () => void;
   setStatus: (value: WsStatus) => void;
   setAuthentication: (value: boolean) => void;
   removeConnectedUser: (connectedUserId: string) => void;
@@ -24,6 +26,7 @@ const defaultState: IDefaultState = {
   connectedUsers: new Map(),
   isAuthenticated: false,
   status: 'disconnected',
+  tokenVersion: 0,
 };
 
 export const useWebsocketStore = create<IDefaultState & IDefaultActions>(set => ({
@@ -34,6 +37,7 @@ export const useWebsocketStore = create<IDefaultState & IDefaultActions>(set => 
       newConnectedUsers.set(connectedUser.uid, connectedUser);
       return { connectedUsers: newConnectedUsers };
     }),
+  incrementTokenVersion: () => set(state => ({ tokenVersion: state.tokenVersion + 1 })),
   removeConnectedUser: (connectedUserId: string) =>
     set(state => {
       const newConnectedUsers = new Map(state.connectedUsers);

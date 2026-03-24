@@ -5,7 +5,7 @@
   "eslint.options": {
     "extensions": [".ts", ".js", ".tsx", ".jsx"]
   },
-  "eslint.runtime": "/Users/hmeberbeche/.nvm/versions/node/v24.11.1/bin/node",
+  "eslint.runtime": "/Users/hmeberbeche/.nvm/versions/node/v24.14.0/bin/node",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
     // "source.organizeImports": "explicit"

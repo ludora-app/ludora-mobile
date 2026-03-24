@@ -1,8 +1,7 @@
-import { ViewStyle } from 'react-native';
+import { Animated, ViewStyle } from 'react-native';
 
 import { Box } from '../../box';
 import { stagger } from '../utils/utils';
-import { AnimatedBox } from '../../animatedBox';
 import defaultProps from '../utils/defaultProps';
 import AnimationContainer from './AnimationContainer';
 import { LoadingIndicatorsProps } from '../../../types';
@@ -72,7 +71,7 @@ export default function Bounce(props: LoadingIndicatorsProps) {
           {...rest}
         >
           {values?.bounce?.map((value, index) => (
-            <AnimatedBox
+            <Animated.View
               key={index}
               style={[
                 circleStyle,

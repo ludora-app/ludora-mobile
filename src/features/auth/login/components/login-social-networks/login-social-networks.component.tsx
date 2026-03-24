@@ -1,5 +1,6 @@
 import { Box } from '@ludo/ui';
 
+import LoginSocialApple from './login-social-apple.component';
 import LoginSocialGoogle from './login-social-google.component';
 
 type LoginSocialNetworksProps = {
@@ -8,7 +9,8 @@ type LoginSocialNetworksProps = {
 
 export default function LoginSocialNetworks({ flow }: LoginSocialNetworksProps) {
   return (
-    <Box>
+    <Box className="gap-4">
+      <LoginSocialApple flow={flow} />
       <LoginSocialGoogle flow={flow} />
     </Box>
   );

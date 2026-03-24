@@ -1,5 +1,4 @@
 export { default as bigLogo } from './logos/big-logo.png';
-export { default as registerImage } from './images/register-img.png';
 export { default as ludo } from './logos/ludo.png';
 export { default as basketballBall } from './sports-balls/basketball-ball.png';
 export { default as paddelBall } from './sports-balls/paddel-ball.png';
@@ -10,9 +9,6 @@ export { default as ludoMeet } from './images/welcome/ludo-meet.png';
 export { default as allMatchesImg } from './images/chat/matches.png';
 export { default as allPlayersImg } from './images/chat/all-players.png';
 export { default as allChatsImg } from './images/chat/all-chats.png';
-export { default as profilRatingCard1 } from './images/profil-rating-cards/profil-rating-card-1.png';
-export { default as profilRatingCard2 } from './images/profil-rating-cards/profil-rating-card-2.png';
-export { default as profilRatingCard3 } from './images/profil-rating-cards/profil-rating-card-3.png';
 export { default as openBook } from './images/dev-tool/open-book.png';
 export { default as penTool } from './images/dev-tool/pen-tool.png';
 export { default as chatRoomBg } from './images/chat/chat-room/chat-room-bg.png';

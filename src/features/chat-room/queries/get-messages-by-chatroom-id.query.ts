@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversations/conversations.api';
 
+import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../store/chat-room.store';
@@ -15,11 +16,17 @@ export const useGetMessagesByChatroomId = () => {
     limit: LIMIT_MESSAGES,
   };
 
-  const { data, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
+  const { data, error, isError, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
     query: {
       enabled: !!chatRoomId,
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,
     },
+  });
+
+  useGetMethodErrorTracking({
+    error,
+    extra: { context: 'useGetMessagesByChatroomId' },
+    isError,
   });
 
   const items = useMemo(() => {
@@ -36,6 +43,18 @@ export const useGetMessagesByChatroomId = () => {
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
   }, [data?.pages, pendingMessages, chatRoomId]);
+
+  useEffect(() => {
+    if (!data?.pages) return;
+    const serverUids = new Set(data.pages.flatMap(page => page.data.items).map(item => item.uid));
+    const { pendingMessages: currentPending, removePendingMessage } = useChatRoomOptimisticMessagesStore.getState();
+    Object.keys(currentPending).forEach(uid => {
+      const msg = currentPending[uid];
+      if (serverUids.has(uid) && !msg.isSending && !msg.isError) {
+        removePendingMessage(uid);
+      }
+    });
+  }, [data?.pages]);
 
   return { ...rest, items };
 };

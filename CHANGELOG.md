@@ -1,3 +1,9 @@
+## [1.3.0-alpha.20](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.19...v1.3.0-alpha.20) (2026-03-24)
+
+### ✨ Features
+
+* **scrum-580:** Display alert and link to settings when image picker permissions are rejected. ([#101](https://github.com/ludora-app/ludora-mobile/issues/101)) ([7e6373c](https://github.com/ludora-app/ludora-mobile/commit/7e6373c0644389aee4ddcceedc388f59dda9a69d))
+
 ## [1.3.0-alpha.19](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.18...v1.3.0-alpha.19) (2026-03-24)
 
 ### ✨ Features

@@ -125,23 +125,23 @@ export interface AnalyticsEventData {
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_FAILED]: {
     error_message: string;
-    method: 'google' | 'email';
+    method: 'google' | 'email' | 'apple';
     flow: 'Authentication';
   };
   [ANALYTICS_EVENTS.AUTH.SIGNUP_FAILED]: {
     error_message: string;
-    method: 'google' | 'email';
+    method: 'google' | 'email' | 'apple';
     flow: 'Authentication';
   };
   [ANALYTICS_EVENTS.AUTH.LOGIN_SUCCESS]: {
-    method: 'google' | 'email';
+    method: 'google' | 'email' | 'apple';
     auto_login_from_signup?: boolean;
     flow: 'Authentication';
   };
 
   [ANALYTICS_EVENTS.AUTH.SIGNUP_SUCCESS]: {
     auto_register_from_login?: boolean;
-    method: 'google' | 'email';
+    method: 'google' | 'email' | 'apple';
     flow: 'Authentication';
   };
 

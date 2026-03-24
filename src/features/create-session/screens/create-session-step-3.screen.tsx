@@ -1,7 +1,7 @@
 import { list, shuffle } from 'radash';
-import { FlatList } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
+import { FlatList, Keyboard } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ import {
 } from '@ludo/ui';
 
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
+import { useCreateSessionLayoutStore } from '@/features/create-session/store/create-session-layout.store';
 
 import CreateSessionTitle from '../components/create-session-title-component';
 import CreateSessionStep3SectionTitle from '../components/create-session-steps/create-session-step-3/create-session-step-3-section-title.component';
@@ -29,7 +30,13 @@ import {
   TITLE_MAX_LENGTH,
 } from '../schemas/create-session-step-3.schema';
 
+/** Fallback si le footer n’a pas encore été mesuré (1er frame). */
+const FOOTER_HEIGHT_FALLBACK = 90;
+
+const KEYBOARD_BOTTOM_OFFSET = 80;
+
 const generateRandomTitleSuggestions = () => {
+
   const totalVariants = 21;
   const numberOfSuggestions = 5;
   const allIndices = list(totalVariants).map((_, index) => index + 1);
@@ -43,6 +50,8 @@ const generateRandomTitleSuggestions = () => {
 };
 
 export default function CreateSessionStep3Screen() {
+  const footerHeight = useCreateSessionLayoutStore(state => state.footerHeight);
+  const toolbarOpenedOffset = footerHeight > 0 ? footerHeight : FOOTER_HEIGHT_FALLBACK;
   const { t } = useTranslate();
   const { description, teamAName, teamBName, title } = useCreateSessionStore(
     useShallow(state => ({
@@ -102,7 +111,16 @@ export default function CreateSessionStep3Screen() {
   };
 
   return (
-    <WrapperKeyboardAwareScrollView contentContainerClassName="gap-5 pb-10">
+    <WrapperKeyboardAwareScrollView
+      contentContainerClassName="gap-5 pb-10"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bottomOffset={KEYBOARD_BOTTOM_OFFSET}
+      hasKeyboardToolbar
+      keyboardToolbarProps={{
+        offset: { closed: 0, opened: toolbarOpenedOffset },
+      }}
+    >
       <Box>
         <CreateSessionTitle title={t('create-session-steps.step-3.title')} />
         <String colorVariant="muted" variant="body-sm">
@@ -120,6 +138,7 @@ export default function CreateSessionStep3Screen() {
           placeholder={t('create-session-steps-step-3.section_session_title_placeholder')}
           maxLength={TITLE_MAX_LENGTH}
           hasLengthCounter
+          returnKeyType="next"
         />
         <Box className="gap-2">
           <String colorVariant="muted" variant="body-sm">
@@ -164,6 +183,8 @@ export default function CreateSessionStep3Screen() {
           maxLength={DESCRIPTION_MAX_LENGTH}
           hasLengthCounter
           placeholder={t('create-session-steps-step-3.section_session_description_placeholder')}
+          returnKeyType="next"
+          blurOnSubmit={false}
         />
       </Box>
       <Box>
@@ -183,6 +204,7 @@ export default function CreateSessionStep3Screen() {
               placeholder={t('create-session-steps-step-3.section_session_teams_names_team_1_placeholder')}
               maxLength={TEAM_NAME_MAX_LENGTH}
               hasLengthCounter
+              returnKeyType="next"
             />
           </BoxGrow>
           <BoxGrow className="gap-1">
@@ -197,10 +219,12 @@ export default function CreateSessionStep3Screen() {
               placeholder={t('create-session-steps-step-3.section_session_teams_names_team_2_placeholder')}
               maxLength={TEAM_NAME_MAX_LENGTH}
               hasLengthCounter
+              returnKeyType="done"
+              onSubmitEditing={() => Keyboard.dismiss()}
             />
           </BoxGrow>
         </BoxRowCenterBetween>
       </Box>
-    </WrapperKeyboardAwareScrollView>
+    </WrapperKeyboardAwareScrollView >
   );
 }

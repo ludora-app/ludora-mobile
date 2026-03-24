@@ -1,6 +1,6 @@
+import { Box } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
-import { Box, ReanimatedBox } from '@ludo/ui';
-import { FadeIn } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { GAMEMODES_BY_SPORT } from '@/constants/session.constants';
 import { CreateSessionFromRequestDtoGameMode } from '@/api/generated/model';
@@ -14,7 +14,7 @@ export default function CreateSessionStep1Part3() {
   const selectedSport = useCreateSessionStore(state => state.session?.sport);
 
   return (
-    <ReanimatedBox entering={FadeIn}>
+    <Animated.View entering={FadeIn}>
       <CreateSessionSubtitle title={t('create-session-steps.step-1.select_game_mode_title')} />
       <Box className="flex flex-row flex-wrap gap-2">
         {selectedSport &&
@@ -22,6 +22,6 @@ export default function CreateSessionStep1Part3() {
             <CreateSessionStep1Part3Item key={index} gameMode={gameMode} />
           ))}
       </Box>
-    </ReanimatedBox>
+    </Animated.View>
   );
 }

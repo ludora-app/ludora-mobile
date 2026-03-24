@@ -1,7 +1,9 @@
 import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
+import { cn } from '@/components/chill-ui-library';
 import { ErrorResponse } from '@/api/orval.instance';
+import { IS_IOS } from '@/constants/platform.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import configureGoogleSignIn from '@/configs/google-auth.config';
 import useLoginGoogle from '@/features/auth/login/queries/login-google.query';
@@ -9,7 +11,6 @@ import useLoginGoogle from '@/features/auth/login/queries/login-google.query';
 type LoginSocialGoogleProps = {
   flow: 'login' | 'register';
 };
-
 
 const GOOGLE_ERROR_MESSAGE = "Cannot read property 'user' of null";
 
@@ -40,7 +41,7 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
       }
     } catch (error) {
       if (error.message === GOOGLE_ERROR_MESSAGE) {
-        return
+        return;
       }
       const responseError = error as ErrorResponse;
       trackEvent({
@@ -59,20 +60,19 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
     <Button
       iconProps={{
         name: 'google-colored',
-        position: "left-outside",
+        position: 'left-outside',
       }}
       onPress={handleSubmit}
       variant="outlined"
       isLoading={googleSignInPending}
       title={t(`auth.${flow}.button_google_title`)}
-      className="w-full border-[#747775] border bg-white"
+      className={cn('w-full border border-[#747775] bg-white', { 'border-[#000]': IS_IOS })}
       titleProps={{
-        className: "text-[#1F1F1F]"
+        className: 'text-[#1F1F1F]',
       }}
       loaderProps={{
-        color: "#1F1F1F",
+        color: '#1F1F1F',
       }}
     />
-
   );
 }

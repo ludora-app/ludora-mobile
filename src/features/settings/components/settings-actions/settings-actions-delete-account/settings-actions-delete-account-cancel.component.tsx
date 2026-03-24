@@ -31,7 +31,7 @@ export default function SettingsActionsDeleteAccountCancel() {
 
   return (
     <Button
-      title={t('settings.delete_account_abord_button')}
+      title={t('settings.delete_account_abort_button')}
       colorVariant="success"
       isLoading={isDeleteAccountCancelLoading} onPress={handleAbordDeleteAccount}
     />

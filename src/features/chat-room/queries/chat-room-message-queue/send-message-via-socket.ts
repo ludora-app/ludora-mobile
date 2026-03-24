@@ -53,7 +53,10 @@ export const sendMessageViaSocket = (
     const successResponse = response.data;
     const currentQueryKey = ctx.getQueryKey();
 
-    const { removePendingMessage, updatePendingMessage } = useChatRoomOptimisticMessagesStore.getState();
+    const { addPendingMessage, pendingMessages, removePendingMessage, updatePendingMessage } =
+      useChatRoomOptimisticMessagesStore.getState();
+
+    const pendingMsg = pendingMessages[messageUid];
 
     // New conversation created — refetch the conversation list
     if (successResponse.conversationUid && !ctx.chatRoomId) {
@@ -81,7 +84,18 @@ export const sendMessageViaSocket = (
       );
     }
 
+    // Transition pending message from temp uid to real uid instead of removing it outright.
+    // This prevents the message from disappearing if a NEW_MESSAGE refetch races with this ack.
+    // The cleanup effect in useGetMessagesByChatroomId will remove it once server data confirms it.
     removePendingMessage(messageUid);
+    if (pendingMsg) {
+      addPendingMessage({
+        ...pendingMsg,
+        globalStatus: MessageCollectionItemDtoGlobalStatus.DELIVERED,
+        isSending: false,
+        uid: successResponse.messageUid,
+      });
+    }
 
     if (!currentQueryKey) return;
 

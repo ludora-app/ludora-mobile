@@ -1,26 +1,18 @@
 import { cn } from '@chillui/ui';
 import { Box, BoxRow } from '@ludo/ui';
-import { useRouter } from 'expo-router';
-import { Pressable } from 'react-native';
 import { PropsWithChildren } from 'react';
-import Animated, {
-  cancelAnimation,
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
 
-import ROUTES from '@/constants/routes.constants';
-import { useHaptics } from '@/hooks/haptics.hook';
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
+import {
+  MessageActionsAnchorRect,
+  useChatRoomMessageActionsMenuStore,
+} from '@/features/chat-room/store/chat-room-message-actions-menu.store';
 
 import ChatRoomMessageListItemWrapperTime from './chat-room-message-list-item-wrapper-time.component';
 import ChatRoomMessageListItemWrapperAvatar from './chat-room-message-list-item-wrapper-avatar.component';
-import { chatRoomMessageListItemWrapperTv } from '../../../../styles/chat-room-message-list-item-wrapper.styles';
+import ChatRoomMessageListItemWrapperBubble from './chat-room-message-list-item-wrapper-bubble.component';
 import ChatRoomMessageListItemWrapperIndicators from './chat-room-message-list-item-wrapper-indicators/chat-room-message-list-item-wrapper-indicators.component';
 
 type ChatRoomMessageListItemWrapperProps = {
@@ -31,31 +23,17 @@ type ChatRoomMessageListItemWrapperProps = {
 export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const { children, isChatRoomGroup, messageData } = props;
-
-
   const { globalStatus: messageGlobalStatus, isSender: isMessageFromMe, uid: messageUid } = messageData || {};
-  const router = useRouter();
-  const { triggerHaptic } = useHaptics();
 
-  const isMessageDeleted = messageGlobalStatus === 'DELETED'
+  const setMessageActionsAnchor = useChatRoomMessageActionsMenuStore(state => state.setAnchor);
 
-  const scale = useSharedValue(1);
+  const isMessageDeleted = messageGlobalStatus === 'DELETED';
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  const handleMessageLongPress = () => {
+  const handleBubbleAnchorMeasured = (rect: MessageActionsAnchorRect) => {
     if (!chatRoomId || !messageUid || isMessageDeleted) {
       return;
     }
-    cancelAnimation(scale);
-    scale.value = withSequence(
-      withTiming(0.9, { duration: 100 }),
-      withSpring(1, { damping: 10, stiffness: 200 }),
-    );
-    triggerHaptic('selection');
-    router.navigate(ROUTES.CHAT_ROOM.MESSAGE_ACTIONS_UID({ chatRoomId, messageId: messageUid }));
+    setMessageActionsAnchor(rect);
   };
 
   return (
@@ -76,17 +54,12 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
           })}
         >
           {isChatRoomGroup && <ChatRoomMessageListItemWrapperAvatar messageData={messageData} />}
-          <Animated.View style={animatedStyle} className="shrink">
-            <Pressable
-              onLongPress={handleMessageLongPress}
-              className={chatRoomMessageListItemWrapperTv({
-                isMessageDeleted,
-                isMessageFromMe,
-              })}
-            >
-              {children}
-            </Pressable>
-          </Animated.View>
+          <ChatRoomMessageListItemWrapperBubble
+            messageData={messageData}
+            onBubbleAnchorMeasured={handleBubbleAnchorMeasured}
+          >
+            {children}
+          </ChatRoomMessageListItemWrapperBubble>
         </BoxRow>
         <BoxRow className={cn('items-center justify-end gap-px')}>
           <ChatRoomMessageListItemWrapperTime messageData={messageData} />

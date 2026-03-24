@@ -10,6 +10,7 @@ export const passwordSchema = (t: TolgeeInstance['t']) =>
     .min(MIN_PASSWORD_LENGTH, t('zod.password.min_length', { length: MIN_PASSWORD_LENGTH }))
     .refine(val => /[a-z]/.test(val), t('zod.password.min_lower'))
     .refine(val => /[A-Z]/.test(val), t('zod.password.min_upper'))
+    .refine(val => /[0-9]/.test(val), t('zod.password.min_digit'))
     .refine(val => /[^a-zA-Z0-9]/.test(val), t('zod.password.caractere_special'));
 
 export const NAME_REGEX = /^[\p{L}\p{M}' -]*$/u;

@@ -16,8 +16,10 @@ const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
 
-const LIST_HEADER_HEIGHT = 191
+const LIST_HEADER_HEIGHT = 176
 const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
+
+const BOTTOM_PADDING_EMPTY_LIST = 100;
 
 export default function HomeSessionList() {
   const {
@@ -53,10 +55,13 @@ export default function HomeSessionList() {
 
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
+      if (sessions.length === 0) {
+        return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT + BOTTOM_PADDING_EMPTY_LIST;
+      }
       return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT;
     }
     return bottomTab;
-  }, [bottomTab]);
+  }, [bottomTab, sessions.length]);
 
   return (
     <List

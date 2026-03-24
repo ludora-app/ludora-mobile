@@ -1,3 +1,139 @@
+## [1.3.0-alpha.22](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.21...v1.3.0-alpha.22) (2026-03-24)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-581:** adjust button layout and styling in ProfilSection3Me component. ([#103](https://github.com/ludora-app/ludora-mobile/issues/103)) ([1d9e2a2](https://github.com/ludora-app/ludora-mobile/commit/1d9e2a28b36d0dbea5243bcc29939de9442f6020))
+
+## [1.3.0-alpha.21](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.20...v1.3.0-alpha.21) (2026-03-24)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-582:** dynamically apply bottom safe area padding using `useSafeArea` hook in login and register screens. ([#102](https://github.com/ludora-app/ludora-mobile/issues/102)) ([a4cfd4a](https://github.com/ludora-app/ludora-mobile/commit/a4cfd4a542973bbeaabe74f10825f234fde298a6))
+
+## [1.3.0-alpha.20](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.19...v1.3.0-alpha.20) (2026-03-24)
+
+### ✨ Features
+
+* **scrum-580:** Display alert and link to settings when image picker permissions are rejected. ([#101](https://github.com/ludora-app/ludora-mobile/issues/101)) ([7e6373c](https://github.com/ludora-app/ludora-mobile/commit/7e6373c0644389aee4ddcceedc388f59dda9a69d))
+
+## [1.3.0-alpha.19](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.18...v1.3.0-alpha.19) (2026-03-24)
+
+### ✨ Features
+
+* **SCRUM-585:** update permission messages for location, photos, and camera, and add iOS fullscreen requirement. ([#100](https://github.com/ludora-app/ludora-mobile/issues/100)) ([2d3d81f](https://github.com/ludora-app/ludora-mobile/commit/2d3d81ff8bdd53ed789897f419a8561797d67a80))
+
+## [1.3.0-alpha.18](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.17...v1.3.0-alpha.18) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-584:** replace `expo-blur` with `@sbaiahmed1/react-native-blur` for blur effects and adjust blur intensity. ([#99](https://github.com/ludora-app/ludora-mobile/issues/99)) ([061eef3](https://github.com/ludora-app/ludora-mobile/commit/061eef3555eb1004af485b5c6ab20a4891416ebf))
+
+## [1.3.0-alpha.17](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.16...v1.3.0-alpha.17) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-577:** Implement Apple social login and integrate it into a… ([#98](https://github.com/ludora-app/ludora-mobile/issues/98)) ([e050f74](https://github.com/ludora-app/ludora-mobile/commit/e050f74b726def0a15714677c706eb316a5ae410))
+
+## [1.3.0-alpha.16](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.15...v1.3.0-alpha.16) (2026-03-23)
+
+### ✨ Features
+
+* **SCRUM-583:** update expo dependencies. ([#97](https://github.com/ludora-app/ludora-mobile/issues/97)) ([69680fa](https://github.com/ludora-app/ludora-mobile/commit/69680fad3a321fbc69d9eaa8663afda3d87255f8))
+
+## [1.3.0-alpha.15](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.14...v1.3.0-alpha.15) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-578:** Introduce token versioning to the WebSocket store to ensure re-authentication after token refresh. ([#96](https://github.com/ludora-app/ludora-mobile/issues/96)) ([da91d66](https://github.com/ludora-app/ludora-mobile/commit/da91d669441233f435fe1705aea9ff4e44b9c654))
+
+## [1.3.0-alpha.14](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.13...v1.3.0-alpha.14) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-568:** enhance button disabled state with opacity and refine input selection styling for iOS. ([#95](https://github.com/ludora-app/ludora-mobile/issues/95)) ([7792f6f](https://github.com/ludora-app/ludora-mobile/commit/7792f6f31c9cfb0a7f54a556604ccb9986c1bc00))
+
+## [1.3.0-alpha.13](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.12...v1.3.0-alpha.13) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-567:** update input cursor and selection colors. ([#94](https://github.com/ludora-app/ludora-mobile/issues/94)) ([ee4f4db](https://github.com/ludora-app/ludora-mobile/commit/ee4f4db9a3e77338c1a8ef132eb2a05c0672191e))
+
+## [1.3.0-alpha.12](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.11...v1.3.0-alpha.12) (2026-03-22)
+
+### ✨ Features
+
+* **SCRUM-564:** Implement error tracking for several queries, add a chat room message read fallback initializer, and remove the rn-emoji-keyboard dependency. ([#93](https://github.com/ludora-app/ludora-mobile/issues/93)) ([71e4d6a](https://github.com/ludora-app/ludora-mobile/commit/71e4d6a66293076d8a4bd360067d5beae339e95c))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-563:** update layout and styling for sport level card component; adjust padding in onboarding screens ([#91](https://github.com/ludora-app/ludora-mobile/issues/91)) ([4bf42bb](https://github.com/ludora-app/ludora-mobile/commit/4bf42bb630468c2f21f0c5ff131c2e102fed92ae))
+
+## [1.3.0-alpha.11](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.10...v1.3.0-alpha.11) (2026-03-19)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-561:** remove unused images and update imports in rating card component ([#90](https://github.com/ludora-app/ludora-mobile/issues/90)) ([7e5f5f7](https://github.com/ludora-app/ludora-mobile/commit/7e5f5f7f20608634f543e79228ccab1ef90b9eb6))
+
+## [1.3.0-alpha.10](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.9...v1.3.0-alpha.10) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-549:** Add associated domains for universal links ([#89](https://github.com/ludora-app/ludora-mobile/issues/89)) ([caea1c8](https://github.com/ludora-app/ludora-mobile/commit/caea1c80aee9e3d351c6f86a65aacb3ad4a64b22))
+
+## [1.3.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.8...v1.3.0-alpha.9) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-553:** Enhance emoji picker functionality by adding reset on conversation change and clearing pending emojis ([#88](https://github.com/ludora-app/ludora-mobile/issues/88)) ([19f02f0](https://github.com/ludora-app/ludora-mobile/commit/19f02f04f9f2af95fe4d6da12113f0ca54f9377e))
+
+## [1.3.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.7...v1.3.0-alpha.8) (2026-03-19)
+
+### Bug Fixes
+
+* **SCRUM-559:** Update button titles in WelcomeFooter component for consistency with common translations ([#87](https://github.com/ludora-app/ludora-mobile/issues/87)) ([943ff46](https://github.com/ludora-app/ludora-mobile/commit/943ff46269e1d297c0078c1ccb27af69bbdfdc19))
+
+## [1.3.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.6...v1.3.0-alpha.7) (2026-03-19)
+
+### Bug Fixes
+
+* **SCRUM-560:** Add digit requirement to password schema validation ([#86](https://github.com/ludora-app/ludora-mobile/issues/86)) ([c0dbcb2](https://github.com/ludora-app/ludora-mobile/commit/c0dbcb27f506cc515a7679fd6444118f581f91f7))
+
+## [1.3.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.5...v1.3.0-alpha.6) (2026-03-19)
+
+### ✨ Features
+
+* **SCRUM-557:** Enhance HeaderScreen component with new props for left content styling and icon customization; adjust layout in home and players list components for improved UI consistency. ([#85](https://github.com/ludora-app/ludora-mobile/issues/85)) ([4ab100a](https://github.com/ludora-app/ludora-mobile/commit/4ab100a975ab3787a4134ea5f88e4015500c5e26))
+
+## [1.3.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.4...v1.3.0-alpha.5) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-556:** Enhance WrapperKeyboardAwareScrollView with keyboard toolbar support, update type definitions and add Keyboard tool to register screen ([#84](https://github.com/ludora-app/ludora-mobile/issues/84)) ([9e11403](https://github.com/ludora-app/ludora-mobile/commit/9e11403502017a6207ffffbb96f5ee1c0063ab91))
+
+## [1.3.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.3...v1.3.0-alpha.4) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-555:** Update keyboard behavior in List component, adjust EmptyResult margin, and enhance FormSheetFooter with layout support ([#83](https://github.com/ludora-app/ludora-mobile/issues/83)) ([c8e77b5](https://github.com/ludora-app/ludora-mobile/commit/c8e77b52fc8a20b80747f6a432316ce4e78620b6))
+
+## [1.3.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.2...v1.3.0-alpha.3) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-552:** Enhance image picker robustness by preventing concurrent calls, retaining selection on cancel, improving image validation, and handling camera availability. ([#82](https://github.com/ludora-app/ludora-mobile/issues/82)) ([9309076](https://github.com/ludora-app/ludora-mobile/commit/9309076fbbba9af830b3b966e6c1d712e2cf3871))
+
+## [1.3.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.1...v1.3.0-alpha.2) (2026-03-18)
+
+### ✨ Features
+
+* **SCRUM-548:** implement internationalization for various UI components and error messages ([#81](https://github.com/ludora-app/ludora-mobile/issues/81)) ([c4930c7](https://github.com/ludora-app/ludora-mobile/commit/c4930c7bd9cb7e0e771fac977774d81b5cdefc3c))
+
+## [1.3.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.2.4...v1.3.0-alpha.1) (2026-03-17)
+
+### ✨ Features
+
+* **SCRUM-546:** Update typography variants for notification list item ([#80](https://github.com/ludora-app/ludora-mobile/issues/80)) ([066cff9](https://github.com/ludora-app/ludora-mobile/commit/066cff9f0ef6b36ef29ed3725462e977a0aa687c))
+
 ## [1.2.1](https://github.com/ludora-app/ludora-mobile/compare/v1.2.0...v1.2.1) (2026-03-16)
 
 ### Bug Fixes

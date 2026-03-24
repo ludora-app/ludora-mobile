@@ -1,4 +1,4 @@
-import { View, Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useState, useRef, PropsWithChildren } from 'react';
 
 import { RipplePressableProps } from '@/components/chill-ui-library/types';

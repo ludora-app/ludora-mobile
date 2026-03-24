@@ -37,26 +37,32 @@ export default function SportLevelCard({
   return (
     <ScalePressable
       onPress={() => onPress(sport)}
-      className={cn('aspect-square w-[45%] items-center justify-center gap-2 rounded-lg bg-white p-3', {
+      className={cn('aspect-square min-h-36 w-[45%] rounded-lg bg-white', {
         'border-primary/40 bg-primary/10 border': isSelected,
       })}
       style={isSelected ? styles.selectedShadow : styles.shadow}
     >
-      <String font="primaryBold">{sport.name}</String>
-      <Image source={sportImage} className="size-16" contentFit="contain" />
-      <String variant="body-sm" font="primarySemiBold" truncate>
-        {level ? t(`common.user_level_${level}`) : t(translationKey)}
-      </String>
-      <BoxRow className="items-center gap-2">
-        {list(2).map((_, index) => (
-          <Box
-            key={index}
-            className={cn('bg-primary size-2 rounded-full', {
-              'bg-primary/20': index >= (level || 0),
-            })}
-          />
-        ))}
-      </BoxRow>
+      <Box className='h-10 items-center justify-center'>
+        <String font="primaryBold">{t(`common.session_sport_${sport.name}`).toUpperCase()}</String>
+      </Box>
+      <Box className='flex-1'>
+        <Image source={sportImage} className="size-full" contentFit="contain" />
+      </Box>
+      <Box className='h-14 items-center justify-center gap-1'>
+        <String variant="body-sm" font="primarySemiBold" truncate>
+          {level ? t(`common.user_level_${level}`) : t(translationKey)}
+        </String>
+        <BoxRow className="items-center gap-2">
+          {list(2).map((_, index) => (
+            <Box
+              key={index}
+              className={cn('bg-primary size-2 rounded-full', {
+                'bg-primary/20': index >= (level || 0),
+              })}
+            />
+          ))}
+        </BoxRow>
+      </Box>
     </ScalePressable>
   );
 }

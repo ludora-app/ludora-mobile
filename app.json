@@ -14,7 +14,8 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Autoriser $(PRODUCT_NAME) à accéder à votre position."
+          "locationWhenInUsePermission": "Ludora a besoin d'accéder à ta position pour te montrer les matchs et terrains de sport à proximité.",
+          "locationAlwaysAndWhenInUsePermission": "Ludora a besoin d'accéder à ta position pour te montrer les matchs et terrains de sport à proximité."
         }
       ],
       "expo-secure-store",
@@ -40,17 +41,23 @@
       ],
       "expo-audio",
       [
+        "expo-image",
+        {
+          "disableLibdav1d": true
+        }
+      ],
+      [
         "expo-image-picker",
         {
-          "photosPermission": "L'application a besoin d'accéder à tes photos."
+          "photosPermission": "Ludora a besoin d'accéder à tes photos pour te permettre d'ajouter des images dans l'application (ex: photo de profil, vue d'un terrain).",
+          "cameraPermission": "Ludora a besoin d'accéder à ta caméra pour te permettre de prendre et partager des photos dans l'application (ex: photo de profil, vue d'un terrain)."
         }
       ],
       [
         "expo-notifications",
         {
           "icon": "./assets/logos/ic-np-icon.png",
-          "color": "#ffffff",
-          "sounds": []
+          "color": "#ffffff"
         }
       ],
       [
@@ -64,7 +71,8 @@
       "expo-asset",
       "@react-native-firebase/app",
       "./plugins/with-non-modular-headers",
-      "./plugins/with-android-manifest-fixes"
+      "./plugins/with-android-manifest-fixes",
+      "expo-apple-authentication"
     ],
     "name": "Ludora",
     "slug": "ludora",
@@ -79,7 +87,8 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.POST_NOTIFICATIONS",
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.CAMERA"
       ],
       "intentFilters": [
         {
@@ -115,7 +124,10 @@
       "icon": "./assets/logos/ic-launcher-ios.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"],
+      "usesAppleSignIn": true,
+      "requireFullScreen": true
     },
     "extra": {
       "router": {

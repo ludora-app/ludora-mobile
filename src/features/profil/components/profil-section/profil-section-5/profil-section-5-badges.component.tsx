@@ -14,7 +14,7 @@ export default function ProfilSection5Badges({ listHeaderComponent }: Props) {
       {listHeaderComponent}
       <BoxCenter className='gap-1 pt-4 bg-background flex-1 justify-start'>
         <Icon name='ludo-sunglass' className='size-40' />
-        <String>{t('common.coming_soon')}</String>
+        <String>{t('common.coming_functionality_soon')}</String>
       </BoxCenter>
     </ScrollView >
   )

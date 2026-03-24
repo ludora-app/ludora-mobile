@@ -123,7 +123,6 @@ class PushNotificationService {
       enableVibrate: true,
       importance: Notifications.AndroidImportance.MAX,
       showBadge: true,
-      sound: 'default',
       vibrationPattern: [0, 250, 250, 250],
     };
 
@@ -229,7 +228,7 @@ class PushNotificationService {
           body: notif.body || '',
           data: remoteMessage.data,
           priority: Notifications.AndroidNotificationPriority.HIGH,
-          sound: 'default',
+          sound: true,
           title: notif.title || 'Notification',
         };
 

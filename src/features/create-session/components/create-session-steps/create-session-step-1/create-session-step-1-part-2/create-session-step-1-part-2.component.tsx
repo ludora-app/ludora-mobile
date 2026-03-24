@@ -1,6 +1,6 @@
+import { Box } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
-import { Box, ReanimatedBox } from '@ludo/ui';
-import { FadeIn } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { SESSION_LEVELS } from '@/constants/session.constants';
 
@@ -11,13 +11,13 @@ export default function CreateSessionStep1Part2() {
   const { t } = useTranslate();
 
   return (
-    <ReanimatedBox entering={FadeIn}>
+    <Animated.View entering={FadeIn}>
       <CreateSessionSubtitle title={t('create-session-steps.step-1.select_level_title')} />
       <Box className="flex-row items-center justify-around">
         {SESSION_LEVELS.map(difficulty => (
           <CreateSessionStep1Part2Item key={difficulty.code} difficulty={difficulty} />
         ))}
       </Box>
-    </ReanimatedBox>
+    </Animated.View>
   );
 }

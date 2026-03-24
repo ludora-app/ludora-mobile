@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
 import { isString, debounce } from 'radash';
+import { useTranslate } from '@tolgee/react';
 import { FormInput, Wrapper } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -11,6 +12,7 @@ const DEBOUNCE_DELAY = 300;
 
 
 export default function ChatConversationsHeaderSearch() {
+  const { t } = useTranslate();
   const { control, watch } = useForm<ChatInputSchema>({
     resolver: zodResolver(schema),
   });
@@ -35,7 +37,7 @@ export default function ChatConversationsHeaderSearch() {
       <FormInput
         control={control}
         name="search"
-        placeholder="Rechercher une conversation..."
+        placeholder={t('chat.search_placeholder')}
         inputContainerClassName="rounded-full"
         leftIconAction={{
           color: '#000',

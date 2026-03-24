@@ -1,3 +1,9 @@
+## [1.3.0-alpha.22](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.21...v1.3.0-alpha.22) (2026-03-24)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-581:** adjust button layout and styling in ProfilSection3Me component. ([#103](https://github.com/ludora-app/ludora-mobile/issues/103)) ([1d9e2a2](https://github.com/ludora-app/ludora-mobile/commit/1d9e2a28b36d0dbea5243bcc29939de9442f6020))
+
 ## [1.3.0-alpha.21](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.20...v1.3.0-alpha.21) (2026-03-24)
 
 ### ♻️ Code Refactoring

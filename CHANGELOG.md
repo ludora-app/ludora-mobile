@@ -1,3 +1,9 @@
+## [1.3.0-alpha.21](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.20...v1.3.0-alpha.21) (2026-03-24)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-582:** dynamically apply bottom safe area padding using `useSafeArea` hook in login and register screens. ([#102](https://github.com/ludora-app/ludora-mobile/issues/102)) ([a4cfd4a](https://github.com/ludora-app/ludora-mobile/commit/a4cfd4a542973bbeaabe74f10825f234fde298a6))
+
 ## [1.3.0-alpha.20](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.19...v1.3.0-alpha.20) (2026-03-24)
 
 ### ✨ Features

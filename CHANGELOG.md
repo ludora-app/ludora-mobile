@@ -1,3 +1,9 @@
+## [1.3.0-alpha.25](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.24...v1.3.0-alpha.25) (2026-03-29)
+
+### Bug Fixes
+
+* **SCRUM-596:** update profil-header layout spacing ([#108](https://github.com/ludora-app/ludora-mobile/issues/108)) ([5e83226](https://github.com/ludora-app/ludora-mobile/commit/5e83226d584dfc8f0c054155839060ca085f355b))
+
 ## [1.3.0-alpha.24](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.23...v1.3.0-alpha.24) (2026-03-29)
 
 ### ✨ Features

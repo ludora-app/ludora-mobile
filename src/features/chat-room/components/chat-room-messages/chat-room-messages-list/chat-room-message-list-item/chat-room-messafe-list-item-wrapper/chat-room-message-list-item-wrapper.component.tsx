@@ -46,7 +46,7 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
         'mb-3',
       )}
     >
-      <Box className="max-w-[80%]">
+      <Box className="max-w-[90%]">
         <BoxRow
           className={cn('items-end gap-1', {
             'flex-row-reverse justify-start': isMessageFromMe,
@@ -69,4 +69,3 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
     </Box>
   );
 }
-

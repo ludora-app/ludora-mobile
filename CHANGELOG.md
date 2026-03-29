@@ -1,3 +1,9 @@
+## [1.3.0-alpha.23](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.22...v1.3.0-alpha.23) (2026-03-29)
+
+### ✨ Features
+
+* implement custom blur view component and refactor session team styling utilities, Change bubble message Colors to more clarity, add user name on message bubble for goupe messages and fix scroll bug on chat room ([8c73a14](https://github.com/ludora-app/ludora-mobile/commit/8c73a1484511219d88a0ca9dd501240e7a25cd38))
+
 ## [1.3.0-alpha.22](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.21...v1.3.0-alpha.22) (2026-03-24)
 
 ### ♻️ Code Refactoring

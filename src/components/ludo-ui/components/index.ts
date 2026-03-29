@@ -19,3 +19,4 @@ export * from './avatar';
 export * from './accordion';
 export * from './numeric-input';
 export * from './scroll-view';
+export * from './blur-view';

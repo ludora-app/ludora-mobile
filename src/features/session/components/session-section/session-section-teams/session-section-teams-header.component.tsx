@@ -46,7 +46,7 @@ export default function SessionSectionTeamsHeader() {
     <BoxRowCenterBetween>
       <SessionSectionHeader iconName="people-2-regular" title="common.teams" />
       <Chip
-        title={t('common.seeAll')}
+        title={t('chat-room.info_session_see_members')}
         variant={handleVariant}
         size="2xs"
         className={cn('bg-white px-0', { 'border-muted': handleVariant === 'contained' })}

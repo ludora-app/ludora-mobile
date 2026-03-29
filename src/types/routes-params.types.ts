@@ -34,6 +34,7 @@ export type RootStackParamList = {
     type?: string;
     sender?: string;
     receiver?: string;
+    sessionData?: string;
   };
   [ROUTES.CHAT_ROOM.INFO_PRIVATE]: {
     chatRoomId: string;

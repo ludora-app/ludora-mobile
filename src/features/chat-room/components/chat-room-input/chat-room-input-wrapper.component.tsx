@@ -1,17 +1,13 @@
-import { useMemo } from 'react';
-import BlurView from '@sbaiahmed1/react-native-blur';
-import { KeyboardStickyView, useKeyboardHandler } from 'react-native-keyboard-controller';
+import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import { IS_ANDROID, IS_IOS } from '@/constants/platform.constants';
+import { IS_ANDROID } from '@/constants/platform.constants';
 
 import ChatRoomInput from './chat-room-input.component';
 
 const ANDROID_SAFE_AREA_BOTTOM = 5;
-const IOS_INPUT_BOTTOM_PADDING = 15;
-
-const BLUR_INTENSITY = 40;
+const INPUT_BOTTOM_PADDING_WHEN_KEYBOARD_IS_OPEN = 15;
 
 export default function ChatRoomInputWrapper() {
   const { insetsBottom } = useSafeArea();
@@ -38,18 +34,11 @@ export default function ChatRoomInputWrapper() {
     [],
   );
 
-  const inputBottomPaddingKeyboardOpened = useMemo(() => {
-    if (IS_IOS) {
-      return IOS_INPUT_BOTTOM_PADDING;
-    }
-    return insetsBottom + (IS_ANDROID ? ANDROID_SAFE_AREA_BOTTOM : 0);
-  }, [insetsBottom]);
-
   const animatedStyle = useAnimatedStyle(() => {
     const bottomPadding = interpolate(
       keyboardProgress.value,
       [0, 1],
-      [insetsBottom + (IS_ANDROID ? ANDROID_SAFE_AREA_BOTTOM : 0), inputBottomPaddingKeyboardOpened],
+      [insetsBottom + (IS_ANDROID ? ANDROID_SAFE_AREA_BOTTOM : 0), INPUT_BOTTOM_PADDING_WHEN_KEYBOARD_IS_OPEN],
       'clamp',
     );
 
@@ -59,12 +48,8 @@ export default function ChatRoomInputWrapper() {
   });
 
   return (
-    <KeyboardStickyView>
-      <BlurView blurType="light" blurAmount={BLUR_INTENSITY}>
-        <Animated.View style={animatedStyle} className="relative z-50 flex-row items-center gap-2 px-4 pt-2">
-          <ChatRoomInput />
-        </Animated.View>
-      </BlurView>
-    </KeyboardStickyView>
+    <Animated.View style={animatedStyle} className="relative z-50 flex-row items-center gap-2 px-4 pt-2">
+      <ChatRoomInput />
+    </Animated.View>
   );
 }

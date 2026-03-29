@@ -4,6 +4,8 @@ import { ScalePressable } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
 
+import { useChatRoomSessionTeam } from '../../utils/chat-room-session-team.utils';
+
 type ChatRoomInputSubmitButtonProps = {
   onPress: () => void;
   isDisabled: boolean;
@@ -22,9 +24,11 @@ const styles = StyleSheet.create({
 
 export default function ChatRoomInputSubmitButton(props: ChatRoomInputSubmitButtonProps) {
   const { isDisabled, onPress } = props;
+  const { backgroundColor } = useChatRoomSessionTeam();
+
   return (
     <ScalePressable
-      style={[styles.button, isDisabled && { opacity: 0.5 }]}
+      style={[styles.button, isDisabled && { opacity: 0.5 }, backgroundColor]}
       onPress={onPress}
       disabled={isDisabled}
     >

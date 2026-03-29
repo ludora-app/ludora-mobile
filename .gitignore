@@ -57,3 +57,4 @@ dev.GoogleService-Info.plist
 .artifacts
 locales
 /src/constants/icons.constants.ts
+service-account-file.json

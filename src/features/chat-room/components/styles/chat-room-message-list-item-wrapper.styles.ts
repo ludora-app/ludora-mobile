@@ -19,9 +19,23 @@ export const chatRoomMessageListItemWrapperTv = tv({
       isMessageFromMe: true,
     },
     {
-      className: 'bg-ring',
+      className: 'bg-secondary',
+      isMessageDeleted: false,
+      isMessageFromMe: true,
+      isSessionChat: true,
+      isTeamLabelA: false,
+    },
+    {
+      className: 'bg-white border-1 border-primary',
       isMessageDeleted: false,
       isMessageFromMe: false,
+    },
+    {
+      className: 'bg-white border-1 border-secondary',
+      isMessageDeleted: false,
+      isMessageFromMe: false,
+      isSessionChat: true,
+      isTeamLabelA: false,
     },
   ],
   variants: {
@@ -30,6 +44,14 @@ export const chatRoomMessageListItemWrapperTv = tv({
       true: '',
     },
     isMessageFromMe: {
+      false: '',
+      true: '',
+    },
+    isSessionChat: {
+      false: '',
+      true: '',
+    },
+    isTeamLabelA: {
       false: '',
       true: '',
     },

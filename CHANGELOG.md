@@ -1,3 +1,9 @@
+## [1.3.0-alpha.24](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.23...v1.3.0-alpha.24) (2026-03-29)
+
+### ✨ Features
+
+* **SCRUM-592:** enable tablet support, adjust orientation, and improve list padding for empty states ([#107](https://github.com/ludora-app/ludora-mobile/issues/107)) ([4c90831](https://github.com/ludora-app/ludora-mobile/commit/4c9083152acea48dff8f85d622245e876bba13c3))
+
 ## [1.3.0-alpha.23](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.22...v1.3.0-alpha.23) (2026-03-29)
 
 ### ✨ Features

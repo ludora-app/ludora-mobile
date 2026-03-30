@@ -1,7 +1,19 @@
 import { useMemo } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Avatar, Box, BoxCenter, BoxRow, Button, Image, ScreenLayout, ScrollView, String, Wrapper } from '@ludo/ui';
+import {
+  Avatar,
+  Box,
+  BoxCenter,
+  BoxRow,
+  Button,
+  Image,
+  ScreenLayout,
+  ScrollView,
+  Separator,
+  String,
+  Wrapper,
+} from '@ludo/ui';
 
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
@@ -11,6 +23,8 @@ import { getSportImage } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useGetUserDataById } from '@/features/profil/queries/get-user-data-by-id.query';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
+import ChatRoomBlockUserDialog from '@/features/chat-room/components/chat-room-user-profil-formsheet/chat-room-block-user-dialog.component';
+import ChatRoomUserProfileReportUser from '@/features/chat-room/components/chat-room-user-profil-formsheet/chat-room-user-profile-report-user.component';
 
 import ChatRoomInfoHeader from '../components/chat-room-info-header.component';
 
@@ -58,6 +72,20 @@ export default function ChatRoomInfoPrivate() {
     }
   };
 
+  const handleOpenReportFormsheet = () => {
+    if (!userUid) return;
+    router.push({
+      params: {
+        firstname: firstname ?? '',
+        imageUrl: avatarUrl ?? '',
+        initialView: 'report-reasons',
+        lastname: lastname ?? '',
+        userId: userUid,
+      },
+      pathname: ROUTES.CHAT_ROOM.USER_PROFILE_UID(userUid),
+    });
+  };
+
   return (
     <ScreenLayout>
       <ScrollView bounces={false}>
@@ -100,12 +128,24 @@ export default function ChatRoomInfoPrivate() {
               </Box>
             ) : null}
             {userUid ? (
-              <Button
-                title={t('chat.info_view_profile', 'Voir profil')}
-                size="sm"
-                onPress={handleViewProfile}
-                className="self-center"
-              />
+              <Box className="w-full gap-4">
+                <Button
+                  title={t('chat.info_view_profile', 'Voir profil')}
+                  size="sm"
+                  onPress={handleViewProfile}
+                  className="self-center"
+                />
+                <Separator />
+                <Box className="gap-4">
+                  <ChatRoomBlockUserDialog
+                    dialogSource="chat_room_info_private_block_user"
+                    firstname={firstname}
+                    lastname={lastname}
+                    userId={userUid}
+                  />
+                  <ChatRoomUserProfileReportUser onPress={handleOpenReportFormsheet} />
+                </Box>
+              </Box>
             ) : null}
           </BoxCenter>
         </Wrapper>

@@ -1,3 +1,20 @@
+## [1.3.0-next.2](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-next.1...v1.3.0-next.2) (2026-03-30)
+
+### ✨ Features
+
+* implement custom blur view component and refactor session team styling utilities, Change bubble message Colors to more clarity, add user name on message bubble for goupe messages and fix scroll bug on chat room ([8c73a14](https://github.com/ludora-app/ludora-mobile/commit/8c73a1484511219d88a0ca9dd501240e7a25cd38))
+* **SCRUM-592:** enable tablet support, adjust orientation, and improve list padding for empty states ([#107](https://github.com/ludora-app/ludora-mobile/issues/107)) ([4c90831](https://github.com/ludora-app/ludora-mobile/commit/4c9083152acea48dff8f85d622245e876bba13c3))
+* **SCRUM-594:** add block user dialog component and refactor user profile blocking logic ([#111](https://github.com/ludora-app/ludora-mobile/issues/111)) ([946b3b2](https://github.com/ludora-app/ludora-mobile/commit/946b3b2d64ef3a921e669dff7d5b784675a86ae3))
+* **SCRUM-595:** migrate chat room store to context-based provider and implement user profile formsheet on group chat rooms ([#109](https://github.com/ludora-app/ludora-mobile/issues/109)) ([de952bd](https://github.com/ludora-app/ludora-mobile/commit/de952bdd5cfbad1534ae37893a6cfd7fc69bfd04))
+
+### Bug Fixes
+
+* **SCRUM-596:** update profil-header layout spacing ([#108](https://github.com/ludora-app/ludora-mobile/issues/108)) ([5e83226](https://github.com/ludora-app/ludora-mobile/commit/5e83226d584dfc8f0c054155839060ca085f355b))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-597:** remove sheetCornerRadius from iOS stack screen configurations ([#110](https://github.com/ludora-app/ludora-mobile/issues/110)) ([eae9098](https://github.com/ludora-app/ludora-mobile/commit/eae9098e6eb52afadc0645c428a1ebd88a9ae20f))
+
 ## [1.3.0-alpha.28](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.27...v1.3.0-alpha.28) (2026-03-30)
 
 ### ✨ Features

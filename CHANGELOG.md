@@ -1,3 +1,9 @@
+## [1.3.0-alpha.28](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.27...v1.3.0-alpha.28) (2026-03-30)
+
+### ✨ Features
+
+* **SCRUM-594:** add block user dialog component and refactor user profile blocking logic ([#111](https://github.com/ludora-app/ludora-mobile/issues/111)) ([946b3b2](https://github.com/ludora-app/ludora-mobile/commit/946b3b2d64ef3a921e669dff7d5b784675a86ae3))
+
 ## [1.3.0-alpha.27](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.26...v1.3.0-alpha.27) (2026-03-30)
 
 ### ♻️ Code Refactoring

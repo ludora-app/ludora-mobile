@@ -97,7 +97,6 @@ function AppLayoutNav() {
         }}
       />
 
-
       {/* ──────────── Filters ──────────── */}
       <Stack.Screen
         name="filters/index"
@@ -155,8 +154,17 @@ function AppLayoutNav() {
       <Stack.Screen
         name="chat-room/[chatRoomId]/index"
         options={{
-          animation: "ios_from_right",
+          animation: 'ios_from_right',
           contentStyle: { backgroundColor: '#FFF' },
+        }}
+      />
+      <Stack.Screen
+        name="chat-room/user-profile/[userId]"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
         }}
       />
 

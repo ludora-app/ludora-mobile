@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router'
 
-import { useChatRoomStore } from '../../store/chat-room.store';
 import { ChatRoomLocalSearchParams } from '../../types/chat-room.types';
+import { useChatRoomStore } from '../../context/chat-room-store-context';
 import { useGetChatRoomConvIdByUserId } from '../../queries/get-chat-room-conv-id-by-user-id.query';
 
 

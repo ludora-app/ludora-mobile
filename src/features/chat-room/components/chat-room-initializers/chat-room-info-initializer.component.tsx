@@ -5,8 +5,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { parse } from '@/utils/json.utils';
 import { FindOneConversationResponseDataType, ReceiverDto, SessionData } from '@/api/generated/model';
 
-import { useChatRoomStore } from '../../store/chat-room.store';
 import { ChatRoomLocalSearchParams } from '../../types/chat-room.types';
+import { useChatRoomStore } from '../../context/chat-room-store-context';
 import { useGetChatRoomById } from '../../queries/get-chat-room-by-id.query';
 
 type ChatRoomReceiver = ReceiverDto;

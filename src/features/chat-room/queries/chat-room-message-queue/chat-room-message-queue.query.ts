@@ -4,10 +4,10 @@ import { getConversationsLoadMoreMessagesQueryKey } from '@generatedApi/conversa
 import { useUserMe } from '@/queries/user-me.query';
 import { UserSimpleDisplayWithUidData } from '@/api/generated/model';
 
-import { useChatRoomStore } from '../../store/chat-room.store';
 import { retryOptimisticMessage } from './retry-optimistic-message';
 import { MessageQueueContext } from './chat-room-message-queue.types';
 import { addOptimisticMessageToQueue } from './add-optimistic-message';
+import { useChatRoomStore } from '../../context/chat-room-store-context';
 
 export const useChatRoomMessageOptimisticQueue = () => {
   const chatRoomId = useChatRoomStore(store => store.chatRoomId);

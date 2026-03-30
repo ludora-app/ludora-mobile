@@ -2,11 +2,11 @@ import { useTranslate } from '@tolgee/react';
 
 import QuickActionCard from '@/components/ui/quick-action-card.component';
 
-interface ProfilHeaderActionsReportUserProps {
+interface ChatRoomUserProfileReportUserProps {
   onPress: () => void;
 }
 
-export default function ProfilHeaderActionsReportUser(props: ProfilHeaderActionsReportUserProps) {
+export default function ChatRoomUserProfileReportUser(props: ChatRoomUserProfileReportUserProps) {
   const { onPress } = props;
   const { t } = useTranslate();
 

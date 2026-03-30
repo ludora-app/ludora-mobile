@@ -3,7 +3,7 @@ import { Box, BoxRow } from '@ludo/ui';
 import { PropsWithChildren } from 'react';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
-import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
 import {
   MessageActionsAnchorRect,

@@ -14,7 +14,7 @@ import { getSportPlaceHolder } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
-import { useChatRoomStore } from '../../store/chat-room.store';
+import { useChatRoomStore } from '../../context/chat-room-store-context';
 import { useChatRoomSessionTeam } from '../../utils/chat-room-session-team.utils';
 
 const styles = StyleSheet.create({

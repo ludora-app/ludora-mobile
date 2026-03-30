@@ -11,12 +11,12 @@ export const REPORT_REASONS = [
   CreateReportDtoReason.OTHER,
 ] as const;
 
-interface ProfilHeaderActionsReportReasonsProps {
+interface ChatRoomUserProfileReportReasonsProps {
   onPressOther: () => void;
   onSelectReason: (reason: CreateReportDtoReason, description?: string) => void;
 }
 
-export default function ProfilHeaderActionsReportReasons(props: ProfilHeaderActionsReportReasonsProps) {
+export default function ChatRoomUserProfileReportReasons(props: ChatRoomUserProfileReportReasonsProps) {
   const { onPressOther, onSelectReason } = props;
   const { t } = useTranslate();
 

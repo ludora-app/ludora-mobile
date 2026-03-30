@@ -1,6 +1,6 @@
 import { useSessionTeam } from '@/hooks/session-teams.hook';
 
-import { useChatRoomStore } from '../store/chat-room.store';
+import { useChatRoomStore } from '../context/chat-room-store-context';
 
 export const useChatRoomSessionTeam = () => {
   const { chatRoomInfo } = useChatRoomStore();

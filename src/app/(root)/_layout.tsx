@@ -11,7 +11,7 @@ function AppLayoutNav() {
     <Stack
       initialRouteName="(tabs)"
       screenOptions={{
-        animation: "slide_from_right",
+        animation: 'slide_from_right',
         headerShown: false,
       }}
     >
@@ -20,7 +20,7 @@ function AppLayoutNav() {
         name="create-session"
         options={{
           animation: 'slide_from_bottom',
-          statusBarStyle: "dark",
+          statusBarStyle: 'dark',
         }}
       />
       {/* ──────────── Profil ──────────── */}
@@ -160,7 +160,17 @@ function AppLayoutNav() {
         options={{
           contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,
-          statusBarStyle: "dark",
+          statusBarStyle: 'dark',
+        }}
+      />
+      <Stack.Screen
+        name="chat-room/user-profile/[userId]"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 12,
         }}
       />
 
@@ -206,7 +216,6 @@ function AppLayoutNav() {
         }}
       />
     </Stack>
-
   );
 }
 

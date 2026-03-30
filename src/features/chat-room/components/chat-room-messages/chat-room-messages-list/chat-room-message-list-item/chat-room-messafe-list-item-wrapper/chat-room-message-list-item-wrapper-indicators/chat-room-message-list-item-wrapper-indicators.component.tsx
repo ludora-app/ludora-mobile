@@ -3,10 +3,8 @@ import { LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
 import { MessageCollectionItemDto } from '@/api/generated/model';
+import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
-
-
-
 
 interface ChatRoomMessageListItemWrapperIndicatorsProps {
   messageData: OptimisticMessage | MessageCollectionItemDto;
@@ -15,15 +13,20 @@ interface ChatRoomMessageListItemWrapperIndicatorsProps {
 export default function ChatRoomMessageListItemWrapperIndicators({
   messageData,
 }: ChatRoomMessageListItemWrapperIndicatorsProps) {
-
-  const { hasAnyRead, hasEveryoneRead, isError, isSender: isMessageFromMe, isSending } = messageData as OptimisticMessage || {};
-
+  const {
+    hasAnyRead,
+    hasEveryoneRead,
+    isError,
+    isSender: isMessageFromMe,
+    isSending,
+  } = (messageData as OptimisticMessage) || {};
+  const { color } = useChatRoomSessionTeam();
 
   if (!isMessageFromMe) {
     return null;
   }
   if (isError) {
-    return <Icon name='warning-solid' size="xs" color={COLORS.destructive} />;
+    return <Icon name="warning-solid" size="xs" color={COLORS.destructive} />;
   }
 
   if (isSending) {
@@ -36,8 +39,8 @@ export default function ChatRoomMessageListItemWrapperIndicators({
   if ((hasAnyRead || hasEveryoneRead) && !isSending) {
     return (
       <BoxRow className="flex-row items-center">
-        <Icon name="check-solid" size="xs" color={hasEveryoneRead ? COLORS.primary : COLORS.muted} />
-        <Icon name="check-solid" size="xs" className="-ml-2.5" color={hasEveryoneRead ? COLORS.primary : COLORS.muted} />
+        <Icon name="check-solid" size="xs" color={hasEveryoneRead ? color : COLORS.muted} />
+        <Icon name="check-solid" size="xs" className="-ml-2.5" color={hasEveryoneRead ? color : COLORS.muted} />
       </BoxRow>
     );
   }

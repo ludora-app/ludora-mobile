@@ -6,11 +6,13 @@ interface ChatRoomMessageListItemContentStringProps {
   messageData: MessageCollectionItemDto;
 }
 
-export default function ChatRoomMessageListItemContentString({ messageData }: ChatRoomMessageListItemContentStringProps) {
-  const { content: messageContent } = messageData || {};
+export default function ChatRoomMessageListItemContentString({
+  messageData,
+}: ChatRoomMessageListItemContentStringProps) {
+  const { content: messageContent, isSender: isMessageFromMe } = messageData || {};
 
   return (
-    <String color="#FFF" font="primarySemiBold">
+    <String color={isMessageFromMe ? '#FFF' : '#000'} font="primarySemiBold">
       {messageContent}
     </String>
   );

@@ -34,6 +34,7 @@ export type RootStackParamList = {
     type?: string;
     sender?: string;
     receiver?: string;
+    sessionData?: string;
   };
   [ROUTES.CHAT_ROOM.INFO_PRIVATE]: {
     chatRoomId: string;
@@ -68,6 +69,14 @@ export type RootStackParamList = {
     firstname: string;
     lastname: string;
     id?: string;
+  };
+  [ROUTES.CHAT_ROOM.USER_PROFILE]: {
+    userId: string;
+    firstname: string;
+    lastname: string;
+    imageUrl?: string;
+    /** Ouvre la feuille directement sur les raisons de signalement (ex. depuis info privée). */
+    initialView?: 'actions' | 'report-reasons';
   };
 };
 

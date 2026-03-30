@@ -25,9 +25,8 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
     sessionData,
     type: conversationType,
     uid: chatRoomId,
-    unreadMessagesCount
+    unreadMessagesCount,
   } = item || {};
-
 
   const { teamLabel } = sessionData || {};
 
@@ -35,28 +34,31 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
     const params: RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX] = {
       imageUrl: chatRoomAvatar,
       name: chatRoomName,
-      receiver: conversationType === "PRIVATE" ? serialize(receiver) : undefined,
-      type: conversationType
+      receiver: conversationType === 'PRIVATE' ? serialize(receiver) : undefined,
+      sessionData: conversationType === 'SESSION' ? serialize(sessionData) : undefined,
+      type: conversationType,
     };
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(chatRoomId) });
   };
 
-  const showLudoKingIcon = useMemo(() => conversationType === "SESSION", [conversationType]);
+  const showLudoKingIcon = useMemo(() => conversationType === 'SESSION', [conversationType]);
 
-  const ludoKingType = useMemo(() => teamLabel === "A" ? "ludo-king" : "ludo-king-2", [teamLabel]);
+  const ludoKingType = useMemo(() => (teamLabel === 'A' ? 'ludo-king' : 'ludo-king-2'), [teamLabel]);
 
   return (
-    <Pressable className="border-b-muted/30 flex-row items-center gap-2 border-b py-3" onPress={handlePress}>
+    <Pressable className="flex-row items-center gap-2 border-b border-b-muted/30 py-3" onPress={handlePress}>
       <ChatConversationListItemAvatar conversation={item} />
       <BoxGrow className="gap-1">
         <BoxRowCenterBetween className="gap-2">
-          <String truncate font="primarySemiBold">{chatRoomName}</String>
+          <String truncate font="primarySemiBold">
+            {chatRoomName}
+          </String>
           <ChatConversationListItemLastMessageDate conversation={item} />
         </BoxRowCenterBetween>
         <BoxRowCenterBetween className="gap-2">
           <ChatConversationListItemLastMessage conversation={item} />
           {unreadMessagesCount > 0 && (
-            <Box className="bg-primary size-6 items-center justify-center rounded-full">
+            <Box className="size-6 items-center justify-center rounded-full bg-primary">
               <String variant="body-sm" colorVariant="white">
                 {unreadMessagesCount}
               </String>

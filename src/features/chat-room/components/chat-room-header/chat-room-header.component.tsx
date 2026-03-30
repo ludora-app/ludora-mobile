@@ -2,8 +2,8 @@ import { useRouter } from 'expo-router';
 import { ImageSource } from 'expo-image';
 import { StrictOmit } from '@chillui/ui';
 import { StyleSheet } from 'react-native';
+import { GlassView } from 'expo-glass-effect';
 import { useShallow } from 'zustand/react/shallow';
-import { BlurView } from '@sbaiahmed1/react-native-blur';
 import { Avatar, Box, BoxGrow, Icon, String, Wrapper } from '@ludo/ui';
 
 import { serialize } from '@/utils/json.utils';
@@ -14,7 +14,8 @@ import { getSportPlaceHolder } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
-import { useChatRoomStore } from '../../store/chat-room.store';
+import { useChatRoomStore } from '../../context/chat-room-store-context';
+import { useChatRoomSessionTeam } from '../../utils/chat-room-session-team.utils';
 
 const styles = StyleSheet.create({
   shadow: {
@@ -24,11 +25,11 @@ const styles = StyleSheet.create({
 
 type LocalSearchParamsPrivateInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_PRIVATE];
 type LocalSearchParamsSessionInfoChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_SESSION];
-const BLUR_INTENSITY = 50;
 
 export default function ChatRoomHeader() {
   const router = useRouter();
   const { top } = useSafeArea();
+  const { isTeamA } = useChatRoomSessionTeam();
   const { chatRoomId, imageUrl, name, receiver, sessionSport, sessionUid, type } = useChatRoomStore(
     useShallow(state => ({
       chatRoomId: state.chatRoomId,
@@ -76,11 +77,7 @@ export default function ChatRoomHeader() {
 
   return (
     <Box style={[styles.shadow, { paddingTop: top }]}>
-      <BlurView
-        blurType="light"
-        blurAmount={BLUR_INTENSITY}
-        style={{ bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 }}
-      />
+      <GlassView style={{ bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 }} className="bg-white/80" />
       <Wrapper className="flex-row items-center justify-between py-2">
         <BoxGrow className="flex-row items-center gap-1">
           <Icon
@@ -98,6 +95,7 @@ export default function ChatRoomHeader() {
                 firstname: name,
                 imageUrl: avatarImage,
               }}
+              colorVariant={isTeamA ? 'primary' : 'secondary'}
             />
           ) : (
             <Avatar

@@ -1,20 +1,22 @@
-import { useTranslate } from '@tolgee/react'
+import { useTranslate } from '@tolgee/react';
 
-import ProfilHeaderActionsItem from '../profil-header-actions-item.component'
+import QuickActionCard from '@/components/ui/quick-action-card.component';
 
 interface ProfilHeaderActionsReportUserProps {
-  onPress: () => void
+  onPress: () => void;
 }
 
 export default function ProfilHeaderActionsReportUser(props: ProfilHeaderActionsReportUserProps) {
-  const { onPress } = props
-  const { t } = useTranslate()
+  const { onPress } = props;
+  const { t } = useTranslate();
 
   return (
-    <ProfilHeaderActionsItem
+    <QuickActionCard
       iconName="shield-excalmation-solid"
       label={t('profil.report_user_button_label')}
       onPress={onPress}
+      variant="horizontal"
+      hasShadow
     />
-  )
+  );
 }

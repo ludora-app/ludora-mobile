@@ -3,7 +3,7 @@
     "owner": "ludora-app",
     "scheme": "ludora",
     "userInterfaceStyle": "automatic",
-    "orientation": "portrait",
+    "orientation": "default",
     "web": {
       "output": "static"
     },
@@ -127,7 +127,8 @@
       },
       "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"],
       "usesAppleSignIn": true,
-      "requireFullScreen": true
+      "requireFullScreen": false,
+      "supportsTablet": true
     },
     "extra": {
       "router": {

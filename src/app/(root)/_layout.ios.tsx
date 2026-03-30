@@ -31,7 +31,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -43,7 +42,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -53,7 +51,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -63,7 +60,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -73,7 +69,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -83,7 +78,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -93,10 +87,8 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
-
 
       {/* ──────────── Filters ──────────── */}
       <Stack.Screen
@@ -126,7 +118,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -147,7 +138,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -155,8 +145,17 @@ function AppLayoutNav() {
       <Stack.Screen
         name="chat-room/[chatRoomId]/index"
         options={{
-          animation: "ios_from_right",
+          animation: 'ios_from_right',
           contentStyle: { backgroundColor: '#FFF' },
+        }}
+      />
+      <Stack.Screen
+        name="chat-room/user-profile/[userId]"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
         }}
       />
 
@@ -186,7 +185,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -196,7 +194,6 @@ function AppLayoutNav() {
         options={{
           contentStyle: { backgroundColor: '#FFF' },
           presentation: 'modal',
-          sheetCornerRadius: 12,
         }}
       />
     </Stack>

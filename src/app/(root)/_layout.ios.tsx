@@ -31,7 +31,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -43,7 +42,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -53,7 +51,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -63,7 +60,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -73,7 +69,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -83,7 +78,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
       <Stack.Screen
@@ -93,7 +87,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -125,7 +118,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -146,7 +138,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -194,7 +185,6 @@ function AppLayoutNav() {
           headerShown: false,
           presentation: 'formSheet',
           sheetAllowedDetents: 'fitToContents',
-          sheetCornerRadius: 12,
         }}
       />
 
@@ -204,7 +194,6 @@ function AppLayoutNav() {
         options={{
           contentStyle: { backgroundColor: '#FFF' },
           presentation: 'modal',
-          sheetCornerRadius: 12,
         }}
       />
     </Stack>

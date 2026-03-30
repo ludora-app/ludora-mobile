@@ -1,22 +1,27 @@
 import { useTranslate } from '@tolgee/react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
+import ROUTES from '@/constants/routes.constants';
+import { ErrorResponse } from '@/api/orval.instance';
 import { useToast } from '@/components/chill-ui-library';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import { ParamsFormSheetActions } from '@/features/profil/types';
+import { RootStackParamList } from '@/types/routes-params.types';
 import { DialogConfirm } from '@/components/ui/dialog/dialog-confirm';
 import { useBlockUser } from '@/features/profil/queries/block-user.query';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 import QuickActionCard from '@/components/ui/quick-action-card.component';
 
-const BLOCK_USER_EVENT = ANALYTICS_EVENTS.PROFIL.PROFIL_HEADER_ACTIONS_BLOCK_USER;
+const BLOCK_USER_EVENT = ANALYTICS_EVENTS.CHAT_ROOM.CHAT_ROOM_USER_PROFILE_BLOCK_USER;
 
-export default function ProfilHeaderActionsBlockUser() {
+const USER_ALREADY_BLOCKED_ERROR = 'User already blocked';
+
+export default function ChatRoomUserProfileBlockUser() {
   const { toast } = useToast();
   const router = useRouter();
-  const { firstname, id: userId, lastname } = useLocalSearchParams<ParamsFormSheetActions>();
+  const { firstname, lastname, userId } =
+    useLocalSearchParams<RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE]>();
   const { t } = useTranslate();
-  const { isPending: isLoadingBlockUser, mutateAsync: blockUser } = useBlockUser(userId);
+  const { isPending: isLoadingBlockUser, mutateAsync: blockUser } = useBlockUser(userId as string);
   const { trackError, trackEvent } = useAnalytics();
 
   const handleBlockUser = async () => {
@@ -29,14 +34,23 @@ export default function ProfilHeaderActionsBlockUser() {
         variant: 'success',
       });
     } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      if (errorResponse.api_error_detail === USER_ALREADY_BLOCKED_ERROR) {
+        toast({
+          message: t('profil.block_user_already_blocked_message', { name: `${firstname} ${lastname}` }),
+          variant: 'info',
+        });
+        return;
+      }
       trackError({ error });
     }
   };
+
   return (
     <DialogConfirm
       title={t('profil.block_user_title', { name: firstname })}
       content={t('profil.block_user_content', { name: `${firstname} ${lastname}` })}
-      source="profil_header_actions_block_user"
+      source="chat_room_user_profile_block_user"
       confirmButtonTitleKey="common.block"
       onConfirmPromise={handleBlockUser}
       isLoading={isLoadingBlockUser}

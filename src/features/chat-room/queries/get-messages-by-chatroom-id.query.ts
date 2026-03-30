@@ -4,7 +4,7 @@ import { useConversationsLoadMoreMessagesInfinite } from '@generatedApi/conversa
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 import { ConversationsLoadMoreMessagesParams } from '@/api/generated/model';
 
-import { useChatRoomStore } from '../store/chat-room.store';
+import { useChatRoomStore } from '../context/chat-room-store-context';
 import { useChatRoomOptimisticMessagesStore } from '../store/chat-room-optimistic-messages.store';
 
 const LIMIT_MESSAGES = 10;

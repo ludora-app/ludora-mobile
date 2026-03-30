@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Loading from '@/components/ui/loading/loading.component';
 import { MessageCollectionItemDto } from '@/api/generated/model';
-import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
 
 import ChatRoomMessagesListEmpty from './chat-room-messages-list-empty';
 import { useChatRoomScrollStore } from '../../../store/chat-room-scroll.store';

@@ -10,7 +10,7 @@ import { useUserMe } from '@/queries/user-me.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FindOneSessionResponseData } from '@/api/generated/model';
 import { useChangeSessionTeam } from '@/queries/change-session-team.query';
-import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
 import SessionTeamsCard from '@/components/ui/session-teams-card/session-teams-card.component';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 

@@ -70,6 +70,12 @@ export type RootStackParamList = {
     lastname: string;
     id?: string;
   };
+  [ROUTES.CHAT_ROOM.USER_PROFILE]: {
+    userId: string;
+    firstname: string;
+    lastname: string;
+    imageUrl?: string;
+  };
 };
 
 export type ReturnStackParamList = {

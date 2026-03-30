@@ -42,12 +42,20 @@ export default function ChatRoomUserProfileFormsheet() {
   const { toast } = useToast();
   const { trackError, trackEvent } = useAnalytics();
 
-  const { firstname, imageUrl, lastname, userId } =
-    useLocalSearchParams<RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE]>();
+  const params = useLocalSearchParams<RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE]>();
+  const { firstname, imageUrl, lastname, userId } = params;
+
+  const initialViewParam = params.initialView;
+  const resolvedInitialView =
+    initialViewParam === 'report-reasons' ? 'report-reasons' : 'actions';
+  /** Ouverture depuis info privée → signalement uniquement : pas de retour vers la vue « actions ». */
+  const isReportOnlyEntry = resolvedInitialView === 'report-reasons';
 
   const { isPending: isLoadingReport, mutateAsync: reportUser } = useReportUser();
 
-  const [view, setView] = useState<FormSheetView>('actions');
+  const [view, setView] = useState<FormSheetView>(() =>
+    resolvedInitialView === 'report-reasons' ? 'report-reasons' : 'actions',
+  );
   const [selectedReason, setSelectedReason] = useState<CreateReportDtoReason | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
@@ -62,7 +70,9 @@ export default function ChatRoomUserProfileFormsheet() {
 
   const handleGoBack = () => {
     if (view === 'report-reasons') {
-      setView('actions');
+      if (!isReportOnlyEntry) {
+        setView('actions');
+      }
       return;
     }
     if (view === 'report-reasons-other') {
@@ -72,11 +82,16 @@ export default function ChatRoomUserProfileFormsheet() {
     router.back();
   };
 
+  const headerHasGoBack =
+    view === 'actions' ||
+    view === 'report-reasons-other' ||
+    (view === 'report-reasons' && !isReportOnlyEntry);
+
   // ─── Actions ─────────────────────────────────────────────────────────────────
 
   const handleSendPrivateMessage = () => {
     if (!userId) return;
-    const params: ChatRoomNavigateParams = {
+    const chatRoomParams: ChatRoomNavigateParams = {
       imageUrl: imageUrl || '',
       name: [firstname, lastname].filter(Boolean).join(' ') || '',
       receiver: serialize({ firstname: firstname ?? '', lastname: lastname ?? '', userUid: userId }),
@@ -84,9 +99,9 @@ export default function ChatRoomUserProfileFormsheet() {
       userUid: userId,
     };
     if (IS_IOS) {
-      router.replace({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+      router.replace({ params: chatRoomParams, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
     } else {
-      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+      router.navigate({ params: chatRoomParams, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
     }
   };
 
@@ -140,7 +155,7 @@ export default function ChatRoomUserProfileFormsheet() {
 
   return (
     <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
-      <FormSheetHeader title={t(headerTitle)} hasGoBack goBackAction={handleGoBack} />
+      <FormSheetHeader title={t(headerTitle)} hasGoBack={headerHasGoBack} goBackAction={handleGoBack} />
 
       <Wrapper className="gap-4 py-4">
         {view === 'actions' && (

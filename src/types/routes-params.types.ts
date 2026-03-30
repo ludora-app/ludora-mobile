@@ -75,6 +75,8 @@ export type RootStackParamList = {
     firstname: string;
     lastname: string;
     imageUrl?: string;
+    /** Ouvre la feuille directement sur les raisons de signalement (ex. depuis info privée). */
+    initialView?: 'actions' | 'report-reasons';
   };
 };
 

@@ -1,3 +1,9 @@
+## [1.3.0-alpha.26](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.25...v1.3.0-alpha.26) (2026-03-30)
+
+### ✨ Features
+
+* **SCRUM-595:** migrate chat room store to context-based provider and implement user profile formsheet on group chat rooms ([#109](https://github.com/ludora-app/ludora-mobile/issues/109)) ([de952bd](https://github.com/ludora-app/ludora-mobile/commit/de952bdd5cfbad1534ae37893a6cfd7fc69bfd04))
+
 ## [1.3.0-alpha.25](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.24...v1.3.0-alpha.25) (2026-03-29)
 
 ### Bug Fixes

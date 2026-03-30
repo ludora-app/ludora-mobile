@@ -1,3 +1,9 @@
+## [1.3.0-alpha.27](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.26...v1.3.0-alpha.27) (2026-03-30)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-597:** remove sheetCornerRadius from iOS stack screen configurations ([#110](https://github.com/ludora-app/ludora-mobile/issues/110)) ([eae9098](https://github.com/ludora-app/ludora-mobile/commit/eae9098e6eb52afadc0645c428a1ebd88a9ae20f))
+
 ## [1.3.0-alpha.26](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0-alpha.25...v1.3.0-alpha.26) (2026-03-30)
 
 ### ✨ Features

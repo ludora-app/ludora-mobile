@@ -19,6 +19,8 @@ const ROUTES = {
     MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
     MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
       `/chat-room/${chatRoomId}/message-actions/${messageId}`,
+    USER_PROFILE: '/chat-room/user-profile/[userId]',
+    USER_PROFILE_UID: (userId: string) => `/chat-room/user-profile/${userId}`,
   },
   CREATE_SESSION: {
     INDEX: '/create-session',

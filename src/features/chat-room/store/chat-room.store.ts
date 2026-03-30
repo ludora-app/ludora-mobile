@@ -1,21 +1,38 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
-import { FindOneConversationResponseData } from '@/api/generated/model';
+import { FindOneConversationResponseData, SessionData } from '@/api/generated/model';
 
-interface ChatRoomStoreState {
+export interface ChatRoomStoreState {
   chatRoomId: string | null;
   chatRoomUserId: string | null;
   setChatRoomId: (chatRoomId: string | null) => void;
-  chatRoomInfo: Partial<FindOneConversationResponseData>;
   setChatRoomUserId: (chatRoomUserId: string | null) => void;
-  setChatRoomInfo: (chatRoom: Partial<FindOneConversationResponseData>) => void;
+  chatRoomInfo: Partial<FindOneConversationResponseData> | null;
+  setChatRoomInfo: (chatRoom: Partial<FindOneConversationResponseData> | null) => void;
+  addChatRoomInfo: (
+    chatRoomInfo: Partial<Omit<FindOneConversationResponseData, 'sessionData'>> & {
+      sessionData?: Partial<SessionData> | null;
+    },
+  ) => void;
 }
 
-export const useChatRoomStore = create<ChatRoomStoreState>(set => ({
-  chatRoomId: null,
-  chatRoomInfo: null,
-  chatRoomUserId: null,
-  setChatRoomId: chatRoomId => set({ chatRoomId }),
-  setChatRoomInfo: chatRoomInfo => set({ chatRoomInfo }),
-  setChatRoomUserId: chatRoomUserId => set({ chatRoomUserId }),
-}));
+export const createChatRoomStore = () =>
+  createStore<ChatRoomStoreState>(set => ({
+    addChatRoomInfo: chatRoomInfo =>
+      set(state => ({
+        chatRoomInfo: {
+          ...(state.chatRoomInfo || {}),
+          ...chatRoomInfo,
+          sessionData: {
+            ...(state.chatRoomInfo?.sessionData || {}),
+            ...chatRoomInfo.sessionData,
+          } as SessionData,
+        },
+      })),
+    chatRoomId: null,
+    chatRoomInfo: null,
+    chatRoomUserId: null,
+    setChatRoomId: chatRoomId => set({ chatRoomId }),
+    setChatRoomInfo: chatRoomInfo => set({ chatRoomInfo }),
+    setChatRoomUserId: chatRoomUserId => set({ chatRoomUserId }),
+  }));

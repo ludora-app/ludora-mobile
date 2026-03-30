@@ -56,6 +56,11 @@ export const ANALYTICS_EVENTS = {
     RESET_PASSWORD_VERIFY_CODE_RESEND_SUCCESS: 'reset_password_verify_code_resend_success',
   },
 
+  CHAT_ROOM: {
+    CHAT_ROOM_USER_PROFILE_BLOCK_USER: 'chat_room_user_profile_blocked_user',
+    CHAT_ROOM_USER_PROFILE_REPORT_USER: 'chat_room_user_profile_reported_user',
+  },
+
   CREATE_SESSION: {
     SESSION_CREATED: 'create_session_completed',
     SESSION_FAILED: 'create_session_failed',
@@ -63,7 +68,6 @@ export const ANALYTICS_EVENTS = {
     STEP_2_COMPLETED: 'create_session_step_2_completed',
     STEP_3_COMPLETED: 'create_session_step_3_completed',
   },
-
   FILTERS: {
     FILTER_FIELDS_APPLIED: 'filter_fields_applied',
     FILTER_SESSIONS_ALL_APPLIED: 'filter_sessions_all_applied',

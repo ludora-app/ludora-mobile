@@ -76,6 +76,6 @@ const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
   );
 });
 
-FormInput.displayName = "FormInput"
+FormInput.displayName = 'FormInput';
 
 export default FormInput;

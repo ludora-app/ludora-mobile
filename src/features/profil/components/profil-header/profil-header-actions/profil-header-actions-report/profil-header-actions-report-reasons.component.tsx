@@ -1,43 +1,44 @@
-import { Box } from '@ludo/ui'
-import { useTranslate } from '@tolgee/react'
+import { Box } from '@ludo/ui';
+import { useTranslate } from '@tolgee/react';
 
-import { CreateReportDtoReason } from '@/api/generated/model'
-
-import ProfilHeaderActionsItem from '../profil-header-actions-item.component'
+import { CreateReportDtoReason } from '@/api/generated/model';
+import QuickActionCard from '@/components/ui/quick-action-card.component';
 
 export const REPORT_REASONS = [
   CreateReportDtoReason.SPAM,
   CreateReportDtoReason.HARASSMENT,
   CreateReportDtoReason.NUDITY,
-  CreateReportDtoReason.OTHER
-] as const
+  CreateReportDtoReason.OTHER,
+] as const;
 
 interface ProfilHeaderActionsReportReasonsProps {
-  onPressOther: () => void
-  onSelectReason: (reason: CreateReportDtoReason, description?: string) => void
+  onPressOther: () => void;
+  onSelectReason: (reason: CreateReportDtoReason, description?: string) => void;
 }
 
 export default function ProfilHeaderActionsReportReasons(props: ProfilHeaderActionsReportReasonsProps) {
-  const { onPressOther, onSelectReason } = props
-  const { t } = useTranslate()
+  const { onPressOther, onSelectReason } = props;
+  const { t } = useTranslate();
 
   const handleReasonPress = (reason: CreateReportDtoReason) => {
     if (reason === CreateReportDtoReason.OTHER) {
-      onPressOther()
+      onPressOther();
     }
-    onSelectReason(reason)
-  }
+    onSelectReason(reason);
+  };
 
   return (
     <Box className="gap-3">
-      {REPORT_REASONS.map((reason) => (
-        <ProfilHeaderActionsItem
+      {REPORT_REASONS.map(reason => (
+        <QuickActionCard
           key={reason}
           iconName="shield-excalmation-solid"
           label={t(`profil.report_reason_${reason}`)}
           onPress={() => handleReasonPress(reason)}
+          variant="horizontal"
+          hasShadow
         />
       ))}
     </Box>
-  )
+  );
 }

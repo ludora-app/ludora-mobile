@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { ConfigContext, ExpoConfig } from 'expo/config';
 
 import packageJson from './package.json';
@@ -23,17 +24,20 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const googleServicesAndroid = isProd ? './google-services.json' : './dev.google-services.json';
   const googleServicesIos = isProd ? './GoogleService-Info.plist' : './dev.GoogleService-Info.plist';
 
+  const hasAndroidServices = process.env.EAS_BUILD || fs.existsSync(googleServicesAndroid);
+  const hasIosServices = process.env.EAS_BUILD || fs.existsSync(googleServicesIos);
+
   return {
     ...config,
     android: {
       ...config.android,
-      googleServicesFile: googleServicesAndroid,
+      ...(hasAndroidServices && { googleServicesFile: googleServicesAndroid }),
       package: bundleIdentifier,
     },
     ios: {
       ...config.ios,
       bundleIdentifier,
-      googleServicesFile: googleServicesIos,
+      ...(hasIosServices && { googleServicesFile: googleServicesIos }),
     },
     name,
     plugins: [

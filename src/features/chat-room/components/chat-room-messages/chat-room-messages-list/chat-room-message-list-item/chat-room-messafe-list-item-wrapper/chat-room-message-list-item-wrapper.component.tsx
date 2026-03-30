@@ -3,7 +3,7 @@ import { Box, BoxRow } from '@ludo/ui';
 import { PropsWithChildren } from 'react';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
-import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
 import { OptimisticMessage } from '@/features/chat-room/store/chat-room-optimistic-messages.store';
 import {
   MessageActionsAnchorRect,
@@ -46,7 +46,7 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
         'mb-3',
       )}
     >
-      <Box className="max-w-[80%]">
+      <Box className="max-w-[90%]">
         <BoxRow
           className={cn('items-end gap-1', {
             'flex-row-reverse justify-start': isMessageFromMe,
@@ -69,4 +69,3 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
     </Box>
   );
 }
-

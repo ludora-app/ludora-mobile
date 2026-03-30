@@ -48,6 +48,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
           cursorColor={COLORS.primary}
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           {...inputFieldProps}
           style={[
             { alignSelf: 'stretch', color: '#000', flex: 1 },
@@ -55,8 +57,6 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
             inputFieldProps?.multiline && { textAlignVertical: 'top' },
           ]}
           secureTextEntry={isSecure}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
         />
 
         {rightContentProps?.content && <String {...rightContentProps}>{rightContentProps.content}</String>}
@@ -106,6 +106,6 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
   );
 });
 
-Input.displayName = "Input"
+Input.displayName = 'Input';
 
 export default Input;

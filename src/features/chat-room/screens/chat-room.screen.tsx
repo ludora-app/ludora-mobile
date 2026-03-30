@@ -1,5 +1,6 @@
 import { chatRoomBg } from 'assets';
 import { StyleSheet } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { Image } from '@/components/ludo-ui';
 
@@ -12,10 +13,12 @@ export default function ChatRoom() {
   return (
     <>
       <ChatRoomInitializer />
-      <Image source={chatRoomBg} style={StyleSheet.absoluteFillObject} className="opacity-70" />
+      <Image source={chatRoomBg} style={StyleSheet.absoluteFill} className="opacity-70" />
       <ChatRoomHeader />
-      <ChatRoomMessagesList />
-      <ChatRoomInputWrapper />
+      <KeyboardAvoidingView className="flex-1" behavior="padding">
+        <ChatRoomMessagesList />
+        <ChatRoomInputWrapper />
+      </KeyboardAvoidingView>
     </>
   );
 }

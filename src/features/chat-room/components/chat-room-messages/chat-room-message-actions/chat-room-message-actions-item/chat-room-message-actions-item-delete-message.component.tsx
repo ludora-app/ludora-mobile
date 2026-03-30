@@ -3,7 +3,7 @@ import { useTranslate } from '@tolgee/react';
 import COLORS from '@/constants/colors.contstants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { MessageCollectionItemDto } from '@/api/generated/model';
-import { useChatRoomStore } from '@/features/chat-room/store/chat-room.store';
+import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
 import { useDeleteMessageMutation } from '@/features/chat-room/queries/chat-room-message-queue/delete-message.query';
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component';

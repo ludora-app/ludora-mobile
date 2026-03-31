@@ -1,3 +1,9 @@
+## [1.5.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0-alpha.2...v1.5.0-alpha.3) (2026-03-31)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-605:** optimize query data processing with useMemo and memoize SessionCard component ([#121](https://github.com/ludora-app/ludora-mobile/issues/121)) ([7a767a5](https://github.com/ludora-app/ludora-mobile/commit/7a767a567eae39a6d44bfe859f287c5218ed5168))
+
 ## [1.5.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0-alpha.1...v1.5.0-alpha.2) (2026-03-31)
 
 ### ✨ Features

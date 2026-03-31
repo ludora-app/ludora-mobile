@@ -208,18 +208,20 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-      - name: 🔄 Force Sync staging with main
+      - name: 🔄 Sync staging with main
         run: |
           git fetch origin main staging
           git checkout staging
           git reset --hard origin/main
+          git commit --allow-empty -m "chore: sync main into staging [skip ci]"
           git push origin staging --force
-          echo "✅ Force pushed main into staging"
+          echo "✅ Force pushed main into staging [skip ci]"
 
-      - name: 🔄 Force Sync develop with staging
+      - name: 🔄 Sync develop with staging
         run: |
           git fetch origin staging develop
           git checkout develop
           git reset --hard origin/staging
+          git commit --allow-empty -m "chore: sync staging into develop [skip ci]"
           git push origin develop --force
-          echo "✅ Force pushed staging into develop"
+          echo "✅ Force pushed staging into develop [skip ci]"

@@ -1,6 +1,7 @@
 import { Avatar } from '@ludo/ui';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
+import { StrictOmit } from '@chillui/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -28,11 +29,10 @@ export default function ChatRoomMessageListItemWrapperAvatar({
 
   const handlePress = () => {
     if (!senderUid) return;
-    const params: RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE] = {
+    const params: StrictOmit<RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE], 'userId'> = {
       firstname: senderFirstName ?? '',
       imageUrl: senderImageUrl ?? undefined,
       lastname: senderLastName ?? '',
-      userId: senderUid,
     };
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.USER_PROFILE_UID(senderUid) });
   };

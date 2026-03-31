@@ -51,7 +51,7 @@ function RootLayoutNav() {
           },
           headerShown: false,
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.90],
+          sheetAllowedDetents: [0.9],
         }}
       />
       <Stack.Screen
@@ -64,6 +64,20 @@ function RootLayoutNav() {
           header: StorybookHeader,
           headerShown: true,
           presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="app-check"
+        options={{
+          animation: 'fade',
+          contentStyle: {
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          },
+          headerShown: false,
+          presentation: 'transparentModal',
         }}
       />
     </Stack>

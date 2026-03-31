@@ -1,6 +1,9 @@
 import { Flatten } from '@/types';
 
 const ROUTES = {
+  APP_CHECK: {
+    INDEX: '/app-check',
+  },
   AUTH: {
     LOGIN: '/auth/login',
     NEW_PASSWORD: '/auth/new-password',

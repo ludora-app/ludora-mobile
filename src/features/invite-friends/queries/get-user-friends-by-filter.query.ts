@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import ROUTES from '@/constants/routes.constants';
@@ -18,7 +19,7 @@ export const useGetUserFriendsByFilter = () => {
     limit: LIMIT_USER_FRIENDS_ITEMS,
     sessionUid: sessionId,
   });
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 
   return { items, totalCount, ...rest };

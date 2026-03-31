@@ -1,21 +1,21 @@
-import { List } from '@ludo/ui'
-import { useMemo } from 'react'
-import { useRouter } from 'expo-router'
+import { List } from '@ludo/ui';
+import { useMemo } from 'react';
+import { useRouter } from 'expo-router';
 
-import ROUTES from '@/constants/routes.constants'
-import { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook'
-import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model'
-import { useCreateSessionStore } from '@/features/create-session/store/create-session.store'
-import { useGetAllFieldsByFilter } from '@/features/create-session/queries/get-fields-by-filter.query'
-import MyFieldsListFab from '@/features/my-fields/components/my-fields-list/my-fields-list-fab.component'
+import ROUTES from '@/constants/routes.constants';
+import { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook';
+import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
+import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
+import { useGetAllFieldsByFilter } from '@/features/create-session/queries/get-fields-by-filter.query';
+import MyFieldsListFab from '@/features/my-fields/components/my-fields-list/my-fields-list-fab.component';
 
-import CreateSessionStep2FieldCard from '../create-session-step-2-field-card/create-session-step-2-field-card'
-import CreateSessionStep2FieldCardSkeleton from '../create-session-step-2-field-card/create-session-step-2-field-card-skeleton'
-import CreateSessionStep2FieldsListHeader from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header.component'
-import CreateSessionStep2FieldsListHeaderSticky from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-sticky.component'
-import CreateSessionStep2FieldsListHeaderTopList from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-top-list.component'
+import CreateSessionStep2FieldCard from '../create-session-step-2-field-card/create-session-step-2-field-card';
+import CreateSessionStep2FieldCardSkeleton from '../create-session-step-2-field-card/create-session-step-2-field-card-skeleton';
+import CreateSessionStep2FieldsListHeader from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header.component';
+import CreateSessionStep2FieldsListHeaderSticky from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-sticky.component';
+import CreateSessionStep2FieldsListHeaderTopList from './create-session-step-2-fields-list-headers/create-session-step-2-fields-list-header-top-list.component';
 
-const LIST_TOP_COMPONENT_HEIGHT = 88;
+const LIST_TOP_COMPONENT_HEIGHT = 95;
 const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
 const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 227;
 const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;

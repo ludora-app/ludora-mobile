@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useFieldsFindAllMyFieldsInfinite } from '@generatedApi/fields/fields.api';
 
 import { filterObjectEntries } from '@/utils/filters.utils';
@@ -11,12 +12,12 @@ const LIMIT = 10;
 export const useGetMyFields = () => {
   const filterStore = useMyFieldsFilterStore(state => state.filter);
 
-  const cleanedFilters = filterObjectEntries(filterStore);
+  const cleanedFilters = useMemo(() => filterObjectEntries(filterStore), [filterStore]);
 
-  const filter: FieldsFindAllMyFieldsParams = {
+  const filter: FieldsFindAllMyFieldsParams = useMemo(() => ({
     ...cleanedFilters,
     limit: LIMIT,
-  };
+  }), [cleanedFilters]);
 
   const { data, error, isError, ...rest } = useFieldsFindAllMyFieldsInfinite(filter, {
     query: {
@@ -27,7 +28,7 @@ export const useGetMyFields = () => {
 
   useGetMethodErrorTracking({ error, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   return { ...rest, items };
 };

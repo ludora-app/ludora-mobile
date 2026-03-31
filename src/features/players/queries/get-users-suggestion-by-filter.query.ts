@@ -11,7 +11,7 @@ const LIMIT_RESULTS_PLAYERS = 10;
 
 export const useGetUsersSuggestionByFilter = () => {
   const playersFilters = usePlayersFiltersStore(state => state.filters);
-  const cleanedFilters = filterObjectEntries(playersFilters);
+  const cleanedFilters = useMemo(() => filterObjectEntries(playersFilters), [playersFilters]);
 
   const params = useMemo(
     (): UsersFindAllParams => ({
@@ -25,7 +25,7 @@ export const useGetUsersSuggestionByFilter = () => {
 
   useGetMethodErrorTracking({ error, extra: { context: 'useGetUsersSuggestionByFilter' }, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 
   return { error, isError, items, totalCount, ...rest };

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSessionsFindAllMySessionsInfinite } from '@generatedApi/sessions/sessions.api';
 
 import { SessionsFindAllMySessionsParams } from '@/api/generated/model';
@@ -18,7 +19,7 @@ export const useGetSessionsMe = (enabled: boolean) => {
 
   useGetMethodErrorTracking({ error, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   return { ...rest, items };
 };

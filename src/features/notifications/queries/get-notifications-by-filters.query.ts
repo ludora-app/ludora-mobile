@@ -11,7 +11,7 @@ const LIMIT_RESULTS_NOTIFICATIONS = 10;
 
 export const useGetNotificationsMeByFilters = () => {
   const notificationsFilters = useNotificationsFilterStore(state => state.filters);
-  const cleanedFilters = filterObjectEntries(notificationsFilters);
+  const cleanedFilters = useMemo(() => filterObjectEntries(notificationsFilters), [notificationsFilters]);
 
   const params = useMemo(
     (): NotificationsFindAllParams => ({
@@ -25,7 +25,7 @@ export const useGetNotificationsMeByFilters = () => {
 
   useGetMethodErrorTracking({ error, extra: { context: 'useGetAllNotificationsMe', params: cleanedFilters }, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   return { ...rest, items };
 };

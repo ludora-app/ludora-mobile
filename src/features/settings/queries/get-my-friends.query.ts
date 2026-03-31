@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useFriendsFindAllMyFriendsInfinite } from '@generatedApi/friends/friends.api';
 
 const LIMIT = 10;
@@ -12,7 +13,7 @@ export const useGetMyFriends = () => {
     },
   );
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   return { ...rest, items };
 };

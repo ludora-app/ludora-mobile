@@ -1,13 +1,17 @@
-import { memo, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
+import { memo, useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
-import { FindAllUserSportPreferenceResponseDto, FindAllUsersResponseDataDto, SessionCollectionItemDtoSport } from '@/api/generated/model';
+import {
+  FindAllUserSportPreferenceResponseDto,
+  FindAllUsersResponseDataDto,
+  SessionCollectionItemDtoSport,
+} from '@/api/generated/model';
 
 import PlayersListItemBanner from './players-list-item-banner.component';
 import PlayersListItemInvite from './players-list-item-invite.component';
@@ -28,8 +32,6 @@ const LEVEL_COLORS: Record<number, string> = {
   3: COLORS.primary,
 };
 
-
-
 function PlayersListItem({ item }: PlayersListItemProps) {
   const {
     bio: userBio,
@@ -42,7 +44,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
     name,
     sportPreferences: userSportPreferences,
     uid: userUid,
-    userCity
+    userCity,
   } = item || {};
 
   const { t } = useTranslate();
@@ -59,21 +61,19 @@ function PlayersListItem({ item }: PlayersListItemProps) {
     [userSportPreferences],
   );
 
-  const handleCardPress = () => {
+  const handleCardPress = useCallback(() => {
     router.navigate(ROUTES.PROFIL.INDEX_UID(item.uid));
-  };
-
+  }, [item.uid, router]);
 
   return (
-    <Pressable style={styles.shadow} className="rounded-xl mb-3" onPress={handleCardPress}>
+    <Pressable style={styles.shadow} className="mb-3 rounded-xl" onPress={handleCardPress}>
       <Box className="overflow-hidden rounded-xl border border-black/10 bg-white">
-
         {/* Ludo common points */}
         <PlayersListItemBanner commonSports={commonSports} isSameCity={userIsSameCity} />
 
         {/* Top section: Avatar + Name */}
-        <Box className='p-3 gap-3'>
-          <Box >
+        <Box className="gap-3 p-3">
+          <Box>
             <BoxRow className="items-center gap-3 pb-0">
               <Avatar
                 data={{ firstname, imageUrl: userAvatar ? { uri: userAvatar } : undefined, lastname }}
@@ -108,7 +108,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
             {hasSports ? (
               <BoxRow className="flex-wrap gap-2 px-3 pt-2">
                 {sportItems.map(({ image, level, sport }) => (
-                  <BoxRow key={sport} className="items-center gap-1.5 rounded-full bg-[#F5F5F5] py-1 pl-1.5 pr-2.5">
+                  <BoxRow key={sport} className="items-center gap-1.5 rounded-full bg-[#F5F5F5] py-1 pr-2.5 pl-1.5">
                     <Image source={image} className="size-5" />
                     {level != null ? (
                       <String
@@ -125,7 +125,6 @@ function PlayersListItem({ item }: PlayersListItemProps) {
             ) : null}
 
             {/* Bottom section: Invite button */}
-
           </Box>
           <PlayersListItemInvite userUid={userUid} invitationStatus={invitationStatus} />
         </Box>
@@ -134,4 +133,8 @@ function PlayersListItem({ item }: PlayersListItemProps) {
   );
 }
 
-export default memo(PlayersListItem, (prevProps, nextProps) => prevProps.item.uid === nextProps.item.uid && prevProps.item.invitationStatus === nextProps.item.invitationStatus);
+export default memo(
+  PlayersListItem,
+  (prevProps, nextProps) =>
+    prevProps.item.uid === nextProps.item.uid && prevProps.item.invitationStatus === nextProps.item.invitationStatus,
+);

@@ -12,15 +12,15 @@ const LIMIT_RESULTS_SESSIONS = 10;
 
 export const useGetAllSessionsByFilter = () => {
   const sessionFilter = useHomeSessionFiltersStore(state => state.filters);
-  const cleanedFilters = filterObjectEntries(sessionFilter);
-  const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
+  const cleanedFilters = useMemo(() => filterObjectEntries(sessionFilter), [sessionFilter]);
 
   const userLocation = useUserLocationStore(state => state.location);
 
-  const startDate = filterDate?.date;
+  const params = useMemo(() => {
+    const { date: filterDate, ...restFilters } = (cleanedFilters as FiltersProps) || {};
+    const startDate = filterDate?.date;
 
-  const params = useMemo(
-    (): SessionsFindAllParams => ({
+    return {
       limit: LIMIT_RESULTS_SESSIONS,
       ...(startDate && { startDate }),
       ...(userLocation && {
@@ -28,15 +28,14 @@ export const useGetAllSessionsByFilter = () => {
         userLon: userLocation.longitude,
       }),
       ...restFilters,
-    }),
-    [startDate, userLocation, restFilters],
-  );
+    } as SessionsFindAllParams;
+  }, [cleanedFilters, userLocation]);
 
   const { data, error, isError, ...rest } = useGetAllSessions(params);
 
   useGetMethodErrorTracking({ error, extra: { context: 'useGetAllSessionsByFilter' }, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 
   return { error, isError, items, totalCount, ...rest };

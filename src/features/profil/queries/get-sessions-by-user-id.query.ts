@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSessionsFindAllByUserUidInfinite } from '@generatedApi/sessions/sessions.api';
 
 import { SessionsFindAllByUserUidParams } from '@/api/generated/model';
@@ -18,7 +19,7 @@ export const useGetSessionsByUserId = (userId: string) => {
     },
   });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   useGetMethodErrorTracking({ error, isError });
 

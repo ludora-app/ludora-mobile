@@ -11,7 +11,7 @@ type stateMmkvStorage = {
   getBoolean: (name: MMKVStorageKeyValue) => boolean | null;
   removeItem: (name: MMKVStorageKeyValue) => void;
   reset: () => void;
-  setItem: (name: MMKVStorageKeyValue, value: string | boolean) => void;
+  setItem: (name: MMKVStorageKeyValue, value: string | boolean | number) => void;
 };
 
 export const mmkvStorage: stateMmkvStorage = {

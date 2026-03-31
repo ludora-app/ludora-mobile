@@ -1,6 +1,6 @@
 import { BoxGrow } from '@ludo/ui';
 import { FlashList } from '@shopify/flash-list';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Loading from '@/components/ui/loading/loading.component';
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -8,7 +8,6 @@ import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-c
 
 import ChatRoomMessagesListEmpty from './chat-room-messages-list-empty';
 import { useChatRoomScrollStore } from '../../../store/chat-room-scroll.store';
-import VirtualizedListScrollView from './virtualized-list-scroll-view.component';
 import { useGetMessagesByChatroomId } from '../../../queries/get-messages-by-chatroom-id.query';
 import ChatRoomMessagesListScrollButton from './chat-room-messages-list-scroll-button.component';
 import ChatRoomMessageListItem from './chat-room-message-list-item/chat-room-message-list-item.component';
@@ -42,7 +41,6 @@ export default function ChatRoomMessagesList() {
       setShowScrollButton(shouldShow);
     }
   };
-  const memoList = useCallback((props: any) => <VirtualizedListScrollView {...props} />, []);
 
   if (isLoading) {
     return <Loading />;

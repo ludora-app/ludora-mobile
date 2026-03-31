@@ -156,7 +156,7 @@ function AppLayoutNav() {
 
       {/* ──────────── Chat Room ──────────── */}
       <Stack.Screen
-        name="chat-room/[chatRoomId]/index"
+        name="chat-room/[chatRoomId]"
         options={{
           contentStyle: { backgroundColor: '#FFF' },
           headerShown: false,

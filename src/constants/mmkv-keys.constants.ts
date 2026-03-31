@@ -10,6 +10,7 @@ export const MMKV_STORAGE_KEY = {
   },
   KEYBOARD_STORAGE: 'keyboard-storage',
   ON_BOARDING_STORAGE: 'on-boarding-storage',
+  UPDATE_REFUSAL_TIMESTAMP: 'update_refusal_timestamp',
 } as const;
 
 export type MMKVStorageKeyValue = Flatten<typeof MMKV_STORAGE_KEY>;

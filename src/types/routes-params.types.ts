@@ -2,6 +2,12 @@ import ROUTES, { RouteValues } from '@/constants/routes.constants';
 import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 export type RootStackParamList = {
+  [ROUTES.APP_CHECK.INDEX]: {
+    content: string;
+    hasLaterButton?: string;
+    storeUrl: string;
+    title: string;
+  };
   [ROUTES.INVITE_FRIENDS.INDEX]: { sessionId: string };
   [ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET]: {
     fieldUid: string;

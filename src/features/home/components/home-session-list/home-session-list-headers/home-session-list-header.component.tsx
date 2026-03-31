@@ -23,10 +23,7 @@ function HomeSessionListHeader() {
 
   return (
     <Box className="gap-5 py-5">
-      <DaysCarousel
-        onSelect={handleDateSelect}
-        initialDate={dayjs(sessionDateStore)}
-      />
+      <DaysCarousel onSelect={handleDateSelect} initialDate={dayjs(sessionDateStore)} />
       <String font="primaryBold" variant="body-sm">
         {t('home.session_card_header_list_title')}
       </String>

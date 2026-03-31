@@ -1,3 +1,9 @@
+## [1.5.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0-alpha.1...v1.5.0-alpha.2) (2026-03-31)
+
+### ✨ Features
+
+* **SCRUM-607:** add GlassView effect to DialogConfirm component for improved visual styling ([#120](https://github.com/ludora-app/ludora-mobile/issues/120)) ([c8d3092](https://github.com/ludora-app/ludora-mobile/commit/c8d3092c209d3fe63e62e999c0e902e03a51b40b))
+
 ## [1.5.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.4.0...v1.5.0-alpha.1) (2026-03-31)
 
 ### ✨ Features

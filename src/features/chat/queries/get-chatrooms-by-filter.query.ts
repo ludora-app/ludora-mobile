@@ -9,7 +9,7 @@ import { useGetAllChatRooms } from './get-chatrooms.query';
 const LIMIT_RESULTS_SESSIONS = 20;
 
 export const useGetAllChatRoomsByFilter = (chatRoomsFilters: ConversationsFindAllByUserUidParams) => {
-  const cleanedFilters = filterObjectEntries(chatRoomsFilters);
+  const cleanedFilters = useMemo(() => filterObjectEntries(chatRoomsFilters), [chatRoomsFilters]);
 
   const params = useMemo(
     (): ConversationsFindAllByUserUidParams => ({
@@ -23,7 +23,7 @@ export const useGetAllChatRoomsByFilter = (chatRoomsFilters: ConversationsFindAl
 
   useGetMethodErrorTracking({ error, extra: { context: 'useGetAllChatRoomsByFilter' }, isError });
 
-  const items = data?.pages.flatMap(page => page.data.items) ?? [];
+  const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
   const totalCount = data?.pages[0]?.data.totalCount ?? 0;
 

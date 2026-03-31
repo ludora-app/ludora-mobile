@@ -143,7 +143,7 @@ function AppLayoutNav() {
 
       {/* ──────────── Chat Room ──────────── */}
       <Stack.Screen
-        name="chat-room/[chatRoomId]/index"
+        name="chat-room/[chatRoomId]"
         options={{
           animation: 'ios_from_right',
           contentStyle: { backgroundColor: '#FFF' },

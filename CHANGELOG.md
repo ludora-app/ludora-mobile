@@ -1,3 +1,13 @@
+## [1.5.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.4.0...v1.5.0-alpha.1) (2026-03-31)
+
+### ✨ Features
+
+* **SCRUM-599:** implement app version check and update modal with forced update support ([#118](https://github.com/ludora-app/ludora-mobile/issues/118)) ([74e0aad](https://github.com/ludora-app/ludora-mobile/commit/74e0aad8f7ed9c066f40f7b7a700beaf5c323e1b))
+
+### Bug Fixes
+
+* force release for SCRUM-602 [skip ci] ([75b1e61](https://github.com/ludora-app/ludora-mobile/commit/75b1e61738f8992895963f4bd277c728dd62fea3))
+
 ## [1.4.0](https://github.com/ludora-app/ludora-mobile/compare/v1.3.0...v1.4.0) (2026-03-30)
 
 ### ✨ Features

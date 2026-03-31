@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
 import { cn } from '@chillui/ui';
 import { Link } from 'expo-router';
+import { memo, useMemo } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
@@ -43,7 +43,7 @@ function formatTeamCount(players?: number, max?: number) {
   return ` (${players}/${max})`;
 }
 
-export default function SessionCard({ isNextSession = false, item: session }: SessionCardProps) {
+function SessionCard({ isNextSession = false, item: session }: SessionCardProps) {
   const { t } = useTranslate();
   const { endDate, fieldShortAddress, gameMode, maxPlayersPerTeam, sessionTeams, sport, startDate, uid, userDistance } =
     session;
@@ -134,3 +134,8 @@ export default function SessionCard({ isNextSession = false, item: session }: Se
     </Link>
   );
 }
+
+export default memo(
+  SessionCard,
+  (prev, next) => prev.item.uid === next.item.uid && prev.isNextSession === next.isNextSession,
+);

@@ -51,11 +51,10 @@ jobs:
           unzip envconsul_0.13.4_linux_amd64.zip
           sudo mv envconsul /usr/local/bin/
 
-      - name: 📥 Download Swagger from Backend (Matching Branch)
+      - name: 📥 Download Swagger from Backend
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          # Branch Mapping: frontend develop -> backend dev
           REPO_BRANCH="${{ github.ref_name }}"
           if [ "$REPO_BRANCH" == "develop" ]; then
             REPO_BRANCH="dev"
@@ -212,16 +211,14 @@ jobs:
         run: |
           git fetch origin main staging
           git checkout staging
-          git reset --hard origin/main
-          git commit --allow-empty -m "chore: sync main into staging [skip ci]"
-          git push origin staging --force
-          echo "✅ Force pushed main into staging [skip ci]"
+          git merge origin/main -m "chore: sync main into staging [skip ci]"
+          git push origin staging
+          echo "✅ Merged main into staging [skip ci]"
 
       - name: 🔄 Sync develop with staging
         run: |
           git fetch origin staging develop
           git checkout develop
-          git reset --hard origin/staging
-          git commit --allow-empty -m "chore: sync staging into develop [skip ci]"
-          git push origin develop --force
-          echo "✅ Force pushed staging into develop [skip ci]"
+          git merge origin/staging -m "chore: sync staging into develop [skip ci]"
+          git push origin develop
+          echo "✅ Merged staging into develop [skip ci]"

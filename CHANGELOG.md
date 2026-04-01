@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0...v1.5.1) (2026-04-01)
+
+### Bug Fixes
+
+* **SCRUM-609:** update app.json settings, remove unused dependencies, and enhance version check functionality ([#126](https://github.com/ludora-app/ludora-mobile/issues/126)) ([2382979](https://github.com/ludora-app/ludora-mobile/commit/23829798e869fa89fa82fcb33c0eccfde7246d2b))
+
 ## [1.5.1-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0...v1.5.1-alpha.1) (2026-04-01)
 
 ### Bug Fixes

@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import FontProvider from '@/providers/font-provider';
 import MainProvider from '@/providers/main.provider';
 import MainInitializer from '@/initializers/main.initializer';
+import { ENVIRONMENTS } from '@/constants/environments.constants';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 function StorybookHeader() {
@@ -19,6 +20,10 @@ SplashScreen.setOptions({
   fade: true,
 });
 
+const environment = process.env.EXPO_PUBLIC_ENV || ENVIRONMENTS.PRODUCTION;
+
+const isProd = environment === ENVIRONMENTS.PRODUCTION;
+
 function RootLayoutNav() {
   const posthog = usePostHog();
   const pathname = usePathname();
@@ -26,6 +31,7 @@ function RootLayoutNav() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   useEffect(() => {
+    if (!isProd) return;
     posthog.screen(pathname, params);
   }, [pathname, params, posthog]);
 

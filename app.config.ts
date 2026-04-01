@@ -52,6 +52,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         : []),
     ],
     slug: 'ludora',
-    version: packageJson.version,
+    version: packageJson.version.split('-')[0],
   };
 };

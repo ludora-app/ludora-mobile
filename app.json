@@ -127,8 +127,8 @@
       },
       "associatedDomains": ["applinks:ludora.fr", "applinks:www.ludora.fr"],
       "usesAppleSignIn": true,
-      "requireFullScreen": false,
-      "supportsTablet": true
+      "requireFullScreen": true,
+      "supportsTablet": false
     },
     "extra": {
       "router": {

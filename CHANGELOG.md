@@ -1,3 +1,18 @@
+## [1.5.0](https://github.com/ludora-app/ludora-mobile/compare/v1.4.0...v1.5.0) (2026-04-01)
+
+### ✨ Features
+
+* **SCRUM-599:** implement app version check and update modal with forced update support ([#118](https://github.com/ludora-app/ludora-mobile/issues/118)) ([74e0aad](https://github.com/ludora-app/ludora-mobile/commit/74e0aad8f7ed9c066f40f7b7a700beaf5c323e1b))
+* **SCRUM-607:** add GlassView effect to DialogConfirm component for improved visual styling ([#120](https://github.com/ludora-app/ludora-mobile/issues/120)) ([c8d3092](https://github.com/ludora-app/ludora-mobile/commit/c8d3092c209d3fe63e62e999c0e902e03a51b40b))
+
+### Bug Fixes
+
+* force release for SCRUM-602 [skip ci] ([75b1e61](https://github.com/ludora-app/ludora-mobile/commit/75b1e61738f8992895963f4bd277c728dd62fea3))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-605:** optimize query data processing with useMemo and memoize SessionCard component ([#121](https://github.com/ludora-app/ludora-mobile/issues/121)) ([7a767a5](https://github.com/ludora-app/ludora-mobile/commit/7a767a567eae39a6d44bfe859f287c5218ed5168))
+
 ## [1.5.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0-alpha.2...v1.5.0-alpha.3) (2026-03-31)
 
 ### ♻️ Code Refactoring

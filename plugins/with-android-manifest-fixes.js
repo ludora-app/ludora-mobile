@@ -18,12 +18,8 @@ function withAndroidManifestFixes(config) {
     application.$['tools:replace'] = 'android:usesCleartextTraffic';
 
     const metaData = application['meta-data'] || [];
-    const others = metaData.filter(
-      m => m.$ && m.$['android:name'] !== FIREBASE_COLOR_META_NAME,
-    );
-    const existingColor = metaData.find(
-      m => m.$ && m.$['android:name'] === FIREBASE_COLOR_META_NAME,
-    );
+    const others = metaData.filter(m => m.$ && m.$['android:name'] !== FIREBASE_COLOR_META_NAME);
+    const existingColor = metaData.find(m => m.$ && m.$['android:name'] === FIREBASE_COLOR_META_NAME);
     const resource = existingColor?.$?.['android:resource'] || '@color/notification_icon_color';
 
     application['meta-data'] = [

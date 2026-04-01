@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import VersionCheck from 'react-native-version-check-expo';
 
 import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
+import VersionCheck from '@/utils/app-version-check';
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { RootStackParamList } from '@/types/routes-params.types';
@@ -11,8 +11,8 @@ import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 const devModeMock = {
   currentVersion: '1.0.0',
-  isNeeded: false,
-  latestVersion: '1.0.0',
+  isNeeded: true,
+  latestVersion: '1.1.0',
   storeUrl: 'https://play.google.com/store/apps/details?id=com.zzkko',
 };
 

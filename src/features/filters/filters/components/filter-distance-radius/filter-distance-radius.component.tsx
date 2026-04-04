@@ -50,6 +50,7 @@ function FilterDistanceRadius() {
   const isScrubbing = useSharedValue(false);
 
   useEffect(() => {
+    if (!maxDistanceStoreValue) return;
     setDistanceValue(maxDistanceStoreValue);
   }, [maxDistanceStoreValue]);
 
@@ -90,7 +91,7 @@ function FilterDistanceRadius() {
   };
 
   return (
-    <AnimatedBox className="border-ring gap-3 rounded-xl border bg-white p-3 py-2" entering={FadeIn} exiting={FadeOut}>
+    <AnimatedBox className="gap-3 rounded-xl border border-ring bg-white p-3 py-2" entering={FadeIn} exiting={FadeOut}>
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="items-center gap-2">

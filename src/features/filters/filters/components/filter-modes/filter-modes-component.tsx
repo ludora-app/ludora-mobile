@@ -11,7 +11,7 @@ export default function FilterModes() {
   const selectedGameModes = useFiltersStore(state => selectFilters(state)?.gameModes);
   const { t } = useTranslate();
   return (
-    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
+    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
       <BoxRowCenterBetween>
         <Box className="flex-1 flex-row items-center gap-2">
           <Icon name="format-circle-regular" color={COLORS.muted} />
@@ -21,11 +21,11 @@ export default function FilterModes() {
         </Box>
         <BoxRow className="flex-1 items-center justify-end">
           <String variant="body-sm" font="primaryBold" truncate>
-            {selectedGameModes?.length > 0
+            {selectedGameModes && selectedGameModes?.length > 0
               ? selectedGameModes?.map(
-                (gameMode: SessionCollectionItemDtoGameMode, index: number) =>
-                  `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
-              )
+                  (gameMode: SessionCollectionItemDtoGameMode, index: number) =>
+                    `${t(`common.game_mode_${gameMode}`, { space: '' })}${index < selectedGameModes.length - 1 ? ', ' : ''}`,
+                )
               : '-'}
           </String>
         </BoxRow>

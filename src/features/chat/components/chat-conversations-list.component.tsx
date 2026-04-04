@@ -39,8 +39,6 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
     return () => setScrollToTop(null);
   }, [scrollToTop, setScrollToTop]);
 
-
-
   return (
     <List
       key={chatRoomsFilters.type ?? 'all'}
@@ -61,7 +59,7 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
         scrollYRef.value = e.nativeEvent.contentOffset.y;
       }}
       getFixedItemSize={() => ITEM_HEIGHT}
-      contentContainerClassName='pt-2 px-4'
+      contentContainerClassName="pt-2 px-4"
       contentContainerStyle={{
         paddingBottom: bottomTab,
       }}

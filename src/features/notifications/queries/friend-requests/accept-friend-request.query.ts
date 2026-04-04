@@ -7,7 +7,7 @@ import {
   useInvalidateUsersFindOne,
 } from '@/api/generated/invalidate-queries';
 
-export const useAcceptFriendRequest = (friendUid: string) => {
+export const useAcceptFriendRequest = (friendUid?: string) => {
   const invalidateNotifications = useInvalidateNotificationsFindAll();
   const invalidateUserMe = useInvalidateUsersFindMe();
   const invalidateUserByUid = useInvalidateUsersFindOne();
@@ -18,19 +18,16 @@ export const useAcceptFriendRequest = (friendUid: string) => {
       onSuccess: () => {
         invalidateNotifications();
         invalidateUserMe();
-        invalidateUserByUid(friendUid);
+        invalidateUserByUid(friendUid ?? '');
         invalidateAllMyFriends();
       },
     },
   });
 
-  const mutateAsync = () =>
-    mutation.mutateAsync({
-      data: {
-        status: 'ACCEPTED',
-      },
-      userUid: friendUid,
-    });
+  const mutateAsync = () => {
+    if (!friendUid) throw new Error('Friend UID is required');
+    return mutation.mutateAsync({ data: { status: 'ACCEPTED' }, userUid: friendUid });
+  };
 
   return {
     ...mutation,

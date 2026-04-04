@@ -24,7 +24,7 @@ type SettingsPreferencesState = CreateSportPreferenceDto & {
 };
 
 export const useSettingsPreferencesStore = create<SettingsPreferencesState>()(set => ({
-  initialize: (sportPrefs: any[]) =>
+  initialize: (sportPrefs: readonly SportPreferenceResponseData[]) =>
     set(() => {
       const sportPreferences: PreferencesSportData[] = sportPrefs.map(sp => ({
         gameModes: sp.gameModes ?? [],

@@ -8,10 +8,11 @@ export type AvatarMeProps = StrictOmit<AvatarProps, 'data'>;
 
 export default function AvatarMe(props: AvatarMeProps) {
   const { userMe } = useUserMe();
+  const { firstname, imageUrl, lastname } = userMe ?? {};
   const avatarUserData = {
-    firstname: userMe.firstname,
-    imageUrl: userMe.imageUrl ? { uri: userMe.imageUrl } : undefined,
-    lastname: userMe.lastname,
+    firstname: firstname ?? '',
+    imageUrl: imageUrl ? { uri: imageUrl } : undefined,
+    lastname,
   };
   return <Avatar data={avatarUserData} {...props} />;
 }

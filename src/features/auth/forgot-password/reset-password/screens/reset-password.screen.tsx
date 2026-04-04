@@ -33,7 +33,7 @@ export default function ResetPasswordScreen() {
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     try {
-      await sendVerificationCode({ data: { email: data.email } });
+      await sendVerificationCode({ email: data.email });
       trackEvent({
         eventName: 'reset_password_send_code_with_email_success',
       });
@@ -45,7 +45,7 @@ export default function ResetPasswordScreen() {
         error,
       });
       trackEvent({
-        data: { error_message: errorResponse?.api_error_detail || 'unknow error' },
+        data: { error_message: errorResponse.api_error_detail ?? 'unknow error' },
         eventName: 'reset_password_send_code_with_email_failed',
       });
     }

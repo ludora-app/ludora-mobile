@@ -64,7 +64,7 @@ function ProfilSection1(props: ProfilSection1Props) {
       <BoxRowGrow className='gap-2'>
         <Avatar
           data={{
-            firstname,
+            firstname: firstname ?? '',
             imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
             lastname,
           }}

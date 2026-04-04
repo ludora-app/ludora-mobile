@@ -1,6 +1,6 @@
 import { isString } from 'radash';
 import { Pressable } from 'react-native';
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react';
 import { BoxAbsolute, Icon } from '@ludo/ui';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -17,14 +17,13 @@ import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 import { ReturnStackParamList, RootStackParamList } from '@/types/routes-params.types';
 
-
 type LocalSearchParams = RootStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 
 type ReturnParams = ReturnStackParamList[typeof ROUTES.IMAGE_PICKER.INDEX];
 
 export default function ProfilEditAvatar() {
-  const { userMe } = useUserMe()
-  const { imageUrl } = userMe || {}
+  const { userMe } = useUserMe();
+  const { imageUrl } = userMe || {};
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
 
   const router = useRouter();
@@ -46,16 +45,18 @@ export default function ProfilEditAvatar() {
     try {
       trackEvent({
         data: { is_avatar_added: !imageUrl, is_avatar_updated: !!imageUrl },
-        eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_SUCCESS
+        eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_SUCCESS,
       });
       await updateUserMe({ file });
     } catch (error) {
-      const errorResponse = error as ErrorResponse
+      const errorResponse = error as ErrorResponse;
       trackError({ error });
-      trackEvent({ data: { error_message: errorResponse.api_error_detail }, eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_FAILED });
+      trackEvent({
+        data: { error_message: errorResponse.api_error_detail ?? 'Unknown error' },
+        eventName: ANALYTICS_EVENTS.PROFIL.PROFIL_EDIT_AVATAR_FAILED,
+      });
     }
-  }
-
+  };
 
   useEffect(() => {
     if (parsedSelectedImages && parsedSelectedImages.length > 0) {
@@ -72,7 +73,7 @@ export default function ProfilEditAvatar() {
 
   const handleSelectImage = () => {
     const params: LocalSearchParams = {
-      goBackPath: "/profil/profil-edit",
+      goBackPath: '/profil/profil-edit',
     };
 
     router.navigate({
@@ -81,16 +82,21 @@ export default function ProfilEditAvatar() {
     });
   };
   return (
-    <Pressable onPress={handleSelectImage} className='relative items-center justify-center overflow-hidden' disabled={isUpdatingUserMe}>
+    <Pressable
+      onPress={handleSelectImage}
+      className="relative items-center justify-center overflow-hidden"
+      disabled={isUpdatingUserMe}
+    >
       <AvatarMe size="2xl" className={cn({ 'opacity-50': isUpdatingUserMe })} />
-      <BoxAbsolute className='right-0 bottom-0 bg-white rounded-full p-2'>
-        <Icon name='e-pen-regular' color={COLORS.primary} />
+      <BoxAbsolute className="right-0 bottom-0 rounded-full bg-white p-2">
+        <Icon name="e-pen-regular" color={COLORS.primary} />
       </BoxAbsolute>
-      <BoxAbsolute className='bg-black/30 flex-1 rounded-lg' />
-      {isUpdatingUserMe &&
+      <BoxAbsolute className="flex-1 rounded-lg bg-black/30" />
+      {isUpdatingUserMe && (
         <BoxAbsolute>
           <LoadingIndicator name="swing" color={COLORS.primary} />
-        </BoxAbsolute>}
+        </BoxAbsolute>
+      )}
     </Pressable>
-  )
+  );
 }

@@ -18,7 +18,7 @@ export default function SessionSectionHeader(props: SessionSectionsHeaderProps) 
 
   return (
     <BoxRow className="items-center gap-1">
-      <SessionSectionIcon sideTeam={sideTeam} name={iconName} size='md' />
+      <SessionSectionIcon sideTeam={sideTeam ?? 'left'} name={iconName} size='md' />
       <String font="primaryBold" variant="body-3" useFastText={false}>
         {t(title)}
       </String>

@@ -14,11 +14,11 @@ const ROUTES = {
   },
   CHAT_ROOM: {
     INDEX: '/chat-room/[chatRoomId]',
-    INDEX_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}`,
+    INDEX_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}`,
     INFO_PRIVATE: '/chat-room/[chatRoomId]/info/private',
-    INFO_PRIVATE_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/private`,
+    INFO_PRIVATE_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/private`,
     INFO_SESSION: '/chat-room/[chatRoomId]/info/session',
-    INFO_SESSION_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/session`,
+    INFO_SESSION_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/session`,
     MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
     MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
       `/chat-room/${chatRoomId}/message-actions/${messageId}`,

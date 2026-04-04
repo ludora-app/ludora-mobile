@@ -36,7 +36,7 @@ export default function SessionTeamsList() {
       renderItem={({ index, item }) => (
         <SessionTeamsListSection
           item={item}
-          hasUserJoinedATeam={hasUserJoinedATeam}
+          hasUserJoinedATeam={hasUserJoinedATeam ?? false}
           teamSide={index === 0 ? 'left' : 'right'}
           isStarted={isFinished}
         />

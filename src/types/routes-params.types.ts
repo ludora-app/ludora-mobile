@@ -33,8 +33,8 @@ export type RootStackParamList = {
     id: string;
   };
   [ROUTES.CHAT_ROOM.INDEX]: {
-    name: string;
-    imageUrl: string;
+    name?: string;
+    imageUrl?: string;
     userUid?: string;
     chatRoomId?: string;
     type?: string;
@@ -69,6 +69,7 @@ export type RootStackParamList = {
     name: string;
     imageUrl: string;
     type: string;
+    sessionData: string;
   };
 
   [ROUTES.PROFIL.ACTIONS]: {

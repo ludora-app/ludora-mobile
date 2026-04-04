@@ -2,13 +2,13 @@ import { useFriendsCreate } from '@generatedApi/friends/friends.api';
 
 import { useInvalidateFriendsFindMyFriendRequest, useInvalidateUsersFindAll } from '@/api/generated/invalidate-queries';
 
-export const useSendFriendInvitation = (userId?: string) => {
+export const useSendFriendInvitation = (userId: string) => {
   const invalidateFriendRequest = useInvalidateFriendsFindMyFriendRequest();
   const invalidateUsersFindAll = useInvalidateUsersFindAll();
   const mutation = useFriendsCreate({
     mutation: {
       onSuccess: () => {
-        invalidateFriendRequest(userId || '');
+        invalidateFriendRequest(userId);
         invalidateUsersFindAll();
       },
     },

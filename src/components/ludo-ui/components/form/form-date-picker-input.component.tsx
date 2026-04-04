@@ -37,9 +37,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
   } = useController({ control, name });
   const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : new Date());
 
-
   const dateValue = value ? dayjs(value).format('DD/MM/YYYY') : '';
-
 
   return (
     <>
@@ -60,7 +58,7 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
           hasError
           hasClearIcon={hasClearIcon}
           hasMessageError
-          error={hasErrorTranslation ? t(error?.message) : error?.message}
+          error={hasErrorTranslation ? t(error?.message ?? '') : error?.message}
         />
       </ScalePressable>
       <DatePicker
@@ -69,7 +67,6 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
         date={selectedDate}
         mode="date"
         locale={getLanguage()}
-
         onConfirm={date => {
           setOpen(false);
           onChange(date);

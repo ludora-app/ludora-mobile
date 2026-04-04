@@ -22,6 +22,7 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
 
   const setTeamUid = useSessionTeamStore(state => state.setTeamUid);
   const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
+  const setSideTeam = useSessionTeamStore(state => state.setSideTeam);
   const { userMe } = useUserMe(!!selectedTeamUid);
   const { firstname, lastname } = userMe || {};
 
@@ -31,6 +32,7 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
 
   const handleJoinTeam = () => {
     setTeamUid(teamUid);
+    setSideTeam(teamSide);
     trackEvent({ data: { source_screen: '/session/[id]/session-teams' }, eventName: 'session_team_selected' });
   };
 
@@ -42,14 +44,14 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
   return (
     <Pressable onPress={handleJoinTeam}>
       <BoxRowCenterBetween
-        className={cn('border-ring rounded-xl border p-2 opacity-50', {
+        className={cn('rounded-xl border border-ring p-2 opacity-50', {
           'border-primary opacity-100': isSelectedTeam && teamSide === 'left',
           'border-secondary opacity-100': isSelectedTeam && teamSide === 'right',
         })}
       >
         <BoxRow className="items-center gap-2">
           {!isSelectedTeam && (
-            <BoxCenter className="border-ring size-14 rounded-full border">
+            <BoxCenter className="size-14 rounded-full border border-ring">
               <String variant="title-1" colorVariant="muted">
                 +
               </String>
@@ -57,7 +59,11 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
           )}
           {isSelectedTeam && (
             <Avatar
-              data={{ ...userMe, imageUrl: userMe?.imageUrl ? { uri: userMe.imageUrl } : undefined }}
+              data={{
+                ...userMe,
+                firstname: userMe?.firstname ?? '',
+                imageUrl: userMe?.imageUrl ? { uri: userMe.imageUrl } : undefined,
+              }}
               className={cn(avatarColor)}
               contentProps={{
                 colorVariant: avatarContentColorVariant,

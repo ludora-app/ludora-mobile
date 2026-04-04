@@ -20,7 +20,7 @@ const getSecurityHeaders = () => {
       headers['X-Ios-Bundle-Identifier'] = Application.applicationId;
     }
   } else {
-    headers['X-Android-Package'] = Application.applicationId;
+    headers['X-Android-Package'] = Application.applicationId || '';
     headers['X-Android-Cert'] = process.env.EXPO_PUBLIC_ANDROID_CERT;
   }
   return headers;

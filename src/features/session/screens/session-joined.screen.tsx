@@ -9,24 +9,25 @@ import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/h
 
 import { SessionJoinedLocalParams } from '../types/session.types';
 
-type ChatRoomLocalParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
+type ChatRoomLocalParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
 
 export default function SessionJoinedScreen() {
   const router = useRouter();
-  const { conversationUid, imageUrl, name, type } = useLocalSearchParams<SessionJoinedLocalParams>();
   const { t } = useTranslate();
+  const { conversationUid, imageUrl, name, sessionData, type } = useLocalSearchParams<SessionJoinedLocalParams>();
 
   const handleConversationPress = () => {
     const params: ChatRoomLocalParams = {
       imageUrl,
       name,
+      sessionData,
       type,
-    }
+    };
     router.replace({
       params,
       pathname: ROUTES.CHAT_ROOM.INDEX_UID(conversationUid),
     });
-  }
+  };
   const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(conversationUid)}`;
 
   return (
@@ -42,10 +43,23 @@ export default function SessionJoinedScreen() {
         </Box>
         <Box className="w-full gap-4">
           <BoxRow className="items-center gap-2">
-            <Button title={t('session.session-joined.exchange_with_players')} onPress={handleConversationPress} className='flex-1' />
-            <ShareButton message={t('session.share_message', { url: shareUrl })} title={t('session.share_title')} url={shareUrl} />
+            <Button
+              title={t('session.session-joined.exchange_with_players')}
+              onPress={handleConversationPress}
+              className="flex-1"
+            />
+            <ShareButton
+              message={t('session.share_message', { url: shareUrl })}
+              title={t('session.share_title')}
+              url={shareUrl}
+            />
           </BoxRow>
-          <Button title={t('session.session-joined.back_to_home')} variant="outlined" className="bg-white" onPress={router.back} />
+          <Button
+            title={t('session.session-joined.back_to_home')}
+            variant="outlined"
+            className="bg-white"
+            onPress={router.back}
+          />
         </Box>
       </Wrapper>
     </>

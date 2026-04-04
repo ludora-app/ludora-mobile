@@ -9,7 +9,7 @@ export default function ProfilSection3Me() {
   const { userMeId } = useUserMe();
   const { t } = useTranslate();
 
-  const shareUrl = `https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId)}`;
+  const shareUrl = `https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`;
 
   return (
     <BoxRow className="items-center gap-2">
@@ -22,7 +22,7 @@ export default function ProfilSection3Me() {
       <ShareButton
         message={t('profil.share_my_profile_message', { url: shareUrl })}
         title={t('profil.share_my_profile_title')}
-        url={`https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId)}`}
+        url={`https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`}
         iconButtonProps={{
           className: 'p-2 rounded-full',
           size: 'xs',

@@ -40,7 +40,7 @@ function FilterSessionDuration() {
     duration = '15',
     remove,
   }: {
-    duration: string;
+    duration?: string;
     add?: boolean;
     remove?: boolean;
   }) => {
@@ -65,7 +65,7 @@ function FilterSessionDuration() {
   };
 
   return (
-    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
+    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="items-center gap-2">

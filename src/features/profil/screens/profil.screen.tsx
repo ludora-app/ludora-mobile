@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { ScreenLayout, Wrapper } from '@ludo/ui';
-import { Redirect, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
-import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
@@ -23,14 +22,14 @@ export default function ProfilScreen() {
     data: userData,
     isLoading: isLoadingUserData,
     isRefetching: isRefetchingUser,
-    refetch: refetchUser
-  } = useGetUserDataById(userId as string || undefined);
+    refetch: refetchUser,
+  } = useGetUserDataById((userId as string) || undefined);
 
   const {
     isLoading: isLoadingUserMe,
     isRefetching: isRefetchingUserMe,
     refetch: refetchUserMe,
-    userMe
+    userMe,
   } = useUserMe(!userId);
 
   const isProfilMe = useMemo(() => {
@@ -40,23 +39,23 @@ export default function ProfilScreen() {
   }, [userId, userMeId]);
 
   const {
-    bio: userBio,
-    firstname,
-    friendsCount,
+    bio: userBio = '',
+    firstname = '',
+    friendsCount = 0,
     imageUrl: avatarUrl,
-    lastname,
-    matchesCount,
-    sportPreferences
+    lastname = '',
+    matchesCount = 0,
+    sportPreferences = [],
   } = isProfilMe ? userMe || {} : userData || {};
 
   const hasData = isProfilMe ? !!userMe : !!userData;
 
   const isProfilLoading = isLoadingUserData || isLoadingUserMe;
   const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
-  const isFetching = isProfilMe ? (isLoadingUserMe || isRefetchingUserMe) : (isLoadingUserData || isRefetchingUser);
+  const isFetching = isProfilMe ? isLoadingUserMe || isRefetchingUserMe : isLoadingUserData || isRefetchingUser;
 
   if (!hasData && !isFetching) {
-    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />
+    return null;
   }
 
   const handleRefetch = async () => {
@@ -67,41 +66,35 @@ export default function ProfilScreen() {
     }
   };
 
-
   const profilHeader = (
     <>
-      <ProfilHeader isMe={isProfilMe} firstname={firstname} lastname={lastname} />
-      <Wrapper className='bg-background rounded-t-xl z-50 pt-4 gap-4'>
-        {isProfilLoading ? <ProfilSection1Skeleton /> : (
+      <ProfilHeader isMe={isProfilMe} firstname={firstname ?? ''} lastname={lastname ?? ''} />
+      <Wrapper className="z-50 gap-4 rounded-t-xl bg-background pt-4">
+        {isProfilLoading ? (
+          <ProfilSection1Skeleton />
+        ) : (
           <ProfilSection1
             firstname={firstname}
             lastname={lastname}
             avatarUrl={avatarUrl}
-            sportPreferences={sportPreferences}
+            sportPreferences={sportPreferences ?? []}
             isMe={isProfilMe}
           />
         )}
-        {isProfilLoading ? <ProfilSesion2Skeleton /> : (
-          <ProfilSesion2 bio={userBio} isMe={isProfilMe} />
-        )}
+        {isProfilLoading ? <ProfilSesion2Skeleton /> : <ProfilSesion2 bio={userBio ?? ''} isMe={isProfilMe} />}
         <ProfilSection3 isMe={isProfilMe} />
-        {isProfilLoading ? <ProfilSection4Skeleton /> : (
+        {isProfilLoading ? (
+          <ProfilSection4Skeleton />
+        ) : (
           <ProfilSection4 friendsCount={friendsCount} matchesCount={matchesCount} isMe={isProfilMe} />
         )}
       </Wrapper>
     </>
   );
 
-
-
-
   return (
     <ScreenLayout>
-      <ProfilSection5
-        header={profilHeader}
-        isRefetching={isRefetching}
-        onRefresh={handleRefetch}
-      />
+      <ProfilSection5 header={profilHeader} isRefetching={isRefetching} onRefresh={handleRefetch} />
     </ScreenLayout>
   );
 }

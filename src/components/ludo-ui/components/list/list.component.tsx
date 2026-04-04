@@ -104,13 +104,12 @@ export default function List(props: ListProps) {
     return 'row';
   }, []);
 
-
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<ListItem>) => {
       if (item && typeof item === 'object' && 'type' in item) {
         switch (item.type) {
           case 'skeleton':
-            return <SkeletonComponent />;
+            return SkeletonComponent ? <SkeletonComponent /> : null;
           case 'sticky':
             return renderComponent(ListStickyComponent);
           case 'header_top':
@@ -139,9 +138,6 @@ export default function List(props: ListProps) {
     return String(index);
   }, []);
 
-
-
-
   const listStyle: ViewStyle | undefined = useMemo(() => {
     if ((ListStickyComponent && hasListStickyComponentTopSafeArea) || hasTopSafeArea) {
       return {
@@ -166,14 +162,9 @@ export default function List(props: ListProps) {
     return undefined;
   }, [bottom, hasBottomSafeArea, listHeaderComponentHeight]);
 
-
   const headerComponent = () => {
     if (hasHeaderTransparent) {
-      return (
-        <Box style={{ marginTop: -(listHeaderComponentHeight || 0) }}>
-          {renderComponent(ListHeaderComponent)}
-        </Box>
-      );
+      return <Box style={{ marginTop: -(listHeaderComponentHeight || 0) }}>{renderComponent(ListHeaderComponent)}</Box>;
     }
     return renderComponent(ListHeaderComponent);
   };
@@ -199,45 +190,52 @@ export default function List(props: ListProps) {
       recycleItems
       stickyIndices={stickyHeaderIndices}
       {...(triggerEndReachedOnStart && { onStartReached: onEndReached })}
-      {...(onEndReached && { onEndReached })}
+      onEndReached={onEndReached}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
       style={[listStyle, style]}
-      {...(hasHeaderTransparent && !!listHeaderComponentHeight && {
-        stickyHeaderConfig: {
-          offset: -listHeaderComponentHeight
-        }
-      })}
+      {...(hasHeaderTransparent &&
+        !!listHeaderComponentHeight && {
+          stickyHeaderConfig: {
+            offset: -listHeaderComponentHeight,
+          },
+        })}
       {...(hasRefreshControl && {
         refreshControl: (
           <RefreshControl
             refreshing={isManualRefreshing && isRefetching}
             onRefresh={handleRefresh}
-            colors={[COLORS.primary]} />
-        )
+            colors={[COLORS.primary]}
+          />
+        ),
       })}
       {...(hasRefreshControl && { onRefresh: handleRefresh })}
-      contentContainerClassName={cn('grow', { "justify-center": isEmptyData && emptyResultProps?.center }, contentContainerClassName)}
+      contentContainerClassName={cn(
+        'grow',
+        { 'justify-center': isEmptyData && emptyResultProps?.center },
+        contentContainerClassName,
+      )}
       ListFooterComponent={
-        !triggerEndReachedOnStart
-          ? <ListFooter
-            SkeletonComponent={SkeletonComponent}
-            isFetchingNextPage={isFetchingNextPage} />
-          : undefined
+        !triggerEndReachedOnStart ? (
+          <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+        ) : undefined
       }
       scrollEventThrottle={16}
-      contentContainerStyle={[{ marginTop: listHeaderComponentHeight || 0 }, bottomSafeAreaStyle, contentContainerStyle]}
+      contentContainerStyle={[
+        { marginTop: listHeaderComponentHeight || 0 },
+        bottomSafeAreaStyle,
+        contentContainerStyle,
+      ]}
       ListHeaderComponent={
-        triggerEndReachedOnStart
-          ? <ListFooter
-            SkeletonComponent={SkeletonComponent}
-            isFetchingNextPage={isFetchingNextPage} />
-          : headerComponent
+        triggerEndReachedOnStart ? (
+          <ListFooter SkeletonComponent={SkeletonComponent} isFetchingNextPage={isFetchingNextPage} />
+        ) : (
+          headerComponent
+        )
       }
       {...rest}
     />
-
   );
 }

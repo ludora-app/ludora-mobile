@@ -7,25 +7,25 @@ export const homeFiltersMapper = (filters: Filters) => {
   if (filters.sessionDuration) {
     homeSessionFilter.duration = Number(filters.sessionDuration);
   } else {
-    homeSessionFilter.duration = null;
+    homeSessionFilter.duration = undefined;
   }
 
   if (Array.isArray(filters.gameModes) && filters.gameModes.length > 0) {
     homeSessionFilter.gameModes = filters.gameModes;
   } else {
-    homeSessionFilter.gameModes = null;
+    homeSessionFilter.gameModes = undefined;
   }
 
   if (Array.isArray(filters.sports) && filters.sports.length > 0) {
     homeSessionFilter.sports = filters.sports;
   } else {
-    homeSessionFilter.sports = null;
+    homeSessionFilter.sports = undefined;
   }
 
   if (Array.isArray(filters.levels) && filters.levels.length > 0) {
     homeSessionFilter.levels = filters.levels;
   } else {
-    homeSessionFilter.levels = null;
+    homeSessionFilter.levels = undefined;
   }
 
   if (filters.date) {
@@ -43,14 +43,14 @@ export const homeFiltersMapper = (filters: Filters) => {
     homeSessionFilter.userLat = filters.address?.location?.latitude;
     homeSessionFilter.userLon = filters.address?.location?.longitude;
   } else {
-    homeSessionFilter.userLat = null;
-    homeSessionFilter.userLon = null;
+    homeSessionFilter.userLat = undefined;
+    homeSessionFilter.userLon = undefined;
   }
 
   if (filters.maxDistance) {
     homeSessionFilter.maxDistance = filters.maxDistance;
   } else {
-    homeSessionFilter.maxDistance = null;
+    homeSessionFilter.maxDistance = undefined;
   }
   return homeSessionFilter;
 };

@@ -10,7 +10,7 @@ import CreateSessionSubtitle from '../components/create-session-subtitle-compone
 export default function CreateSessionStep5Screen() {
   const createdSessionUid = useCreateSessionStore(state => state.createdSessionUid);
   const { t } = useTranslate();
-  const { data: createdSessionData, isLoading: isLoadingSession } = useGetSessionById(createdSessionUid);
+  const { data: createdSessionData, isLoading: isLoadingSession } = useGetSessionById(createdSessionUid ?? '');
 
   return (
     <WrapperScrollView contentContainerClassName="pb-10">
@@ -25,7 +25,10 @@ export default function CreateSessionStep5Screen() {
       </Box>
       <Box className="mt-10">
         <CreateSessionSubtitle title={t('create-session.step-5.session_preview_title')} />
-        {isLoadingSession ? <SessionCardSkeleton /> : <SessionCard item={createdSessionData} />}
+        {isLoadingSession && <SessionCardSkeleton />}
+        {!isLoadingSession && createdSessionData && (
+          <SessionCard item={createdSessionData} />
+        )}
       </Box>
     </WrapperScrollView>
   );

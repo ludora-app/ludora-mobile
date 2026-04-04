@@ -16,8 +16,8 @@ export const useSendVerificationCodeByEmail = () => {
   };
 
   return {
+    ...mutation,
     mutate,
     mutateAsync,
-    ...mutation,
   };
 };

@@ -6,6 +6,11 @@ import { SessionsFindAllMySessionsOwnership, UserSessionStatsResponseDataDto } f
 
 import SettingsSessionsHistoryTypeItem from './settings-sessions-history-type-item.component'
 
+const EMPTY_SESSION_STATS: UserSessionStatsResponseDataDto = {
+  organizedCount: 0,
+  participatedCount: 0,
+}
+
 interface SettingsSessionsHistoryTypeItemProps {
   titleKey: string
   totalSessions: number
@@ -29,7 +34,7 @@ export default function SettingsSessionsHistoryTypeList() {
   const { data } = useGetSessionsMeStats()
   return (
     <BoxRow className='items-center gap-4'>
-      {TYPES(data).map((type) => (
+      {TYPES(data ?? EMPTY_SESSION_STATS).map((type) => (
         <SettingsSessionsHistoryTypeItem key={type.titleKey} {...type} />
       ))}
     </BoxRow>

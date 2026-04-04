@@ -40,7 +40,7 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
         });
       }
     } catch (error) {
-      if (error.message === GOOGLE_ERROR_MESSAGE) {
+      if ((error as any).message === GOOGLE_ERROR_MESSAGE) {
         return;
       }
       const responseError = error as ErrorResponse;

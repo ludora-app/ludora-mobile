@@ -33,18 +33,18 @@ export default function ImagePickerScreen() {
   }, [images, goBackPath, router]);
 
   return (
-    <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
+    <Box style={{ paddingBottom: IS_ANDROID ? bottom : undefined }}>
       <FormSheetHeader title={t('profil.add_profile_photo')} />
       <Wrapper fill={false} className="gap-4 py-4">
         <TouchableOpacity
-          className="border-primary flex-row items-center gap-4 rounded-lg border p-3"
+          className="flex-row items-center gap-4 rounded-lg border border-primary p-3"
           onPress={() => handlePickImage({ isCamera: true, isMultiple: false })}
         >
           <Icon name="ai-camera-regular" color="#000" />
           <String>{t('common.camera')}</String>
         </TouchableOpacity>
         <TouchableOpacity
-          className="border-primary flex-row items-center gap-4 rounded-lg border p-3"
+          className="flex-row items-center gap-4 rounded-lg border border-primary p-3"
           onPress={() => handlePickImage({ isCamera: false, isMultiple: false })}
         >
           <Icon name="gallery-regular" color="#000" />

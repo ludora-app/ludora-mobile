@@ -15,7 +15,8 @@ interface HeaderProps {
 }
 
 export default function HeaderScreen(props: PropsWithChildren<HeaderProps>) {
-  const { children,
+  const {
+    children,
     className,
     hasNewSession = false,
     iconProps,
@@ -28,13 +29,13 @@ export default function HeaderScreen(props: PropsWithChildren<HeaderProps>) {
   return (
     <Box className={cn('flex-row overflow-hidden', className)}>
       <Box className="flex-1 flex-row justify-center gap-4">
-        <Box className={cn("flex-1 gap-2 pb-3 justify-center", leftContentClassName)}>
-          <Box className="-ml-1 -mb-3 w-full">
+        <Box className={cn('flex-1 justify-center gap-2 pb-3', leftContentClassName)}>
+          <Box className="-mb-3 -ml-1 w-full">
             {isTitleLoading ? (
-              <Skeleton variant="text" className='mb-3 w-44' size="lg" />
+              <Skeleton variant="text" className="mb-3 w-44" size="lg" />
             ) : (
               <OutlinedString
-                text={title}
+                text={title ?? ''}
                 fontSize={32}
                 fillColor="#FFFFFF"
                 strokeColor={COLORS.primary}

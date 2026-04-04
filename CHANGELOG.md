@@ -1,3 +1,9 @@
+## [1.5.2-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.1...v1.5.2-alpha.1) (2026-04-04)
+
+### Bug Fixes
+
+* **SCRUM-619:** enhance chat room initializer logic and fix scroll down button position ([#129](https://github.com/ludora-app/ludora-mobile/issues/129)) ([a3261f2](https://github.com/ludora-app/ludora-mobile/commit/a3261f278539b4a8480fa28f6bf31475df911add))
+
 ## [1.5.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.0...v1.5.1) (2026-04-01)
 
 ### Bug Fixes

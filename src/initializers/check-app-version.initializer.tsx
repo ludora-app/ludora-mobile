@@ -11,7 +11,7 @@ import { MMKV_STORAGE_KEY } from '@/constants/mmkv-keys.constants';
 
 const devModeMock = {
   currentVersion: '1.0.0',
-  isNeeded: true,
+  isNeeded: false,
   latestVersion: '1.1.0',
   storeUrl: 'https://play.google.com/store/apps/details?id=com.zzkko',
 };

@@ -1,36 +1,35 @@
-import { List } from '@ludo/ui'
-import { useCallback, useEffect, useMemo } from 'react'
+import { List } from '@ludo/ui';
+import { useCallback, useEffect, useMemo } from 'react';
 
-import { useSafeArea } from '@/hooks/safe-area.hook'
-import { IS_ANDROID } from '@/constants/platform.constants'
-import { useAnalytics } from '@/hooks/analytics-trackers.hook'
-import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query'
+import { useSafeArea } from '@/hooks/safe-area.hook';
+import { IS_ANDROID } from '@/constants/platform.constants';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query';
+import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
 
-import { useMarkReadNotifications } from '../queries/mark-read-notifications.query'
-import { useGetNotificationsMeByFilters } from '../queries/get-notifications-by-filters.query'
-import NotificationsListItems from './notifications-list-items/notifications-list-items.component'
-import NotificationListHeader from './notifications-list-headers/notification-list-header.component'
-import NotificationsListHeaderSticky from './notifications-list-headers/notifications-list-header-sticky.component'
+import { useMarkReadNotifications } from '../queries/mark-read-notifications.query';
+import { useGetNotificationsMeByFilters } from '../queries/get-notifications-by-filters.query';
+import NotificationsListItems from './notifications-list-items/notifications-list-items.component';
+import NotificationListHeader from './notifications-list-headers/notification-list-header.component';
+import NotificationsListHeaderSticky from './notifications-list-headers/notifications-list-header-sticky.component';
 
-const COUNT_DOWN_TO_MARK_ALL_AS_READ = 1000
-const HEADER_HEIGHT = 62
+const COUNT_DOWN_TO_MARK_ALL_AS_READ = 1000;
 
 export default function NotificationsList() {
-  const { bottom } = useSafeArea()
-  const { trackError } = useAnalytics()
+  const { bottom } = useSafeArea();
+  const { trackError } = useAnalytics();
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, isSuccess, items, refetch } =
-    useGetNotificationsMeByFilters()
-  const { mutateAsync: markReadNotifications } = useMarkReadNotifications()
-  const { data: unreadCount } = useNotificationsUnreadCount()
-
+    useGetNotificationsMeByFilters();
+  const { mutateAsync: markReadNotifications } = useMarkReadNotifications();
+  const { data: unreadCount } = useNotificationsUnreadCount();
 
   const handleMarkAllNotificationsAsRead = useCallback(() => {
     try {
-      markReadNotifications()
+      markReadNotifications();
     } catch (error) {
-      trackError({ error })
+      trackError({ error });
     }
-  }, [markReadNotifications, trackError])
+  }, [markReadNotifications, trackError]);
 
   useEffect(() => {
     const hasUnread = unreadCount && unreadCount.unreadCount > 0;
@@ -42,16 +41,15 @@ export default function NotificationsList() {
 
       return () => clearTimeout(timer);
     }
-    return undefined
+    return undefined;
   }, [isLoading, isSuccess, unreadCount, handleMarkAllNotificationsAsRead]);
 
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
-      return bottom + HEADER_HEIGHT;
+      return bottom + HEADER_OUTLINED_HEIGHT;
     }
     return bottom;
   }, [bottom]);
-
 
   return (
     <List
@@ -67,16 +65,15 @@ export default function NotificationsList() {
       refetch={refetch}
       hasRefreshControl
       hasListStickyComponentTopSafeArea
-      contentContainerClassName="bg-background px-3"
+      contentContainerClassName="bg-background px-3 rounded-t-xl"
       hasHeaderTransparent
-      listHeaderComponentHeight={HEADER_HEIGHT}
+      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
       contentContainerStyle={{ paddingBottom }}
       emptyResultProps={{
         hasRandomTitle: true,
         randomOptions: 3,
-        title: "notifications.empty_list_v",
-
+        title: 'notifications.empty_list_v',
       }}
     />
-  )
+  );
 }

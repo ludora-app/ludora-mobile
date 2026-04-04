@@ -1,11 +1,9 @@
-import { memo } from 'react'
+import { memo } from 'react';
 
-import SettingsHeader from '@/features/settings/components/settings-header.component'
+import SettingsHeader from '@/features/settings/components/settings-header.component';
 
 function NotificationListHeader() {
-  return (
-    <SettingsHeader titleKey="notifications.header_title" className="mt-2" />
-  )
+  return <SettingsHeader titleKey="notifications.header_title" />;
 }
 
-export default memo(NotificationListHeader)
+export default memo(NotificationListHeader);

@@ -1,15 +1,15 @@
-import { List } from '@ludo/ui'
+import { List } from '@ludo/ui';
 
-import { useGetMyFriends } from '../../queries/get-my-friends.query'
-import SettingsFriendsHeader from './settings-friends-header.component'
-import SettingsFriendsListItem from './settings-friends-list-item.component'
+import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
 
-const LIST_ITEM_SIZE_HEIGHT = 95
-const HEADER_HEIGHT = 62
+import { useGetMyFriends } from '../../queries/get-my-friends.query';
+import SettingsFriendsHeader from './settings-friends-header.component';
+import SettingsFriendsListItem from './settings-friends-list-item.component';
+
+const LIST_ITEM_SIZE_HEIGHT = 95;
 
 export default function SettingsFriendsList() {
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
-    useGetMyFriends()
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } = useGetMyFriends();
 
   return (
     <List
@@ -27,9 +27,9 @@ export default function SettingsFriendsList() {
       hasBottomSafeArea
       hasHeaderTransparent
       hasTopSafeArea
-      listHeaderComponentHeight={HEADER_HEIGHT}
+      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
       getFixedItemSize={() => LIST_ITEM_SIZE_HEIGHT}
       emptyResultProps={{ title: 'settings.friends.empty_list' }}
     />
-  )
+  );
 }

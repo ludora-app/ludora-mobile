@@ -8,12 +8,13 @@ import { IS_ANDROID } from '@/constants/platform.constants';
 import { useProfilStore } from '@/features/profil/stores/profil.store';
 import { useGetSessionsMe } from '@/features/profil/queries/get-sessions-me.query';
 import { useGetSessionsByUserId } from '@/features/profil/queries/get-sessions-by-user-id.query';
+import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
 
 import ProfilSection5ListItem from './profil-section-5-list-item.component';
 import profilSection5ListItemSkeletonComponent from './profil-section-5-list-item-skeleton.component';
 
 const ESTIMATED_LIST_ITEM_SIZE = 170;
-const LIST_HEADER_HEIGHT = 120;
+
 const BOTTOM_PADDING_EMPTY_LIST = 100;
 
 type Props = {
@@ -64,9 +65,9 @@ export default function ProfilSection5MatchesList({
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
       if (sessions.length === 0) {
-        return bottomTab + LIST_HEADER_HEIGHT + BOTTOM_PADDING_EMPTY_LIST;
+        return bottomTab + HEADER_OUTLINED_HEIGHT + BOTTOM_PADDING_EMPTY_LIST;
       }
-      return bottomTab + LIST_HEADER_HEIGHT;
+      return bottomTab + HEADER_OUTLINED_HEIGHT;
     }
     return bottomTab;
   }, [bottomTab, sessions.length]);
@@ -84,9 +85,9 @@ export default function ProfilSection5MatchesList({
       isRefetching={isRefetching}
       SkeletonComponent={profilSection5ListItemSkeletonComponent}
       hasRefreshControl
-      bounces={false}
-      listHeaderComponentHeight={LIST_HEADER_HEIGHT}
+      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
       hasHeaderTransparent
+      hasTopSafeArea
       ListHeaderComponent={listHeaderComponent}
       contentContainerClassName={cn('bg-background', { 'rounded-t-xl': selectedTab === 'matches' })}
       contentContainerStyle={{ paddingBottom }}

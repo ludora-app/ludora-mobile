@@ -1,3 +1,9 @@
+## [1.5.2-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.2...v1.5.2-alpha.3) (2026-04-04)
+
+### Bug Fixes
+
+* **SCRUM-613:** introduce HeaderOutlined component and standardize header heights across features ([#131](https://github.com/ludora-app/ludora-mobile/issues/131)) ([0284cd0](https://github.com/ludora-app/ludora-mobile/commit/0284cd0368502e8e378972fe09308c890bc60dc9))
+
 ## [1.5.2-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.1...v1.5.2-alpha.2) (2026-04-04)
 
 ### Bug Fixes

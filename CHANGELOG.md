@@ -1,3 +1,9 @@
+## [1.5.2-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.1...v1.5.2-alpha.2) (2026-04-04)
+
+### Bug Fixes
+
+* **SCRUM-614:** improve error handling and type safety across various components ([#130](https://github.com/ludora-app/ludora-mobile/issues/130)) ([6958661](https://github.com/ludora-app/ludora-mobile/commit/69586619e35152f3851b84088cb5d21b12e603cc))
+
 ## [1.5.2-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.1...v1.5.2-alpha.1) (2026-04-04)
 
 ### Bug Fixes

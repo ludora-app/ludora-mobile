@@ -7,12 +7,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { filtersHeaderInputSchema, FiltersHeaderInputSchema } from '../schemas/filters-header-input.schema';
 
-export type FiltersHeaderInputProps<T extends FiltersHeaderInputSchema> = StrictOmit<
-  FormInputProps<T>,
-  'name' | 'onChange'
->;
+export type FiltersHeaderInputProps = StrictOmit<FormInputProps<FiltersHeaderInputSchema>, 'name' | 'onChange'>;
 
-export default function FiltersHeaderInput<T extends FiltersHeaderInputSchema>(props: FiltersHeaderInputProps<T>) {
+export default function FiltersHeaderInput(props: FiltersHeaderInputProps) {
   const { onChangeText, ...rest } = props;
 
   const { control, watch } = useForm<FiltersHeaderInputSchema>({
@@ -22,7 +19,7 @@ export default function FiltersHeaderInput<T extends FiltersHeaderInputSchema>(p
 
   const handleSearch = useCallback(
     async (searchValue: string) => {
-      onChangeText(searchValue);
+      onChangeText?.(searchValue);
     },
     [onChangeText],
   );

@@ -9,7 +9,6 @@ import { CreateSessionFromRequestDto } from '@/api/generated/model';
 import { useCreateSession } from '@/features/create-session/queries/create-session.query';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
-
 export default function CreateSessionFooterButtonCreateSession() {
   const router = useRouter();
   const { t } = useTranslate();
@@ -19,37 +18,50 @@ export default function CreateSessionFooterButtonCreateSession() {
   const { isPending: isCreatingSession, mutateAsync: createSession } = useCreateSession();
 
   const handleSubmit = async () => {
+    const s = sessionStoreData;
+    if (
+      !s?.endDate ||
+      !s.fieldUid ||
+      !s.gameMode ||
+      !s.sport ||
+      !s.startDate ||
+      !s.visibility ||
+      !s.level ||
+      !s.additionalData?.fieldType
+    ) {
+      throw new Error('Invalid session data');
+    }
     try {
       const sessionData: CreateSessionFromRequestDto = {
-        description: sessionStoreData?.description,
-        endDate: sessionStoreData.endDate,
-        fieldUid: sessionStoreData.fieldUid,
-        gameMode: sessionStoreData.gameMode,
-        level: sessionStoreData.level,
-        sport: sessionStoreData.sport,
-        startDate: sessionStoreData.startDate,
-        teamAName: sessionStoreData?.teamAName,
-        teamBName: sessionStoreData?.teamBName,
-        title: sessionStoreData?.title,
-        visibility: sessionStoreData.visibility,
+        description: s?.description,
+        endDate: s.endDate,
+        fieldUid: s.fieldUid,
+        gameMode: s.gameMode,
+        level: s.level,
+        sport: s.sport,
+        startDate: s.startDate,
+        teamAName: s?.teamAName,
+        teamBName: s?.teamBName,
+        title: s?.title,
+        visibility: s.visibility,
       };
       const response = await createSession(sessionData);
       const createdSessionUid = response?.data?.uid;
       setCreatedSessionUid(createdSessionUid);
       trackEvent({
         data: {
-          end_date: sessionStoreData.endDate,
-          field_uid: sessionStoreData.fieldUid,
-          game_mode: sessionStoreData.gameMode,
+          end_date: s.endDate,
+          field_uid: s.fieldUid,
+          game_mode: s.gameMode,
           has_description: !!sessionStoreData?.description,
           has_team_a_name: !!sessionStoreData?.teamAName,
           has_team_b_name: !!sessionStoreData?.teamBName,
           has_title: !!sessionStoreData?.title,
-          is_partner: sessionStoreData.additionalData.fieldType === 'partner',
-          level: sessionStoreData.level,
-          session_visibility: sessionStoreData.visibility,
-          start_date: sessionStoreData.startDate,
-          title_source: sessionStoreData?.additionalData?.titleSource || 'none',
+          is_partner: s.additionalData.fieldType === 'partner',
+          level: s.level,
+          session_visibility: s.visibility,
+          start_date: s.startDate,
+          title_source: s?.additionalData?.titleSource || 'none',
         },
         eventName: 'create_session_completed',
       });

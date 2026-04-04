@@ -22,7 +22,7 @@ export default function CreateSessionStep1Part1Item(props: CreateSessionStep1Par
   const sportImage = getSportImage(sport.name);
 
   const handlePress = (s: SportProps) => {
-    setSession({ gameMode: null, sport: s.name });
+    setSession({ gameMode: undefined, sport: s.name });
     setSessionFilters({ sports: [s.name] });
   };
 

@@ -55,23 +55,31 @@ export default function ChatRoomHeader() {
 
   const handleInfoPress = () => {
     if (chatRoomIsGroup) {
-      const params: LocalSearchParamsSessionInfoChatRoom = {
-        chatRoomId,
-        imageUrl,
-        name,
-        sessionUid,
+      const params: StrictOmit<LocalSearchParamsSessionInfoChatRoom, 'chatRoomId'> = {
+        imageUrl: imageUrl ?? '',
+        name: name ?? '',
+        sessionUid: sessionUid ?? '',
       };
-      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INFO_SESSION });
+
+      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INFO_SESSION_UID(chatRoomId ?? undefined) });
     } else {
       const params: StrictOmit<LocalSearchParamsPrivateInfoChatRoom, 'chatRoomId'> = {
-        imageUrl,
-        name,
+        imageUrl: imageUrl ?? '',
+        name: name ?? '',
         receiver: serialize(receiver),
       };
       router.navigate({
         params,
-        pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(chatRoomId),
+        pathname: ROUTES.CHAT_ROOM.INFO_PRIVATE_UID(chatRoomId ?? undefined),
       });
+    }
+  };
+
+  const handleGoBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.dismissTo({ pathname: ROUTES.HOME.INDEX });
     }
   };
 
@@ -80,19 +88,11 @@ export default function ChatRoomHeader() {
       <GlassView style={{ bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 }} className="bg-white/80" />
       <Wrapper className="flex-row items-center justify-between py-2">
         <BoxGrow className="flex-row items-center gap-1">
-          <Icon
-            name="arrow-left-regular"
-            size="lg"
-            color={COLORS.muted}
-            onPress={() => {
-              router.back();
-            }}
-            pressEffectSize="xs"
-          />
+          <Icon name="arrow-left-regular" size="lg" color={COLORS.muted} onPress={handleGoBack} pressEffectSize="xs" />
           {chatRoomIsGroup ? (
             <Avatar
               data={{
-                firstname: name,
+                firstname: name ?? '',
                 imageUrl: avatarImage,
               }}
               colorVariant={isTeamA ? 'primary' : 'secondary'}
@@ -100,7 +100,7 @@ export default function ChatRoomHeader() {
           ) : (
             <Avatar
               data={{
-                firstname,
+                firstname: firstname ?? '',
                 imageUrl: avatarImage,
                 lastname,
               }}

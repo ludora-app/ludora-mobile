@@ -16,7 +16,7 @@ export const useGetMessagesByChatroomId = () => {
     limit: LIMIT_MESSAGES,
   };
 
-  const { data, error, isError, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
+  const { data, error, isError, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId ?? '', filter, {
     query: {
       enabled: !!chatRoomId,
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,

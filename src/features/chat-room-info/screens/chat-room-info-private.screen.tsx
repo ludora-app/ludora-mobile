@@ -21,6 +21,7 @@ import COLORS from '@/constants/colors.contstants';
 import { ReceiverDto } from '@/api/generated/model';
 import { getSportImage } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { StrictOmit } from '@/components/chill-ui-library/types/utils';
 import { useGetUserDataById } from '@/features/profil/queries/get-user-data-by-id.query';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 import ChatRoomBlockUserDialog from '@/features/chat-room/components/chat-room-user-profil-formsheet/chat-room-block-user-dialog.component';
@@ -30,6 +31,7 @@ import ChatRoomInfoHeader from '../components/chat-room-info-header.component';
 
 type ChatRoomInfoPrivateParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_PRIVATE];
 
+type LocalSearchParamsUserProfile = RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE];
 const LEVEL_COLORS: Record<number, string> = {
   1: '#4CAF50',
   2: '#FF9800',
@@ -74,14 +76,14 @@ export default function ChatRoomInfoPrivateScreen() {
 
   const handleOpenReportFormsheet = () => {
     if (!userUid) return;
+    const userProfileParams: StrictOmit<LocalSearchParamsUserProfile, 'userId'> = {
+      firstname: firstname ?? '',
+      imageUrl: avatarUrl ?? '',
+      initialView: 'report-reasons',
+      lastname: lastname ?? '',
+    };
     router.push({
-      params: {
-        firstname: firstname ?? '',
-        imageUrl: avatarUrl ?? '',
-        initialView: 'report-reasons',
-        lastname: lastname ?? '',
-        userId: userUid,
-      },
+      params: userProfileParams,
       pathname: ROUTES.CHAT_ROOM.USER_PROFILE_UID(userUid),
     });
   };

@@ -25,12 +25,15 @@ export default function ChatConversationListItemAvatarSession({
     <Box>
       <Avatar
         data={{
-          firstname: name,
+          firstname: name ?? '',
           imageUrl: sessionImage,
         }}
-        colorVariant={teamLabel === "B" ? "secondary" : "primary"}
+        colorVariant={teamLabel === 'B' ? 'secondary' : 'primary'}
       />
-      <Image source={getSportImage(sport as SessionCollectionItemDtoSport)} className="absolute right-0 bottom-0 size-6" />
+      <Image
+        source={getSportImage(sport as SessionCollectionItemDtoSport)}
+        className="absolute right-0 bottom-0 size-6"
+      />
     </Box>
   );
 }

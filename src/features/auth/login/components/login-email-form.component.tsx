@@ -52,10 +52,14 @@ export default function LoginEmailForm() {
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, flow: 'Authentication', method: 'email' },
+        data: {
+          error_message: errorResponse?.api_error_detail ?? 'unknow error',
+          flow: 'Authentication',
+          method: 'email',
+        },
         eventName: 'login_failed',
       });
-      if (Object.values(LOGIN_ERRORS).includes(errorResponse.api_error_detail)) {
+      if (Object.values(LOGIN_ERRORS).includes(errorResponse?.api_error_detail ?? '')) {
         toast({
           message: t('auth.login.toaster_user_not_found'),
           variant: 'error',
@@ -84,7 +88,7 @@ export default function LoginEmailForm() {
         />
         <Link href="/auth/reset-password" asChild>
           <Pressable>
-            <String size="sm" className="text-right mt-0.5">
+            <String size="sm" className="mt-0.5 text-right">
               {t('auth.login.forgot_password')}
             </String>
           </Pressable>

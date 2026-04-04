@@ -3,8 +3,8 @@ import { useUsersFindOne } from '@generatedApi/users/users.api';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
-export const useGetUserDataById = (userId: string) => {
-  const query = useUsersFindOne(userId, {
+export const useGetUserDataById = (userId?: string) => {
+  const query = useUsersFindOne(userId ?? '', {
     query: {
       enabled: !!userId,
       retry: (failureCount, error: ErrorResponse) => {

@@ -17,10 +17,11 @@ export default function SessionTeamsListSectionHeader(props: SessionTeamsListHea
   const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
 
   const handleRemaningPlayers = () => {
+    const count = remainingPlayers ?? 0;
     if (selectedTeamUid === teamUid) {
-      return remainingPlayers - 1;
+      return count - 1;
     }
-    return remainingPlayers;
+    return count;
   };
 
   const handleNumberOfPlayers = () => {

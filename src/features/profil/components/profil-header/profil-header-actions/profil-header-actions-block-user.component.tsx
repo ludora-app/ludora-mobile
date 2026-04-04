@@ -16,7 +16,7 @@ export default function ProfilHeaderActionsBlockUser() {
   const router = useRouter();
   const { firstname, id: userId, lastname } = useLocalSearchParams<ParamsFormSheetActions>();
   const { t } = useTranslate();
-  const { isPending: isLoadingBlockUser, mutateAsync: blockUser } = useBlockUser(userId);
+  const { isPending: isLoadingBlockUser, mutateAsync: blockUser } = useBlockUser(userId ?? '');
   const { trackError, trackEvent } = useAnalytics();
 
   const handleBlockUser = async () => {

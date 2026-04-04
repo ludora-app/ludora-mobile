@@ -8,28 +8,27 @@ import { useDeleteMessageMutation } from '@/features/chat-room/queries/chat-room
 
 import ChatRoomMessageActionsItem from './chat-room-message-actions-item.component';
 
-
 type ChatRoomMessageActionsDeleteMessageProps = {
-  message: MessageCollectionItemDto
-}
+  message: MessageCollectionItemDto;
+};
 
 export default function ChatRoomMessageActionsItemDeleteMessage({ message }: ChatRoomMessageActionsDeleteMessageProps) {
-  const chatRoomId = useChatRoomStore(state => state.chatRoomId)
-  const { isSender: isSenderMe, uid: messageId } = message || {}
-  const { t } = useTranslate()
+  const chatRoomId = useChatRoomStore(state => state.chatRoomId);
+  const { isSender: isSenderMe, uid: messageId } = message || {};
+  const { t } = useTranslate();
   const { trackError } = useAnalytics();
-  const { mutateAsync: deleteMessage } = useDeleteMessageMutation(chatRoomId)
+  const { mutateAsync: deleteMessage } = useDeleteMessageMutation(chatRoomId ?? undefined);
 
-  if (!isSenderMe) return null
+  if (!isSenderMe) return null;
 
   const handleDeleteMessage = async () => {
-    if (!messageId) return
+    if (!messageId) return;
     try {
-      await deleteMessage({ messageUid: messageId })
+      await deleteMessage({ messageUid: messageId });
     } catch (error) {
-      trackError({ error })
+      trackError({ error });
     }
-  }
+  };
 
   return (
     <ChatRoomMessageActionsItem
@@ -38,5 +37,5 @@ export default function ChatRoomMessageActionsItemDeleteMessage({ message }: Cha
       title={t('common.withdraw')}
       onPress={handleDeleteMessage}
     />
-  )
+  );
 }

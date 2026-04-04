@@ -11,7 +11,7 @@ import { MessageCollectionItemDtoGlobalStatus } from '@/api/generated/model';
 import { MessagesInfiniteData } from './chat-room-message-queue.types';
 import { useChatRoomOptimisticMessagesStore } from '../../store/chat-room-optimistic-messages.store';
 
-export const useDeleteMessageMutation = (chatRoomId: string) => {
+export const useDeleteMessageMutation = (chatRoomId?: string) => {
   const { t } = useTranslate();
   const { toast } = useToast();
 
@@ -26,7 +26,7 @@ export const useDeleteMessageMutation = (chatRoomId: string) => {
     const isFailedMessage = pendingMessages[messageUid]?.isError === true;
 
     const updateCache = () => {
-      const queryKey = getConversationsLoadMoreMessagesQueryKey(chatRoomId, { limit: 10 });
+      const queryKey = getConversationsLoadMoreMessagesQueryKey(chatRoomId ?? '', { limit: 10 });
       queryClient.setQueryData<MessagesInfiniteData>(queryKey, oldData => {
         if (!oldData) return oldData;
         return {
@@ -51,7 +51,7 @@ export const useDeleteMessageMutation = (chatRoomId: string) => {
       updateCache();
     } else {
       updateCache();
-      await mutation.mutateAsync({ messageUid, uid: chatRoomId });
+      await mutation.mutateAsync({ messageUid, uid: chatRoomId ?? '' });
     }
 
     toast({

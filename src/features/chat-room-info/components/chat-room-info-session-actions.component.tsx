@@ -49,7 +49,7 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
         return;
       }
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, session_uid: sessionUid },
+        data: { error_message: errorResponse?.api_error_detail ?? 'Unknown error', session_uid: sessionUid },
         eventName: ANALYTICS_EVENTS.SESSION.SESSION_LEFT_FAILED,
       });
       trackError({ error });

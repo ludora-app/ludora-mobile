@@ -1,7 +1,7 @@
 import { Button } from '@ludo/ui';
 import { useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -40,14 +40,14 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     return t('auth.verify-code.resend_verification_code');
   }, [isCodeValid, resendCodeTime, t]);
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setInterval> | null = null;
+  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  useEffect(() => {
     if (resendCodeTime > 0) {
-      timer = setInterval(() => {
+      countdownIntervalRef.current = setInterval(() => {
         setResendCodeTime(prev => {
           if (prev <= 1) {
-            clearInterval(timer);
+            if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
             return 0;
           }
           return prev - 1;
@@ -56,13 +56,13 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     }
 
     return () => {
-      if (timer) clearInterval(timer);
+      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
     };
   }, [resendCodeTime]);
 
   const handleSendVerificationCode = async () => {
     try {
-      await sendVerificationCode({ data: { email: userEmail } });
+      await sendVerificationCode({ email: userEmail ?? '' });
       setResendCodeTime(WAITING_TIME_TO_RESEND_CODE);
       trackEvent({
         eventName: 'reset_password_verify_code_resend_success',
@@ -74,7 +74,7 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail },
+        data: { error_message: errorResponse.api_error_detail ?? 'unknow error' },
         eventName: 'reset_password_verify_code_resend_failed',
       });
       trackError({ error });

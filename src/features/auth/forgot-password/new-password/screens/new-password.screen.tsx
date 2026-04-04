@@ -39,7 +39,7 @@ export default function NewPasswordScreen() {
       const errorResponse = error as ErrorResponse;
       trackEvent({
         data: {
-          error_message: errorResponse.api_error_detail,
+          error_message: errorResponse.api_error_detail ?? 'Unknown error',
           flow: 'Authentication',
         },
         eventName: 'reset_password_new_password_failed',
@@ -51,7 +51,7 @@ export default function NewPasswordScreen() {
   };
 
   return (
-    <WrapperKeyboardAwareScrollView hasSafeArea className='mt-4'>
+    <WrapperKeyboardAwareScrollView hasSafeArea className="mt-4">
       <AuthHeader title="auth.new-password.title" description="auth.new-password.description" />
       <ContentWapper>
         <Box className="gap-4">

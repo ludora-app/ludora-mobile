@@ -29,11 +29,7 @@ export default function RegisterStep2Screen() {
   const { toast } = useToast();
   const { trackError, trackEvent } = useAnalytics();
   const registerFormSchema = formSchema(t);
-  const {
-    control,
-    handleSubmit,
-    trigger,
-  } = useForm<z.infer<typeof registerFormSchema>>({
+  const { control, handleSubmit, trigger } = useForm<z.infer<typeof registerFormSchema>>({
     mode: 'onSubmit',
     resolver: zodResolver(registerFormSchema),
   });
@@ -41,11 +37,9 @@ export default function RegisterStep2Screen() {
   const onSubmit = async (data: z.infer<typeof registerFormSchema>) => {
     try {
       const response = await registerUser({
-        data: {
-          ...data,
-          birthdate: data.birthdate.toISOString(),
-          type: 'USER',
-        },
+        ...data,
+        birthdate: data.birthdate.toISOString(),
+        type: 'USER',
       });
       const accessToken = response?.data.accessToken;
       const refreshToken = response?.data.refreshToken;
@@ -57,7 +51,11 @@ export default function RegisterStep2Screen() {
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, flow: 'Authentication', method: 'email' },
+        data: {
+          error_message: errorResponse?.api_error_detail ?? 'unknow error',
+          flow: 'Authentication',
+          method: 'email',
+        },
         eventName: 'signup_failed',
       });
       if (errorResponse.api_error_detail === EMAIL_ALREADY_EXISTS_ERROR_MESSAGE) {
@@ -77,7 +75,7 @@ export default function RegisterStep2Screen() {
       <WrapperKeyboardAwareScrollView
         hasSafeArea
         edges={['bottom']}
-        contentContainerClassName='pt-5'
+        contentContainerClassName="pt-5"
         hasKeyboardToolbar
         bottomOffset={KEYBOARD_BOTTOM_OFFSET}
         keyboardDismissMode="interactive"
@@ -93,7 +91,7 @@ export default function RegisterStep2Screen() {
                 label={t('common.input_lastname_label')}
                 customRegex={NAME_REGEX}
               />
-            </Box >
+            </Box>
             <Box className="flex-1">
               <FormInput
                 name="firstname"
@@ -103,7 +101,7 @@ export default function RegisterStep2Screen() {
                 customRegex={NAME_REGEX}
               />
             </Box>
-          </Box >
+          </Box>
           <FormDatePickerInput
             name="birthdate"
             control={control}
@@ -140,7 +138,7 @@ export default function RegisterStep2Screen() {
             isLoading={registerPending}
           />
         </Box>
-        <String size="sm" useFastText={false} onPress={() => { }}>
+        <String size="sm" useFastText={false} onPress={() => {}}>
           {t('auth.register-step-2.acceptance_part_1')}
           <String
             size="sm"

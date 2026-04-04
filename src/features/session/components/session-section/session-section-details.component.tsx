@@ -66,11 +66,11 @@ export default function SessionSectionDetails({ session }: SessionSectionDetails
         </BoxRow>
         <BoxRow className="items-center flex-wrap">
           <BoxRow className="items-center gap-1 mr-2">
-            <SessionSectionIcon sideTeam={sideTeam} name="calendar-2-regular" />
+            <SessionSectionIcon sideTeam={sideTeam ?? 'left'} name="calendar-2-regular" />
             <String font="primaryExtraBold" size="sm">{formatDateShort({ date: startDate })}</String>
           </BoxRow>
           <BoxRow className="items-center gap-1">
-            <SessionSectionIcon sideTeam={sideTeam} name="clock-regular" />
+            <SessionSectionIcon sideTeam={sideTeam ?? 'left'} name="clock-regular" />
             <String font="primaryExtraBold" size="sm">
               {t('session-card.session_time', {
                 end_time: formatToHour({ date: endDate }),
@@ -81,7 +81,7 @@ export default function SessionSectionDetails({ session }: SessionSectionDetails
         </BoxRow>
         <Pressable onPress={handleOpenMaps} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
           <BoxRow className="items-center gap-1">
-            <SessionSectionIcon sideTeam={sideTeam} name="location-solid" />
+            <SessionSectionIcon sideTeam={sideTeam ?? 'left'} name="location-solid" />
             <String size="sm" className="underline">{fieldShortAddress}</String>
             {userDistance &&
               <String variant="body-xs" truncate>

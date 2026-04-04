@@ -30,9 +30,11 @@ export const updateConversationListCache = (
 
     if (foundItem) {
       const updatedConversation: ConversationCollectionResponseData = {
-        ...foundItem,
+        ...(foundItem as ConversationCollectionResponseData),
         lastMessage,
-        sender: (sender as any) ?? (foundItem as any).sender,
+        sender:
+          (sender as unknown as UserSimpleDisplayWithUidData) ??
+          (foundItem as unknown as ConversationCollectionResponseData).sender,
       };
 
       // Insert at the beginning of the first page to move it to the top

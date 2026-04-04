@@ -13,7 +13,7 @@ export default function SettingsBlockedUsersList() {
 
   return (
     <List
-      data={items}
+      data={items ?? []}
       fetchNextPage={() => { }}
       isFetchingNextPage={false}
       hasNextPage={false}

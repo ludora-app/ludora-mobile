@@ -18,8 +18,8 @@ const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
       console.log(`🌐 Env is "${env}", trying to fetch artifact from GitHub...`);
 
       let branchName = 'main';
-      if (env === 'development') branchName = 'dev';
-      if (env === 'preview' || env === 'staging') branchName = 'staging';
+      if (env === 'development' || env === 'staging') branchName = 'dev';
+      if (env === 'preview') branchName = 'staging';
 
       try {
         const tempDir = path.resolve(process.cwd(), '.artifacts');

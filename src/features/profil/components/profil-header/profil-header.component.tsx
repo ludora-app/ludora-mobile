@@ -1,9 +1,6 @@
 import { useTranslate } from '@tolgee/react';
-import { Box, BoxRowGrow, cn, OutlinedString, Wrapper } from '@chillui/ui';
 
-import COLORS from '@/constants/colors.contstants';
-import { useSafeArea } from '@/hooks/safe-area.hook';
-import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component';
+import { HeaderOutlined } from '@/components/ui/navigation/header-outlined';
 
 import ProfilHeaderActionsMe from './profil-header-actions-me.component';
 import ProfilHeaderActions from './profil-header-actions/profil-header-actions.component';
@@ -18,25 +15,18 @@ export default function ProfilHeader(props: ProfilHeaderProps) {
   const { t } = useTranslate();
   const { firstname, isMe: isProfilMe, lastname } = props;
 
-  const { safeTop } = useSafeArea();
-
   return (
-    <Wrapper className="z-10 flex-row items-center pb-4" style={{ paddingTop: safeTop }}>
-      <BoxRowGrow className="items-center gap-3">
-        {!isProfilMe && <GoBackButton />}
-        <Box className={cn({ 'mt-2': !isProfilMe })}>
-          <OutlinedString
-            text={isProfilMe ? t('profil.me_header_title') : t('profil.user_header_title')}
-            fontSize={32}
-            fillColor="#FFFFFF"
-            strokeColor={COLORS.primary}
-            strokeWidth={2}
-            fontFamily="NunitoSans700Bold"
-          />
-        </Box>
-      </BoxRowGrow>
-      <ProfilHeaderActionsMe isMe={isProfilMe} />
-      <ProfilHeaderActions isMe={isProfilMe} firstname={firstname} lastname={lastname} />
-    </Wrapper>
+    <HeaderOutlined
+      fontSize={32}
+      showBackButton={!isProfilMe}
+      hasHorizontalPadding
+      title={isProfilMe ? t('profil.me_header_title') : t('profil.user_header_title')}
+      rightContent={
+        <>
+          <ProfilHeaderActionsMe isMe={isProfilMe} />
+          <ProfilHeaderActions isMe={isProfilMe} firstname={firstname} lastname={lastname} />
+        </>
+      }
+    />
   );
 }

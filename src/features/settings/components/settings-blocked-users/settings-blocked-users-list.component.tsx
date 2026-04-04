@@ -1,20 +1,21 @@
-import { List } from '@ludo/ui'
+import { List } from '@ludo/ui';
 
-import { useGetBlockedUsers } from '../../queries/get-blocked-users.query'
-import SettingsBlockedUsersHeader from './settings-blocked-users-header.component'
-import SettingsBlockedUsersListItem from './settings-blocked-users-list-item/settings-blocked-users-list-item.component'
-import SettingsBlockedUsersListItemSkeleton from './settings-blocked-users-list-item/settings-blocked-users-list-item-skeleton.component'
+import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
 
-const LIST_ITEM_SIZE_HEIGHT = 95
-const HEADER_HEIGHT = 62
+import { useGetBlockedUsers } from '../../queries/get-blocked-users.query';
+import SettingsBlockedUsersHeader from './settings-blocked-users-header.component';
+import SettingsBlockedUsersListItem from './settings-blocked-users-list-item/settings-blocked-users-list-item.component';
+import SettingsBlockedUsersListItemSkeleton from './settings-blocked-users-list-item/settings-blocked-users-list-item-skeleton.component';
+
+const LIST_ITEM_SIZE_HEIGHT = 95;
 
 export default function SettingsBlockedUsersList() {
-  const { isLoading, isRefetching, items, refetch } = useGetBlockedUsers()
+  const { isLoading, isRefetching, items, refetch } = useGetBlockedUsers();
 
   return (
     <List
       data={items ?? []}
-      fetchNextPage={() => { }}
+      fetchNextPage={() => {}}
       isFetchingNextPage={false}
       hasNextPage={false}
       ItemComponent={SettingsBlockedUsersListItem}
@@ -28,14 +29,14 @@ export default function SettingsBlockedUsersList() {
       hasBottomSafeArea
       hasHeaderTransparent
       hasTopSafeArea
-      listHeaderComponentHeight={HEADER_HEIGHT}
+      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
       getFixedItemSize={() => LIST_ITEM_SIZE_HEIGHT}
       emptyResultProps={{
         hasRandomTitle: true,
-        iconNames: ["ludo-eating-pizza"],
+        iconNames: ['ludo-eating-pizza'],
         randomOptions: 3,
-        title: 'settings.blocked_users.empty_list_v'
+        title: 'settings.blocked_users.empty_list_v',
       }}
     />
-  )
+  );
 }

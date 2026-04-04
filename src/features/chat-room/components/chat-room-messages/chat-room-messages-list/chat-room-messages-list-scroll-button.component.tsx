@@ -1,6 +1,5 @@
 import { IconButton } from '@ludo/ui';
-import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 type ChatRoomMessagesListScrollButtonProps = {
   isVisible: boolean;
@@ -11,31 +10,7 @@ export default function ChatRoomMessagesListScrollButton({
   isVisible,
   onPress,
 }: ChatRoomMessagesListScrollButtonProps) {
-  const keyboardHeight = useSharedValue(0);
-
-  useKeyboardHandler(
-    {
-      onEnd: (e) => {
-        'worklet';
-
-        keyboardHeight.value = e.height;
-      },
-      onMove: (e) => {
-        'worklet';
-
-        keyboardHeight.value = e.height;
-      },
-      onStart: (e) => {
-        'worklet';
-
-        keyboardHeight.value = e.height;
-      },
-    },
-    [],
-  );
-
   const scrollButtonStyle = useAnimatedStyle(() => ({
-    bottom: 16 + keyboardHeight.value,
     opacity: withTiming(isVisible ? 1 : 0, { duration: 200 }),
     transform: [
       { translateY: withTiming(isVisible ? 0 : 20, { duration: 200 }) },
@@ -45,11 +20,9 @@ export default function ChatRoomMessagesListScrollButton({
 
   return (
     <Animated.View
-      style={[
-        scrollButtonStyle,
-        { position: 'absolute', right: 16, zIndex: 50 },
-      ]}
+      style={scrollButtonStyle}
       pointerEvents={isVisible ? 'auto' : 'none'}
+      className="absolute right-4 bottom-4 z-50"
     >
       <IconButton
         iconName="arrow-down-regular"
@@ -57,7 +30,7 @@ export default function ChatRoomMessagesListScrollButton({
         size="md"
         variant="contained"
         rounded="circle"
-        className='shadow-lg'
+        className="shadow-lg"
       />
     </Animated.View>
   );

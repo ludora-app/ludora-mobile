@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { ImageSource } from 'expo-image';
-import { useLocalSearchParams } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Avatar, BoxCenter, BoxGrow, ScreenLayout, ScrollView, Separator, String, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
@@ -19,14 +19,12 @@ import ChatRoomInfoSessionDetails from '../components/chat-room-info-session-det
 
 type ChatRoomInfoSessionParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INFO_SESSION];
 
-export default function ChatRoomInfoSession() {
+export default function ChatRoomInfoSessionScreen() {
   const { bottom } = useSafeArea();
   const params = useLocalSearchParams<ChatRoomInfoSessionParams>();
   const { isTeamA } = useChatRoomSessionTeam();
 
-  const { imageUrl, name, sessionUid: sessionUidParam } = params || {};
-
-  const sessionUid = sessionUidParam;
+  const { imageUrl, name, sessionUid = '' } = params || {};
 
   const { data: sessionData, isLoading: isLoadingSession } = useGetSessionById(sessionUid);
 
@@ -37,7 +35,11 @@ export default function ChatRoomInfoSession() {
     return undefined;
   }, [imageUrl, sessionData?.sport]);
 
-  if (isLoadingSession && sessionUid) {
+  if (!sessionUid) {
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;
+  }
+
+  if (isLoadingSession) {
     return (
       <ScreenLayout>
         <ChatRoomInfoHeader titleKey="chat.info_session_title" />

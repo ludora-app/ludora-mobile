@@ -14,6 +14,7 @@ type ChatRoomReceiver = ReceiverDto;
 export default function ChatRoomInfoInitializer() {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const setChatRoomInfo = useChatRoomStore(state => state.setChatRoomInfo);
+  const isStoreInitialized = useChatRoomStore(state => state.chatRoomInfo !== null);
   const params = useLocalSearchParams<ChatRoomLocalSearchParams>();
   const chatRoomType = params.type !== 'undefined' ? (params.type as FindOneConversationResponseDataType) : undefined;
   const chatRoomName = params.name !== 'undefined' ? params.name : undefined;
@@ -44,9 +45,11 @@ export default function ChatRoomInfoInitializer() {
   const hasTeamLabelIfRequired = !isPrivate ? !!chatRoomSessionData?.teamLabel : true;
   const shouldFetchChatRoomInfo = !!chatRoomId && (!hasBasicInfo || !hasReceiverIfRequired || !hasTeamLabelIfRequired);
 
-  const { data: chatRoom } = useGetChatRoomById({ convId: chatRoomId, enabled: shouldFetchChatRoomInfo });
+  const { data: chatRoom } = useGetChatRoomById({ convId: chatRoomId!, enabled: shouldFetchChatRoomInfo });
 
   useEffect(() => {
+    if (isStoreInitialized) return;
+
     if (!shouldFetchChatRoomInfo) {
       setChatRoomInfo({
         imageUrl: chatRoomAvatar,
@@ -61,6 +64,7 @@ export default function ChatRoomInfoInitializer() {
       setChatRoomInfo(chatRoom);
     }
   }, [
+    isStoreInitialized,
     chatRoom,
     setChatRoomInfo,
     chatRoomAvatar,

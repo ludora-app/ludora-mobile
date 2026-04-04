@@ -36,7 +36,7 @@ const LEVEL_COLORS: Record<number, string> = {
   3: COLORS.primary,
 };
 
-export default function ChatRoomInfoPrivate() {
+export default function ChatRoomInfoPrivateScreen() {
   const { t } = useTranslate();
   const router = useRouter();
   const params = useLocalSearchParams<ChatRoomInfoPrivateParams>();
@@ -94,7 +94,7 @@ export default function ChatRoomInfoPrivate() {
           <BoxCenter className="gap-3">
             <Avatar
               data={{
-                firstname,
+                firstname: firstname ?? '',
                 imageUrl: avatarUrl ? { uri: avatarUrl } : undefined,
                 lastname,
               }}

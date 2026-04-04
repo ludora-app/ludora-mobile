@@ -1,4 +1,4 @@
-import { SessionData } from '@/api/generated/model';
+import { FindOneConversationResponseDataSessionData, SessionData } from '@/api/generated/model';
 import {
   getTeamBackgroundColor,
   getTeamBorderColor,
@@ -7,7 +7,7 @@ import {
   isTeamLabelB,
 } from '@/utils/session-teams.utils';
 
-export const useSessionTeam = (sessionData: SessionData) => {
+export const useSessionTeam = (sessionData: SessionData | FindOneConversationResponseDataSessionData) => {
   const isTeamA = isTeamLabelA(sessionData);
   const isTeamB = isTeamLabelB(sessionData);
   const backgroundColor = getTeamBackgroundColor(sessionData);

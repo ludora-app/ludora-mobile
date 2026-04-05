@@ -34,7 +34,7 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
   const { t } = useTranslate();
   const { userMeId } = useUserMe();
   const { data: sessionPlayer, teamSide } = props;
-  const { bio, firstname, imageUrl, lastname, sportLevel, userUid } = sessionPlayer || {};
+  const { firstname, imageUrl, lastname, sportLevel, userUid } = sessionPlayer || {};
 
   const isMe = userMeId === userUid;
 
@@ -84,11 +84,6 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
               </String>
               {isMe && <Chip title={t('common.me')} size="2xs" colorVariant={colorVariant} variant="outlined" />}
             </BoxRow>
-            {!!bio && (
-              <String variant="body-xs" colorVariant="muted" truncate>
-                {bio}
-              </String>
-            )}
             {!!sportLevel && (
               <Box className="mt-1 items-start">
                 <Chip title={t(`common.user_level_${sportLevel}`)} size="2xs" />

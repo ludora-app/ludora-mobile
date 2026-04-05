@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { String } from '@ludo/ui';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -6,7 +7,7 @@ interface ChatRoomMessageListItemContentStringProps {
   messageData: MessageCollectionItemDto;
 }
 
-export default function ChatRoomMessageListItemContentString({
+function ChatRoomMessageListItemContentString({
   messageData,
 }: ChatRoomMessageListItemContentStringProps) {
   const { content: messageContent, isSender: isMessageFromMe } = messageData || {};
@@ -17,3 +18,5 @@ export default function ChatRoomMessageListItemContentString({
     </String>
   );
 }
+
+export default memo(ChatRoomMessageListItemContentString);

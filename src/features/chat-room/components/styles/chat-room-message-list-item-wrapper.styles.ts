@@ -9,6 +9,13 @@ export const chatRoomMessageListItemWrapperTv = tv({
       isMessageFromMe: true,
     },
     {
+      className: 'bg-transparent border border-secondary',
+      isMessageDeleted: true,
+      isMessageFromMe: true,
+      isSessionChat: true,
+      isTeamLabelA: false,
+    },
+    {
       className: 'bg-transparent border border-ring',
       isMessageDeleted: true,
       isMessageFromMe: false,

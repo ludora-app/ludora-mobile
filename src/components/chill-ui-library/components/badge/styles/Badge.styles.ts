@@ -327,7 +327,7 @@ export const badgeTv = tv({
       xs: 'size-[20px]',
     },
     variant: {
-      contained: 'border-transparent',
+      contained: '',
       outlined: 'bg-transparent',
     },
   },

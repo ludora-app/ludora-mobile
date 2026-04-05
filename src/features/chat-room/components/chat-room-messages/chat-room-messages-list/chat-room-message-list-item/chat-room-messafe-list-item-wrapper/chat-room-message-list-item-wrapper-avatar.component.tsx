@@ -2,18 +2,18 @@ import { Avatar } from '@ludo/ui';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { StrictOmit } from '@chillui/ui';
+import { memo, useCallback } from 'react';
 
 import ROUTES from '@/constants/routes.constants';
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 
 interface ChatRoomMessageListItemWrapperAvatarProps {
   messageData: MessageCollectionItemDto;
 }
 
-export default function ChatRoomMessageListItemWrapperAvatar({
-  messageData,
-}: ChatRoomMessageListItemWrapperAvatarProps) {
+function ChatRoomMessageListItemWrapperAvatar({ messageData }: ChatRoomMessageListItemWrapperAvatarProps) {
   const router = useRouter();
   const { isSender: isMessageFromMe, sender } = messageData || {};
   const {
@@ -22,12 +22,9 @@ export default function ChatRoomMessageListItemWrapperAvatar({
     lastname: senderLastName,
     uid: senderUid,
   } = sender || {};
+  const { isTeamA } = useChatRoomSessionTeam();
 
-  if (isMessageFromMe) {
-    return null;
-  }
-
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     if (!senderUid) return;
     const params: StrictOmit<RootStackParamList[typeof ROUTES.CHAT_ROOM.USER_PROFILE], 'userId'> = {
       firstname: senderFirstName ?? '',
@@ -35,7 +32,11 @@ export default function ChatRoomMessageListItemWrapperAvatar({
       lastname: senderLastName ?? '',
     };
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.USER_PROFILE_UID(senderUid) });
-  };
+  }, [senderUid, senderFirstName, senderImageUrl, senderLastName, router]);
+
+  if (isMessageFromMe) {
+    return null;
+  }
 
   return (
     <Pressable onPress={handlePress} hitSlop={8}>
@@ -46,7 +47,10 @@ export default function ChatRoomMessageListItemWrapperAvatar({
           imageUrl: senderImageUrl ? { uri: senderImageUrl } : undefined,
           lastname: senderLastName,
         }}
+        colorVariant={isTeamA ? 'primary' : 'secondary'}
       />
     </Pressable>
   );
 }
+
+export default memo(ChatRoomMessageListItemWrapperAvatar);

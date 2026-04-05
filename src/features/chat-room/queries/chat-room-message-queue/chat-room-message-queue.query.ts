@@ -14,6 +14,7 @@ export const useChatRoomMessageOptimisticQueue = () => {
   const chatRoomUserId = useChatRoomStore(store => store.chatRoomUserId);
   const setChatRoomId = useChatRoomStore(store => store.setChatRoomId);
   const setChatRoomUserId = useChatRoomStore(store => store.setChatRoomUserId);
+  const lastMessageCreatedAt = useChatRoomStore(store => store.lastMessageCreatedAt);
   const queryClient = useQueryClient();
   const { userMe } = useUserMe();
 
@@ -36,6 +37,7 @@ export const useChatRoomMessageOptimisticQueue = () => {
     chatRoomUserId,
     currentUserSender,
     getQueryKey,
+    lastMessageCreatedAt,
     setChatRoomId,
     setChatRoomUserId,
   };

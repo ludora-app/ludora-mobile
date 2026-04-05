@@ -11,12 +11,11 @@ import HomeSessionListHeader from './home-session-list-headers/home-session-list
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
-
 const ESTIMATED_LIST_ITEM_SIZE = 170;
 const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
 const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
 
-const LIST_HEADER_HEIGHT = 176
+const LIST_HEADER_HEIGHT = 176;
 const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
@@ -79,9 +78,9 @@ export default function HomeSessionList() {
       keyboardShouldPersistTaps="handled"
       SkeletonComponent={SessionCardSkeleton}
       ListHeaderComponent={
-        <HomeSessionListHeaderTopList
-          hasNewSession={hasNewSession}
-          IncommingSessionMe={IncommingSessionMe} />
+        IncommingSessionMe && (
+          <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />
+        )
       }
       hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}

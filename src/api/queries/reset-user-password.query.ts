@@ -1,12 +1,14 @@
 import ky from 'ky';
 
+import { getApiUrl } from '@/utils/api-url.utils';
+
 import { ForgottenPasswordDto, LoginResponseDto } from '../generated/model';
 
-const LOCAL_API_URL = `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:2424`;
+// Using custom method to pass resetToken in header
 
 export const PATCH = async (newPassword: ForgottenPasswordDto['newPassword'], resetToken: string) => {
   const response = await ky
-    .patch(`${LOCAL_API_URL}/auth-b2c/password-reset`, {
+    .patch(`${getApiUrl()}/auth-b2c/password-reset`, {
       headers: {
         Authorization: `Bearer ${resetToken}`,
       },

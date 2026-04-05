@@ -24,10 +24,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
 
   const isStep1Valid = useCreateSessionStore(
     state =>
-      !!state.session?.gameMode &&
-      !!state.session?.level &&
-      !!state.session?.sport &&
-      !!state.session?.visibility,
+      !!state.session?.gameMode && !!state.session?.level && !!state.session?.sport && !!state.session?.visibility,
   );
 
   const isStep2Valid = useCreateSessionStore(
@@ -55,7 +52,21 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
 
   const handleSubmit = async () => {
     const currentSession = useCreateSessionStore.getState().session;
-    const { additionalData, description, endDate, fieldUid, gameMode, level, slotUid, sport, startDate, teamAName, teamBName, title, visibility } = currentSession || {};
+    const {
+      additionalData,
+      description,
+      endDate,
+      fieldUid,
+      gameMode,
+      level,
+      slotUid,
+      sport,
+      startDate,
+      teamAName,
+      teamBName,
+      title,
+      visibility,
+    } = currentSession || {};
     const { fieldType, price, pricePerPlayer } = additionalData || {};
 
     if (activeStep === 3 && fieldType === 'partner') {
@@ -64,6 +75,9 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     }
 
     if (activeStep === 1 && currentSession) {
+      if (gameMode === undefined || level === undefined || sport === undefined || visibility === undefined) {
+        return;
+      }
       trackEvent({
         data: {
           game_mode: gameMode,
@@ -76,14 +90,17 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
       router.navigate(ROUTES.CREATE_SESSION.STEP_2);
     }
     if (activeStep === 2 && currentSession) {
+      if (endDate === undefined || fieldUid === undefined || startDate === undefined) {
+        return;
+      }
       trackEvent({
         data: {
           end_date: endDate,
           field_uid: fieldUid,
           is_partner: fieldType === 'partner',
-          price,
-          price_per_player: pricePerPlayer,
-          slot_uid: slotUid,
+          price: price ?? 0,
+          price_per_player: pricePerPlayer ?? 0,
+          slot_uid: slotUid ?? '',
           start_date: startDate,
         },
         eventName: 'create_session_step_2_completed',
@@ -97,7 +114,7 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
           has_team_a_name: !!teamAName,
           has_team_b_name: !!teamBName,
           has_title: !!title,
-          title_source: additionalData?.titleSource || 'none',
+          title_source: additionalData?.titleSource ?? 'none',
         },
         eventName: 'create_session_step_3_completed',
       });
@@ -119,5 +136,12 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStep2Valid, autoGoToNextStep]);
-  return <Button title={t('common.button_next')} isDisabled={!handleButtonDisabled} hasDisabledOpacity onPress={handleSubmit} />;
+  return (
+    <Button
+      title={t('common.button_next')}
+      isDisabled={!handleButtonDisabled}
+      hasDisabledOpacity
+      onPress={handleSubmit}
+    />
+  );
 }

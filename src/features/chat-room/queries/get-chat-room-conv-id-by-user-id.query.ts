@@ -2,8 +2,8 @@ import { useConversationsFindByUserUids } from '@generatedApi/conversations/conv
 
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
-export const useGetChatRoomConvIdByUserId = (userUid: string) => {
-  const query = useConversationsFindByUserUids(userUid, {
+export const useGetChatRoomConvIdByUserId = (userUid?: string) => {
+  const query = useConversationsFindByUserUids(userUid ?? '', {
     query: {
       enabled: !!userUid,
     },

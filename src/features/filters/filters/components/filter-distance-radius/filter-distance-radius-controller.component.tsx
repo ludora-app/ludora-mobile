@@ -3,7 +3,7 @@ import { BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
 export default function FilterDistanceRadiusController() {
-  const maxDistance = useFiltersStore(state => selectFilters(state).maxDistance);
+  const maxDistance = useFiltersStore(state => selectFilters(state).maxDistance) ?? 0;
   const setFilters = useFiltersStore(state => state.setFilters);
 
   const handleIncrement = () => {

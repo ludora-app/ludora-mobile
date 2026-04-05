@@ -14,7 +14,7 @@ export default function ChatConversationListItemAvatarPrivate({
   return (
     <Avatar
       data={{
-        firstname: name,
+        firstname: name ?? '',
         imageUrl: imageUrl ? { uri: imageUrl } : undefined,
       }}
     />

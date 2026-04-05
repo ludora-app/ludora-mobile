@@ -41,16 +41,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     name,
     plugins: [
-      ...config.plugins,
+      ...(config.plugins ?? []),
       ...(process.env.EXPO_PUBLIC_GOOGLE_IOS_URL_SCHEMA
         ? [
             [
               '@react-native-google-signin/google-signin',
               { iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_IOS_URL_SCHEMA },
-            ] as [string, any],
+            ],
           ]
         : []),
-    ],
+    ] as unknown as ExpoConfig['plugins'],
     slug: 'ludora',
     version: packageJson.version.split('-')[0],
   };

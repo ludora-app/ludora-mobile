@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "strict": true,
     "paths": {
+      "assets": ["./assets"],
       "@/*": ["./src/*"],
       "@ludo/ui": ["./src/components/ludo-ui"],
       "@chillui/ui": ["./src/components/chill-ui-library"],

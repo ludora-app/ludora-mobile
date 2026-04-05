@@ -80,15 +80,15 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
       additionalData: {
         autoGoToNextStep: true,
         fieldType: 'public',
-        price: null,
-        pricePerPlayer: null,
+        price: undefined,
+        pricePerPlayer: undefined,
         publicFieldSlotUid: slotUid,
       },
-      endDate: matchDetails.endIso,
+      endDate: matchDetails.endIso ?? undefined,
       fieldUid,
-      slotUid: null,
-      sport,
-      startDate,
+      slotUid: undefined,
+      sport: sport ?? undefined,
+      startDate: startDate ?? undefined,
     });
     router.back();
   };

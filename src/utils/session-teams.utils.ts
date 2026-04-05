@@ -1,10 +1,12 @@
 import COLORS from '@/constants/colors.contstants';
-import { SessionData } from '@/api/generated/model';
+import { FindOneConversationResponseDataSessionData, SessionData } from '@/api/generated/model';
 
 const TEAM_A = 'A';
 const TEAM_B = 'B';
 
-export const getTeamBackgroundColor = (sessionData: SessionData) => {
+export const getTeamBackgroundColor = (
+  sessionData?: SessionData | FindOneConversationResponseDataSessionData,
+) => {
   const { teamLabel } = sessionData || {};
   switch (teamLabel) {
     case TEAM_A:
@@ -16,7 +18,9 @@ export const getTeamBackgroundColor = (sessionData: SessionData) => {
   }
 };
 
-export const getTeamBorderColor = (sessionData: SessionData) => {
+export const getTeamBorderColor = (
+  sessionData?: SessionData | FindOneConversationResponseDataSessionData,
+) => {
   const { teamLabel } = sessionData || {};
   switch (teamLabel) {
     case TEAM_A:
@@ -28,7 +32,7 @@ export const getTeamBorderColor = (sessionData: SessionData) => {
   }
 };
 
-export const getTeamColor = (sessionData: SessionData) => {
+export const getTeamColor = (sessionData?: SessionData | FindOneConversationResponseDataSessionData) => {
   const { teamLabel } = sessionData || {};
   switch (teamLabel) {
     case TEAM_A:
@@ -40,12 +44,12 @@ export const getTeamColor = (sessionData: SessionData) => {
   }
 };
 
-export const isTeamLabelA = (sessionData: SessionData) => {
+export const isTeamLabelA = (sessionData?: SessionData | FindOneConversationResponseDataSessionData) => {
   const { teamLabel } = sessionData || {};
   return teamLabel === 'A';
 };
 
-export const isTeamLabelB = (sessionData: SessionData) => {
+export const isTeamLabelB = (sessionData?: SessionData | FindOneConversationResponseDataSessionData) => {
   const { teamLabel } = sessionData || {};
   return teamLabel === 'B';
 };

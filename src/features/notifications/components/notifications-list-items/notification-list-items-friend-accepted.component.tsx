@@ -1,39 +1,46 @@
-import { useRouter } from 'expo-router'
-import { Pressable } from 'react-native'
-import { useTranslate } from '@tolgee/react'
-import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui'
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
+import { useTranslate } from '@tolgee/react';
+import { Avatar, BoxGrow, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui';
 
-import { serialize } from '@/utils/json.utils'
-import ROUTES from '@/constants/routes.constants'
-import COLORS from '@/constants/colors.contstants'
-import { truncateString } from '@/utils/string.utils'
-import { RootStackParamList } from '@/types/routes-params.types'
-import { FindOneConversationResponseDataType, FriendRequestData, NotificationResponseData } from '@/api/generated/model'
+import { serialize } from '@/utils/json.utils';
+import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
+import { truncateString } from '@/utils/string.utils';
+import { RootStackParamList } from '@/types/routes-params.types';
+import {
+  FindOneConversationResponseDataType,
+  FriendRequestData,
+  NotificationResponseData,
+} from '@/api/generated/model';
 
-import { formatNotificationTime } from '../../utils/time.utils'
-import NotificationsListItemsContainer from './notifications-list-items-container.component'
-
+import { formatNotificationTime } from '../../utils/time.utils';
+import NotificationsListItemsContainer from './notifications-list-items-container.component';
 
 interface NotificationListItemsFriendAcceptedProps {
-  item: NotificationResponseData
+  item: NotificationResponseData;
 }
 
 type LocalSearchParamsChatRoom = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
 export default function NotificationListItemsFriendAccepted(props: NotificationListItemsFriendAcceptedProps) {
-  const router = useRouter()
-  const { t } = useTranslate()
-  const { item: notification } = props
-  const { createdAt, isRead: isNotificationRead, metadata, type: notificationType, uid: notificationUid } = notification || {}
+  const router = useRouter();
+  const { t } = useTranslate();
+  const { item: notification } = props;
+  const {
+    createdAt,
+    isRead: isNotificationRead,
+    metadata,
+    type: notificationType,
+    uid: notificationUid,
+  } = notification || {};
 
-
-  const notificationData = metadata as FriendRequestData
-  const { senderAvatar, senderFirstname, senderLastname, senderName, senderUid } = notificationData || {}
-
+  const notificationData = metadata as FriendRequestData;
+  const { senderAvatar, senderFirstname, senderLastname, senderName, senderUid } = notificationData || {};
 
   const handleOnPressChat = () => {
     const params: LocalSearchParamsChatRoom = {
-      imageUrl: senderAvatar,
-      name: senderName,
+      imageUrl: senderAvatar ?? '',
+      name: senderName ?? '',
       receiver: serialize({
         firstname: senderFirstname,
         lastname: senderLastname,
@@ -42,41 +49,38 @@ export default function NotificationListItemsFriendAccepted(props: NotificationL
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid: senderUid,
     };
-    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
-  }
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+  };
 
   const handleNavigateToProfil = () => {
-    router.navigate(ROUTES.PROFIL.INDEX_UID(senderUid))
-  }
-
+    if (!senderUid) return;
+    router.navigate(ROUTES.PROFIL.INDEX_UID(senderUid));
+  };
 
   return (
     <Pressable onPress={handleNavigateToProfil}>
-      <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead} >
+      <NotificationsListItemsContainer notificationUid={notificationUid} isRead={isNotificationRead}>
         <Avatar
           data={{
-            firstname: senderFirstname,
+            firstname: senderFirstname ?? '',
             imageUrl: senderAvatar ? { uri: senderAvatar } : undefined,
-            lastname: senderLastname
+            lastname: senderLastname,
           }}
         />
-        <BoxGrow className='gap-0.5'>
+        <BoxGrow className="gap-0.5">
           <BoxRowCenterBetween>
-            <String
-              font="primaryBold"
-              variant="body-1"
-            >
+            <String font="primaryBold" variant="body-1">
               {t(`notifications.title_${notificationType}`)}
             </String>
             <String variant="body-xs" colorVariant="muted">
               {formatNotificationTime(createdAt, t)}
             </String>
           </BoxRowCenterBetween>
-          <BoxRow className='gap-1'>
+          <BoxRow className="gap-1">
             <BoxGrow>
               <String variant="body-sm" colorVariant="muted" numberOfLines={2} useFastText={false}>
                 <String font="primaryBold" useFastText={false}>
-                  {truncateString({ maxLength: 40, str: senderName })}{" "}
+                  {truncateString({ maxLength: 40, str: senderName ?? '' })}{' '}
                 </String>
                 {t(`notifications.body_${notificationType}`)}
               </String>
@@ -92,7 +96,7 @@ export default function NotificationListItemsFriendAccepted(props: NotificationL
             />
           </BoxRow>
         </BoxGrow>
-      </NotificationsListItemsContainer >
+      </NotificationsListItemsContainer>
     </Pressable>
-  )
+  );
 }

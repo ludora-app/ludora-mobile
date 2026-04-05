@@ -4,6 +4,7 @@ import { Image, Box, BoxRow, String, WrapperScrollView } from '@ludo/ui';
 import { formatDate } from '@/utils/time.utils';
 import { getSportImage } from '@/utils/sports.utils';
 import { useGetField } from '@/queries/get-field.query';
+import Loading from '@/components/ui/loading/loading.component';
 import FieldCard from '@/components/ui/field-card/components/field-card.component';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import FieldCardSkeleton from '@/components/ui/field-card/components/field-card-skeleton.component';
@@ -14,7 +15,11 @@ export default function CreateSessionStep4Screen() {
   const { t } = useTranslate();
   const { session } = useCreateSessionStore();
   const { endDate, fieldUid, gameMode, level, sport, startDate, visibility } = session || {};
-  const { data: fieldData, isLoading } = useGetField(fieldUid);
+  const { data: fieldData, isLoading } = useGetField(fieldUid ?? '');
+
+  if (!fieldUid || !sport) {
+    return <Loading />;
+  }
 
   const sessionImage = getSportImage(sport);
 
@@ -27,7 +32,7 @@ export default function CreateSessionStep4Screen() {
             {t('create-session-steps.step-4.session_details_title')}
           </String>
 
-          <BoxRow className="border-ring items-center gap-5 rounded-2xl border bg-white px-5 py-3">
+          <BoxRow className="items-center gap-5 rounded-2xl border border-ring bg-white px-5 py-3">
             <Box className="items-center gap-2">
               <Image source={sessionImage} className="size-8" />
               <String font="primaryBold">{t(`common.game_mode_${gameMode}`, { space: ' ' })}</String>
@@ -36,7 +41,7 @@ export default function CreateSessionStep4Screen() {
               <BoxRow>
                 <String font="primaryBold">{t('common.date')} : </String>
                 <String colorVariant="primary" font="primaryBold">
-                  {formatDate({ date: startDate, format: 'dddd DD MMMM YYYY' })}
+                  {formatDate({ date: startDate ?? '', format: 'dddd DD MMMM YYYY' })}
                 </String>
               </BoxRow>
               <BoxRow>
@@ -49,11 +54,11 @@ export default function CreateSessionStep4Screen() {
                 <String useFastText={false} font="primaryBold">
                   {t('common.hour')} :{' '}
                   <String useFastText={false} colorVariant="primary" font="primaryBold">
-                    {formatDate({ date: startDate, format: 'HH[h]mm' })}
+                    {formatDate({ date: startDate ?? '', format: 'HH[h]mm' })}
                   </String>{' '}
                   {t('common.to')}{' '}
                   <String useFastText={false} colorVariant="primary" font="primaryBold">
-                    {formatDate({ date: endDate, format: 'HH[h]mm' })}
+                    {formatDate({ date: endDate ?? '', format: 'HH[h]mm' })}
                   </String>
                 </String>
               </BoxRow>
@@ -80,7 +85,10 @@ export default function CreateSessionStep4Screen() {
           <String className="mb-3" font="primaryBold">
             {t('create-session-steps.step-4.field_chosen_title')}
           </String>
-          {isLoading ? <FieldCardSkeleton /> : <FieldCard field={fieldData} sportImage={sport} showType showSport />}
+          {isLoading && <FieldCardSkeleton />}
+          {!isLoading && fieldData && (
+            <FieldCard field={fieldData} sportImage={sport ?? undefined} showType showSport />
+          )}
         </Box>
       </Box>
     </WrapperScrollView>

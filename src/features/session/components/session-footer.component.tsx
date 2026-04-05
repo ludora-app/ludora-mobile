@@ -8,6 +8,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
 
 import dayjs from '@/lib/dayjs';
+import { serialize } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
@@ -32,7 +33,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const invalidateSessionById = useInvalidateSessionsFindOne();
   const { t } = useTranslate();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const { fieldImages, isJoined, remainingPlayers, sessionTeams, title } = session || {};
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
@@ -83,7 +84,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
       if (isSwitching) {
         await switchTeam(teamUid);
         trackEvent({ eventName: 'session_team_switched' });
-        toast({ message: t('session.toast_team_switched_success'), variant: 'success' })
+        toast({ message: t('session.toast_team_switched_success'), variant: 'success' });
         return;
       }
 
@@ -94,6 +95,12 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
         conversationUid,
         imageUrl: fieldImages?.[0]?.url,
         name: title,
+        sessionData: serialize({
+          sessionUid: sessionUidResponse,
+          sport: session.sport,
+          teamLabel: sideTeam === 'left' ? 'A' : 'B',
+          teamName: title,
+        }),
         type: ConversationCollectionResponseDataType.SESSION,
       };
       router.replace({ params, pathname: ROUTES.SESSION.JOINED_UID(sessionUidResponse || '') });
@@ -101,7 +108,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail, session_uid: sessionUid },
+        data: { error_message: errorResponse?.api_error_detail ?? 'Unknown error', session_uid: sessionUid },
         eventName: isSwitching ? 'session_team_switch_failed' : 'session_joined_failed',
       });
       invalidateSessionById(sessionUid);

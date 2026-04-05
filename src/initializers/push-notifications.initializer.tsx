@@ -1,18 +1,15 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import * as Application from 'expo-application';
 
-import { IS_ANDROID } from '@/constants/platform.constants'
-import { useAnalytics } from "@/hooks/analytics-trackers.hook";
-import { RegisterDeviceDtoPlatform } from '@/api/generated/model'
-import { useRegisterDevice } from "@/queries/register-device.query";
-import { usePushNotifications } from "@/hooks/push-notifications.hook";
+import { IS_ANDROID } from '@/constants/platform.constants';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { RegisterDeviceDtoPlatform } from '@/api/generated/model';
+import { useRegisterDevice } from '@/queries/register-device.query';
+import { usePushNotifications } from '@/hooks/push-notifications.hook';
 import { pushNotificationService } from '@/services/push-notification.service';
-import {
-  getNotificationData,
-  resolveNotificationRoute,
-} from '@/utils/push-notification-navigation.utils';
+import { getNotificationData, resolveNotificationRoute } from '@/utils/push-notification-navigation.utils';
 
 export default function PushNotificationsInitializer() {
   const { trackError } = useAnalytics();
@@ -47,10 +44,10 @@ export default function PushNotificationsInitializer() {
       try {
         const deviceId = await getDeviceId();
         await registerDevice({
-          appVersion: Application.nativeApplicationVersion,
-          deviceId,
+          appVersion: Application.nativeApplicationVersion || '',
+          deviceId: deviceId || '',
           fcmToken,
-          osVersion: Device.osVersion,
+          osVersion: Device.osVersion || '',
           platform: IS_ANDROID ? RegisterDeviceDtoPlatform.ANDROID : RegisterDeviceDtoPlatform.IOS,
         });
       } catch (err) {

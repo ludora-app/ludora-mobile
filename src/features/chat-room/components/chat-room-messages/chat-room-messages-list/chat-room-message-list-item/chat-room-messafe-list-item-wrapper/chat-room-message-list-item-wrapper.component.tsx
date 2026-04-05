@@ -1,6 +1,6 @@
 import { cn } from '@chillui/ui';
 import { Box, BoxRow } from '@ludo/ui';
-import { PropsWithChildren } from 'react';
+import { memo, PropsWithChildren, useCallback } from 'react';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { useChatRoomStore } from '@/features/chat-room/context/chat-room-store-context';
@@ -20,7 +20,7 @@ type ChatRoomMessageListItemWrapperProps = {
   messageData: OptimisticMessage | MessageCollectionItemDto;
 };
 
-export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {
+function ChatRoomMessageListItemWrapper(props: PropsWithChildren<ChatRoomMessageListItemWrapperProps>) {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const { children, isChatRoomGroup, messageData } = props;
   const { globalStatus: messageGlobalStatus, isSender: isMessageFromMe, uid: messageUid } = messageData || {};
@@ -29,22 +29,22 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
 
   const isMessageDeleted = messageGlobalStatus === 'DELETED';
 
-  const handleBubbleAnchorMeasured = (rect: MessageActionsAnchorRect) => {
-    if (!chatRoomId || !messageUid || isMessageDeleted) {
-      return;
-    }
-    setMessageActionsAnchor(rect);
-  };
+  const handleBubbleAnchorMeasured = useCallback(
+    (rect: MessageActionsAnchorRect) => {
+      if (!chatRoomId || !messageUid || isMessageDeleted) {
+        return;
+      }
+      setMessageActionsAnchor(rect);
+    },
+    [chatRoomId, messageUid, isMessageDeleted, setMessageActionsAnchor],
+  );
 
   return (
     <Box
-      className={cn(
-        {
-          'items-end': isMessageFromMe,
-          'items-start': !isMessageFromMe,
-        },
-        'mb-3',
-      )}
+      className={cn({
+        'items-end': isMessageFromMe,
+        'items-start': !isMessageFromMe,
+      })}
     >
       <Box className="max-w-[90%]">
         <BoxRow
@@ -69,3 +69,5 @@ export default function ChatRoomMessageListItemWrapper(props: PropsWithChildren<
     </Box>
   );
 }
+
+export default memo(ChatRoomMessageListItemWrapper);

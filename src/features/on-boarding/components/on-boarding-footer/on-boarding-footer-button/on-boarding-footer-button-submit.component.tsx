@@ -1,35 +1,32 @@
-import { Button } from '@ludo/ui'
-import { useRouter } from 'expo-router'
-import { useTranslate } from '@tolgee/react'
+import { Button } from '@ludo/ui';
+import { useRouter } from 'expo-router';
+import { useTranslate } from '@tolgee/react';
 
-import { ErrorResponse } from '@/api/orval.instance'
-import { useAnalytics } from '@/hooks/analytics-trackers.hook'
-import { useUpdateUserMe } from '@/queries/update-user-me.query'
-import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants'
-import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store'
+import { ErrorResponse } from '@/api/orval.instance';
+import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { useUpdateUserMe } from '@/queries/update-user-me.query';
+import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
+import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store';
 
-import { useOnBoardingStore } from '../../../stores/on-boarding.store'
-import { useCreateSportPreference } from '../../../queries/create-sport-preference.query'
-
+import { useOnBoardingStore } from '../../../stores/on-boarding.store';
+import { useCreateSportPreference } from '../../../queries/create-sport-preference.query';
 
 export default function OnBoardingFooterButtonSubmit() {
-  const router = useRouter()
-  const { t } = useTranslate()
-  const { trackError, trackEvent } = useAnalytics()
-  const sportPreferences = useOnBoardingStore(state => state.sportPreferences)
+  const router = useRouter();
+  const { t } = useTranslate();
+  const { trackError, trackEvent } = useAnalytics();
+  const sportPreferences = useOnBoardingStore(state => state.sportPreferences);
   const profilePicture = useOnBoardingStore(state => state.profilePicture);
-  const clearAll = useOnBoardingStore(state => state.clearAll)
-  const setOnBoardingStatus = useOnBoardingStatusStore(state => state.setOnBoardingStatus)
+  const clearAll = useOnBoardingStore(state => state.clearAll);
+  const setOnBoardingStatus = useOnBoardingStatusStore(state => state.setOnBoardingStatus);
 
-  const { isPending: isCreatingSportPreference, mutateAsync: createSportPreference } = useCreateSportPreference()
-  const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe()
-
-
+  const { isPending: isCreatingSportPreference, mutateAsync: createSportPreference } = useCreateSportPreference();
+  const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
 
   const handleSubmit = async () => {
     try {
       if (sportPreferences && sportPreferences.length > 0) {
-        await createSportPreference({ sportPreferences })
+        await createSportPreference({ sportPreferences });
       }
       if (profilePicture) {
         const file = {
@@ -37,9 +34,9 @@ export default function OnBoardingFooterButtonSubmit() {
           type: profilePicture.mimeType ?? 'image/jpeg',
           uri: profilePicture.uri,
         } as unknown as Blob;
-        await updateUserMe({ file, onBoardingStatus: "COMPLETE" })
+        await updateUserMe({ file, onBoardingStatus: 'COMPLETE' });
       } else {
-        await updateUserMe({ onBoardingStatus: "COMPLETE" })
+        await updateUserMe({ onBoardingStatus: 'COMPLETE' });
       }
       trackEvent({
         data: {
@@ -47,21 +44,19 @@ export default function OnBoardingFooterButtonSubmit() {
           has_sport_preferences: !!sportPreferences && sportPreferences.length > 0,
         },
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED,
-      })
-      setOnBoardingStatus("COMPLETE")
-      clearAll()
-      router.replace('/')
+      });
+      setOnBoardingStatus('COMPLETE');
+      clearAll();
+      router.replace('/');
     } catch (error) {
-      const errorResponse = error as ErrorResponse
+      const errorResponse = error as ErrorResponse;
       trackEvent({
-        data: { error_message: errorResponse.api_error_detail },
+        data: { error_message: errorResponse?.api_error_detail ?? 'Unknown error' },
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_FAILED,
-      })
-      trackError({ error })
+      });
+      trackError({ error });
     }
-  }
-  const isPending = isCreatingSportPreference || isUpdatingUserMe
-  return (
-    <Button title={t('common.finish')} onPress={handleSubmit} colorVariant="primary" isLoading={isPending} />
-  )
+  };
+  const isPending = isCreatingSportPreference || isUpdatingUserMe;
+  return <Button title={t('common.finish')} onPress={handleSubmit} colorVariant="primary" isLoading={isPending} />;
 }

@@ -83,7 +83,7 @@ export default function ProfilEditScreen() {
       labelKey: 'profil.profil-edit.email_info_title',
       route: provider === "LUDORA" ? ROUTES.PROFIL.EDIT_EMAIL : undefined,
       show: true,
-      value: email
+      value: email ?? ''
     },
     {
       icon: "stylus-pen-edit-regular",

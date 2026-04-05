@@ -15,11 +15,21 @@ export const addOptimisticMessageToQueue = async (
 ) => {
   if (!content) return;
 
+  const now = new Date();
+  let createdAt = now.toISOString();
+
+  if (ctx.lastMessageCreatedAt) {
+    const lastTime = new Date(ctx.lastMessageCreatedAt).getTime();
+    if (now.getTime() <= lastTime) {
+      createdAt = new Date(lastTime + 1).toISOString();
+    }
+  }
+
   const messageUid = `temp-${new Date().getTime()}`;
   const newMessage: OptimisticMessage = {
     content,
     conversationId: ctx.chatRoomId,
-    createdAt: new Date().toISOString(),
+    createdAt,
     globalStatus: MessageCollectionItemDtoGlobalStatus.SENT,
     hasAnyRead: false,
     hasEveryoneRead: false,
@@ -45,7 +55,7 @@ export const addOptimisticMessageToQueue = async (
       ctx.chatRoomId,
       {
         content,
-        createdAt: newMessage.createdAt,
+        createdAt,
         globalStatus: MessageDtoGlobalStatus.SENT,
         isSender: true,
         type,
@@ -80,7 +90,7 @@ export const addOptimisticMessageToQueue = async (
         ...firstPage,
         data: {
           ...firstPage.data,
-          items: [...firstPage.data.items, newMessage],
+          items: [newMessage, ...firstPage.data.items],
           totalCount: firstPage.data.totalCount + 1,
         },
       };

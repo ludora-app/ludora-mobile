@@ -195,7 +195,7 @@ function Calendar(props: CalendarProps) {
         content: {
           color: isPressed ? CALENDAR_CONFIG.ACTIVE_TEXT_COLOR : CALENDAR_CONFIG.TODAY_COLOR,
           fontWeight: 'bold',
-          marginTop: IS_ANDROID && -1,
+          marginTop: IS_ANDROID ? -1 : undefined,
         },
       }),
     }),
@@ -247,7 +247,7 @@ function Calendar(props: CalendarProps) {
                 <FlashCalendar.Item.Day
                   metadata={day}
                   height={CALENDAR_CONFIG.DAY_HEIGHT}
-                  onPress={day.state === 'disabled' ? undefined : handleDayPress}
+                  onPress={handleDayPress}
                   theme={dayTheme}
                 >
                   {day.displayLabel}

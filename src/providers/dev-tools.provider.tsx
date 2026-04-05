@@ -16,7 +16,6 @@ export default function DevToolsProvider() {
     return null;
   }
 
-
   const content = (
     <FloatingDevTools
       disableHints
@@ -25,7 +24,7 @@ export default function DevToolsProvider() {
       defaultFloatingTools={['query']}
       apps={[
         {
-          component: undefined,
+          component: () => null,
           icon: <Image source={penTool} className="size-5" />,
           id: 'dev-tools',
           launchMode: 'toggle-only',
@@ -33,7 +32,7 @@ export default function DevToolsProvider() {
           onPress: () => router.navigate(ROUTES.DEV_TOOLS.INDEX),
         },
         {
-          component: undefined,
+          component: () => null,
           icon: <Image source={openBook} className="size-5" />,
           id: 'storybook',
           launchMode: 'toggle-only',

@@ -49,25 +49,32 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
       imageUrl: imageUrl || '',
       name: `${firstname} ${lastname}`,
       receiver: serialize({
-        firstname,
+        firstname: firstname ?? '',
         lastname,
         userUid: creatorUserUid,
       }),
       type: FindOneConversationResponseDataType.PRIVATE,
-      userUid: creatorUserUid
+      userUid: creatorUserUid,
     };
     router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
   };
 
   const handleCardPress = () => {
-    router.navigate(ROUTES.PROFIL.INDEX_UID(creatorUserUid));
+    router.navigate(ROUTES.PROFIL.INDEX_UID(creatorUserUid ?? ''));
   };
 
   return (
     <TouchableOpacity onPress={handleCardPress} disabled={isCreatorMe}>
       <SessionSectionWrapperItem className="flex-row items-center justify-between">
         <BoxRowGrow className="items-center gap-2">
-          <SessionTeamsCardAvatar data={{ ...creator, imageUrl: imageUrl ? { uri: imageUrl } : undefined }} sideTeam={sideTeam} />
+          <SessionTeamsCardAvatar
+            data={{
+              ...creator,
+              firstname: creator?.firstname ?? '',
+              imageUrl: imageUrl ? { uri: imageUrl } : undefined,
+            }}
+            sideTeam={sideTeam}
+          />
           <BoxGrow>
             <String font="primaryBold" truncate>
               {firstname}
@@ -75,14 +82,16 @@ export default function SessionSectionCreatorCard(props: SessionSectionCreatorCa
             <String variant="body-sm">{t('session.creator-section.sessions_count', { count: sessionsCount })}</String>
           </BoxGrow>
         </BoxRowGrow>
-        {!isCreatorMe && <IconButton
-          iconName="chatbot-regular"
-          variant="outlined"
-          iconColor={handleIconColor}
-          colorVariant={handleColorVariant}
-          rounded="circle"
-          onPress={handleIconPress}
-        />}
+        {!isCreatorMe && (
+          <IconButton
+            iconName="chatbot-regular"
+            variant="outlined"
+            iconColor={handleIconColor}
+            colorVariant={handleColorVariant}
+            rounded="circle"
+            onPress={handleIconPress}
+          />
+        )}
       </SessionSectionWrapperItem>
     </TouchableOpacity>
   );

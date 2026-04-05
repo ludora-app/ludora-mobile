@@ -1,6 +1,6 @@
-import { cn } from '@chillui/ui';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Avatar, AvatarProps } from '@ludo/ui';
+import { cn, type AvatarContentProps } from '@chillui/ui';
 
 import AvatarMe from '@/components/ui/me/avatarMe/avatar-me.component';
 
@@ -19,25 +19,21 @@ export default function SessionTeamsCardAvatar(props: SessionTeamsCardAvatarProp
     return sideTeam === 'left' ? 'border-primary' : 'border-secondary';
   }, [sideTeam]);
 
-  const handleColorVariant = useMemo(() => {
+  const handleColorVariant = useMemo((): AvatarContentProps['colorVariant'] => {
     if (!sideTeam) {
       return 'muted';
     }
     return sideTeam === 'left' ? 'primary' : 'secondary';
   }, [sideTeam]);
 
-  return me ? (
-    <AvatarMe
-      {...rest}
-      className={cn(handleBorderColor, className)}
-      contentProps={{ colorVariant: handleColorVariant }}
-    />
-  ) : (
-    <Avatar
-      data={data}
-      {...rest}
-      className={cn(handleBorderColor, className)}
-      contentProps={{ colorVariant: handleColorVariant }}
-    />
-  );
+  const sharedClassName = cn(handleBorderColor, className);
+  const sharedContentProps: Partial<AvatarContentProps> = { colorVariant: handleColorVariant };
+
+  if (me) {
+    return <AvatarMe {...rest} className={sharedClassName} contentProps={sharedContentProps} />;
+  }
+  if (data) {
+    return <Avatar data={data} {...rest} className={sharedClassName} contentProps={sharedContentProps} />;
+  }
+  return null;
 }

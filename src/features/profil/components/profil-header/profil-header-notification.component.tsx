@@ -11,17 +11,17 @@ export default function ProfilHeaderNotification() {
   const router = useRouter()
   const { data: notificationsUnreadCount } = useNotificationsUnreadCount()
 
-  const { unreadCount } = notificationsUnreadCount || {};
+  const unreadCount = notificationsUnreadCount?.unreadCount
 
-  const hasNotification = unreadCount > 0
+  const hasNotification = (unreadCount ?? 0) > 0
 
   const handlePress = () => {
     router.navigate(ROUTES.NOTIFICATIONS.INDEX)
   }
 
   const handleNotificationsCount = () => {
-    const count = unreadCount?.toString()
-    if (unreadCount > MAX_UNREAD_COUNT) {
+    const count = (unreadCount ?? 0).toString()
+    if ((unreadCount ?? 0) > MAX_UNREAD_COUNT) {
       return '99'
     }
     return count

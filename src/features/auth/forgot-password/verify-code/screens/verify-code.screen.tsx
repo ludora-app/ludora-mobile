@@ -58,7 +58,7 @@ export default function VerifyCodeScreen() {
   const onSubmit = async (data: VerifyCodeFormData) => {
     const code = Object.values(data).join('');
     try {
-      const response = await verifyCode({ data: { code, email: email?.toString() ?? '' } });
+      const response = await verifyCode({ code, email: email?.toString() });
       trackEvent({
         eventName: 'reset_password_verify_code_success',
       });
@@ -68,7 +68,7 @@ export default function VerifyCodeScreen() {
       const errorResponse = error as ErrorResponse;
       trackEvent({
         data: {
-          error_message: errorResponse.api_error_detail,
+          error_message: errorResponse.api_error_detail ?? 'unknow error',
         },
         eventName: 'reset_password_verify_code_failed',
       });

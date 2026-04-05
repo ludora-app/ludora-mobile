@@ -12,8 +12,8 @@ export const useRegister = () => {
   const mutateAsync = async (data: RegisterB2CWithFileDto) => mutation.mutateAsync({ data });
 
   return {
+    ...mutation,
     mutate,
     mutateAsync,
-    ...mutation,
   };
 };

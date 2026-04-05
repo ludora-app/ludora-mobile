@@ -3,9 +3,9 @@ import { create } from 'zustand';
 interface SessionTeamStore {
   reset: () => void;
   teamUid: string | undefined;
-  setTeamUid: (teamUid: string) => void;
   sideTeam: 'left' | 'right' | undefined;
-  setSideTeam: (sideTeam: 'left' | 'right') => void;
+  setTeamUid: (teamUid: string | undefined) => void;
+  setSideTeam: (sideTeam: 'left' | 'right' | undefined) => void;
 }
 
 export const useSessionTeamStore = create<SessionTeamStore>(set => ({

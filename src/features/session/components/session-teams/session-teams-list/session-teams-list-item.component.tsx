@@ -27,15 +27,14 @@ const styles = StyleSheet.create({
   },
 });
 
-type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
-
+type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
 
 export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
-  const router = useRouter()
+  const router = useRouter();
   const { t } = useTranslate();
   const { userMeId } = useUserMe();
   const { data: sessionPlayer, teamSide } = props;
-  const { bio, firstname, imageUrl, lastname, sportLevel, userUid } = sessionPlayer || {};
+  const { firstname, imageUrl, lastname, sportLevel, userUid } = sessionPlayer || {};
 
   const isMe = userMeId === userUid;
 
@@ -55,11 +54,11 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
       }),
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid,
-    }
+    };
     if (IS_IOS) {
-      router.replace({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+      router.replace({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
     } else {
-      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
+      router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
     }
   };
 
@@ -79,31 +78,19 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
             contentProps={{ colorVariant }}
           />
           <BoxGrow className="gap-0.5">
-            <BoxRow className='items-center gap-2'>
+            <BoxRow className="items-center gap-2">
               <String font="primarySemiBold" truncate>
                 {firstname} {lastname}
               </String>
-              {isMe && (
-                <Chip
-                  title={t('common.me')}
-                  size="2xs"
-                  colorVariant={colorVariant}
-                  variant="outlined"
-                />
-              )}
+              {isMe && <Chip title={t('common.me')} size="2xs" colorVariant={colorVariant} variant="outlined" />}
             </BoxRow>
-            {!!bio && (
-              <String variant="body-xs" colorVariant="muted" truncate>
-                {bio}
-              </String>
-            )}
             {!!sportLevel && (
               <Box className="mt-1 items-start">
                 <Chip title={t(`common.user_level_${sportLevel}`)} size="2xs" />
               </Box>
             )}
           </BoxGrow>
-          {!isMe &&
+          {!isMe && (
             <IconButton
               iconName="chatbot-regular"
               variant="outlined"
@@ -112,7 +99,8 @@ export default function SessionTeamsListItem(props: SessionTeamsListItemProps) {
               rounded="circle"
               size="xs"
               onPress={handlePressChatIcon}
-            />}
+            />
+          )}
         </BoxRow>
       </Pressable>
     </Link>

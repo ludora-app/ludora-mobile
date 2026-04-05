@@ -97,7 +97,7 @@ export default function ProfilActionsFormsheet() {
   }
 
   return (
-    <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
+    <Box style={{ paddingBottom: IS_ANDROID ? bottom : undefined }}>
       <ProfilHeaderActionsReportHeader
         view={view}
         setView={setView}

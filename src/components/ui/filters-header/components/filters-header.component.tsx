@@ -9,10 +9,9 @@ import ROUTES, { RouteValues } from '@/constants/routes.constants';
 import { Filters } from '@/features/filters/filters/store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '@/features/filters/filters/types/filters.types';
 
-import { FiltersHeaderInputSchema } from '../schemas/filters-header-input.schema';
 import FiltersHeaderInput, { FiltersHeaderInputProps } from './filters-header-input.component';
 
-export type FiltersHeaderProps<T extends FiltersHeaderInputSchema> = FiltersHeaderInputProps<T> & {
+export type FiltersHeaderProps = FiltersHeaderInputProps & {
   numberOfFilters: number;
   goBackPath?: RouteValues;
   onFilterPress?: () => void;
@@ -21,7 +20,7 @@ export type FiltersHeaderProps<T extends FiltersHeaderInputSchema> = FiltersHead
   source?: 'filter_fields' | 'filter_sessions_all' | 'players_suggestions';
 };
 
-export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props: FiltersHeaderProps<T>) {
+export default function FiltersHeader(props: FiltersHeaderProps) {
   const {
     className,
     goBackPath = ROUTES.CREATE_SESSION.INDEX,
@@ -59,7 +58,7 @@ export default function FiltersHeader<T extends FiltersHeaderInputSchema>(props:
 
     const params: FiltersScreenParams = {
       goBackPath,
-      selectedDayCarouselDate,
+      selectedDayCarouselDate: selectedDayCarouselDate ?? '',
       source,
     };
     router.navigate({ params, pathname: ROUTES.FILTERS.FILTER });

@@ -50,6 +50,7 @@ export interface CreateMessageDto {
 export interface MessageQueueContext {
   chatRoomId: string | null;
   chatRoomUserId: string | null;
+  lastMessageCreatedAt: string | null;
   setChatRoomId: (id: string | null) => void;
   setChatRoomUserId: (id: string | null) => void;
   getQueryKey: () => readonly unknown[] | undefined;

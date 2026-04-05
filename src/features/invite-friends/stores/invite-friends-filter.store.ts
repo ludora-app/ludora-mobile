@@ -7,7 +7,7 @@ type InviteFriendsParams = StrictOmit<FriendsFindAllMyFriendsParams, 'cursor' | 
 
 interface InviteFriendsFilterStore {
   reset: () => void;
-  filter: InviteFriendsParams;
+  filter: InviteFriendsParams | null;
   setFilter: (filter: InviteFriendsParams) => void;
 }
 

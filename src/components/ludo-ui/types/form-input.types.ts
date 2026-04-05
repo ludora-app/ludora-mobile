@@ -1,6 +1,5 @@
+import { InputFieldProps } from '@chillui/ui';
 import { FieldValues, UseControllerProps } from 'react-hook-form';
-
-import { InputFieldProps } from '@/components/chill-ui-library';
 
 import { IconProps } from './icon.types';
 import { InputProps } from './input.types';

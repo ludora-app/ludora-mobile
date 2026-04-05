@@ -28,7 +28,7 @@ export default function ChatRoomMessageActionsItem(props: ChatRoomMessageActions
       style={({ pressed }) => ({ alignItems: 'flex-start', opacity: pressed ? 0.5 : 1, padding: 8, width: '100%' })}
     >
       <BoxCenter pointerEvents="none" className="flex-row items-center gap-2">
-        <Icon {...iconProps} />
+        {iconProps?.name && <Icon {...iconProps} />}
         <String {...stringProps}>{title}</String>
       </BoxCenter>
     </Pressable>

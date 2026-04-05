@@ -9,21 +9,22 @@ export default function PostHogIdentifierInitializer() {
   const posthog = usePostHog();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const { userMe } = useUserMe(isAuthenticated);
+  const { email: userEmail, firstname, uid: userId } = userMe ?? {};
 
   useEffect(() => {
-    if (isAuthenticated && userMe?.uid) {
-      if (lastIdentifiedId.current !== userMe.uid) {
-        posthog.identify(userMe.uid, {
-          email: userMe.email,
-          name: userMe.firstname,
+    if (isAuthenticated && userId && userEmail) {
+      if (lastIdentifiedId.current !== userId) {
+        posthog.identify(userId, {
+          email: userEmail,
+          name: firstname ?? '',
         });
-        lastIdentifiedId.current = userMe.uid;
+        lastIdentifiedId.current = userId;
       }
     } else if (!isAuthenticated && lastIdentifiedId.current !== null) {
       posthog.reset();
       lastIdentifiedId.current = null;
     }
-  }, [isAuthenticated, userMe, posthog]);
+  }, [isAuthenticated, posthog, userId, userEmail, firstname]);
 
   return null;
 }

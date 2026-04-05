@@ -41,7 +41,8 @@ export default function FilterFooter() {
 
   const handleApply = () => {
     const backPatchValue = goBackPath ?? mmkvStorage.getString(mmkvStorageKey.goBackPath);
-    const sourceValue = source ?? (mmkvStorage.getString(mmkvStorageKey.source) as FiltersScreenParams['source']);
+    const sourceValue =
+      source ?? (mmkvStorage.getString(mmkvStorageKey.source) as FiltersScreenParams['source']) ?? 'filter_fields';
     trackEvent({ data: { filters, numberOfFilters }, eventName: `${sourceValue}_applied` });
     const params: FiltersReturnParams = {
       selectedFilters: serialize(filters),

@@ -32,7 +32,7 @@ export default function ChatRoomUserProfileReportConfirmDialog(props: ChatRoomUs
     if (!selectedReason) return '';
     if (selectedReason === CreateReportDtoReason.OTHER) {
       return t('profil.report_user_confirm_content_other', {
-        description: truncateString({ maxLength: 200, str: reportDescription }),
+        description: truncateString({ maxLength: 200, str: reportDescription ?? '' }),
         name: `${firstname} ${lastname}`,
         reason: t(`profil.report_reason_${selectedReason}`),
       });

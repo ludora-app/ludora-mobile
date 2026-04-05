@@ -78,9 +78,7 @@ export default function HomeSessionList() {
       keyboardShouldPersistTaps="handled"
       SkeletonComponent={SessionCardSkeleton}
       ListHeaderComponent={
-        IncommingSessionMe && (
-          <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />
-        )
+        <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />
       }
       hasListStickyComponentTopSafeArea
       ListTopComponent={<HomeSessionListHeader />}

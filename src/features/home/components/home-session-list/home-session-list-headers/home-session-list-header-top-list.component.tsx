@@ -12,7 +12,7 @@ import { SessionCollectionItemDto } from '@/api/generated/model';
 import HeaderScreen from '@/components/ui/header/components/header-screen.component';
 
 type HomeSessionListHeaderTopListProps = {
-  IncommingSessionMe: SessionCollectionItemDto;
+  IncommingSessionMe?: SessionCollectionItemDto | null;
   hasNewSession: boolean;
 };
 
@@ -64,7 +64,7 @@ function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) 
       leftContentClassName={!hasNewSession ? leftContentClassName : undefined}
       className={cn('h-44 items-end', { 'h-52': hasNewSession })}
     >
-      {hasNewSession && <SessionCard item={IncommingSessionMe} isNextSession />}
+      {hasNewSession && IncommingSessionMe && <SessionCard item={IncommingSessionMe} isNextSession />}
       {!hasNewSession && (
         <Button
           title={t('home.header.button_create_match')}

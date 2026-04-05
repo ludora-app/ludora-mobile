@@ -16,7 +16,7 @@ export default function ChatRoomMessageActionsMenu() {
   const pressedMessageData = useChatRoomMessageActionsMenuStore(state => state.pressedMessageData);
   const { globalStatus, isSender, sender } = pressedMessageData || {};
   const { firstname } = sender || {};
-  const { type } = useChatRoomSessionTeam();
+  const { isTeamA, type } = useChatRoomSessionTeam();
   const shouldShowSenderName = !isSender && type === 'SESSION';
 
   const setAnchor = useChatRoomMessageActionsMenuStore(state => state.setAnchor);
@@ -34,6 +34,8 @@ export default function ChatRoomMessageActionsMenu() {
           className={chatRoomMessageListItemWrapperTv({
             isMessageDeleted: globalStatus === 'DELETED',
             isMessageFromMe: isSender,
+            isSessionChat: type === 'SESSION',
+            isTeamLabelA: isTeamA,
           })}
           style={{
             height: anchor.height,

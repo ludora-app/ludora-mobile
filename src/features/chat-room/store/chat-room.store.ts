@@ -5,9 +5,11 @@ import { FindOneConversationResponseData, SessionData } from '@/api/generated/mo
 export interface ChatRoomStoreState {
   chatRoomId: string | null;
   chatRoomUserId: string | null;
+  lastMessageCreatedAt: string | null;
   setChatRoomId: (chatRoomId: string | null) => void;
   setChatRoomUserId: (chatRoomUserId: string | null) => void;
   chatRoomInfo: Partial<FindOneConversationResponseData> | null;
+  setLastMessageCreatedAt: (lastMessageCreatedAt: string | null) => void;
   setChatRoomInfo: (chatRoom: Partial<FindOneConversationResponseData> | null) => void;
   addChatRoomInfo: (
     chatRoomInfo: Partial<Omit<FindOneConversationResponseData, 'sessionData'>> & {
@@ -32,7 +34,9 @@ export const createChatRoomStore = () =>
     chatRoomId: null,
     chatRoomInfo: null,
     chatRoomUserId: null,
+    lastMessageCreatedAt: null,
     setChatRoomId: chatRoomId => set({ chatRoomId }),
     setChatRoomInfo: chatRoomInfo => set({ chatRoomInfo }),
     setChatRoomUserId: chatRoomUserId => set({ chatRoomUserId }),
+    setLastMessageCreatedAt: lastMessageCreatedAt => set({ lastMessageCreatedAt }),
   }));

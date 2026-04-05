@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Icon, BoxRow } from '@ludo/ui';
 import { LoadingIndicator } from '@chillui/ui';
 
@@ -10,7 +11,7 @@ interface ChatRoomMessageListItemWrapperIndicatorsProps {
   messageData: OptimisticMessage | MessageCollectionItemDto;
 }
 
-export default function ChatRoomMessageListItemWrapperIndicators({
+function ChatRoomMessageListItemWrapperIndicators({
   messageData,
 }: ChatRoomMessageListItemWrapperIndicatorsProps) {
   const {
@@ -45,3 +46,5 @@ export default function ChatRoomMessageListItemWrapperIndicators({
     );
   }
 }
+
+export default memo(ChatRoomMessageListItemWrapperIndicators);

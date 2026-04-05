@@ -37,7 +37,7 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
   const handleLeaveMatch = async () => {
     try {
       await leaveSession();
-      router.dismissAll();
+      router.dismissTo(ROUTES.TABS.MESSAGES);
       trackEvent({ data: { session_uid: sessionUid }, eventName: ANALYTICS_EVENTS.SESSION.SESSION_LEFT });
     } catch (error) {
       const errorResponse = error as ErrorResponse;

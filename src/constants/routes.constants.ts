@@ -111,6 +111,7 @@ const ROUTES = {
   },
   TABS: {
     INDEX: '/(tabs)',
+    MESSAGES: '/(tabs)/messages',
     PLAYERS: '/(tabs)/players',
   },
 } as const;

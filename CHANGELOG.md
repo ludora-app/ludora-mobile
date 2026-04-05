@@ -1,3 +1,9 @@
+## [1.6.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.1...v1.6.0-alpha.2) (2026-04-05)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-621:** remove bio field from session team list item component ([#135](https://github.com/ludora-app/ludora-mobile/issues/135)) ([af45918](https://github.com/ludora-app/ludora-mobile/commit/af45918608267a6a1de8da85163563b0d04be587))
+
 ## [1.6.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.3...v1.6.0-alpha.1) (2026-04-05)
 
 ### ✨ Features

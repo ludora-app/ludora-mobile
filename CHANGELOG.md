@@ -1,3 +1,9 @@
+## [1.6.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.3...v1.6.0-alpha.1) (2026-04-05)
+
+### ✨ Features
+
+* **SCRUM-617:** enhance chat room message handling and UI components ([#133](https://github.com/ludora-app/ludora-mobile/issues/133)) ([452f38b](https://github.com/ludora-app/ludora-mobile/commit/452f38bedefb7984f79ebd1c38e8b2f4a89f1d51))
+
 ## [1.5.2-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.5.2-alpha.2...v1.5.2-alpha.3) (2026-04-04)
 
 ### Bug Fixes

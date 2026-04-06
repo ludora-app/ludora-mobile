@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useToast } from '@chillui/ui';
 import { ScrollView } from 'react-native';
 import { Button, String } from '@ludo/ui';
@@ -9,6 +9,7 @@ import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries'
 
 import dayjs from '@/lib/dayjs';
 import { serialize } from '@/utils/json.utils';
+import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
@@ -50,7 +51,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
 
   const isFinished = useMemo(() => {
     if (!session?.endDate) return false;
-    return dayjs().isAfter(dayjs(session.endDate));
+    return isAfterNow(session.endDate);
   }, [session?.endDate]);
 
   const isStarted = useMemo(() => {

@@ -27,7 +27,6 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
   const router = useRouter();
   const { toast } = useToast();
   const { isPending: isLeavingSession, mutateAsync: leaveSession } = useLeaveSession(sessionUid);
-  const { isJoined } = session || {};
   const { isTeamA } = useChatRoomSessionTeam();
 
   const handleInviteFriends = () => {
@@ -65,26 +64,24 @@ export default function ChatRoomInfoSessionActions({ session, sessionUid }: Chat
         onPress={handleInviteFriends}
       />
 
-      {isJoined && (
-        <DialogConfirm
+      <DialogConfirm
+        title={t('chat-room.info_session_leave')}
+        content={t('chat-room.info_session_leave_content')}
+        showIcon
+        onConfirmPromise={handleLeaveMatch}
+        source="chat_room_info_private_leave_match"
+        confirmButtonTitleKey="common.leave"
+        centerContent
+        isLoading={isLeavingSession}
+      >
+        <Button
           title={t('chat-room.info_session_leave')}
-          content={t('chat-room.info_session_leave_content')}
-          showIcon
-          onConfirmPromise={handleLeaveMatch}
-          source="chat_room_info_private_leave_match"
-          confirmButtonTitleKey="common.leave"
-          centerContent
-          isLoading={isLeavingSession}
-        >
-          <Button
-            title={t('chat-room.info_session_leave')}
-            iconProps={{ className: 'mr-2', color: COLORS.danger, name: 'close-circle-regular', position: 'left' }}
-            colorVariant="danger"
-            variant="outlined"
-            loaderProps={{ color: COLORS.danger }}
-          />
-        </DialogConfirm>
-      )}
+          iconProps={{ className: 'mr-2', color: COLORS.danger, name: 'close-circle-regular', position: 'left' }}
+          colorVariant="danger"
+          variant="outlined"
+          loaderProps={{ color: COLORS.danger }}
+        />
+      </DialogConfirm>
     </Box>
   );
 }

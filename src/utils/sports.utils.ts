@@ -1,19 +1,19 @@
 import { basketballBall, basketPlaceHolder, footballPlaceHolder, padelPlaceHolder, tennisPlaceHolder } from 'assets';
 
 import { SPORT_IMAGES } from '@/constants/session.constants';
-import { SessionCollectionItemDtoSport } from '@/api/generated/model';
+import { CreateSportPreferenceDataSport, SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 export const getSportImage = (sport: SessionCollectionItemDtoSport) => SPORT_IMAGES[sport] ?? basketballBall;
 
 export const getSportPlaceHolder = (sport: SessionCollectionItemDtoSport) => {
   switch (sport) {
-    case 'BASKETBALL':
+    case CreateSportPreferenceDataSport.BASKETBALL:
       return basketPlaceHolder;
-    case 'FOOTBALL':
+    case CreateSportPreferenceDataSport.FOOTBALL:
       return footballPlaceHolder;
-    case 'PADDEL':
+    case CreateSportPreferenceDataSport.PADEL:
       return padelPlaceHolder;
-    case 'TENNIS':
+    case CreateSportPreferenceDataSport.TENNIS:
       return tennisPlaceHolder;
     default:
       return basketPlaceHolder;

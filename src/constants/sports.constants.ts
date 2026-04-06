@@ -20,6 +20,6 @@ export const SPORTS: SportProps[] = [
   },
   {
     id: 4,
-    name: SessionsFindAllSportsItem.PADDEL,
+    name: SessionsFindAllSportsItem.PADEL,
   },
 ];

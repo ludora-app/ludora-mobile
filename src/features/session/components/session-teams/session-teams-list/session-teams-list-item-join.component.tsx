@@ -11,11 +11,11 @@ import { useSessionTeamStore } from '@/features/session/stores/session-team.stor
 type SessionTeamsListItemJoinProps = {
   teams: SessionTeamResponseData;
   teamSide: 'left' | 'right';
-  isStarted?: boolean;
+  isFinished?: boolean;
 };
 
 export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoinProps) {
-  const { isStarted, teams, teamSide } = props;
+  const { isFinished, teams, teamSide } = props;
   const { t } = useTranslate();
   const { isComplete, isJoined, teamUid } = teams || {};
   const { trackEvent } = useAnalytics();
@@ -28,7 +28,7 @@ export default function SessionTeamsListItemJoin(props: SessionTeamsListItemJoin
 
   const isSelectedTeam = teamUid === selectedTeamUid;
 
-  if (isComplete || isJoined || isStarted) return null;
+  if (isComplete || isJoined || isFinished) return null;
 
   const handleJoinTeam = () => {
     setTeamUid(teamUid);

@@ -8,10 +8,11 @@ import { useSessionTeamStore } from '@/features/session/stores/session-team.stor
 type SessionTeamsListHeaderProps = {
   team: SessionTeamResponseData;
   teamSide: 'left' | 'right';
+  isFinished?: boolean;
 };
 
 export default function SessionTeamsListSectionHeader(props: SessionTeamsListHeaderProps) {
-  const { team, teamSide } = props;
+  const { isFinished, team, teamSide } = props;
   const { t } = useTranslate();
   const { isComplete, maxPlayersPerTeam, numberOfPlayers, remainingPlayers, teamName, teamUid } = team || {};
   const selectedTeamUid = useSessionTeamStore(state => state.teamUid);
@@ -67,7 +68,7 @@ export default function SessionTeamsListSectionHeader(props: SessionTeamsListHea
           </String>
         </BoxGrow>
       </BoxRowCenter>
-      <Chip title={handleChipTitle()} size="2xs" colorVariant={chipColorVariant} />
+      {!isFinished && <Chip title={handleChipTitle()} size="2xs" colorVariant={chipColorVariant} />}
     </BoxRowCenterBetween>
   );
 }

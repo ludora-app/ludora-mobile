@@ -9,11 +9,11 @@ type SessionTeamsListItemProps = {
   item: SessionTeamResponseData;
   hasUserJoinedATeam: boolean;
   teamSide: 'left' | 'right';
-  isStarted?: boolean;
+  isFinished?: boolean;
 };
 
 export default function SessionTeamsListSection(props: SessionTeamsListItemProps) {
-  const { hasUserJoinedATeam, isStarted, item: sessionTeam, teamSide } = props;
+  const { hasUserJoinedATeam, isFinished, item: sessionTeam, teamSide } = props;
 
   const { sessionPlayers } = sessionTeam || {};
 
@@ -21,7 +21,7 @@ export default function SessionTeamsListSection(props: SessionTeamsListItemProps
 
   return (
     <>
-      <SessionTeamsListSectionHeader team={sessionTeam} teamSide={teamSide} />
+      <SessionTeamsListSectionHeader team={sessionTeam} teamSide={teamSide} isFinished={isFinished} />
       {sessionPlayers?.map(player => (
         <SessionTeamsListItem key={player.userUid} data={player} teamSide={teamSide} />
       ))}
@@ -33,7 +33,9 @@ export default function SessionTeamsListSection(props: SessionTeamsListItemProps
           hasRandomTitle
         />
       )}
-      {!hasUserJoinedATeam && <SessionTeamsListItemJoin teams={sessionTeam} teamSide={teamSide} isStarted={isStarted} />}
+      {!hasUserJoinedATeam && (
+        <SessionTeamsListItemJoin teams={sessionTeam} teamSide={teamSide} isFinished={isFinished} />
+      )}
     </>
   );
 }

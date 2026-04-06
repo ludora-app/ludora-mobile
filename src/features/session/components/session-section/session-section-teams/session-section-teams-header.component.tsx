@@ -6,19 +6,29 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
+import { FindOneSessionResponseData } from '@/api/generated/model';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { SessionScreenLocalSearchParams } from '@/features/session/types/session.types';
 
 import SessionSectionHeader from '../session-section-header.component';
 
-export default function SessionSectionTeamsHeader() {
+type SessionSectionTeamsHeaderProps = {
+  session: FindOneSessionResponseData;
+};
+
+export default function SessionSectionTeamsHeader({ session }: SessionSectionTeamsHeaderProps) {
   const { t } = useTranslate();
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const router = useRouter();
   const sideTeam = useSessionTeamStore(state => state.sideTeam);
 
   const handlePress = () => {
-    router.navigate(ROUTES.SESSION.TEAM_UID(sessionUid));
+    router.navigate({
+      params: {
+        endDate: session.endDate,
+      },
+      pathname: ROUTES.SESSION.TEAM_UID(sessionUid),
+    });
   };
 
   const handleIconColor = useMemo(() => {

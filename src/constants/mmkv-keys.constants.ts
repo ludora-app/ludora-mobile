@@ -9,6 +9,8 @@ export const MMKV_STORAGE_KEY = {
     SOURCE: 'filters_screen_source',
   },
   KEYBOARD_STORAGE: 'keyboard-storage',
+  /** Zustand persist: list perf diagnostics toggles (Dev Tools) */
+  LIST_PERF_DEBUG: 'list-perf-debug-storage',
   ON_BOARDING_STORAGE: 'on-boarding-storage',
   UPDATE_REFUSAL_TIMESTAMP: 'update_refusal_timestamp',
 } as const;

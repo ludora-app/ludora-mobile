@@ -135,7 +135,4 @@ function SessionCard({ isNextSession = false, item: session }: SessionCardProps)
   );
 }
 
-export default memo(
-  SessionCard,
-  (prev, next) => prev.item.uid === next.item.uid && prev.isNextSession === next.isNextSession,
-);
+export default memo(SessionCard);

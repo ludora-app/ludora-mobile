@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { Avatar, BoxRow, BoxRowCenterBetween, Button, String } from '@ludo/ui'
 
@@ -12,7 +13,7 @@ interface SettingsBlockedUsersListItemProps {
   item: UserSimpleDisplayWithUidData
 }
 
-export default function SettingsBlockedUsersListItem({ item }: SettingsBlockedUsersListItemProps) {
+function SettingsBlockedUsersListItem({ item }: SettingsBlockedUsersListItemProps) {
   const { firstname, imageUrl, lastname, uid: userUid } = item || {}
   const { t } = useTranslate()
   const { trackError, trackEvent } = useAnalytics()
@@ -55,3 +56,5 @@ export default function SettingsBlockedUsersListItem({ item }: SettingsBlockedUs
     </BoxRowCenterBetween>
   )
 }
+
+export default memo(SettingsBlockedUsersListItem)

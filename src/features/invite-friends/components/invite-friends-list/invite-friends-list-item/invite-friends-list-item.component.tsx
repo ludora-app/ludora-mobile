@@ -9,6 +9,7 @@ import { MAX_FRIENDS_TO_INVITE_LIMIT } from '@/features/invite-friends/constants
 
 import { useInviteFriendsStore } from '../../../stores/invite-friends.store';
 
+// Intentionally not wrapped in memo + list comparator: selection comes from Zustand (friends.includes(item)); uid-only memo would skip re-renders when selection changes with a stable item reference.
 interface InviteFriendsListItemProps {
   item: FriendResponseData;
 }

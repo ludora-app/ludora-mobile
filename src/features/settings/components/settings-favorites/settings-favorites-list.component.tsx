@@ -12,6 +12,12 @@ const LIST_ITEM_SIZE_HEIGHT = 170
 const LIST_STICKY_COMPONENT_HEIGHT = 75
 const HEADER_HEIGHT = 58
 
+const EMPTY_RESULT_PROPS = {
+  hasRandomTitle: true,
+  randomOptions: 5,
+  title: 'common.empty_result_title',
+} as const
+
 export default function SettingsFavoritesList() {
   const { bottom } = useSafeArea()
 
@@ -29,31 +35,31 @@ export default function SettingsFavoritesList() {
     [],
   );
 
+  const listHeaderComponent = useMemo(() => <SettingsFavoritesHeader />, [])
+  const listStickyComponent = useMemo(() => <SettingsFavoritesHeaderSticky />, [])
+  const contentContainerStyle = useMemo(() => ({ paddingBottom: bottom }), [bottom])
+
   return (
     <List
       data={items}
       ItemComponent={SessionCard}
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
-      ListHeaderComponent={<SettingsFavoritesHeader />}
-      ListStickyComponent={<SettingsFavoritesHeaderSticky />}
+      ListHeaderComponent={listHeaderComponent}
+      ListStickyComponent={listStickyComponent}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
       isRefetching={isRefetching}
       refetch={refetch}
       hasRefreshControl
       contentContainerClassName="grow bg-background px-4"
-      contentContainerStyle={{ paddingBottom: bottom }}
+      contentContainerStyle={contentContainerStyle}
       hasListStickyComponentTopSafeArea
       hasHeaderTransparent
       listHeaderComponentHeight={HEADER_HEIGHT}
       getFixedItemSize={handleFixedItemsSize}
       SkeletonComponent={SessionCardSkeleton}
-      emptyResultProps={{
-        hasRandomTitle: true,
-        randomOptions: 5,
-        title: "common.empty_result_title",
-      }}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   )
 }

@@ -1,7 +1,7 @@
 import { List } from '@ludo/ui';
 import { LegendListRef } from '@legendapp/list';
 import { SharedValue } from 'react-native-reanimated';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
@@ -15,6 +15,7 @@ type ChatConversationsListProps = {
 };
 
 const ITEM_HEIGHT = 81;
+const GET_FIXED_ITEM_SIZE = () => ITEM_HEIGHT;
 
 const SCROLL_TO_TOP_THRESHOLD = ITEM_HEIGHT * 2;
 
@@ -39,6 +40,17 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
     return () => setScrollToTop(null);
   }, [scrollToTop, setScrollToTop]);
 
+  const handleScroll = useCallback(
+    (e: { nativeEvent: { contentOffset: { y: number } } }) => {
+      'worklet';
+
+      scrollYRef.value = e.nativeEvent.contentOffset.y;
+    },
+    [scrollYRef],
+  );
+
+  const contentContainerStyle = useMemo(() => ({ paddingBottom: bottomTab }), [bottomTab]);
+
   return (
     <List
       key={chatRoomsFilters.type ?? 'all'}
@@ -53,16 +65,10 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
       refetch={refetch}
       hasRefreshControl
       hasNextPage={hasNextPage}
-      onScroll={e => {
-        'worklet';
-
-        scrollYRef.value = e.nativeEvent.contentOffset.y;
-      }}
-      getFixedItemSize={() => ITEM_HEIGHT}
+      onScroll={handleScroll}
+      getFixedItemSize={GET_FIXED_ITEM_SIZE}
       contentContainerClassName="pt-2 px-4"
-      contentContainerStyle={{
-        paddingBottom: bottomTab,
-      }}
+      contentContainerStyle={contentContainerStyle}
     />
   );
 }

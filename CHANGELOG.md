@@ -1,3 +1,20 @@
+## [1.6.0-next.3](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-next.2...v1.6.0-next.3) (2026-04-06)
+
+### ✨ Features
+
+* **SCRUM-631:** introduce ComingSoon component and integrate it into create-session screen and profile badges section ([#146](https://github.com/ludora-app/ludora-mobile/issues/146)) ([c35536d](https://github.com/ludora-app/ludora-mobile/commit/c35536d65901c2f6af9ce31ca1c1599ae33335d8))
+* **SCRUM-632:** add session teams route with finish status tracking ([#145](https://github.com/ludora-app/ludora-mobile/issues/145)) ([d837354](https://github.com/ludora-app/ludora-mobile/commit/d83735416156112b256a286a8bf872d27f1dca15))
+
+### Bug Fixes
+
+* **SCRUM-629:** standardize profile header height using safe area top padding across components ([#142](https://github.com/ludora-app/ludora-mobile/issues/142)) ([9226a21](https://github.com/ludora-app/ludora-mobile/commit/9226a21475f8dcf88cfb5be0f11082e938dae7fc))
+* **SCRUM-633:** ignore additional Google sign-in error message when user data is missing ([#148](https://github.com/ludora-app/ludora-mobile/issues/148)) ([7830eda](https://github.com/ludora-app/ludora-mobile/commit/7830eda447486c9922c3b7f4da99319c7e957cab))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-625:** abstract session expiration logic to isAfterNow utility and restrict session actions to active sessions ([#144](https://github.com/ludora-app/ludora-mobile/issues/144)) ([a4d5716](https://github.com/ludora-app/ludora-mobile/commit/a4d5716cda22508566e34c8bb9bbe56556a812db))
+* **SCRUM-630:** optimize list components with memoization and improve performance diagnostics ([#143](https://github.com/ludora-app/ludora-mobile/issues/143)) ([f823fbd](https://github.com/ludora-app/ludora-mobile/commit/f823fbd1098ed4888c72c4a8e2118a19470a1704))
+
 ## [1.6.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.8...v1.6.0-alpha.9) (2026-04-06)
 
 ### Bug Fixes

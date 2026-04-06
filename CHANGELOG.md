@@ -1,3 +1,9 @@
+## [1.6.0-alpha.9](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.8...v1.6.0-alpha.9) (2026-04-06)
+
+### Bug Fixes
+
+* **SCRUM-633:** ignore additional Google sign-in error message when user data is missing ([#148](https://github.com/ludora-app/ludora-mobile/issues/148)) ([7830eda](https://github.com/ludora-app/ludora-mobile/commit/7830eda447486c9922c3b7f4da99319c7e957cab))
+
 ## [1.6.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.7...v1.6.0-alpha.8) (2026-04-06)
 
 ### ✨ Features

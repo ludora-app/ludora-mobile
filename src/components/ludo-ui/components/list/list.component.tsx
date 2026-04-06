@@ -162,12 +162,12 @@ export default function List(props: ListProps) {
     return undefined;
   }, [bottom, hasBottomSafeArea, listHeaderComponentHeight]);
 
-  const headerComponent = () => {
+  const headerComponent = useMemo(() => {
     if (hasHeaderTransparent) {
       return <Box style={{ marginTop: -(listHeaderComponentHeight || 0) }}>{renderComponent(ListHeaderComponent)}</Box>;
     }
     return renderComponent(ListHeaderComponent);
-  };
+  }, [hasHeaderTransparent, listHeaderComponentHeight, ListHeaderComponent]);
 
   const handleRefresh = useCallback(async () => {
     if (refetch) {

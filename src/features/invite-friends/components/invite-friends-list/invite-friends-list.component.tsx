@@ -10,6 +10,11 @@ import InviteFriendsListItemSkeleton from './invite-friends-list-item/invite-fri
 const LIST_STICKY_COMPONENT_HEIGHT = 66;
 const LIST_ITEM_HEIGHT = 94;
 
+const EMPTY_RESULT_PROPS = {
+  hasRandomTitle: true,
+  title: 'invite-friends.no_result_title_v',
+} as const;
+
 export default function InviteFriendsList() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetUserFriendsByFilter();
@@ -40,10 +45,7 @@ export default function InviteFriendsList() {
       SkeletonComponent={InviteFriendsListItemSkeleton}
       ListHeaderComponent={InviteFriendsHeader}
       ListStickyComponent={InviteFriendsHeaderInput}
-      emptyResultProps={{
-        hasRandomTitle: true,
-        title: 'invite-friends.no_result_title_v',
-      }}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   );
 }

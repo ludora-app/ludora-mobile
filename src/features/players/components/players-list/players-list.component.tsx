@@ -1,5 +1,5 @@
 import { useTranslate } from '@tolgee/react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, type MutableRefObject } from 'react';
 
 import { List } from '@/components/ludo-ui';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -24,18 +24,26 @@ export default function PlayersList() {
     useGetUsersSuggestionByFilter();
   const { mutateAsync: sendFriendInvitation } = useSendFriendInvitation();
 
-  const onInvite = useCallback(
-    async (userUid: string) => {
-      try {
-        await sendFriendInvitation(userUid);
-      } catch (error) {
-        trackError({ error });
-      }
-    },
-    [sendFriendInvitation, trackError],
-  );
+  const sendFriendInvitationRef = useRef(sendFriendInvitation) as MutableRefObject<typeof sendFriendInvitation>;
+  sendFriendInvitationRef.current = sendFriendInvitation;
 
-  const contextValue = useMemo(() => ({ onInvite, t }), [onInvite, t]);
+  const trackErrorRef = useRef(trackError) as MutableRefObject<typeof trackError>;
+  trackErrorRef.current = trackError;
+
+  const onInvite = useCallback(async (userUid: string) => {
+    try {
+      await sendFriendInvitationRef.current(userUid);
+    } catch (error) {
+      trackErrorRef.current({ error });
+    }
+  }, []);
+
+  const tRef = useRef(t) as MutableRefObject<typeof t>;
+  tRef.current = t;
+
+  const stableT = useCallback(((...args: unknown[]) => (tRef.current as Function)(...args)) as typeof t, []);
+
+  const contextValue = useMemo(() => ({ onInvite, t: stableT }), [onInvite, stableT]);
 
   const contentContainerStyle = useMemo(() => {
     const paddingBottom = IS_ANDROID ? bottomTab + LIST_HEADER_HEIGHT : bottomTab;

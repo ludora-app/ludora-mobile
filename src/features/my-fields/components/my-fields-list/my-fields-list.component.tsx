@@ -46,6 +46,13 @@ export default function MyFieldsList() {
     return bottom;
   }, [bottom]);
 
+  const listHeaderComponent = useMemo(
+    () => <MyFieldsHeader titleKey="my_fields.header_title" />,
+    [],
+  );
+  const listStickyComponent = useMemo(() => <MyFieldsHeaderSticky />, []);
+  const contentContainerStyle = useMemo(() => ({ paddingBottom }), [paddingBottom]);
+
   return (
     <>
       <List
@@ -53,15 +60,15 @@ export default function MyFieldsList() {
         ItemComponent={MyFieldCard}
         hasNextPage={hasNextPage}
         fetchNextPage={fetchNextPage}
-        ListHeaderComponent={<MyFieldsHeader titleKey="my_fields.header_title" />}
-        ListStickyComponent={<MyFieldsHeaderSticky />}
+        ListHeaderComponent={listHeaderComponent}
+        ListStickyComponent={listStickyComponent}
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
         isRefetching={isRefetching}
         refetch={refetch}
         hasRefreshControl
         contentContainerClassName="grow bg-background px-4 rounded-t-xl"
-        contentContainerStyle={{ paddingBottom }}
+        contentContainerStyle={contentContainerStyle}
         hasHeaderTransparent
         hasTopSafeArea
         listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}

@@ -20,6 +20,13 @@ const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
 
+const EMPTY_RESULT_PROPS = {
+  className: 'mt-4',
+  hasRandomTitle: true,
+  randomOptions: 5,
+  title: 'home.sessions_empty_result_v',
+} as const;
+
 export default function HomeSessionList() {
   const {
     fetchNextPage,
@@ -62,6 +69,14 @@ export default function HomeSessionList() {
     return bottomTab;
   }, [bottomTab, sessions.length]);
 
+  const listHeaderComponent = useMemo(
+    () => <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />,
+    [hasNewSession, IncommingSessionMe],
+  );
+
+  const listTopComponent = useMemo(() => <HomeSessionListHeader />, []);
+  const listStickyComponent = useMemo(() => <HomeSessionListHeaderSticky />, []);
+
   return (
     <List
       data={sessions}
@@ -72,27 +87,20 @@ export default function HomeSessionList() {
       isLoading={isLoading}
       hasRefreshControl
       refetch={refetch}
-      getFixedItemSize={index => fixedEstimatedItemsSize(index)}
+      getFixedItemSize={fixedEstimatedItemsSize}
       isRefetching={isRefetching}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
       SkeletonComponent={SessionCardSkeleton}
-      ListHeaderComponent={
-        <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />
-      }
+      ListHeaderComponent={listHeaderComponent}
       hasListStickyComponentTopSafeArea
-      ListTopComponent={<HomeSessionListHeader />}
-      ListStickyComponent={<HomeSessionListHeaderSticky />}
+      ListTopComponent={listTopComponent}
+      ListStickyComponent={listStickyComponent}
       hasHeaderTransparent
       listHeaderComponentHeight={hasNewSession ? LIST_HEADER_HEIGHT_WITH_SESSION : LIST_HEADER_HEIGHT}
       contentContainerClassName="bg-background rounded-t-xl px-4"
       contentContainerStyle={{ paddingBottom }}
-      emptyResultProps={{
-        className: 'mt-4',
-        hasRandomTitle: true,
-        randomOptions: 5,
-        title: 'home.sessions_empty_result_v',
-      }}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   );
 }

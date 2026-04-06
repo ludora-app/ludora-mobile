@@ -15,6 +15,12 @@ import NotificationsListHeaderSticky from './notifications-list-headers/notifica
 
 const COUNT_DOWN_TO_MARK_ALL_AS_READ = 1000;
 
+const EMPTY_RESULT_PROPS = {
+  hasRandomTitle: true,
+  randomOptions: 3,
+  title: 'notifications.empty_list_v',
+} as const;
+
 export default function NotificationsList() {
   const { bottom } = useSafeArea();
   const { trackError } = useAnalytics();
@@ -51,14 +57,18 @@ export default function NotificationsList() {
     return bottom;
   }, [bottom]);
 
+  const listHeaderComponent = useMemo(() => <NotificationListHeader />, []);
+  const listStickyComponent = useMemo(() => <NotificationsListHeaderSticky />, []);
+  const contentContainerStyle = useMemo(() => ({ paddingBottom }), [paddingBottom]);
+
   return (
     <List
       data={items}
       ItemComponent={NotificationsListItems}
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
-      ListHeaderComponent={<NotificationListHeader />}
-      ListStickyComponent={<NotificationsListHeaderSticky />}
+      ListHeaderComponent={listHeaderComponent}
+      ListStickyComponent={listStickyComponent}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
       isRefetching={isRefetching}
@@ -68,12 +78,8 @@ export default function NotificationsList() {
       contentContainerClassName="bg-background px-3 rounded-t-xl"
       hasHeaderTransparent
       listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
-      contentContainerStyle={{ paddingBottom }}
-      emptyResultProps={{
-        hasRandomTitle: true,
-        randomOptions: 3,
-        title: 'notifications.empty_list_v',
-      }}
+      contentContainerStyle={contentContainerStyle}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   );
 }

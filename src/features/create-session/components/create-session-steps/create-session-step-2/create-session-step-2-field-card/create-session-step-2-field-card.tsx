@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { FieldResponseDto } from '@/api/generated/model';
 import FieldCard from '@/components/ui/field-card/components/field-card.component';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
@@ -9,7 +11,7 @@ type CreateSessionStep2FieldCardProps = {
   item: FieldResponseDto;
 };
 
-export default function CreateSessionStep2FieldCard(props: CreateSessionStep2FieldCardProps) {
+function CreateSessionStep2FieldCard(props: CreateSessionStep2FieldCardProps) {
   const { item } = props;
   const { sport } = useCreateSessionStore(state => state.session);
 
@@ -20,3 +22,5 @@ export default function CreateSessionStep2FieldCard(props: CreateSessionStep2Fie
     </FieldCard>
   );
 }
+
+export default memo(CreateSessionStep2FieldCard);

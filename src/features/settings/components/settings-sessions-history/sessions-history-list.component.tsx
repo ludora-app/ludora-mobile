@@ -37,21 +37,25 @@ export default function SessionsHistoryList() {
     return bottom;
   }, [bottom]);
 
+  const listHeaderComponent = useMemo(() => <SessionsHistoryHeader />, []);
+  const listStickyComponent = useMemo(() => <SessionsHistoryHeaderSticky />, []);
+  const contentContainerStyle = useMemo(() => ({ paddingBottom }), [paddingBottom]);
+
   return (
     <List
       data={items}
       ItemComponent={SessionCard}
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
-      ListHeaderComponent={<SessionsHistoryHeader />}
-      ListStickyComponent={<SessionsHistoryHeaderSticky />}
+      ListHeaderComponent={listHeaderComponent}
+      ListStickyComponent={listStickyComponent}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
       isRefetching={isRefetching}
       refetch={refetch}
       hasRefreshControl
       contentContainerClassName="grow bg-background px-4 rounded-t-xl"
-      contentContainerStyle={{ paddingBottom }}
+      contentContainerStyle={contentContainerStyle}
       hasListStickyComponentTopSafeArea
       hasHeaderTransparent
       listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}

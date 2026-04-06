@@ -6,6 +6,7 @@ import { Avatar, Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
+import { useListItemRecyclingDiagnostics } from '@/hooks/list-diagnostics.hook';
 import {
   FindAllUserSportPreferenceResponseDto,
   FindAllUsersResponseDataDto,
@@ -33,6 +34,8 @@ const LEVEL_COLORS: Record<number, string> = {
 };
 
 function PlayersListItem({ item }: PlayersListItemProps) {
+  useListItemRecyclingDiagnostics(item, 'Players');
+
   const {
     bio: userBio,
     commonSports,
@@ -134,8 +137,4 @@ function PlayersListItem({ item }: PlayersListItemProps) {
   );
 }
 
-export default memo(
-  PlayersListItem,
-  (prevProps, nextProps) =>
-    prevProps.item.uid === nextProps.item.uid && prevProps.item.invitationStatus === nextProps.item.invitationStatus,
-);
+export default memo(PlayersListItem);

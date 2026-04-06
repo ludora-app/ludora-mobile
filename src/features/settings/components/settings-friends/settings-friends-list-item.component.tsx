@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { Avatar, Box, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui';
@@ -14,11 +15,12 @@ interface SettingsFriendsListItemProps {
   item: FriendResponseData;
 }
 
-export default function SettingsFriendsListItem({ item }: SettingsFriendsListItemProps) {
+function SettingsFriendsListItem({ item }: SettingsFriendsListItemProps) {
   const router = useRouter();
   const { avatarUrl, firstname, friendUid, lastname } = item;
 
   const handlePress = () => {
+    if (!friendUid) return;
     router.navigate(ROUTES.PROFIL.INDEX_UID(friendUid));
   };
 
@@ -67,3 +69,5 @@ export default function SettingsFriendsListItem({ item }: SettingsFriendsListIte
     </Pressable>
   );
 }
+
+export default memo(SettingsFriendsListItem);

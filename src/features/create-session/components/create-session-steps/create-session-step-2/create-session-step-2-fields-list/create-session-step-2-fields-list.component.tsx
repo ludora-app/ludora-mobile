@@ -22,6 +22,12 @@ const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;
 
 const DRAW_DISTANCE = 500;
 
+const EMPTY_RESULT_PROPS = {
+  hasRandomTitle: true,
+  randomOptions: 3,
+  title: 'create-session-steps.step-2.no_result_title_v',
+} as const;
+
 export default function CreateSessionStep2FieldsList() {
   const router = useRouter();
   const sport = useCreateSessionStore(state => state.session?.sport);
@@ -80,11 +86,7 @@ export default function CreateSessionStep2FieldsList() {
         ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
         onScroll={handleScroll}
         drawDistance={DRAW_DISTANCE}
-        emptyResultProps={{
-          hasRandomTitle: true,
-          randomOptions: 3,
-          title: 'create-session-steps.step-2.no_result_title_v',
-        }}
+        emptyResultProps={EMPTY_RESULT_PROPS}
       />
       <MyFieldsListFab onPress={handleAddField} animatedStyle={fabAnimatedStyle} />
     </>

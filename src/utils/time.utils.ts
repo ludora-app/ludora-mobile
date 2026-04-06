@@ -45,3 +45,7 @@ export function getDuration({
 export function formatDate({ date, format = 'DD/MM/YYYY' }: { date: string; format?: string }) {
   return dayjs(date).format(format);
 }
+
+export function isAfterNow(date: string) {
+  return dayjs().isAfter(dayjs(date));
+}

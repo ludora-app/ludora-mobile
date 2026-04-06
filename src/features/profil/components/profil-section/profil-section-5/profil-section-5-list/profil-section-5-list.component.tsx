@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import React, { ReactElement, useMemo } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 
 import { List } from '@/components/ludo-ui';
 import { cn } from '@/components/chill-ui-library';
@@ -14,8 +14,16 @@ import ProfilSection5ListItem from './profil-section-5-list-item.component';
 import profilSection5ListItemSkeletonComponent from './profil-section-5-list-item-skeleton.component';
 
 const ESTIMATED_LIST_ITEM_SIZE = 170;
+const GET_FIXED_ITEM_SIZE = () => ESTIMATED_LIST_ITEM_SIZE;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
+
+const EMPTY_RESULT_PROPS = {
+  className: 'mt-4',
+  hasRandomTitle: true,
+  randomOptions: 5,
+  title: 'home.sessions_empty_result_v',
+} as const;
 
 type Props = {
   listHeaderComponent?: ReactElement;
@@ -29,7 +37,8 @@ export default function ProfilSection5MatchesList({
   onRefresh,
 }: Props) {
   const { id: userId } = useLocalSearchParams();
-  const { bottomTab } = useSafeArea();
+  const { bottomTab, safeTop } = useSafeArea();
+  const headerHeight = safeTop + HEADER_OUTLINED_HEIGHT + 2;
   const selectedTab = useProfilStore(state => state.selectedTab);
 
   const {
@@ -58,19 +67,19 @@ export default function ProfilSection5MatchesList({
   const isLoading = userId ? isLoadingByUserId : isLoadingMe;
   const isRefetching = (userId ? isRefetchingByUserId : isRefetchingMe) || !!isRefetchingProfile;
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     await Promise.all([userId ? refetchByUserId() : refetchMe(), onRefresh?.()]);
-  };
+  }, [userId, refetchByUserId, refetchMe, onRefresh]);
 
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
       if (sessions.length === 0) {
-        return bottomTab + HEADER_OUTLINED_HEIGHT + BOTTOM_PADDING_EMPTY_LIST;
+        return bottomTab + headerHeight + BOTTOM_PADDING_EMPTY_LIST;
       }
-      return bottomTab + HEADER_OUTLINED_HEIGHT;
+      return bottomTab + headerHeight;
     }
     return bottomTab;
-  }, [bottomTab, sessions.length]);
+  }, [bottomTab, sessions.length, headerHeight]);
 
   return (
     <List
@@ -81,22 +90,16 @@ export default function ProfilSection5MatchesList({
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
-      getFixedItemSize={() => ESTIMATED_LIST_ITEM_SIZE}
+      getFixedItemSize={GET_FIXED_ITEM_SIZE}
       isRefetching={isRefetching}
       SkeletonComponent={profilSection5ListItemSkeletonComponent}
       hasRefreshControl
-      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
+      listHeaderComponentHeight={headerHeight}
       hasHeaderTransparent
-      hasTopSafeArea
       ListHeaderComponent={listHeaderComponent}
       contentContainerClassName={cn('bg-background', { 'rounded-t-xl': selectedTab === 'matches' })}
       contentContainerStyle={{ paddingBottom }}
-      emptyResultProps={{
-        className: 'mt-4',
-        hasRandomTitle: true,
-        randomOptions: 5,
-        title: 'home.sessions_empty_result_v',
-      }}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   );
 }

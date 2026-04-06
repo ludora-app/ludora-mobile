@@ -3,6 +3,7 @@ import { ImageSource } from 'expo-image';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Avatar, BoxCenter, BoxGrow, ScreenLayout, ScrollView, Separator, String, Wrapper } from '@ludo/ui';
 
+import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { getSportPlaceHolder } from '@/utils/sports.utils';
@@ -34,6 +35,13 @@ export default function ChatRoomInfoSessionScreen() {
       return getSportPlaceHolder(sessionData.sport as SessionCollectionItemDtoSport) as ImageSource;
     return undefined;
   }, [imageUrl, sessionData?.sport]);
+
+  const isFinished = useMemo(() => {
+    if (!sessionData?.endDate) return false;
+    return isAfterNow(sessionData.endDate);
+  }, [sessionData?.endDate]);
+
+  const shouldShowActions = !isFinished && sessionData?.isJoined;
 
   if (!sessionUid) {
     return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;
@@ -85,7 +93,7 @@ export default function ChatRoomInfoSessionScreen() {
             </>
           )}
 
-          {sessionData && (
+          {shouldShowActions && (
             <>
               <Separator />
               <ChatRoomInfoSessionActions sessionUid={sessionUid!} session={sessionData} />

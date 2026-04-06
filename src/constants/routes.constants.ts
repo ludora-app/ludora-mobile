@@ -97,6 +97,7 @@ const ROUTES = {
     JOINED: '/session/[id]/session-joined',
     JOINED_UID: (uid: string) => `session/${uid}/session-joined`,
     TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
+    TEAMS: '/session/[id]/session-teams',
   },
   SETTINGS: {
     BLOCKED_USERS: '/settings/blocked-users',

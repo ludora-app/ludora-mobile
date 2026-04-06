@@ -71,6 +71,10 @@ export type RootStackParamList = {
     type: string;
     sessionData: string;
   };
+  [ROUTES.SESSION.TEAMS]: {
+    id: string;
+    endDate?: string;
+  };
 
   [ROUTES.PROFIL.ACTIONS]: {
     firstname: string;

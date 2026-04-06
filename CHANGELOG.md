@@ -1,3 +1,10 @@
+## [1.6.0-next.2](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-next.1...v1.6.0-next.2) (2026-04-06)
+
+### Bug Fixes
+
+* **SCRUM-624:** update expo and related dependencies to improve compatibility ([#139](https://github.com/ludora-app/ludora-mobile/issues/139)) ([186afaa](https://github.com/ludora-app/ludora-mobile/commit/186afaa6993be1715e8842ba42cbfd1ba5baa400))
+* **SCRUM-628:** correct spelling of "PADDEL" to "PADEL" across multiple constants and components ([#140](https://github.com/ludora-app/ludora-mobile/issues/140)) ([b8b079c](https://github.com/ludora-app/ludora-mobile/commit/b8b079c63a491de5a45c8744fcf52a59fa4b6dbb))
+
 ## [1.6.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.2...v1.6.0-alpha.3) (2026-04-06)
 
 ### Bug Fixes

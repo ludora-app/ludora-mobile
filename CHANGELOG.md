@@ -1,18 +1,9 @@
-## [1.6.0-next.1](https://github.com/ludora-app/ludora-mobile/compare/v1.5.1...v1.6.0-next.1) (2026-04-05)
-
-### ✨ Features
-
-* **SCRUM-617:** enhance chat room message handling and UI components ([#133](https://github.com/ludora-app/ludora-mobile/issues/133)) ([452f38b](https://github.com/ludora-app/ludora-mobile/commit/452f38bedefb7984f79ebd1c38e8b2f4a89f1d51))
+## [1.6.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.2...v1.6.0-alpha.3) (2026-04-06)
 
 ### Bug Fixes
 
-* **SCRUM-613:** introduce HeaderOutlined component and standardize header heights across features ([#131](https://github.com/ludora-app/ludora-mobile/issues/131)) ([0284cd0](https://github.com/ludora-app/ludora-mobile/commit/0284cd0368502e8e378972fe09308c890bc60dc9))
-* **SCRUM-614:** improve error handling and type safety across various components ([#130](https://github.com/ludora-app/ludora-mobile/issues/130)) ([6958661](https://github.com/ludora-app/ludora-mobile/commit/69586619e35152f3851b84088cb5d21b12e603cc))
-* **SCRUM-619:** enhance chat room initializer logic and fix scroll down button position ([#129](https://github.com/ludora-app/ludora-mobile/issues/129)) ([a3261f2](https://github.com/ludora-app/ludora-mobile/commit/a3261f278539b4a8480fa28f6bf31475df911add))
-
-### ♻️ Code Refactoring
-
-* **SCRUM-621:** remove bio field from session team list item component ([#135](https://github.com/ludora-app/ludora-mobile/issues/135)) ([af45918](https://github.com/ludora-app/ludora-mobile/commit/af45918608267a6a1de8da85163563b0d04be587))
+* **SCRUM-624:** update expo and related dependencies to improve compatibility ([#139](https://github.com/ludora-app/ludora-mobile/issues/139)) ([186afaa](https://github.com/ludora-app/ludora-mobile/commit/186afaa6993be1715e8842ba42cbfd1ba5baa400))
+* **SCRUM-628:** correct spelling of "PADDEL" to "PADEL" across multiple constants and components ([#140](https://github.com/ludora-app/ludora-mobile/issues/140)) ([b8b079c](https://github.com/ludora-app/ludora-mobile/commit/b8b079c63a491de5a45c8744fcf52a59fa4b6dbb))
 
 ## [1.6.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.1...v1.6.0-alpha.2) (2026-04-05)
 

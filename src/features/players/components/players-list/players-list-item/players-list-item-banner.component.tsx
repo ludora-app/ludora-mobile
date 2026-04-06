@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { BoxRow, Icon, Image, String } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
@@ -10,7 +10,7 @@ type Props = {
   isSameCity?: boolean;
 };
 
-export default function PlayersListItemBanner({ commonSports, isSameCity }: Props) {
+function PlayersListItemBanner({ commonSports, isSameCity }: Props) {
   const hasCommonSports = commonSports && commonSports.length > 0;
   const hasCommonPoints = hasCommonSports || isSameCity;
 
@@ -54,3 +54,5 @@ export default function PlayersListItemBanner({ commonSports, isSameCity }: Prop
     </BoxRow>
   );
 }
+
+export default memo(PlayersListItemBanner);

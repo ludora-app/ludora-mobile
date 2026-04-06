@@ -45,7 +45,7 @@ export const GAMEMODES_BY_SPORT: Partial<Record<SessionCollectionItemDtoSport, S
     SessionCollectionItemDtoGameMode.SEVEN_V_SEVEN,
     SessionCollectionItemDtoGameMode.ELEVEN_V_ELEVEN,
   ],
-  [SessionCollectionItemDtoSport.PADDEL]: [
+  [SessionCollectionItemDtoSport.PADEL]: [
     SessionCollectionItemDtoGameMode.ONE_V_ONE,
     SessionCollectionItemDtoGameMode.TWO_V_TWO,
   ],
@@ -58,6 +58,6 @@ export const GAMEMODES_BY_SPORT: Partial<Record<SessionCollectionItemDtoSport, S
 export const SPORT_IMAGES: Partial<Record<SessionCollectionItemDtoSport, typeof basketballBall>> = {
   [SessionCollectionItemDtoSport.BASKETBALL]: basketballBall,
   [SessionCollectionItemDtoSport.FOOTBALL]: footballBall,
-  [SessionCollectionItemDtoSport.PADDEL]: paddelBall,
+  [SessionCollectionItemDtoSport.PADEL]: paddelBall,
   [SessionCollectionItemDtoSport.TENNIS]: tennisBall,
 };

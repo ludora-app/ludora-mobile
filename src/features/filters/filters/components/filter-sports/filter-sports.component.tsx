@@ -26,7 +26,7 @@ const sports: SportProps[] = [
   },
   {
     id: 4,
-    name: SessionsFindAllSportsItem.PADDEL,
+    name: SessionsFindAllSportsItem.PADEL,
   },
 ];
 export default function FilterSports() {
@@ -34,7 +34,7 @@ export default function FilterSports() {
   const { t } = useTranslate();
 
   return (
-    <Box className="border-ring gap-3 rounded-xl border bg-white p-3 py-2">
+    <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
       {/* Header Toujours Visible */}
       <BoxRowCenterBetween>
         <BoxRow className="flex-1 items-center gap-2">
@@ -47,11 +47,11 @@ export default function FilterSports() {
           <String variant="body-sm" font="primaryBold" truncate>
             {selecteSports && selecteSports.length > 0
               ? selecteSports
-                ?.map(
-                  (sport: SessionsFindAllSportsItem, index: number) =>
-                    `${t(`common.session_sport_${sport}`, { space: '' })}${index < selecteSports.length - 1 ? ', ' : ''}`,
-                )
-                .join('')
+                  ?.map(
+                    (sport: SessionsFindAllSportsItem, index: number) =>
+                      `${t(`common.session_sport_${sport}`, { space: '' })}${index < selecteSports.length - 1 ? ', ' : ''}`,
+                  )
+                  .join('')
               : '-'}
           </String>
         </Box>

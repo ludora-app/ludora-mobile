@@ -1,3 +1,9 @@
+## [1.6.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.5...v1.6.0-alpha.6) (2026-04-06)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-625:** abstract session expiration logic to isAfterNow utility and restrict session actions to active sessions ([#144](https://github.com/ludora-app/ludora-mobile/issues/144)) ([a4d5716](https://github.com/ludora-app/ludora-mobile/commit/a4d5716cda22508566e34c8bb9bbe56556a812db))
+
 ## [1.6.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.4...v1.6.0-alpha.5) (2026-04-06)
 
 ### ♻️ Code Refactoring

@@ -1,3 +1,9 @@
+## [1.6.0-alpha.5](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.4...v1.6.0-alpha.5) (2026-04-06)
+
+### ♻️ Code Refactoring
+
+* **SCRUM-630:** optimize list components with memoization and improve performance diagnostics ([#143](https://github.com/ludora-app/ludora-mobile/issues/143)) ([f823fbd](https://github.com/ludora-app/ludora-mobile/commit/f823fbd1098ed4888c72c4a8e2118a19470a1704))
+
 ## [1.6.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.3...v1.6.0-alpha.4) (2026-04-06)
 
 ### Bug Fixes

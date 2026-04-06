@@ -1,3 +1,9 @@
+## [1.6.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.6...v1.6.0-alpha.7) (2026-04-06)
+
+### ✨ Features
+
+* **SCRUM-632:** add session teams route with finish status tracking ([#145](https://github.com/ludora-app/ludora-mobile/issues/145)) ([d837354](https://github.com/ludora-app/ludora-mobile/commit/d83735416156112b256a286a8bf872d27f1dca15))
+
 ## [1.6.0-alpha.6](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.5...v1.6.0-alpha.6) (2026-04-06)
 
 ### ♻️ Code Refactoring

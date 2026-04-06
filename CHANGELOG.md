@@ -1,3 +1,9 @@
+## [1.6.0-alpha.8](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.7...v1.6.0-alpha.8) (2026-04-06)
+
+### ✨ Features
+
+* **SCRUM-631:** introduce ComingSoon component and integrate it into create-session screen and profile badges section ([#146](https://github.com/ludora-app/ludora-mobile/issues/146)) ([c35536d](https://github.com/ludora-app/ludora-mobile/commit/c35536d65901c2f6af9ce31ca1c1599ae33335d8))
+
 ## [1.6.0-alpha.7](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.6...v1.6.0-alpha.7) (2026-04-06)
 
 ### ✨ Features

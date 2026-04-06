@@ -1,5 +1,5 @@
+import { ReactElement, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import React, { ReactElement, useMemo } from 'react';
 
 import { List } from '@/components/ludo-ui';
 import { cn } from '@/components/chill-ui-library';
@@ -29,7 +29,8 @@ export default function ProfilSection5MatchesList({
   onRefresh,
 }: Props) {
   const { id: userId } = useLocalSearchParams();
-  const { bottomTab } = useSafeArea();
+  const { bottomTab, safeTop } = useSafeArea();
+  const headerHeight = safeTop + HEADER_OUTLINED_HEIGHT + 2;
   const selectedTab = useProfilStore(state => state.selectedTab);
 
   const {
@@ -65,12 +66,12 @@ export default function ProfilSection5MatchesList({
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
       if (sessions.length === 0) {
-        return bottomTab + HEADER_OUTLINED_HEIGHT + BOTTOM_PADDING_EMPTY_LIST;
+        return bottomTab + headerHeight + BOTTOM_PADDING_EMPTY_LIST;
       }
-      return bottomTab + HEADER_OUTLINED_HEIGHT;
+      return bottomTab + headerHeight;
     }
     return bottomTab;
-  }, [bottomTab, sessions.length]);
+  }, [bottomTab, sessions.length, headerHeight]);
 
   return (
     <List
@@ -85,9 +86,8 @@ export default function ProfilSection5MatchesList({
       isRefetching={isRefetching}
       SkeletonComponent={profilSection5ListItemSkeletonComponent}
       hasRefreshControl
-      listHeaderComponentHeight={HEADER_OUTLINED_HEIGHT}
+      listHeaderComponentHeight={headerHeight}
       hasHeaderTransparent
-      hasTopSafeArea
       ListHeaderComponent={listHeaderComponent}
       contentContainerClassName={cn('bg-background', { 'rounded-t-xl': selectedTab === 'matches' })}
       contentContainerStyle={{ paddingBottom }}

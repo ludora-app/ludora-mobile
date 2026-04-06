@@ -20,6 +20,7 @@ export default function ProfilHeader(props: ProfilHeaderProps) {
       fontSize={32}
       showBackButton={!isProfilMe}
       hasHorizontalPadding
+      hasTopSafeArea
       title={isProfilMe ? t('profil.me_header_title') : t('profil.user_header_title')}
       rightContent={
         <>

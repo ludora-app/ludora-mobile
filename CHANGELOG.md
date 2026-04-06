@@ -1,3 +1,9 @@
+## [1.6.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.3...v1.6.0-alpha.4) (2026-04-06)
+
+### Bug Fixes
+
+* **SCRUM-629:** standardize profile header height using safe area top padding across components ([#142](https://github.com/ludora-app/ludora-mobile/issues/142)) ([9226a21](https://github.com/ludora-app/ludora-mobile/commit/9226a21475f8dcf88cfb5be0f11082e938dae7fc))
+
 ## [1.6.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-alpha.2...v1.6.0-alpha.3) (2026-04-06)
 
 ### Bug Fixes

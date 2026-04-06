@@ -4,6 +4,7 @@ import { useTranslate } from '@tolgee/react';
 import { Box, WrapperScrollView } from '@ludo/ui';
 import { useShallow } from 'zustand/react/shallow';
 
+import { ComingSoon } from '@/components/ui/coming-soon';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
@@ -22,17 +23,18 @@ export default function CreateSessionStep1() {
 
   const resetCreateSessionStore = useCreateSessionStore(state => state.reset);
   const resetSessionFiltersStore = useCreateSessionFiltersFieldsStore(state => state.reset);
-  const { gameMode, level, sport } = useCreateSessionStore(
+  const { gameMode, isPadel, level, sport } = useCreateSessionStore(
     useShallow(state => ({
       gameMode: !!state.session?.gameMode,
+      isPadel: state.session?.sport === 'PADEL',
       level: !!state.session?.level,
       sport: !!state.session?.sport,
     })),
   );
 
-  const showPart2 = !!sport;
-  const showPart3 = !!level;
-  const showPart4 = !!gameMode;
+  const showPart2 = !!sport && !isPadel;
+  const showPart3 = !!level && !isPadel;
+  const showPart4 = !!gameMode && !isPadel;
 
   useEffect(() => {
     if (!showPart3) {
@@ -56,6 +58,7 @@ export default function CreateSessionStep1() {
         <CreateSessionTitle title={t('create-session-steps.step_1.title')} />
         <CreateSessionStep1Part1 />
       </Box>
+      {isPadel && <ComingSoon titleKey="create-session-steps.step_1.padel_coming_soon" />}
       {showPart2 && <CreateSessionStep1Part2 />}
       {showPart3 && (
         <Box

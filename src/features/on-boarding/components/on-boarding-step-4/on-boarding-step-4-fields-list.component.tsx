@@ -12,6 +12,11 @@ const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
 const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 227;
 const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;
 
+const EMPTY_RESULT_PROPS = {
+  hasRandomTitle: true,
+  title: 'create-session-steps.step-2.no_result_title_v',
+} as const;
+
 export default function OnBoardingStep4FieldsList() {
   const {
     fetchNextPage,
@@ -55,10 +60,7 @@ export default function OnBoardingStep4FieldsList() {
       // ListHeaderComponent={CreateSessionStep2FieldsListHeader}
       // ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
       bounces={false}
-      emptyResultProps={{
-        hasRandomTitle: true,
-        title: 'create-session-steps.step-2.no_result_title_v',
-      }}
+      emptyResultProps={EMPTY_RESULT_PROPS}
     />
   );
 }

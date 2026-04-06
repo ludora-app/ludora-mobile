@@ -13,6 +13,7 @@ type LoginSocialGoogleProps = {
 };
 
 const GOOGLE_ERROR_MESSAGE = "Cannot read property 'user' of null";
+const GOOGLE_ERROR_MESSAGE_2 = 'Google sign-in did not return user data';
 
 configureGoogleSignIn();
 export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
@@ -40,7 +41,7 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
         });
       }
     } catch (error) {
-      if (error.message === GOOGLE_ERROR_MESSAGE) {
+      if ((error as any).message === GOOGLE_ERROR_MESSAGE || (error as any).message === GOOGLE_ERROR_MESSAGE_2) {
         return;
       }
       const responseError = error as ErrorResponse;

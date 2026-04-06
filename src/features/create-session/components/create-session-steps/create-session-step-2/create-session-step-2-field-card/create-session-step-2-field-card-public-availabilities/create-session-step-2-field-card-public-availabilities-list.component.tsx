@@ -1,7 +1,7 @@
 import { list } from 'radash';
-import { FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
+import { FlatList, type ListRenderItemInfo } from 'react-native';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
 import dayjs from '@/lib/dayjs';
@@ -60,6 +60,8 @@ const getNextSlots = (startDate: dayjs.Dayjs | null, count: number, selectedDate
 type SkeletonItem = { type: 'skeleton'; uid: string };
 type ListItem = TimeSlot | SkeletonItem;
 
+const isSkeletonListItem = (item: ListItem): item is SkeletonItem => 'type' in item && item.type === 'skeleton';
+
 const SKELETON_COUNT = 3;
 const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
   type: 'skeleton',
@@ -78,9 +80,9 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
   const filterDate = useCreateSessionFiltersFieldsStore(state => state.filters.date);
   const { endDate, selectedFieldUid, selectedSlotUid } = useCreateSessionStore(
     useShallow(state => ({
-      endDate: state.session.endDate,
-      selectedFieldUid: state.session.fieldUid,
-      selectedSlotUid: state.session.additionalData?.publicFieldSlotUid,
+      endDate: state.session?.endDate,
+      selectedFieldUid: state.session?.fieldUid,
+      selectedSlotUid: state.session?.additionalData?.publicFieldSlotUid,
     })),
   );
 
@@ -103,6 +105,7 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
 
   const handleSelect = useCallback(
     (timeSlot: TimeSlot, isSelected: boolean) => {
+      if (!sport) return;
       const params: RootStackParamList[typeof ROUTES.CREATE_SESSION.STEP_2_DURATION_FORM_SHEET] = {
         fieldUid,
         slotUid: timeSlot?.id,
@@ -122,23 +125,25 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
   const dataToRender = useMemo(() => (visibleSlots.length > 0 ? visibleSlots : SKELETON_DATA), [visibleSlots]);
 
   const keyExtractor = useCallback((item: ListItem) => {
-    if ('type' in item && item.type === 'skeleton') {
-      return (item as SkeletonItem).uid;
+    if (isSkeletonListItem(item)) {
+      return item.uid;
     }
-    return (item as TimeSlot).id;
+    return item.id;
   }, []);
 
   const renderItem = useCallback(
-    ({ item }) => {
-      if ('type' in item && item.type === 'skeleton') {
+    (info: ListRenderItemInfo<ListItem>) => {
+      const { item } = info;
+      if (isSkeletonListItem(item)) {
         return <CreateSessionStep2FieldCardPublicAvailabilitiesItemSkeleton />;
       }
-      const isSelected = item.id === selectedSlotUid && fieldUid === selectedFieldUid && !!endDate;
+      const timeSlot = item;
+      const isSelected = timeSlot.id === selectedSlotUid && fieldUid === selectedFieldUid && !!endDate;
       return (
         <CreateSessionStep2FieldCardPublicAvailabilitiesItem
-          time={item}
-          availabilities={availabilities}
-          onSelect={() => handleSelect(item, isSelected)}
+          time={timeSlot}
+          availabilities={availabilities ?? []}
+          onSelect={() => handleSelect(timeSlot, isSelected)}
           isSelected={isSelected}
         />
       );

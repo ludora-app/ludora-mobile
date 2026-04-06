@@ -1,23 +1,18 @@
-import { useMemo } from 'react'
-import { Chip, ChipProps } from '@ludo/ui'
-import { useTranslate } from '@tolgee/react'
+import { memo, useMemo } from 'react';
+import { Chip, ChipProps } from '@ludo/ui';
+import { useTranslate } from '@tolgee/react';
 
 import type {
   FieldResponseDto,
   FieldResponseDtoType,
   MyFieldsResponseData,
   MyFieldsResponseDataStatus,
-} from '@/api/generated/model'
+} from '@/api/generated/model';
 
-import { FieldCard } from '@/components/ui/field-card'
-
-
-
-
-
+import { FieldCard } from '@/components/ui/field-card';
 
 interface MyFieldCardProps {
-  item: MyFieldsResponseData
+  item: MyFieldsResponseData;
 }
 
 function mapMyFieldToFieldDto(item: MyFieldsResponseData): FieldResponseDto {
@@ -30,30 +25,38 @@ function mapMyFieldToFieldDto(item: MyFieldsResponseData): FieldResponseDto {
     sports: item.sports as FieldResponseDto['sports'],
     type: 'PUBLIC' as FieldResponseDtoType,
     uid: item.uid,
-  }
+  };
 }
 
 const STATUS_LABEL_KEYS: Record<MyFieldsResponseDataStatus, string> = {
   APPROVED: 'my_fields.status_approved',
   PENDING: 'my_fields.status_pending',
   REJECTED: 'my_fields.status_rejected',
-}
+};
 
-const COLORS_VARIANTS: Record<MyFieldsResponseDataStatus, ChipProps["colorVariant"]> = {
+const COLORS_VARIANTS: Record<MyFieldsResponseDataStatus, ChipProps['colorVariant']> = {
   APPROVED: 'success',
-  PENDING: "primary",
+  PENDING: 'primary',
   REJECTED: 'error',
-}
+};
 
-export default function MyFieldCard(props: MyFieldCardProps) {
-  const { item } = props
-  const { t } = useTranslate()
+function MyFieldCard(props: MyFieldCardProps) {
+  const { item } = props;
+  const { t } = useTranslate();
 
-  const field = useMemo(() => mapMyFieldToFieldDto(item), [item])
+  const field = useMemo(() => mapMyFieldToFieldDto(item), [item]);
 
   return (
     <FieldCard field={field} shadowVariant="black" showSport>
-      <Chip title={t(STATUS_LABEL_KEYS[item.status])} size="2xs" className="mt-1" variant="outlined" colorVariant={COLORS_VARIANTS[item.status]} />
+      <Chip
+        title={t(STATUS_LABEL_KEYS[item.status])}
+        size="2xs"
+        className="mt-1"
+        variant="outlined"
+        colorVariant={COLORS_VARIANTS[item.status]}
+      />
     </FieldCard>
-  )
+  );
 }
+
+export default memo(MyFieldCard);

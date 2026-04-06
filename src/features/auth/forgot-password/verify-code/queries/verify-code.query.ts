@@ -8,13 +8,11 @@ export const useVerifyCode = () => {
     mutation.mutate({ data });
   };
 
-  const mutateAsync = async (data: GenerateAccessTokenFromCodeDto) => {
-    await mutation.mutateAsync({ data });
-  };
+  const mutateAsync = async (data: GenerateAccessTokenFromCodeDto) => mutation.mutateAsync({ data });
 
   return {
+    ...mutation,
     mutate,
     mutateAsync,
-    ...mutation,
   };
 };

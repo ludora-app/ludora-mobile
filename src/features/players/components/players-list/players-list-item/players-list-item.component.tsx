@@ -1,5 +1,4 @@
-import { useRouter } from 'expo-router';
-import { useTranslate } from '@tolgee/react';
+import { router } from 'expo-router';
 import { memo, useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Avatar, Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
@@ -7,6 +6,7 @@ import { Avatar, Box, BoxGrow, BoxRow, Icon, Image, String } from '@ludo/ui';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
+import { useListItemRecyclingDiagnostics } from '@/hooks/list-diagnostics.hook';
 import {
   FindAllUserSportPreferenceResponseDto,
   FindAllUsersResponseDataDto,
@@ -15,6 +15,7 @@ import {
 
 import PlayersListItemBanner from './players-list-item-banner.component';
 import PlayersListItemInvite from './players-list-item-invite.component';
+import { usePlayersListContext } from '../../../context/players-list.context';
 
 type PlayersListItemProps = {
   item: FindAllUsersResponseDataDto;
@@ -33,6 +34,8 @@ const LEVEL_COLORS: Record<number, string> = {
 };
 
 function PlayersListItem({ item }: PlayersListItemProps) {
+  useListItemRecyclingDiagnostics(item, 'Players');
+
   const {
     bio: userBio,
     commonSports,
@@ -47,9 +50,13 @@ function PlayersListItem({ item }: PlayersListItemProps) {
     userCity,
   } = item || {};
 
-  const { t } = useTranslate();
-  const router = useRouter();
+  const { t } = usePlayersListContext();
   const hasSports = userSportPreferences && userSportPreferences.length > 0;
+
+  const avatarData = useMemo(
+    () => ({ firstname, imageUrl: userAvatar ? { uri: userAvatar } : undefined, lastname }),
+    [firstname, userAvatar, lastname],
+  );
 
   const sportItems = useMemo(
     () =>
@@ -63,7 +70,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
 
   const handleCardPress = useCallback(() => {
     router.navigate(ROUTES.PROFIL.INDEX_UID(item.uid));
-  }, [item.uid, router]);
+  }, [item.uid]);
 
   return (
     <Pressable style={styles.shadow} className="mb-3 rounded-xl" onPress={handleCardPress}>
@@ -75,10 +82,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
         <Box className="gap-3 p-3">
           <Box>
             <BoxRow className="items-center gap-3 pb-0">
-              <Avatar
-                data={{ firstname, imageUrl: userAvatar ? { uri: userAvatar } : undefined, lastname }}
-                size="lg"
-              />
+              <Avatar data={avatarData} size="lg" />
 
               <BoxGrow className="gap-0.5">
                 <String font="primaryExtraBold" variant="body-sm" truncate>
@@ -133,8 +137,4 @@ function PlayersListItem({ item }: PlayersListItemProps) {
   );
 }
 
-export default memo(
-  PlayersListItem,
-  (prevProps, nextProps) =>
-    prevProps.item.uid === nextProps.item.uid && prevProps.item.invitationStatus === nextProps.item.invitationStatus,
-);
+export default memo(PlayersListItem);

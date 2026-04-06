@@ -3,9 +3,10 @@ import { usePathname } from 'expo-router';
 
 export const useGetOnBoardingStep = () => {
   const pathname = usePathname();
-  const lastActiveStepRef = useRef(Number(pathname.split('/').pop().split('-').pop()) || 1);
+  const lastSegment = pathname.split('/').pop()?.split('-').pop();
+  const lastActiveStepRef = useRef(Number(lastSegment) || 1);
 
-  const activeStep = Number(pathname.split('/').pop().split('-').pop()) || lastActiveStepRef.current;
+  const activeStep = Number(lastSegment) || lastActiveStepRef.current;
   lastActiveStepRef.current = activeStep;
   return { activeStep };
 };

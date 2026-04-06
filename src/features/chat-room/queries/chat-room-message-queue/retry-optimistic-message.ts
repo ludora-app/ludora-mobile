@@ -52,14 +52,14 @@ export const retryOptimisticMessage = (queryClient: QueryClient, ctx: MessageQue
           ...firstPage,
           data: {
             ...firstPage.data,
-            items: [
-              ...firstPage.data.items,
+              items: [
               {
                 ...failedMessage,
                 createdAt: retryCreatedAt,
                 isError: false,
                 isSending: true,
               } as unknown as (typeof firstPage.data.items)[number],
+              ...firstPage.data.items,
             ],
           },
         };

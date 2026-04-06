@@ -37,8 +37,8 @@ export default function SessionSectionTeamsCard({ session }: SessionSectionTeams
     if (isFinished) return;
     
     if (joinedTeam?.teamUid === teamUidToSelect || selectedTeamUid === teamUidToSelect) {
-      setTeamUid(null);
-      setSideTeam(null);
+      setTeamUid(undefined);
+      setSideTeam(undefined);
       return;
     }
 

@@ -14,7 +14,9 @@ type ChatRoomReceiver = ReceiverDto;
 export default function ChatRoomInfoInitializer() {
   const chatRoomId = useChatRoomStore(state => state.chatRoomId);
   const setChatRoomInfo = useChatRoomStore(state => state.setChatRoomInfo);
+  const isStoreInitialized = useChatRoomStore(state => state.chatRoomInfo !== null);
   const params = useLocalSearchParams<ChatRoomLocalSearchParams>();
+  const paramChatRoomId = params.chatRoomId !== 'undefined' ? params.chatRoomId : undefined;
   const chatRoomType = params.type !== 'undefined' ? (params.type as FindOneConversationResponseDataType) : undefined;
   const chatRoomName = params.name !== 'undefined' ? params.name : undefined;
   const chatRoomAvatar = params.imageUrl !== 'undefined' ? params.imageUrl : undefined;
@@ -39,15 +41,22 @@ export default function ChatRoomInfoInitializer() {
   }, [sessionData]);
 
   const isPrivate = chatRoomType === 'PRIVATE';
-  const hasBasicInfo = !!chatRoomName && !!chatRoomAvatar && !!chatRoomType;
+  const hasBasicInfo = !!chatRoomName && !!chatRoomType;
   const hasReceiverIfRequired = isPrivate ? !!chatRoomReceiver : true;
   const hasTeamLabelIfRequired = !isPrivate ? !!chatRoomSessionData?.teamLabel : true;
-  const shouldFetchChatRoomInfo = !!chatRoomId && (!hasBasicInfo || !hasReceiverIfRequired || !hasTeamLabelIfRequired);
-
-  const { data: chatRoom } = useGetChatRoomById({ convId: chatRoomId, enabled: shouldFetchChatRoomInfo });
+  const hasCompleteParamsFromNavigation = hasBasicInfo && hasReceiverIfRequired && hasTeamLabelIfRequired;
+  const effectiveChatRoomId = paramChatRoomId ?? chatRoomId ?? null;
+  const shouldFetchChatRoomInfo =
+    !!effectiveChatRoomId && (!hasBasicInfo || !hasReceiverIfRequired || !hasTeamLabelIfRequired);
+  const { data: chatRoom } = useGetChatRoomById({
+    convId: effectiveChatRoomId ?? '',
+    enabled: shouldFetchChatRoomInfo,
+  });
 
   useEffect(() => {
-    if (!shouldFetchChatRoomInfo) {
+    if (isStoreInitialized) return;
+
+    if (!shouldFetchChatRoomInfo && hasCompleteParamsFromNavigation) {
       setChatRoomInfo({
         imageUrl: chatRoomAvatar,
         name: chatRoomName,
@@ -57,10 +66,11 @@ export default function ChatRoomInfoInitializer() {
       });
       return;
     }
-    if (chatRoom) {
+    if (shouldFetchChatRoomInfo && chatRoom) {
       setChatRoomInfo(chatRoom);
     }
   }, [
+    isStoreInitialized,
     chatRoom,
     setChatRoomInfo,
     chatRoomAvatar,
@@ -68,6 +78,7 @@ export default function ChatRoomInfoInitializer() {
     chatRoomType,
     chatRoomReceiver,
     shouldFetchChatRoomInfo,
+    hasCompleteParamsFromNavigation,
     chatRoomSessionData,
   ]);
 

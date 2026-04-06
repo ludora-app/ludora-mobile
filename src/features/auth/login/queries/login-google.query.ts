@@ -13,13 +13,21 @@ export default function useLoginGoogle() {
   const mutateAsync = async () => {
     const googleResponse = await googleProviderSignInMutation();
 
+    if (!googleResponse.data) {
+      throw new Error('Google sign-in did not return user data');
+    }
+
     const { email, familyName, givenName, photo } = googleResponse.data.user;
+
+    if (!email) {
+      throw new Error('Google sign-in did not return email');
+    }
 
     const userData: CreateGoogleUserDto = {
       email,
-      firstname: givenName,
-      imageUrl: photo,
-      lastname: familyName,
+      firstname: givenName ?? '',
+      imageUrl: photo ?? undefined,
+      lastname: familyName ?? '',
     };
 
     const response = await googleLogin({ data: userData });

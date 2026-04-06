@@ -14,10 +14,11 @@ export default function CreatedSessionFooterButtonsCreatedSession() {
   const { t } = useTranslate();
 
   const handleInvitePeople = () => {
+    if (!createdSessionUid) return;
     router.navigate(ROUTES.INVITE_FRIENDS.INDEX_UID(createdSessionUid));
   };
 
-  const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(createdSessionUid)}`;
+  const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(createdSessionUid ?? '')}`;
 
   return (
     <Box className="w-full gap-4">
@@ -25,7 +26,11 @@ export default function CreatedSessionFooterButtonsCreatedSession() {
         <Box className="flex-1">
           <Button title={t('create-session.step-5.button_title_invite_people')} onPress={handleInvitePeople} />
         </Box>
-        <ShareButton message={t('session.share_message', { url: shareUrl })} title={t('session.share_title')} url={shareUrl} />
+        <ShareButton
+          message={t('session.share_message', { url: shareUrl })}
+          title={t('session.share_title')}
+          url={shareUrl}
+        />
       </BoxRow>
       <Button title={t('create-session.step-5.button_title_back_to_home')} variant="outlined" onPress={router.back} />
     </Box>

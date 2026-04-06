@@ -16,12 +16,16 @@ export const useGetMessagesByChatroomId = () => {
     limit: LIMIT_MESSAGES,
   };
 
-  const { data, error, isError, ...rest } = useConversationsLoadMoreMessagesInfinite(chatRoomId, filter, {
-    query: {
-      enabled: !!chatRoomId,
-      getNextPageParam: lastPage => lastPage?.data?.nextCursor,
+  const { data, error, isError, isLoading, ...rest } = useConversationsLoadMoreMessagesInfinite(
+    chatRoomId ?? '',
+    filter,
+    {
+      query: {
+        enabled: !!chatRoomId,
+        getNextPageParam: lastPage => lastPage?.data?.nextCursor,
+      },
     },
-  });
+  );
 
   useGetMethodErrorTracking({
     error,
@@ -29,20 +33,26 @@ export const useGetMessagesByChatroomId = () => {
     isError,
   });
 
+  const setLastMessageCreatedAt = useChatRoomStore(state => state.setLastMessageCreatedAt);
+
   const items = useMemo(() => {
-    const serverItems = data?.pages ? [...data.pages].reverse().flatMap(page => page.data.items) : [];
+    const serverItems = data?.pages?.flatMap(page => page.data.items) || [];
     const serverUids = new Set(serverItems.map(item => item.uid));
 
     const pendingList = Object.values(pendingMessages).filter(
       msg => !serverUids.has(msg.uid) && msg.conversationId === chatRoomId,
     );
 
-    if (pendingList.length === 0) return serverItems;
-
     return [...serverItems, ...pendingList].sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
   }, [data?.pages, pendingMessages, chatRoomId]);
+
+  useEffect(() => {
+    if (items.length > 0) {
+      setLastMessageCreatedAt(items[0].createdAt);
+    }
+  }, [items, setLastMessageCreatedAt]);
 
   useEffect(() => {
     if (!data?.pages) return;
@@ -56,5 +66,5 @@ export const useGetMessagesByChatroomId = () => {
     });
   }, [data?.pages]);
 
-  return { ...rest, items };
+  return { ...rest, error, isError, isLoading, items };
 };

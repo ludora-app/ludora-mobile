@@ -56,7 +56,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           REPO_BRANCH="${{ github.ref_name }}"
-          if [ "$REPO_BRANCH" == "develop" ]; then
+          if [ "$REPO_BRANCH" == "develop" ] || [ "$REPO_BRANCH" == "staging" ]; then
             REPO_BRANCH="dev"
           fi
 
@@ -140,7 +140,7 @@ jobs:
           echo "Expo version: $(node -p "require('./app.json').expo.version")"
 
       - name: 🏗️ Setup Expo / EAS
-        if: steps.semantic.outputs.new_release == 'true' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') && github.event_name == 'push'
+        if: steps.semantic.outputs.new_release == 'true' && github.event_name == 'push' && ((github.ref == 'refs/heads/main' && vars.ENABLE_EXPO_BUILD_PROD == 'true') || (github.ref == 'refs/heads/staging' && vars.ENABLE_EXPO_BUILD_PREVIEW == 'true'))
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
@@ -148,7 +148,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Build Android Production (EAS)
-        if: steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: vars.ENABLE_EXPO_BUILD_PROD == 'true' && steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: bun run build:android:prod --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
@@ -158,7 +158,7 @@ jobs:
           EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
 
       - name: 🍎 Build iOS Production (EAS)
-        if: steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: vars.ENABLE_EXPO_BUILD_PROD == 'true' && steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: bun run build:ios:prod --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
@@ -168,7 +168,7 @@ jobs:
           EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
 
       - name: 📦 Build Android Preview (EAS - staging)
-        if: steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/staging' && github.event_name == 'push'
+        if: vars.ENABLE_EXPO_BUILD_PREVIEW == 'true' && steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/staging' && github.event_name == 'push'
         run: bun run build:android:preview --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
@@ -178,7 +178,7 @@ jobs:
           EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
 
       - name: 🍎 Build iOS Preview (EAS - staging)
-        if: steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/staging' && github.event_name == 'push'
+        if: vars.ENABLE_EXPO_BUILD_PREVIEW == 'true' && steps.semantic.outputs.new_release == 'true' && github.ref == 'refs/heads/staging' && github.event_name == 'push'
         run: bun run build:ios:preview --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

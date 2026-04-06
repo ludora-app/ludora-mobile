@@ -1,21 +1,17 @@
-import { ReactNode } from 'react'
-import { ScrollView } from 'react-native'
-import { useTranslate } from '@tolgee/react'
-import { BoxCenter, Icon, String } from '@ludo/ui'
+import { ReactNode } from 'react';
+import { ScrollView } from 'react-native';
+
+import { ComingSoon } from '@/components/ui/coming-soon';
 
 type Props = {
-  listHeaderComponent?: ReactNode
-}
+  listHeaderComponent?: ReactNode;
+};
 
 export default function ProfilSection5Badges({ listHeaderComponent }: Props) {
-  const { t } = useTranslate()
   return (
-    <ScrollView contentContainerClassName='grow '>
+    <ScrollView contentContainerClassName="grow ">
       {listHeaderComponent}
-      <BoxCenter className='gap-1 pt-4 bg-background flex-1 justify-start'>
-        <Icon name='ludo-sunglass' className='size-40' />
-        <String>{t('common.coming_functionality_soon')}</String>
-      </BoxCenter>
-    </ScrollView >
-  )
+      <ComingSoon />
+    </ScrollView>
+  );
 }

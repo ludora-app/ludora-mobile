@@ -1,83 +1,81 @@
-import { useMemo } from 'react';
-import { Button } from '@ludo/ui'
-import { useTranslate } from '@tolgee/react';
+import { Button } from '@ludo/ui';
+import { memo, useCallback, useState } from 'react';
 
 import COLORS from '@/constants/colors.contstants';
 import { TIconsAll } from '@/constants/icons.constants';
-import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import { FriendResponseDataStatus } from '@/api/generated/model';
-import { useSendFriendInvitation } from '@/queries/send-friend-invitation.query';
+import { FindAllUsersResponseDataDtoInvitationStatus, FriendResponseDataStatus } from '@/api/generated/model';
+
+import { usePlayersListContext } from '../../../context/players-list.context';
 
 type PlayersListItemInviteProps = {
   userUid: string;
-  invitationStatus: FriendResponseDataStatus;
-}
+  invitationStatus?: FindAllUsersResponseDataDtoInvitationStatus;
+};
 
-export default function PlayersListItemInvite(props: PlayersListItemInviteProps) {
-  const { t } = useTranslate()
-  const { invitationStatus, userUid } = props
-  const { trackError } = useAnalytics()
-  const { isPending: sendFriendInvitationPending, mutateAsync: sendFriendInvitation } = useSendFriendInvitation(userUid);
-  const isFriendRequestPending = invitationStatus === FriendResponseDataStatus.PENDING
-  const isFriendRequestAccepted = invitationStatus === FriendResponseDataStatus.ACCEPTED
+const getButtonConfig = (invitationStatus?: FindAllUsersResponseDataDtoInvitationStatus) => {
+  const isPending = invitationStatus === FriendResponseDataStatus.PENDING;
+  const isAccepted = invitationStatus === FriendResponseDataStatus.ACCEPTED;
 
-  const handleInvitePress = () => {
-    try {
-      sendFriendInvitation();
-    } catch (error) {
-      trackError({ error })
-    }
+  let titleKey: string;
+  let iconName: TIconsAll;
+  let iconColor: string;
+
+  if (isPending) {
+    titleKey = 'profil.invitation_sent_button_title';
+    iconName = 'receive-contact-solid';
+    iconColor = COLORS.muted;
+  } else if (isAccepted) {
+    titleKey = 'profil.invitation_accepted_button_title';
+    iconName = 'user-tick-solid';
+    iconColor = COLORS.primary;
+  } else {
+    titleKey = 'profil.friend_request_button_title';
+    iconName = 'user-add-solid';
+    iconColor = '#fff';
+  }
+
+  return {
+    colorVariant: isPending ? ('muted' as const) : ('primary' as const),
+    iconColor,
+    iconName,
+    isDisabled: isPending || isAccepted,
+    titleKey,
+    variant: isAccepted ? ('outlined' as const) : ('contained' as const),
   };
+};
 
-  const handleFriendsBtnTitle = useMemo(() => {
-    if (isFriendRequestPending) {
-      return t("profil.invitation_sent_button_title")
-    }
-    if (isFriendRequestAccepted) {
-      return t("profil.invitation_accepted_button_title")
-    }
-    return t("profil.friend_request_button_title")
-  }, [isFriendRequestAccepted, isFriendRequestPending, t])
+function PlayersListItemInvite({ invitationStatus, userUid }: PlayersListItemInviteProps) {
+  const { onInvite, t } = usePlayersListContext();
+  const [isLocalPending, setIsLocalPending] = useState(false);
 
+  const { colorVariant, iconColor, iconName, isDisabled, titleKey, variant } = getButtonConfig(invitationStatus);
 
-  const handleIconName = useMemo<TIconsAll>(() => {
-    if (isFriendRequestPending) {
-      return "receive-contact-solid"
+  const handleInvitePress = useCallback(async () => {
+    setIsLocalPending(true);
+    try {
+      await onInvite(userUid);
+    } finally {
+      setIsLocalPending(false);
     }
-    if (isFriendRequestAccepted) {
-      return "user-tick-solid"
-    }
-    return "user-add-solid"
-  }, [isFriendRequestAccepted, isFriendRequestPending])
-
-
-  const handleFriendBtnIconColor = useMemo(() => {
-    if (isFriendRequestPending) {
-      return COLORS.muted
-    }
-    if (isFriendRequestAccepted) {
-      return COLORS.primary
-    }
-    return "#fff"
-  }, [isFriendRequestAccepted, isFriendRequestPending])
-
-  const isFriendRequestSent = isFriendRequestPending || isFriendRequestAccepted
+  }, [onInvite, userUid]);
 
   return (
     <Button
-      title={handleFriendsBtnTitle}
+      title={t(titleKey)}
       size="sm"
       onPress={handleInvitePress}
-      isLoading={sendFriendInvitationPending}
+      isLoading={isLocalPending}
       iconProps={{
         className: 'mr-2',
-        color: handleFriendBtnIconColor,
-        name: handleIconName,
-        position: "left"
+        color: iconColor,
+        name: iconName,
+        position: 'left',
       }}
-      colorVariant={isFriendRequestPending ? "muted" : "primary"}
-      isDisabled={isFriendRequestSent}
-      variant={isFriendRequestAccepted ? "outlined" : "contained"}
+      colorVariant={colorVariant}
+      isDisabled={isDisabled}
+      variant={variant}
     />
-  )
+  );
 }
+
+export default memo(PlayersListItemInvite);

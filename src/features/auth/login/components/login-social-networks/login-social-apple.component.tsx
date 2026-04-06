@@ -52,7 +52,7 @@ export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
         });
       }
     } catch (error) {
-      if (error.code === 'ERR_REQUEST_CANCELED') {
+      if ((error as any).code === 'ERR_REQUEST_CANCELED') {
         // handle that the user canceled the sign-in flow
       } else {
         const responseError = error as ErrorResponse;

@@ -15,7 +15,7 @@ export default function ChatRoom() {
       <ChatRoomInitializer />
       <Image source={chatRoomBg} style={StyleSheet.absoluteFill} className="opacity-70" />
       <ChatRoomHeader />
-      <KeyboardAvoidingView className="flex-1" behavior="padding">
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
         <ChatRoomMessagesList />
         <ChatRoomInputWrapper />
       </KeyboardAvoidingView>

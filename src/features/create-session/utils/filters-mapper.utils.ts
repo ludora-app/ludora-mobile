@@ -8,12 +8,12 @@ export const filtersMapper = (filters: Filters) => {
   if (filters.fieldType && filters.fieldType !== 'ALL') {
     filter.type = filters.fieldType;
   } else {
-    filter.type = null;
+    filter.type = undefined;
   }
   if (filters.sessionDuration) {
     filter.duration = parseInt(filters.sessionDuration, 10);
   } else {
-    filter.duration = null;
+    filter.duration = undefined;
   }
   if (filters.date) {
     const date = String(filters?.date.date);
@@ -30,14 +30,14 @@ export const filtersMapper = (filters: Filters) => {
     filter.userLat = filters.address?.location?.latitude;
     filter.userLon = filters.address?.location?.longitude;
   } else {
-    filter.userLat = null;
-    filter.userLon = null;
+    filter.userLat = undefined;
+    filter.userLon = undefined;
   }
 
   if (filters.maxDistance) {
     filter.maxDistance = filters.maxDistance;
   } else {
-    filter.maxDistance = null;
+    filter.maxDistance = undefined;
   }
   return filter;
 };

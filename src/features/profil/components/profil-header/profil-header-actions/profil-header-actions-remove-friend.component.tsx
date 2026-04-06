@@ -17,7 +17,7 @@ export default function ProfilHeaderActionsRemoveFriend() {
   const { trackError } = useAnalytics();
   const { toast } = useToast();
   const router = useRouter();
-  const { isPending: isRemovingFriend, mutateAsync: removeFriend } = useRemoveFriend(userId);
+  const { isPending: isRemovingFriend, mutateAsync: removeFriend } = useRemoveFriend(userId ?? '');
   const { data: friendRequest } = useGetFriendRequest(userId);
 
   const { status: invitationStatus } = friendRequest || {};

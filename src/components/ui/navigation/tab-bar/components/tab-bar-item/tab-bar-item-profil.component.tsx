@@ -14,7 +14,7 @@ export type TabButtonProps = TabTriggerSlotProps & Pick<TabRoutes, 'iconName' | 
 function TabBarItemProfil({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) {
   const { data: unreadCount } = useNotificationsUnreadCount()
 
-  const hasNotification = unreadCount?.unreadCount > 0;
+  const hasNotification = (unreadCount?.unreadCount ?? 0) > 0;
 
   const { t } = useTranslate();
 

@@ -1,22 +1,21 @@
-
+import { memo } from 'react';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
 
 import ChatRoomMessageListItemContentString from './chat-room-message-list-item-content-string.component';
 import ChatRoomMessageListItemContentDeleted from './chat-room-message-list-item-content-deleted.component';
 
-
 type ChatRoomMessageListItemContentProps = {
-  messageData: MessageCollectionItemDto
-}
+  messageData: MessageCollectionItemDto;
+};
 
-export default function ChatRoomMessageListItemContent({ messageData }: ChatRoomMessageListItemContentProps) {
+function ChatRoomMessageListItemContent({ messageData }: ChatRoomMessageListItemContentProps) {
   const { globalStatus: messageGlobalStatus, type: messageType } = messageData || {};
 
-  const isMessageDeleted = messageGlobalStatus === 'DELETED'
+  const isMessageDeleted = messageGlobalStatus === 'DELETED';
 
   if (isMessageDeleted) {
-    return <ChatRoomMessageListItemContentDeleted />
+    return <ChatRoomMessageListItemContentDeleted />;
   }
 
   switch (messageType) {
@@ -26,3 +25,5 @@ export default function ChatRoomMessageListItemContent({ messageData }: ChatRoom
       return null;
   }
 }
+
+export default memo(ChatRoomMessageListItemContent);

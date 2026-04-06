@@ -46,9 +46,7 @@ export default function ChatRoomUserProfileFormsheet() {
   const { firstname, imageUrl, lastname, userId } = params;
 
   const initialViewParam = params.initialView;
-  const resolvedInitialView =
-    initialViewParam === 'report-reasons' ? 'report-reasons' : 'actions';
-  /** Ouverture depuis info privée → signalement uniquement : pas de retour vers la vue « actions ». */
+  const resolvedInitialView = initialViewParam === 'report-reasons' ? 'report-reasons' : 'actions';
   const isReportOnlyEntry = resolvedInitialView === 'report-reasons';
 
   const { isPending: isLoadingReport, mutateAsync: reportUser } = useReportUser();
@@ -83,9 +81,7 @@ export default function ChatRoomUserProfileFormsheet() {
   };
 
   const headerHasGoBack =
-    view === 'actions' ||
-    view === 'report-reasons-other' ||
-    (view === 'report-reasons' && !isReportOnlyEntry);
+    view === 'actions' || view === 'report-reasons-other' || (view === 'report-reasons' && !isReportOnlyEntry);
 
   // ─── Actions ─────────────────────────────────────────────────────────────────
 
@@ -130,15 +126,21 @@ export default function ChatRoomUserProfileFormsheet() {
         reason: selectedReason,
         reportedUid: userId,
       });
+      if (selectedReason === CreateReportDtoReason.OTHER) resetField('description');
       trackEvent({
         data: { reason: selectedReason },
         eventName: ANALYTICS_EVENTS.CHAT_ROOM.CHAT_ROOM_USER_PROFILE_REPORT_USER,
       });
-      setView('actions');
       toast({
         message: t('profil.report_user_success_message', { name: `${firstname} ${lastname}` }),
         variant: 'success',
       });
+
+      if (isReportOnlyEntry) {
+        setView('report-reasons');
+      } else {
+        setView('actions');
+      }
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       if (errorResponse.api_error_detail === ALREADY_REPORTED_ERROR) {
@@ -154,7 +156,7 @@ export default function ChatRoomUserProfileFormsheet() {
   };
 
   return (
-    <Box style={{ paddingBottom: IS_ANDROID && bottom }}>
+    <Box style={{ paddingBottom: IS_ANDROID ? bottom : undefined }}>
       <FormSheetHeader title={t(headerTitle)} hasGoBack={headerHasGoBack} goBackAction={handleGoBack} />
 
       <Wrapper className="gap-4 py-4">

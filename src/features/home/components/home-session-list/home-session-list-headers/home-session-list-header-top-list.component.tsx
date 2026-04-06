@@ -11,16 +11,15 @@ import { SessionCard } from '@/components/ui/session-card';
 import { SessionCollectionItemDto } from '@/api/generated/model';
 import HeaderScreen from '@/components/ui/header/components/header-screen.component';
 
-
 type HomeSessionListHeaderTopListProps = {
-  IncommingSessionMe: SessionCollectionItemDto;
+  IncommingSessionMe?: SessionCollectionItemDto | null;
   hasNewSession: boolean;
-}
+};
 
 const MAX_USERNAME_LENGTH = 10;
 
 function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) {
-  const { hasNewSession, IncommingSessionMe } = props
+  const { hasNewSession, IncommingSessionMe } = props;
   const { t } = useTranslate();
   const { isLoading: isLoadingUserMe, userMe } = useUserMe();
   const { firstname } = userMe || {};
@@ -56,14 +55,16 @@ function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) 
   return (
     <HeaderScreen
       isTitleLoading={isLoadingUserMe}
-      title={t('home.header.title', { username: truncateString({ maxLength: MAX_USERNAME_LENGTH, str: firstname ?? '' }) })}
+      title={t('home.header.title', {
+        username: truncateString({ maxLength: MAX_USERNAME_LENGTH, str: firstname ?? '' }),
+      })}
       iconProps={{ className: iconClassName }}
       subTitle={t(hasNewSession ? 'home.header.sub_title_incoming_session' : 'home.header.sub_title')}
       hasNewSession={hasNewSession}
-      leftContentClassName={!hasNewSession && leftContentClassName}
-      className={cn("items-end h-44", { 'h-52': hasNewSession })}
+      leftContentClassName={!hasNewSession ? leftContentClassName : undefined}
+      className={cn('h-44 items-end', { 'h-52': hasNewSession })}
     >
-      {hasNewSession && <SessionCard item={IncommingSessionMe} isNextSession />}
+      {hasNewSession && IncommingSessionMe && <SessionCard item={IncommingSessionMe} isNextSession />}
       {!hasNewSession && (
         <Button
           title={t('home.header.button_create_match')}
@@ -86,5 +87,4 @@ function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) 
   );
 }
 
-export default memo(HomeSessionListHeaderTopList)
-
+export default memo(HomeSessionListHeaderTopList);

@@ -1,26 +1,28 @@
-import { useRouter } from 'expo-router'
-import { Pressable } from 'react-native'
-import { Avatar, Box, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui'
+import { memo } from 'react';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
+import { Avatar, Box, BoxRow, BoxRowCenterBetween, IconButton, String } from '@ludo/ui';
 
-import { serialize } from '@/utils/json.utils'
-import ROUTES from '@/constants/routes.constants'
-import COLORS from '@/constants/colors.contstants'
-import { RootStackParamList } from '@/types/routes-params.types'
-import { FindOneConversationResponseDataType, FriendResponseData } from '@/api/generated/model'
+import { serialize } from '@/utils/json.utils';
+import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
+import { RootStackParamList } from '@/types/routes-params.types';
+import { FindOneConversationResponseDataType, FriendResponseData } from '@/api/generated/model';
 
-type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX]
+type ChatRoomLocalSearchParams = RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX];
 
 interface SettingsFriendsListItemProps {
-  item: FriendResponseData
+  item: FriendResponseData;
 }
 
-export default function SettingsFriendsListItem({ item }: SettingsFriendsListItemProps) {
-  const router = useRouter()
-  const { avatarUrl, firstname, friendUid, lastname } = item
+function SettingsFriendsListItem({ item }: SettingsFriendsListItemProps) {
+  const router = useRouter();
+  const { avatarUrl, firstname, friendUid, lastname } = item;
 
   const handlePress = () => {
-    router.navigate(ROUTES.PROFIL.INDEX_UID(friendUid))
-  }
+    if (!friendUid) return;
+    router.navigate(ROUTES.PROFIL.INDEX_UID(friendUid));
+  };
 
   const handlePressChatIcon = () => {
     const params: ChatRoomLocalSearchParams = {
@@ -33,13 +35,13 @@ export default function SettingsFriendsListItem({ item }: SettingsFriendsListIte
       }),
       type: FindOneConversationResponseDataType.PRIVATE,
       userUid: friendUid,
-    }
-    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) })
-  }
+    };
+    router.navigate({ params, pathname: ROUTES.CHAT_ROOM.INDEX_UID(undefined) });
+  };
 
   return (
     <Pressable onPress={handlePress}>
-      <BoxRowCenterBetween className="border-primary bg-primary/10 gap-3 rounded-2xl border px-4 py-3">
+      <BoxRowCenterBetween className="gap-3 rounded-2xl border border-primary bg-primary/10 px-4 py-3">
         <BoxRow className="flex-1 items-center gap-3">
           <Avatar
             data={{
@@ -65,5 +67,7 @@ export default function SettingsFriendsListItem({ item }: SettingsFriendsListIte
         />
       </BoxRowCenterBetween>
     </Pressable>
-  )
+  );
 }
+
+export default memo(SettingsFriendsListItem);

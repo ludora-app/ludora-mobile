@@ -14,11 +14,11 @@ const ROUTES = {
   },
   CHAT_ROOM: {
     INDEX: '/chat-room/[chatRoomId]',
-    INDEX_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}`,
+    INDEX_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}`,
     INFO_PRIVATE: '/chat-room/[chatRoomId]/info/private',
-    INFO_PRIVATE_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/private`,
+    INFO_PRIVATE_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/private`,
     INFO_SESSION: '/chat-room/[chatRoomId]/info/session',
-    INFO_SESSION_UID: (chatRoomId: string) => `/chat-room/${chatRoomId}/info/session`,
+    INFO_SESSION_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/session`,
     MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
     MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
       `/chat-room/${chatRoomId}/message-actions/${messageId}`,
@@ -97,6 +97,7 @@ const ROUTES = {
     JOINED: '/session/[id]/session-joined',
     JOINED_UID: (uid: string) => `session/${uid}/session-joined`,
     TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
+    TEAMS: '/session/[id]/session-teams',
   },
   SETTINGS: {
     BLOCKED_USERS: '/settings/blocked-users',
@@ -111,6 +112,7 @@ const ROUTES = {
   },
   TABS: {
     INDEX: '/(tabs)',
+    MESSAGES: '/(tabs)/messages',
     PLAYERS: '/(tabs)/players',
   },
 } as const;

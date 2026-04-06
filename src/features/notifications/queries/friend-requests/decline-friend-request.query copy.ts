@@ -1,15 +1,12 @@
 import { useFriendsUpdate } from '@generatedApi/friends/friends.api';
 
-export const useDeclineFriendRequest = (friendUid: string) => {
+export const useDeclineFriendRequest = (friendUid?: string) => {
   const mutate = useFriendsUpdate();
 
-  const mutateAsync = () =>
-    mutate.mutateAsync({
-      data: {
-        status: 'REJECTED',
-      },
-      userUid: friendUid,
-    });
+  const mutateAsync = () => {
+    if (!friendUid) throw new Error('Friend UID is required');
+    return mutate.mutateAsync({ data: { status: 'REJECTED' }, userUid: friendUid });
+  };
 
   return {
     ...mutate,

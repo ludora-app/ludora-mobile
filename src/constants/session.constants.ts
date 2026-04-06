@@ -32,7 +32,7 @@ export const SESSION_LEVELS: SESSION_LEVEL_TYPE[] = [
   },
 ];
 
-export const GAMEMODES_BY_SPORT = {
+export const GAMEMODES_BY_SPORT: Partial<Record<SessionCollectionItemDtoSport, SessionCollectionItemDtoGameMode[]>> = {
   [SessionCollectionItemDtoSport.BASKETBALL]: [
     SessionCollectionItemDtoGameMode.ONE_V_ONE,
     SessionCollectionItemDtoGameMode.THREE_V_THREE,
@@ -45,7 +45,7 @@ export const GAMEMODES_BY_SPORT = {
     SessionCollectionItemDtoGameMode.SEVEN_V_SEVEN,
     SessionCollectionItemDtoGameMode.ELEVEN_V_ELEVEN,
   ],
-  [SessionCollectionItemDtoSport.PADDEL]: [
+  [SessionCollectionItemDtoSport.PADEL]: [
     SessionCollectionItemDtoGameMode.ONE_V_ONE,
     SessionCollectionItemDtoGameMode.TWO_V_TWO,
   ],
@@ -55,9 +55,9 @@ export const GAMEMODES_BY_SPORT = {
   ],
 };
 
-export const SPORT_IMAGES = {
+export const SPORT_IMAGES: Partial<Record<SessionCollectionItemDtoSport, typeof basketballBall>> = {
   [SessionCollectionItemDtoSport.BASKETBALL]: basketballBall,
   [SessionCollectionItemDtoSport.FOOTBALL]: footballBall,
-  [SessionCollectionItemDtoSport.PADDEL]: paddelBall,
+  [SessionCollectionItemDtoSport.PADEL]: paddelBall,
   [SessionCollectionItemDtoSport.TENNIS]: tennisBall,
-} as const;
+};

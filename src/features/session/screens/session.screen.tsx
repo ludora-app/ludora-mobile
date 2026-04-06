@@ -30,16 +30,15 @@ export interface SessionScreenProps {
 }
 
 export default function SessionScreen() {
-  const scrollViewRef = useRef<RNScrollView>(null);
+  const scrollViewRef = useRef<RNScrollView>(null!);
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const {
     data: sessionData,
     isLoading: isLoadingSessionData,
     isRefetching: isRefetchingSessionData,
-    refetch: refetchSessionData
+    refetch: refetchSessionData,
   } = useGetSessionById(sessionUid);
-  const { creator, description, fieldUid, sport, title } = sessionData || {};
 
   useResetStoreOnUnmount(reset);
 
@@ -48,8 +47,14 @@ export default function SessionScreen() {
   }
 
   if (!sessionData && !isLoadingSessionData && !isRefetchingSessionData) {
-    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;
   }
+
+  if (!sessionData) {
+    return <Loading />;
+  }
+
+  const { creator, description, fieldUid, sport, title } = sessionData;
 
   return (
     <>
@@ -76,7 +81,7 @@ export default function SessionScreen() {
           <Separator />
 
           {/* SECTION 5 : DESCRIPTION */}
-          <SessionSectionDescription description={description} title={title} />
+          <SessionSectionDescription description={description ?? ''} title={title ?? ''} />
 
           {/* SECTION 6 : FIELD */}
           <SessionSectionFieldDetail fieldUid={fieldUid} sport={sport} />
@@ -85,7 +90,7 @@ export default function SessionScreen() {
           {/* SECTION 7 : CREATOR */}
           <SessionSectionCreator creator={creator} />
         </Wrapper>
-      </ScrollView >
+      </ScrollView>
       <SessionFooter session={sessionData} scrollViewRef={scrollViewRef} />
     </>
   );

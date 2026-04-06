@@ -1,5 +1,5 @@
 import { Pressable, View } from 'react-native';
-import { PropsWithChildren, useRef } from 'react';
+import { memo, PropsWithChildren, useCallback, useRef } from 'react';
 
 import { String } from '@/components/ludo-ui';
 import { useHaptics } from '@/hooks/haptics.hook';
@@ -17,7 +17,7 @@ type ChatRoomMessageListItemWrapperBubbleProps = {
   onBubbleAnchorMeasured?: (rect: MessageActionsAnchorRect) => void;
 };
 
-export default function ChatRoomMessageListItemWrapperBubble(
+function ChatRoomMessageListItemWrapperBubble(
   props: PropsWithChildren<ChatRoomMessageListItemWrapperBubbleProps>,
 ) {
   const { children, messageData, onBubbleAnchorMeasured } = props;
@@ -32,7 +32,7 @@ export default function ChatRoomMessageListItemWrapperBubble(
 
   const isMessageDeleted = messageGlobalStatus === 'DELETED';
 
-  const handleMessageLongPress = () => {
+  const handleMessageLongPress = useCallback(() => {
     if (isMessageDeleted) {
       return;
     }
@@ -42,7 +42,7 @@ export default function ChatRoomMessageListItemWrapperBubble(
     });
     setPressedMessageData(messageData);
     toggleShowActionsMenu();
-  };
+  }, [isMessageDeleted, triggerHaptic, onBubbleAnchorMeasured, messageData, setPressedMessageData, toggleShowActionsMenu]);
 
   const shouldShowSenderName = !isMessageFromMe && type === 'SESSION';
 
@@ -67,3 +67,5 @@ export default function ChatRoomMessageListItemWrapperBubble(
     </Pressable>
   );
 }
+
+export default memo(ChatRoomMessageListItemWrapperBubble);

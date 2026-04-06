@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react'
-import { useTranslate } from '@tolgee/react'
-import { Box, Icon, Image, String } from '@ludo/ui'
-import { Pressable, ScrollView } from 'react-native'
-import { useController, UseControllerProps } from 'react-hook-form'
+import { useEffect, useState } from 'react';
+import { useTranslate } from '@tolgee/react';
+import { Box, Icon, Image, String } from '@ludo/ui';
+import { Pressable, ScrollView } from 'react-native';
+import { useController, UseControllerProps } from 'react-hook-form';
 
-import COLORS from '@/constants/colors.contstants'
-import { usePickImage } from '@/hooks/image-picker.hook'
+import COLORS from '@/constants/colors.contstants';
+import { usePickImage } from '@/hooks/image-picker.hook';
 
-import { CreateFieldSchema } from '../../schemas/create-field.schema'
+import { CreateFieldSchema } from '../../schemas/create-field.schema';
 
-const MAX_IMAGES = 5
+const MAX_IMAGES = 5;
 
 export type FieldImage = {
-  uri: string
-  name: string
-  order: number
-  type: string
-}
+  uri: string;
+  name: string;
+  order: number;
+  type: string;
+};
 
-type AddFieldImagesProps = UseControllerProps<CreateFieldSchema>
+type AddFieldImagesProps = UseControllerProps<CreateFieldSchema>;
 
 export default function AddFieldImages(props: AddFieldImagesProps) {
-  const { control, name } = props
-  const { t } = useTranslate()
+  const { control, name } = props;
+  const { t } = useTranslate();
   const {
     field: { onChange: onChangeImages },
     fieldState: { error },
-  } = useController({ control, name })
-  const { handlePickImage, images: pickedImages } = usePickImage()
-  const [images, setImages] = useState<FieldImage[]>([])
+  } = useController({ control, name });
+  const { handlePickImage, images: pickedImages } = usePickImage();
+  const [images, setImages] = useState<FieldImage[]>([]);
 
   useEffect(() => {
     if (pickedImages && pickedImages.length > 0) {
@@ -36,30 +36,30 @@ export default function AddFieldImages(props: AddFieldImagesProps) {
         const newImages: FieldImage[] = pickedImages.map((img, index) => ({
           name: img.fileName ?? `image-${Date.now()}`,
           order: prev.length + index,
-          type: img.mimeType,
+          type: img.mimeType ?? 'image/jpeg',
           uri: img.uri,
-        }))
-        const merged = [...prev, ...newImages].slice(0, MAX_IMAGES)
-        const next = merged.map((img, i) => ({ ...img, order: i }))
-        onChangeImages(next)
-        return next
-      })
+        }));
+        const merged = [...prev, ...newImages].slice(0, MAX_IMAGES);
+        const next = merged.map((img, i) => ({ ...img, order: i }));
+        onChangeImages(next);
+        return next;
+      });
     }
-  }, [pickedImages, onChangeImages])
+  }, [pickedImages, onChangeImages]);
 
   const handleAddImage = () => {
-    if (images.length >= MAX_IMAGES) return
-    handlePickImage({ isCamera: false, isMultiple: true })
-  }
+    if (images.length >= MAX_IMAGES) return;
+    handlePickImage({ isCamera: false, isMultiple: true });
+  };
 
   const handleRemoveImage = (index: number) => {
     setImages(prev => {
-      const filtered = prev.filter((_, i) => i !== index)
-      const next = filtered.map((img, i) => ({ ...img, order: i }))
-      onChangeImages(next)
-      return next
-    })
-  }
+      const filtered = prev.filter((_, i) => i !== index);
+      const next = filtered.map((img, i) => ({ ...img, order: i }));
+      onChangeImages(next);
+      return next;
+    });
+  };
 
   return (
     <Box className="gap-1">
@@ -93,5 +93,5 @@ export default function AddFieldImages(props: AddFieldImagesProps) {
         </String>
       )}
     </Box>
-  )
+  );
 }

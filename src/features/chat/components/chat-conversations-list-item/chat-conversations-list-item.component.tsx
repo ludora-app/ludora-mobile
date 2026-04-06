@@ -32,8 +32,8 @@ function ChatConversationsListItem({ item }: ChatConversationsListItemProps) {
 
   const handlePress = () => {
     const params: RootStackParamList[typeof ROUTES.CHAT_ROOM.INDEX] = {
-      imageUrl: chatRoomAvatar,
-      name: chatRoomName,
+      imageUrl: chatRoomAvatar ?? undefined,
+      name: chatRoomName ?? undefined,
       receiver: conversationType === 'PRIVATE' ? serialize(receiver) : undefined,
       sessionData: conversationType === 'SESSION' ? serialize(sessionData) : undefined,
       type: conversationType,

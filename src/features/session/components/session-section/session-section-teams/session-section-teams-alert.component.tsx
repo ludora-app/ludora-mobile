@@ -27,10 +27,11 @@ export default function SessionSectionTeamsAlert({ session }: SessionTeamsCardJo
   const isSwitchingTeam = !!joinedTeam && !!teamUid && joinedTeam.teamUid !== teamUid;
 
   const handleRemainingPlayers = () => {
+    const count = remainingPlayers ?? 0;
     if (teamUid && !joinedTeam) {
-      return remainingPlayers - 1;
+      return count - 1;
     }
-    return remainingPlayers;
+    return count;
   };
 
   const isFinished = useMemo(() => {

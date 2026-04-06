@@ -4,7 +4,7 @@ import { ErrorResponse } from '@/api/orval.instance';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
 export const useGetFriendRequest = (userUid?: string) => {
-  const query = useFriendsFindMyFriendRequest(userUid, {
+  const query = useFriendsFindMyFriendRequest(userUid ?? '', {
     query: {
       enabled: !!userUid,
       retry: (failureCount, error: ErrorResponse) => {

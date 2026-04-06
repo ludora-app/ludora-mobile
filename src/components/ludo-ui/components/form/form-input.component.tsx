@@ -1,13 +1,13 @@
 import type { FocusEvent } from 'react-native';
 
+import { useCallback } from 'react';
 import { useTranslate } from '@tolgee/react';
-import { useCallback, forwardRef } from 'react';
-import { useController } from 'react-hook-form';
+import { FieldValues, useController } from 'react-hook-form';
 
 import { Input } from '../input';
 import { FormInputProps } from '../../types/form-input.types';
 
-const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
+export default function FormInput<T extends FieldValues = FieldValues>(props: FormInputProps<T>) {
   const {
     className,
     control,
@@ -24,6 +24,7 @@ const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
     onChangeText,
     onFocus: onFocusProp,
     placeholder,
+    ref,
     rightContentProps,
     rightIconAction,
     ...rest
@@ -52,7 +53,7 @@ const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
   return (
     <Input
       ref={ref}
-      error={hasErrorTranslation ? t(error?.message) : error?.message}
+      error={hasErrorTranslation ? t(error?.message ?? '') : error?.message}
       hasError={hasError}
       hasMessageError={hasMessageError}
       inputFieldProps={{
@@ -74,8 +75,6 @@ const FormInput = forwardRef<any, FormInputProps<any>>((props, ref) => {
       hasLengthCounter={hasLengthCounter}
     />
   );
-});
+}
 
 FormInput.displayName = 'FormInput';
-
-export default FormInput;

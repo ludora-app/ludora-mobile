@@ -25,7 +25,7 @@ export default function BadgeContent(props: PropsWithChildren<BadgeContentProps>
   const { colorVariant, position, side, size, variant } = useBadgeContext();
 
   return (
-    <Box className={cn(badgeTv({ colorVariant, position, side, size, variant }), twStyles.badgeContent, className)}>
+    <Box className={cn(twStyles.badgeContent, badgeTv({ colorVariant, position, side, size, variant }), className)}>
       {children}
     </Box>
   );

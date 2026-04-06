@@ -1,6 +1,6 @@
-
 import { list } from 'radash';
 import * as Location from 'expo-location';
+import { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -29,6 +29,8 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
 interface FilterAddressesListProps {
   inputValue: string;
 }
+
+const isSkeletonListItem = (item: ListItem): item is SkeletonItem => 'type' in item && item.type === 'skeleton';
 
 export default function FilterAddressesList(props: FilterAddressesListProps) {
   const { inputValue } = props;
@@ -88,8 +90,8 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
   );
 
   const renderItem = useCallback(
-    ({ item }) => {
-      if ('type' in item && item.type === 'skeleton') {
+    ({ item }: ListRenderItemInfo<ListItem>) => {
+      if (isSkeletonListItem(item)) {
         return <FilterAddressesResultItemSkeleton />;
       }
       return (
@@ -126,9 +128,9 @@ export default function FilterAddressesList(props: FilterAddressesListProps) {
       data={dataToRender}
       renderItem={renderItem}
       ListHeaderComponent={
-        showNearMe !== 'false'
-          ? <FilterAddressesListHeader isLoading={isLoadingUserLocation} getCurrentLocation={getCurrentLocation} />
-          : undefined
+        showNearMe !== 'false' ? (
+          <FilterAddressesListHeader isLoading={isLoadingUserLocation} getCurrentLocation={getCurrentLocation} />
+        ) : undefined
       }
       contentContainerClassName="gap-4 pb-16 mt-5"
       bounces={false}

@@ -1,5 +1,6 @@
+import { StyleSheet } from 'react-native';
 import { Badge, IconButton } from '@ludo/ui';
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -11,9 +12,15 @@ type ChatRoomMessagesListScrollButtonProps = {
   lastMessage: MessageCollectionItemDto;
 };
 
+const styles = StyleSheet.create({
+  shadow: {
+    boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.4)',
+  },
+});
+
 function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButtonProps) {
   const { isVisible, lastMessage, onPress } = props;
-  const { isTeamA } = useChatRoomSessionTeam();
+  const { isTeamA, type } = useChatRoomSessionTeam();
 
   const lastMessageUid = lastMessage?.uid;
   const isLastMessageFromMe = lastMessage?.isSender;
@@ -43,6 +50,13 @@ function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButto
     }
   }, [isVisible]);
 
+  const colorVariant = useMemo(() => {
+    if (type === 'SESSION') {
+      return isTeamA ? 'primary' : 'secondary';
+    }
+    return 'primary';
+  }, [type, isTeamA]);
+
   return (
     <Animated.View
       style={scrollButtonStyle}
@@ -54,7 +68,7 @@ function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButto
         show={newMessagesCount > 0}
         side="right"
         size="xs"
-        colorVariant={isTeamA ? 'primary' : 'secondary'}
+        colorVariant={colorVariant}
       >
         <IconButton
           iconName="arrow-down-regular"
@@ -63,7 +77,8 @@ function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButto
           variant="contained"
           rounded="circle"
           className="shadow-lg"
-          colorVariant={isTeamA ? 'primary' : 'secondary'}
+          colorVariant={colorVariant}
+          style={styles.shadow}
         />
       </Badge>
     </Animated.View>

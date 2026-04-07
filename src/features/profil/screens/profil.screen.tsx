@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
 import { ScreenLayout, Wrapper } from '@ludo/ui';
-import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useMemo, useState } from 'react';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 
+import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
+import Loading from '@/components/ui/loading/loading.component';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
 import ProfilHeader from '../components/profil-header/profil-header.component';
@@ -18,12 +20,31 @@ import ProfilSection1Skeleton from '../components/profil-section/profil-section-
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
   const { userMeId } = useUserMe();
+
+  // Defer heavy content mount until after navigation transition completes
+  const [isTransitionComplete, setIsTransitionComplete] = useState(!userId);
+
+  useEffect(() => {
+    if (!userId) {
+      setIsTransitionComplete(true);
+      return () => {};
+    }
+
+    const handle = requestIdleCallback(() => {
+      setIsTransitionComplete(true);
+    });
+
+    return () => {
+      cancelIdleCallback(handle);
+    };
+  }, [userId]);
+
   const {
     data: userData,
     isLoading: isLoadingUserData,
     isRefetching: isRefetchingUser,
     refetch: refetchUser,
-  } = useGetUserDataById((userId as string) || undefined);
+  } = useGetUserDataById(isTransitionComplete ? (userId as string) || undefined : undefined);
 
   const {
     isLoading: isLoadingUserMe,
@@ -50,12 +71,16 @@ export default function ProfilScreen() {
 
   const hasData = isProfilMe ? !!userMe : !!userData;
 
-  const isProfilLoading = isLoadingUserData || isLoadingUserMe;
+  const isProfilLoading = isLoadingUserData || isLoadingUserMe || !isTransitionComplete;
   const isRefetching = isProfilMe ? isRefetchingUserMe : isRefetchingUser;
   const isFetching = isProfilMe ? isLoadingUserMe || isRefetchingUserMe : isLoadingUserData || isRefetchingUser;
 
+  if (!isTransitionComplete) {
+    return <Loading />;
+  }
+
   if (!hasData && !isFetching) {
-    return null;
+    return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;
   }
 
   const handleRefetch = async () => {

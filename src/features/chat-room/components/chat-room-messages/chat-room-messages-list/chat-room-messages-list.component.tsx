@@ -37,26 +37,10 @@ export default function ChatRoomMessagesList() {
   const isChatRoomGroup = useChatRoomStore(
     state => state.chatRoomInfo?.type === 'SESSION' || state.chatRoomInfo?.type === 'GROUP',
   );
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isSuccess, items } = useGetMessagesByChatroomId();
+  const { fetchNextPage, hasNextPage, isEnabled, isError, isFetchingNextPage, isLoading, isSuccess, items } =
+    useGetMessagesByChatroomId();
 
-  // defer list mount when list is long to avoic Ui flickering
-  useEffect(() => {
-    if (!isSuccess) {
-      return () => {};
-    }
-
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-
-    if (items.length < DEFER_LIST_MOUNT_ITEM_THRESHOLD) {
-      setIsReady(true);
-    } else {
-      timeout = setTimeout(() => setIsReady(true), DEFER_LIST_MOUNT_DELAY_MS);
-    }
-
-    return () => {
-      if (timeout !== undefined) clearTimeout(timeout);
-    };
-  }, [items.length, isSuccess]);
+  const chatRoomId = useChatRoomStore(state => state.chatRoomId);
 
   const listRef = useRef<FlatList<MessageCollectionItemDto>>(null);
   const setScrollToEnd = useChatRoomScrollStore(state => state.setScrollToEnd);
@@ -66,11 +50,41 @@ export default function ChatRoomMessagesList() {
   const invertList = items?.length > 0;
 
   useEffect(() => {
+    setIsReady(false);
+  }, [chatRoomId]);
+
+  useEffect(() => {
     setScrollToEnd(() => {
       listRef.current?.scrollToIndex({ animated: true, index: 0 });
     });
-    return () => setScrollToEnd(null);
+    return () => {
+      setScrollToEnd(null);
+    };
   }, [setScrollToEnd]);
+
+  // defer list mount when list is long to avoid UI flickering
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const shouldMount = !isReady && isEnabled && !isError && isSuccess;
+    const shouldNotMount = !isReady && (isError || !isEnabled);
+    if (shouldMount) {
+      if (items.length < DEFER_LIST_MOUNT_ITEM_THRESHOLD) {
+        setIsReady(true);
+      } else {
+        timeout = setTimeout(() => {
+          setIsReady(true);
+        }, DEFER_LIST_MOUNT_DELAY_MS);
+      }
+    } else if (shouldNotMount) {
+      setIsReady(true);
+    }
+
+    return () => {
+      if (timeout !== undefined) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [items.length, isSuccess, isEnabled, isError, isReady]);
 
   const handleScroll = useCallback((event: any) => {
     const { contentOffset } = event.nativeEvent;

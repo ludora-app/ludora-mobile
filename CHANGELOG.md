@@ -1,3 +1,27 @@
+## [1.6.0](https://github.com/ludora-app/ludora-mobile/compare/v1.5.1...v1.6.0) (2026-04-07)
+
+### ✨ Features
+
+* **SCRUM-617:** enhance chat room message handling and UI components ([#133](https://github.com/ludora-app/ludora-mobile/issues/133)) ([452f38b](https://github.com/ludora-app/ludora-mobile/commit/452f38bedefb7984f79ebd1c38e8b2f4a89f1d51))
+* **SCRUM-631:** introduce ComingSoon component and integrate it into create-session screen and profile badges section ([#146](https://github.com/ludora-app/ludora-mobile/issues/146)) ([c35536d](https://github.com/ludora-app/ludora-mobile/commit/c35536d65901c2f6af9ce31ca1c1599ae33335d8))
+* **SCRUM-632:** add session teams route with finish status tracking ([#145](https://github.com/ludora-app/ludora-mobile/issues/145)) ([d837354](https://github.com/ludora-app/ludora-mobile/commit/d83735416156112b256a286a8bf872d27f1dca15))
+
+### Bug Fixes
+
+* **SCRUM-613:** introduce HeaderOutlined component and standardize header heights across features ([#131](https://github.com/ludora-app/ludora-mobile/issues/131)) ([0284cd0](https://github.com/ludora-app/ludora-mobile/commit/0284cd0368502e8e378972fe09308c890bc60dc9))
+* **SCRUM-614:** improve error handling and type safety across various components ([#130](https://github.com/ludora-app/ludora-mobile/issues/130)) ([6958661](https://github.com/ludora-app/ludora-mobile/commit/69586619e35152f3851b84088cb5d21b12e603cc))
+* **SCRUM-619:** enhance chat room initializer logic and fix scroll down button position ([#129](https://github.com/ludora-app/ludora-mobile/issues/129)) ([a3261f2](https://github.com/ludora-app/ludora-mobile/commit/a3261f278539b4a8480fa28f6bf31475df911add))
+* **SCRUM-624:** update expo and related dependencies to improve compatibility ([#139](https://github.com/ludora-app/ludora-mobile/issues/139)) ([186afaa](https://github.com/ludora-app/ludora-mobile/commit/186afaa6993be1715e8842ba42cbfd1ba5baa400))
+* **SCRUM-628:** correct spelling of "PADDEL" to "PADEL" across multiple constants and components ([#140](https://github.com/ludora-app/ludora-mobile/issues/140)) ([b8b079c](https://github.com/ludora-app/ludora-mobile/commit/b8b079c63a491de5a45c8744fcf52a59fa4b6dbb))
+* **SCRUM-629:** standardize profile header height using safe area top padding across components ([#142](https://github.com/ludora-app/ludora-mobile/issues/142)) ([9226a21](https://github.com/ludora-app/ludora-mobile/commit/9226a21475f8dcf88cfb5be0f11082e938dae7fc))
+* **SCRUM-633:** ignore additional Google sign-in error message when user data is missing ([#148](https://github.com/ludora-app/ludora-mobile/issues/148)) ([7830eda](https://github.com/ludora-app/ludora-mobile/commit/7830eda447486c9922c3b7f4da99319c7e957cab))
+
+### ♻️ Code Refactoring
+
+* **SCRUM-621:** remove bio field from session team list item component ([#135](https://github.com/ludora-app/ludora-mobile/issues/135)) ([af45918](https://github.com/ludora-app/ludora-mobile/commit/af45918608267a6a1de8da85163563b0d04be587))
+* **SCRUM-625:** abstract session expiration logic to isAfterNow utility and restrict session actions to active sessions ([#144](https://github.com/ludora-app/ludora-mobile/issues/144)) ([a4d5716](https://github.com/ludora-app/ludora-mobile/commit/a4d5716cda22508566e34c8bb9bbe56556a812db))
+* **SCRUM-630:** optimize list components with memoization and improve performance diagnostics ([#143](https://github.com/ludora-app/ludora-mobile/issues/143)) ([f823fbd](https://github.com/ludora-app/ludora-mobile/commit/f823fbd1098ed4888c72c4a8e2118a19470a1704))
+
 ## [1.6.0-next.3](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0-next.2...v1.6.0-next.3) (2026-04-06)
 
 ### ✨ Features

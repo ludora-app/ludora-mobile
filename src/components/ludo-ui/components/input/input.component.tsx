@@ -1,4 +1,5 @@
 import { forwardRef, useState } from 'react';
+import { NativeSyntheticEvent, TargetedEvent } from 'react-native';
 import { Input as InputChillUi, InputContainer, InputField, InputLabel, cn, Box, BoxRow } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
@@ -34,6 +35,16 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 
   const showClearIcon = hasClearIcon && inputFieldProps?.value;
 
+  const handleFocus = (e: NativeSyntheticEvent<TargetedEvent>) => {
+    setIsFocused(true);
+    inputFieldProps?.onFocus?.(e);
+  };
+
+  const handleBlur = (e: NativeSyntheticEvent<TargetedEvent>) => {
+    setIsFocused(false);
+    inputFieldProps?.onBlur?.(e);
+  };
+
   return (
     <InputChillUi className={className}>
       {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
@@ -48,9 +59,9 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
           cursorColor={COLORS.primary}
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           {...inputFieldProps}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           style={[
             { alignSelf: 'stretch', color: '#000', flex: 1 },
             inputFieldProps?.style,

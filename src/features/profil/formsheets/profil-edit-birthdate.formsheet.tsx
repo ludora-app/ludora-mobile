@@ -26,7 +26,7 @@ export default function ProfilEditBirthdateFormsheet() {
   const { trackError, trackEvent, trackIdentity } = useAnalytics();
   const { control, handleSubmit } = useForm<z.infer<typeof profilEditBirthdateSchema>>({
     defaultValues: {
-      birthdate: new Date(userMeBirthdate ?? ''),
+      birthdate: userMeBirthdate ? new Date(userMeBirthdate) : undefined,
     },
     mode: 'onChange',
     resolver: zodResolver(profilEditBirthdateSchema),

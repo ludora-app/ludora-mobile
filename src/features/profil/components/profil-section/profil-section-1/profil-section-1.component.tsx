@@ -9,7 +9,6 @@ import COLORS from '@/constants/colors.contstants';
 import { getSportImage } from '@/utils/sports.utils';
 import { SportPreferenceResponseData } from '@/api/generated/model';
 
-
 interface ProfilSection1Props {
   isMe: boolean;
   lastname?: string;
@@ -28,11 +27,11 @@ function ProfilSection1(props: ProfilSection1Props) {
     if (hasSports) {
       return (
         <BoxRow className="items-center gap-1">
-          {sportPreferences.map((sportPreference) => (
+          {sportPreferences.map(sportPreference => (
             <Image
               key={sportPreference.uid}
               source={getSportImage(sportPreference.sport)}
-              className='size-6 rounded-lg'
+              className="size-6 rounded-lg"
             />
           ))}
         </BoxRow>
@@ -42,11 +41,11 @@ function ProfilSection1(props: ProfilSection1Props) {
     if (isMe) {
       return (
         <Link href={ROUTES.SETTINGS.PREFERENCES} asChild>
-          <Pressable className='flex-row items-center justify-between'>
+          <Pressable className="flex-row items-center justify-between">
             <String colorVariant="muted" variant="body-sm">
-              {t("profil.add_sports_description", "Ajoute tes sports préférés !")}
+              {t('profil.add_sports_description', 'Ajoute tes sports préférés !')}
             </String>
-            <Icon name="e-pen-regular" color={COLORS.primary} size="sm" className='mr-1' />
+            <Icon name="e-pen-regular" color={COLORS.primary} size="sm" className="mr-1" />
           </Pressable>
         </Link>
       );
@@ -54,14 +53,14 @@ function ProfilSection1(props: ProfilSection1Props) {
 
     return (
       <String colorVariant="muted" variant="body-sm">
-        {t("profil.no_favorite_sports", "Pas encore de sports favoris")}
+        {t('profil.no_favorite_sports', 'Pas encore de sports favoris')}
       </String>
     );
   };
 
   return (
-    <BoxRow className='items-center'>
-      <BoxRowGrow className='gap-2'>
+    <BoxRow className="items-center">
+      <BoxRowGrow className="gap-2">
         <Avatar
           data={{
             firstname: firstname ?? '',
@@ -70,14 +69,15 @@ function ProfilSection1(props: ProfilSection1Props) {
           }}
           size="xl"
         />
-        <BoxGrow className='gap-1'>
-          <String variant="body-3" font="primaryBold" truncate>{firstname} {lastname}</String>
+        <BoxGrow className="gap-1">
+          <String variant="body-3" font="primaryBold" truncate>
+            {firstname} {lastname}
+          </String>
           {renderSportsContent()}
         </BoxGrow>
       </BoxRowGrow>
     </BoxRow>
   );
 }
-
 
 export default memo(ProfilSection1);

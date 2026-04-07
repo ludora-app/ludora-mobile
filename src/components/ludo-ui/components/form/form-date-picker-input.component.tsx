@@ -11,6 +11,11 @@ import { useLanguages } from '@/hooks/languages.hook';
 import { Input } from '../input';
 import { FormDatePickerInputProps } from '../../types';
 
+const getValidDate = (val: unknown) => {
+  const d = val ? new Date(val as string) : new Date();
+  return Number.isNaN(d.getTime()) ? new Date() : d;
+};
+
 export default function FormDatePickerInput<T extends FieldValues = FieldValues>(props: FormDatePickerInputProps<T>) {
   const {
     className,
@@ -35,7 +40,8 @@ export default function FormDatePickerInput<T extends FieldValues = FieldValues>
     field: { onBlur, onChange, value },
     fieldState: { error },
   } = useController({ control, name });
-  const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : new Date());
+
+  const [selectedDate, setSelectedDate] = useState<Date>(getValidDate(value));
 
   const dateValue = value ? dayjs(value).format('DD/MM/YYYY') : '';
 

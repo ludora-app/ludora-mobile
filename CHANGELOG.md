@@ -1,3 +1,9 @@
+## [1.6.1-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0...v1.6.1-alpha.1) (2026-04-07)
+
+### Bug Fixes
+
+* **SCRUM-635:** optimize profile screen loading, fix date picker validation, and clean up dev tools ([#151](https://github.com/ludora-app/ludora-mobile/issues/151)) ([43a5efa](https://github.com/ludora-app/ludora-mobile/commit/43a5efa04199dd96a80b5e9b90509bac6780881d))
+
 ## [1.6.0](https://github.com/ludora-app/ludora-mobile/compare/v1.5.1...v1.6.0) (2026-04-07)
 
 ### ✨ Features

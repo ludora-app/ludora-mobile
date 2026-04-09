@@ -1,3 +1,9 @@
+## [1.7.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.6.1...v1.7.0-alpha.1) (2026-04-09)
+
+### ✨ Features
+
+* **SCRUM-636:** add sport field to create session analytics event ([#154](https://github.com/ludora-app/ludora-mobile/issues/154)) ([c2b7bb5](https://github.com/ludora-app/ludora-mobile/commit/c2b7bb5f06ffbf9857da50b75b6c9c73fffc668c))
+
 ## [1.6.1](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0...v1.6.1) (2026-04-07)
 
 ### Bug Fixes

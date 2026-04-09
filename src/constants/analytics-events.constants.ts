@@ -231,6 +231,7 @@ export interface AnalyticsEventData {
     has_team_b_name: boolean;
     has_title: boolean;
     title_source: 'user' | 'suggestion' | 'none';
+    sport: string;
   };
 
   // **

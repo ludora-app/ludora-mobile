@@ -6,7 +6,7 @@ const configureGoogleSignIn = () => {
     iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
     // offlineAccess: true, TODO: Activate this later
     profileImageSize: 120,
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
   });
 };

@@ -60,6 +60,7 @@ export default function CreateSessionFooterButtonCreateSession() {
           is_partner: s.additionalData.fieldType === 'partner',
           level: s.level,
           session_visibility: s.visibility,
+          sport: s.sport,
           start_date: s.startDate,
           title_source: s?.additionalData?.titleSource || 'none',
         },

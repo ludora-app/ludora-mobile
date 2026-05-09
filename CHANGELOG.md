@@ -1,3 +1,16 @@
+## [1.7.0-alpha.2](https://github.com/ludora-app/ludora-mobile/compare/v1.7.0-alpha.1...v1.7.0-alpha.2) (2026-05-09)
+
+### Bug Fixes
+
+* **SCRUM-647:** update on-boarding initializer to conditionally fetch user data based on authentication status ([#156](https://github.com/ludora-app/ludora-mobile/issues/156)) ([27f2c20](https://github.com/ludora-app/ludora-mobile/commit/27f2c20f2a50c8ef35a1246cd972046b4d9b8d75))
+* **SCRUM-648:** comment out Google Auth drive scopes in configuration ([#155](https://github.com/ludora-app/ludora-mobile/issues/155)) ([93a25bb](https://github.com/ludora-app/ludora-mobile/commit/93a25bbda82fe6c8134122effc89822f6bec2026))
+
+## [1.7.0-alpha.1](https://github.com/ludora-app/ludora-mobile/compare/v1.6.1...v1.7.0-alpha.1) (2026-04-09)
+
+### ✨ Features
+
+* **SCRUM-636:** add sport field to create session analytics event ([#154](https://github.com/ludora-app/ludora-mobile/issues/154)) ([c2b7bb5](https://github.com/ludora-app/ludora-mobile/commit/c2b7bb5f06ffbf9857da50b75b6c9c73fffc668c))
+
 ## [1.6.1](https://github.com/ludora-app/ludora-mobile/compare/v1.6.0...v1.6.1) (2026-04-07)
 
 ### Bug Fixes

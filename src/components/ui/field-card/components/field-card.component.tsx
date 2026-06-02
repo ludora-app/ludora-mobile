@@ -5,7 +5,7 @@ import { PropsWithChildren, useMemo } from 'react';
 import { ImageBackground, Box, Chip, Icon, String, BoxRow, Image } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { convertMToKm } from '@/utils/distance.utils';
+import { formatDistance } from '@/utils/distance.utils';
 import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
 import { FieldResponseDto, FieldResponseDtoType, SessionCollectionItemDtoSport } from '@/api/generated/model';
 
@@ -36,6 +36,12 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
 
   const { fieldImages, name, shortAddress, sports, type, userDistance = 0 } = field || {};
 
+  const distanceLabel = useMemo(() => {
+    if (!userDistance) return '';
+    const { unit, value } = formatDistance(userDistance);
+    const unitLabel = unit === 'km' ? t('common.km') : t('common.m', 'm');
+    return `(${value} ${unitLabel.toLowerCase()})`;
+  }, [userDistance, t]);
 
   const effectiveSport = sportImage ?? (sports?.[0] as SessionCollectionItemDtoSport);
   const mainSportPlaceholder = useMemo(() => getSportPlaceHolder(effectiveSport), [effectiveSport]);
@@ -97,9 +103,7 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
                   {shortAddress}
                 </String>
                 <Box>
-                  <String variant="body-xs">
-                    {userDistance ? `(${convertMToKm(userDistance)} ${t('common.km').toLowerCase()})` : ''}
-                  </String>
+                  <String variant="body-xs">{distanceLabel}</String>
                 </Box>
               </Box>
             </BoxRow>

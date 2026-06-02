@@ -8,13 +8,14 @@
 
 ## 0. Page de garde
 
-|                     |                                                     |
-| ------------------- | --------------------------------------------------- |
-| **Projet**          | Ludora Mobile (frontend React Native / Expo SDK 55) |
-| **Dépôt**           | https://github.com/ludora-app/ludora-mobile         |
-| **Branche mission** | `chore/dev-legacy-maintenance`                      |
-| **PR**              | https://github.com/ludora-app/ludora-mobile/pull/159 |
-| **Équipe / rôles**  | **Meberbeche Hichem Amir** — Développeur (C1 + C2 + C3) |
+|                     |                                                       |
+| ------------------- | ----------------------------------------------------- |
+| **Projet**          | Ludora Mobile (frontend React Native / Expo SDK 55)   |
+| **Dépôt**           | https://github.com/ludora-app/ludora-mobile           |
+| **Branche mission** | `chore/dev-legacy-maintenance`                        |
+| **PR**              | https://github.com/ludora-app/ludora-mobile/pull/159  |
+| **Équipe / rôles**  | **Meberbeche Hichem Amir** — Développeur Front Ludora |
+|                     | **Fall Gana** — Développeur\*\* Backend Ludora        |
 
 ---
 
@@ -274,14 +275,14 @@ const distanceLabel = useMemo(() => {
 
 ## 7. Tableau de bord — APRÈS + hygiène Git
 
-| Indicateur                       | Avant                                 | Après                                                  |
-| -------------------------------- | ------------------------------------- | ------------------------------------------------------ |
-| **Vulnérabilités (`bun audit`)** | 21 (1 critical, 10 high, 10 moderate) | **1 (1 moderate)** — critique & tous les high éliminés |
-| **Dépendances obsolètes**        | ~85                                   | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé)   |
-| **Build (`tsc`)**                | ✅ OK                                 | ✅ OK                                                  |
-| **Lint**                         | ✅ OK                                 | ✅ OK                                                  |
-| **Tests**                        | ❌ 0 (aucun runner)                   | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3)    |
-| **Lighthouse / temps de réponse** | _N/A_ (app mobile RN)                | _N/A_ (app mobile RN)                                  |
+| Indicateur                        | Avant                                 | Après                                                  |
+| --------------------------------- | ------------------------------------- | ------------------------------------------------------ |
+| **Vulnérabilités (`bun audit`)**  | 21 (1 critical, 10 high, 10 moderate) | **1 (1 moderate)** — critique & tous les high éliminés |
+| **Dépendances obsolètes**         | ~85                                   | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé)   |
+| **Build (`tsc`)**                 | ✅ OK                                 | ✅ OK                                                  |
+| **Lint**                          | ✅ OK                                 | ✅ OK                                                  |
+| **Tests**                         | ❌ 0 (aucun runner)                   | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3)    |
+| **Lighthouse / temps de réponse** | _N/A_ (app mobile RN)                 | _N/A_ (app mobile RN)                                  |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
 

@@ -10,7 +10,7 @@ const SLOW_REQUEST_THRESHOLD = 2000;
 
 export type ErrorResponse = {
   api_error?: {
-    statusCode: number;
+    statusCode?: number;
     message?: string | string[];
     error?: string;
   };
@@ -107,7 +107,13 @@ export const customInstance = async <T>({
     }
 
     if (error instanceof HTTPError) {
-      const errorContent = (await error?.response?.json()) ?? {};
+      // ky v2 consumes the response body automatically and exposes it, already
+      // parsed, on `error.data` — `error.response.json()` no longer works here.
+      const errorContent = (error.data ?? {}) as {
+        statusCode?: number;
+        message?: string | string[];
+        error?: string;
+      };
 
       const errorObj: ErrorResponse = {
         api_error: errorContent,

@@ -8,13 +8,13 @@
 
 ## 0. Page de garde
 
-| | |
-|---|---|
-| **Projet** | Ludora Mobile (frontend React Native / Expo SDK 55) |
-| **Dépôt** | https://github.com/ludora-app/ludora-mobile |
-| **Branche mission** | `chore/dev-legacy-maintenance` |
-| **PR** | _(à ouvrir — voir §7)_ |
-| **Équipe / rôles** | _(à compléter : qui a fait C1 / C2 / C3)_ |
+|                     |                                                     |
+| ------------------- | --------------------------------------------------- |
+| **Projet**          | Ludora Mobile (frontend React Native / Expo SDK 55) |
+| **Dépôt**           | https://github.com/ludora-app/ludora-mobile         |
+| **Branche mission** | `chore/dev-legacy-maintenance`                      |
+| **PR**              | _(à ouvrir — voir §7)_                              |
+| **Équipe / rôles**  | _(à compléter : qui a fait C1 / C2 / C3)_           |
 
 ---
 
@@ -36,13 +36,13 @@
 
 ## 2. Tableau de bord — AVANT
 
-| Indicateur | Avant |
-|---|---|
-| **Vulnérabilités (`bun audit`)** | **21** — 1 critique, 10 high, 10 moderate |
+| Indicateur                                 | Avant                                                                                                                                                                  |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vulnérabilités (`bun audit`)**           | **21** — 1 critique, 10 high, 10 moderate                                                                                                                              |
 | **Dépendances obsolètes (`bun outdated`)** | ~85 paquets en retard (dont majeures : `ky 1→2`, `eslint 8→10` EOL, `async-storage 2→3`, `gesture-handler 2→3`, `@legendapp/list 2→3`, `typescript 5→6`, `expo 55→56`) |
-| **Build (`tsc --noEmit`)** | ✅ OK |
-| **Lint (`eslint .`)** | ✅ OK |
-| **Tests / couverture** | ❌ **Aucun test, aucun runner installé** |
+| **Build (`tsc --noEmit`)**                 | ✅ OK                                                                                                                                                                  |
+| **Lint (`eslint .`)**                      | ✅ OK                                                                                                                                                                  |
+| **Tests / couverture**                     | ❌ **Aucun test, aucun runner installé**                                                                                                                               |
 
 > Preuves : `docs/mission-legacy/before/audit.txt`, `docs/mission-legacy/before/outdated.txt`, `docs/mission-legacy/before/build-lint.txt`.
 
@@ -62,11 +62,11 @@
 
 ## 3. Fiche de cadrage
 
-| Chantier | Détail | « Fait » = quand… |
-|---|---|---|
+| Chantier             | Détail                                                                                                                                                                                                                                                                                      | « Fait » = quand…                                                                              |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | **C1 — Mise à jour** | **`ky` 1.14.3 → 2.0.2** (majeure, breaking changes) sur la couche réseau (`src/api/api.instance.ts`, `src/api/orval.instance.ts`). + sécurisation : overrides des transitives vulnérables (`protobufjs`, `xmldom`, `ws`, `postcss`, `fast-uri`, `ip-address`). **Rollback** documenté (§4). | Filet de tests vert avant ET après ; `bun audit` réduit ; lint + type-check verts. ✅ **FAIT** |
-| **C2 — Correctif** | Bug « 0 km » : `convertMToKm` (`src/utils/distance.utils.ts`) arrondissait au km entier → distances < 500 m affichées « 0 km ». Reproduit par test, corrigé (1 décimale), régression couverte. | Test rouge→vert, fix contenu à la fonction pure. ✅ **FAIT** |
-| **C3 — Évolutif** | `formatDistance` (`src/utils/distance.utils.ts`) : affichage intelligent mètres/km sur la `field-card` (« 350 m » sous 1 km, « 1.4 km » au-delà). Helper pur testé + intégré. | Helper + 3 tests verts, intégré au composant. ✅ **FAIT** |
+| **C2 — Correctif**   | Bug « 0 km » : `convertMToKm` (`src/utils/distance.utils.ts`) arrondissait au km entier → distances < 500 m affichées « 0 km ». Reproduit par test, corrigé (1 décimale), régression couverte.                                                                                              | Test rouge→vert, fix contenu à la fonction pure. ✅ **FAIT**                                   |
+| **C3 — Évolutif**    | `formatDistance` (`src/utils/distance.utils.ts`) : affichage intelligent mètres/km sur la `field-card` (« 350 m » sous 1 km, « 1.4 km » au-delà). Helper pur testé + intégré.                                                                                                               | Helper + 3 tests verts, intégré au composant. ✅ **FAIT**                                      |
 
 ---
 
@@ -80,8 +80,8 @@
 
 **Preuve ciblée du chantier — `bun outdated ky` avant → après :**
 
-| Avant (en retard) | Après (à jour) |
-|---|---|
+| Avant (en retard)                                       | Après (à jour)                                         |
+| ------------------------------------------------------- | ------------------------------------------------------ |
 | ![ky outdated avant](images/bun-outdated-ky-before.png) | ![ky outdated après](images/bun-outdated-ky-after.png) |
 
 ### 4.2 Le filet AVANT de toucher (non-régression)
@@ -106,11 +106,11 @@ The `prefixUrl` option has been renamed `prefix` in v2 ...
 
 Trois breaking changes touchaient réellement notre code :
 
-| Breaking change (changelog) | Impact dans le code | Adaptation |
-|---|---|---|
-| **`prefixUrl` renommé `prefix`** | `api.instance.ts` configurait `prefixUrl: getApiUrl()` | → `prefix: getApiUrl()` |
+| Breaking change (changelog)                                                                                                      | Impact dans le code                                                                                  | Adaptation                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **`prefixUrl` renommé `prefix`**                                                                                                 | `api.instance.ts` configurait `prefixUrl: getApiUrl()`                                               | → `prefix: getApiUrl()`                                              |
 | **Signatures de hooks unifiées** : tous les hooks reçoivent désormais un seul objet d'état `{ request, options, response, ... }` | `beforeRequest: [async request => …]` et `afterResponse: [async (request, _options, response) => …]` | → `async ({ request }) => …` et `async ({ request, response }) => …` |
-| **Corps d'erreur auto-consommé** : `error.response.json()` ne fonctionne plus ; le corps pré-parsé est exposé sur `error.data` | `orval.instance.ts` faisait `await error.response.json()` dans le `catch` HTTPError | → `error.data` (+ ajustement de type : `statusCode` rendu optionnel) |
+| **Corps d'erreur auto-consommé** : `error.response.json()` ne fonctionne plus ; le corps pré-parsé est exposé sur `error.data`   | `orval.instance.ts` faisait `await error.response.json()` dans le `catch` HTTPError                  | → `error.data` (+ ajustement de type : `statusCode` rendu optionnel) |
 
 Points vérifiés **sans impact** : aucun usage de `searchParams` (les query strings sont construites à la main), les appels vers des API externes (Google Places, Twenty CRM) utilisent des URLs absolues (non concernées par `prefix`), `204` déjà géré explicitement avant `.json()`.
 
@@ -125,16 +125,17 @@ Points vérifiés **sans impact** : aucun usage de `searchParams` (les query str
 
 Profitant du chantier, sécurisation des transitives via `overrides` Bun — **en restant dans les ranges compatibles** avec les consommateurs (règle « ne pas aggraver ») :
 
-| Paquet | Override | Corrige |
-|---|---|---|
-| `protobufjs` | `^7.5.9` | **la critique RCE** + plusieurs high (reste dans `^7` exigé par `@grpc/proto-loader` → Firebase intact) |
-| `@xmldom/xmldom` | `^0.8.13` | 4 high (DoS / XML injection) |
-| `ws` | `^8.21.0` | moderate |
-| `postcss` | `^8.5.15` | moderate (XSS) |
-| `fast-uri` | `^3.1.2` | 2 high |
-| `ip-address` | `^10.2.0` | moderate |
+| Paquet           | Override  | Corrige                                                                                                 |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------------------- |
+| `protobufjs`     | `^7.5.9`  | **la critique RCE** + plusieurs high (reste dans `^7` exigé par `@grpc/proto-loader` → Firebase intact) |
+| `@xmldom/xmldom` | `^0.8.13` | 4 high (DoS / XML injection)                                                                            |
+| `ws`             | `^8.21.0` | moderate                                                                                                |
+| `postcss`        | `^8.5.15` | moderate (XSS)                                                                                          |
+| `fast-uri`       | `^3.1.2`  | 2 high                                                                                                  |
+| `ip-address`     | `^10.2.0` | moderate                                                                                                |
 
 **Volontairement NON overridés** (jugement « blast radius ») :
+
 - `uuid` → utilisé seulement par l'outillage prebuild Xcode (build-time), forcer `uuid@11` casserait l'API legacy de `xcode` pour une moderate.
 - `brace-expansion@5` → testé puis **retiré** : casse le `minimatch` legacy de `eslint-plugin-import` (`expand is not a function`). Cf. journal.
 
@@ -199,9 +200,9 @@ Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte.
 
 > Diff + test : commit `0140e24`.
 
-| | Avant | Après |
-|---|---|---|
-| `convertMToKm(400)` | `0` → « 0 km » | `0.4` → « 0.4 km » |
+|                      | Avant          | Après              |
+| -------------------- | -------------- | ------------------ |
+| `convertMToKm(400)`  | `0` → « 0 km » | `0.4` → « 0.4 km » |
 | `convertMToKm(1400)` | `1` → « 1 km » | `1.4` → « 1.4 km » |
 
 ---
@@ -247,22 +248,22 @@ const distanceLabel = useMemo(() => {
 
 > Diff + tests + capture de la fonctionnalité : commit `b4c819c`.
 
-| Distance | Avant (C1) | Après C2 | Après C3 |
-|---|---|---|---|
-| 350 m | « 0 km » | « 0.4 km » | **« 350 m »** |
-| 1 400 m | « 1 km » | « 1.4 km » | « 1.4 km » |
+| Distance | Avant (C1) | Après C2   | Après C3      |
+| -------- | ---------- | ---------- | ------------- |
+| 350 m    | « 0 km »   | « 0.4 km » | **« 350 m »** |
+| 1 400 m  | « 1 km »   | « 1.4 km » | « 1.4 km »    |
 
 ---
 
 ## 7. Tableau de bord — APRÈS + hygiène Git
 
-| Indicateur | Avant | Après |
-|---|---|---|
+| Indicateur                       | Avant                                 | Après                                                  |
+| -------------------------------- | ------------------------------------- | ------------------------------------------------------ |
 | **Vulnérabilités (`bun audit`)** | 21 (1 critical, 10 high, 10 moderate) | **1 (1 moderate)** — critique & tous les high éliminés |
-| **Dépendances obsolètes** | ~85 | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé) |
-| **Build (`tsc`)** | ✅ OK | ✅ OK |
-| **Lint** | ✅ OK | ✅ OK |
-| **Tests** | ❌ 0 (aucun runner) | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3) |
+| **Dépendances obsolètes**        | ~85                                   | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé)   |
+| **Build (`tsc`)**                | ✅ OK                                 | ✅ OK                                                  |
+| **Lint**                         | ✅ OK                                 | ✅ OK                                                  |
+| **Tests**                        | ❌ 0 (aucun runner)                   | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3)    |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
 
@@ -293,11 +294,13 @@ b95c726 test: add jest-expo harness and kyApi behavioural safety net         # C
 ## 8. Bilan & rétro legacy
 
 **Ce que la dette a coûté :**
+
 - L'absence de tests rendait toute modification « à l'aveugle » : il a fallu **construire le filet avant de pouvoir prouver** quoi que ce soit. Sur un client HTTP central (auth, refresh token), c'est un risque majeur.
 - Les vulnérabilités s'étaient accumulées **silencieusement via les transitives** (Firebase, outillage Expo) — invisibles sans `bun audit` régulier.
 - Un override « évident » (`brace-expansion@5`) a **cassé le lint** : preuve qu'on ne force pas une version sans vérifier le blast radius.
 
 **Ce qu'on changerait (futur-soi) :**
+
 - **CI** : ajouter `bun audit` (seuil high/critical) + `bun test` au pipeline pour ne plus accumuler.
 - **Tests** : étendre le filet (au-delà du client HTTP) ; viser une couverture sur la logique métier sensible.
 - **Mises à jour régulières** : Dependabot/renovate par petits lots, plutôt qu'un grand rattrapage.

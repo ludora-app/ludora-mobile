@@ -1,0 +1,18 @@
+[0m[1mbun audit [0m[2mv1.3.11 (af24e281)[0m
+uuid  <11.1.1
+  expo › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-constants › @expo/config › @expo/config-plugins › xcode › uuid
+  jest-expo › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-splash-screen › @expo/prebuild-config › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-dev-client › expo-manifests › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-updates › expo-manifests › @expo/config › @expo/config-plugins › xcode › uuid
+  moderate: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+
+1 vulnerabilities (1 moderate)
+
+To update all dependencies to the latest compatible versions:
+  bun update
+
+To update all dependencies to the latest versions (including breaking changes):
+  bun update --latest
+

@@ -1,0 +1,79 @@
+@protobufjs/utf8  <=1.1.0
+  @react-native-firebase/app › firebase › @firebase/firestore-compat › @firebase/firestore › @grpc/proto-loader › protobufjs › @protobufjs/utf8
+  moderate: protobufjs has overlong UTF-8 decoding - https://github.com/advisories/GHSA-q6x5-8v7m-xcrf
+
+@xmldom/xmldom  <0.8.13
+  expo-updates › @expo/plist › @xmldom/xmldom
+  expo › @expo/config-plugins › @expo/plist › @xmldom/xmldom
+  expo-constants › @expo/config › @expo/config-plugins › @expo/plist › @xmldom/xmldom
+  expo-splash-screen › @expo/prebuild-config › @expo/config › @expo/config-plugins › @expo/plist › @xmldom/xmldom
+  expo-dev-client › expo-manifests › @expo/config › @expo/config-plugins › @expo/plist › @xmldom/xmldom
+  high: xmldom: Uncontrolled recursion in XML serialization leads to DoS - https://github.com/advisories/GHSA-2v35-w6hq-6mfw
+  high: xmldom has XML injection through unvalidated DocumentType serialization - https://github.com/advisories/GHSA-f6ww-3ggp-fr8h
+  high: xmldom has XML node injection through unvalidated processing instruction serialization - https://github.com/advisories/GHSA-x6wf-f3px-wcqx
+  high: xmldom has XML node injection through unvalidated comment serialization - https://github.com/advisories/GHSA-j759-j44w-7fr8
+
+brace-expansion  >=5.0.0 <5.0.6
+  eslint › @humanwhocodes/config-array › minimatch › brace-expansion
+  expo › @expo/fingerprint › minimatch › brace-expansion
+  eslint-config-airbnb › eslint-plugin-react › minimatch › brace-expansion
+  eslint-config-expo › @typescript-eslint/parser › @typescript-eslint/typescript-estree › minimatch › brace-expansion
+  expo-updates › glob › minimatch › brace-expansion
+  react-native › @react-native/codegen › glob › minimatch › brace-expansion
+  @semantic-release/npm › npm › glob › minimatch › brace-expansion
+  eslint-plugin-perfectionist › @typescript-eslint/utils › @typescript-eslint/typescript-estree › minimatch › brace-expansion
+  expo-constants › @expo/config › glob › minimatch › brace-expansion
+  eslint-plugin-unused-imports › @typescript-eslint/eslint-plugin › @typescript-eslint/utils › @typescript-eslint/typescript-estree › minimatch › brace-expansion
+  expo-splash-screen › @expo/prebuild-config › @expo/config-plugins › glob › minimatch › brace-expansion
+  expo-dev-client › expo-manifests › @expo/config › glob › minimatch › brace-expansion
+  moderate: brace-expansion: Large numeric range defeats documented `max` DoS protection - https://github.com/advisories/GHSA-jxxr-4gwj-5jf2
+
+postcss  <8.5.10
+  eslint-plugin-tailwindcss › postcss
+  expo › @expo/cli › @expo/metro-config › postcss
+  moderate: PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+
+protobufjs  <=7.5.5
+  @react-native-firebase/app › firebase › @firebase/firestore-compat › @firebase/firestore › @grpc/proto-loader › protobufjs
+  high: protobuf.js: Code injection through bytes field defaults in generated toObject code - https://github.com/advisories/GHSA-66ff-xgx4-vchm
+  moderate: protobuf.js: Denial of service from crafted field names in generated code - https://github.com/advisories/GHSA-2pr8-phx7-x9h3
+  moderate: protobuf.js: Prototype injection in generated message constructors - https://github.com/advisories/GHSA-fx83-v9x8-x52w
+  high: protobuf.js: Code generation gadget after prototype pollution - https://github.com/advisories/GHSA-75px-5xx7-5xc7
+  high: protobuf.js: Process-wide denial of service through unsafe option paths - https://github.com/advisories/GHSA-jvwf-75h9-cwgg
+  high: protobuf.js: Denial of service through unbounded protobuf recursion - https://github.com/advisories/GHSA-685m-2w69-288q
+  moderate: protobufjs has overlong UTF-8 decoding - https://github.com/advisories/GHSA-q6x5-8v7m-xcrf
+  moderate: protobufjs: Denial of Service via unbounded recursive JSON descriptor expansion - https://github.com/advisories/GHSA-jggg-4jg4-v7c6
+  critical: Arbitrary code execution in protobufjs - https://github.com/advisories/GHSA-xq3m-2v4x-88gg
+
+uuid  <11.1.1
+  expo › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-constants › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-splash-screen › @expo/prebuild-config › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-dev-client › expo-manifests › @expo/config › @expo/config-plugins › xcode › uuid
+  expo-updates › expo-manifests › @expo/config › @expo/config-plugins › xcode › uuid
+  moderate: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+
+ws  >=8.0.0 <8.20.1
+  react-native › react-devtools-core › ws
+  expo › @expo/cli › ws
+  socket.io-client › engine.io-client › ws
+  moderate: ws: Uninitialized memory disclosure - https://github.com/advisories/GHSA-58qx-3vcg-4xpx
+
+fast-uri  <=3.1.1
+  eslint › @eslint/eslintrc › ajv › fast-uri
+  @commitlint/cli › @commitlint/load › @commitlint/config-validator › ajv › fast-uri
+  high: fast-uri vulnerable to host confusion via percent-encoded authority delimiters - https://github.com/advisories/GHSA-v39h-62p7-jpjc
+  high: fast-uri vulnerable to path traversal via percent-encoded dot segments - https://github.com/advisories/GHSA-q3j6-qgpj-74h6
+
+ip-address  <=10.1.0
+  @semantic-release/npm › npm › make-fetch-happen › @npmcli/agent › socks-proxy-agent › socks › ip-address
+  moderate: ip-address has XSS in Address6 HTML-emitting methods - https://github.com/advisories/GHSA-v2v4-37r5-5v8g
+
+21 vulnerabilities (1 critical, 10 high, 10 moderate)
+
+To update all dependencies to the latest compatible versions:
+  bun update
+
+To update all dependencies to the latest versions (including breaking changes):
+  bun update --latest
+

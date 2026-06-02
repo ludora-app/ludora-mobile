@@ -30,6 +30,8 @@
 
 > Preuve : le projet démarre / installe — `docs/mission-legacy/before/build-lint.txt`.
 
+![Le projet qui tourne (bun start / Metro)](images/bun-start.png)
+
 ---
 
 ## 2. Tableau de bord — AVANT
@@ -43,6 +45,16 @@
 | **Tests / couverture** | ❌ **Aucun test, aucun runner installé** |
 
 > Preuves : `docs/mission-legacy/before/audit.txt`, `docs/mission-legacy/before/outdated.txt`, `docs/mission-legacy/before/build-lint.txt`.
+
+**`bun audit` — AVANT (21 vulnérabilités, 1 critique) :**
+
+![bun audit avant](images/bun-audit-before.png)
+
+**`bun outdated` — AVANT (ampleur du retard) :**
+
+![bun outdated avant 1/2](images/bun-outdated-1.png)
+
+![bun outdated avant 2/2](images/bun-outdated-2.png)
 
 **Vulnérabilité critique** : `protobufjs` (Arbitrary code execution — GHSA-xq3m-2v4x-88gg), tirée par `@react-native-firebase` → `firebase` → `@grpc/proto-loader`.
 
@@ -65,6 +77,12 @@
 `ky` est le **client HTTP central** de l'app : toutes les requêtes vers l'API backend passent par `kyApi` (`src/api/api.instance.ts`), consommé par l'instance Orval (`src/api/orval.instance.ts`). C'est une dépendance **directe**, au **périmètre maîtrisé** et **testable** — candidate idéale pour une montée de version majeure « bien digérée » plutôt qu'un upgrade risqué de tout le SDK Expo (qui toucherait au code natif).
 
 `ky 1.14.3 → 2.0.2` est une **version majeure avec breaking changes**.
+
+**Preuve ciblée du chantier — `bun outdated ky` avant → après :**
+
+| Avant (en retard) | Après (à jour) |
+|---|---|
+| ![ky outdated avant](images/bun-outdated-ky-before.png) | ![ky outdated après](images/bun-outdated-ky-after.png) |
 
 ### 4.2 Le filet AVANT de toucher (non-régression)
 
@@ -130,6 +148,10 @@ L'upgrade est **entièrement réversible** car isolé dans des commits atomiques
 - **Filet de sécurité** : les 4 tests de `api.instance.test.ts` détectent immédiatement toute régression de comportement, dans les deux sens.
 
 > Preuve tests au vert après upgrade : `docs/mission-legacy/after/build-lint.txt`.
+
+**Filet de tests au vert (suite complète 10/10) — couvre le comportement de `kyApi` après l'upgrade :**
+
+![bun run test — 10/10](images/bun-test.png)
 
 ---
 
@@ -243,6 +265,10 @@ const distanceLabel = useMemo(() => {
 | **Tests** | ❌ 0 (aucun runner) | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3) |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
+
+**`bun audit` — APRÈS (1 vulnérabilité moderate, le `uuid` build-time volontairement laissé) :**
+
+![bun audit après](images/bun-audot-after.png)
 
 **Réduction sécurité : -95 % de vulnérabilités (21 → 1), 0 critique, 0 high.**
 

@@ -18,3 +18,6 @@ Log horodaté de la démarche réelle, impasses comprises.
 | **11:22** | Découverte que `protobufjs` **7.5.6–7.5.9 existent** et entrent dans le range `^7.2.5` de `@grpc/proto-loader` → ajout sûr de l'override `protobufjs ^7.5.9` (corrige la **critique** + highs sans toucher Firebase). |
 | **11:25** | `bun install` → `bun audit` **= 1 vulnérabilité (1 moderate)**. Lint OK, `tsc` OK, filet 4/4 vert. Reste `uuid` (build-time Xcode, moderate) **volontairement non touché**. Commit atomique `ef5d6a7`. Sauvegarde tableau « après ». |
 | **11:30** | Rédaction du compte-rendu (`RAPPORT.md`) : dashboard avant/après, breaking changes cités, plan de rollback, bilan. C1 terminé ; C2/C3 à cadrer. |
+| **11:45** | **C2** — chasse au bug dans la couche `utils`. Repérage de `convertMToKm = Math.round(m/1000)` utilisé tel quel dans `field-card` → un terrain à 400 m s'affiche « 0 km ». |
+| **11:50** | Reproduction par test unitaire (`distance.utils.test.ts`) : `convertMToKm(400)` attendu `0.4`, reçu `0` → **rouge**. Cause racine = arrondi au km entier. |
+| **11:54** | Correctif contenu : `Math.round(m / 100) / 10` (1 décimale). Test **vert** (3/3), suite complète 7/7. Commit atomique `0140e24`. |

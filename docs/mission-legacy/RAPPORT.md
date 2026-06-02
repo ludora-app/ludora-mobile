@@ -53,7 +53,7 @@
 | Chantier | Détail | « Fait » = quand… |
 |---|---|---|
 | **C1 — Mise à jour** | **`ky` 1.14.3 → 2.0.2** (majeure, breaking changes) sur la couche réseau (`src/api/api.instance.ts`, `src/api/orval.instance.ts`). + sécurisation : overrides des transitives vulnérables (`protobufjs`, `xmldom`, `ws`, `postcss`, `fast-uri`, `ip-address`). **Rollback** documenté (§4). | Filet de tests vert avant ET après ; `bun audit` réduit ; lint + type-check verts. ✅ **FAIT** |
-| **C2 — Correctif** | _(à définir — bug à reproduire → cause racine → fix → test de non-régression)_ | _En attente_ |
+| **C2 — Correctif** | Bug « 0 km » : `convertMToKm` (`src/utils/distance.utils.ts`) arrondissait au km entier → distances < 500 m affichées « 0 km ». Reproduit par test, corrigé (1 décimale), régression couverte. | Test rouge→vert, fix contenu à la fonction pure. ✅ **FAIT** |
 | **C3 — Évolutif** | _(à définir — petite fonctionnalité testée)_ | _En attente_ |
 
 ---
@@ -133,9 +133,54 @@ L'upgrade est **entièrement réversible** car isolé dans des commits atomiques
 
 ---
 
-## 5. C2 — Correctif
+## 5. C2 — Correctif : distances proches affichées « 0 km »
 
-_À compléter : symptôme → reproduction → cause racine → correction → test de non-régression._
+### 5.1 Symptôme
+
+Sur la carte d'un terrain (`field-card.component.tsx`), la distance utilisateur s'affiche via
+`` `(${convertMToKm(userDistance)} km)` ``. Un terrain situé à **400 m** s'affiche **« (0 km) »**, et un terrain à **1 400 m** s'affiche **« (1 km) »** — toutes les distances inférieures à 500 m sont écrasées à 0, et la précision décimale est perdue. Pour une app sportive où les terrains proches sont fréquents, « 0 km » est trompeur.
+
+### 5.2 Reproduction
+
+Test unitaire écrit **avant** le correctif (`src/utils/distance.utils.test.ts`) — échec reproduisant le bug :
+
+```
+✕ keeps sub-kilometre distances visible instead of rounding them to 0
+    Expected: 0.4
+    Received: 0
+✕ preserves one decimal of precision for distances over 1 km
+    Expected: 1.4
+    Received: 1
+```
+
+### 5.3 Cause racine
+
+```ts
+// AVANT
+export const convertMToKm = (m: number) => Math.round(m / 1000);
+```
+
+`Math.round(m / 1000)` arrondit au kilomètre entier le plus proche → tout ce qui est `< 500 m` devient `0`, et les décimales (1,4 km) disparaissent.
+
+### 5.4 Correction
+
+```ts
+// APRÈS
+export const convertMToKm = (m: number) => Math.round(m / 100) / 10;
+```
+
+Arrondi à une décimale : 400 m → **0,4 km**, 500 m → **0,5 km**, 1 400 m → **1,4 km**, 1 000 m → **1 km**, 12 000 m → **12 km**. Correctif **contenu à la fonction pure** (aucun changement de composant ni d'i18n).
+
+### 5.5 Non-régression
+
+Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte.
+
+> Diff + test : commit `0140e24`.
+
+| | Avant | Après |
+|---|---|---|
+| `convertMToKm(400)` | `0` → « 0 km » | `0.4` → « 0.4 km » |
+| `convertMToKm(1400)` | `1` → « 1 km » | `1.4` → « 1.4 km » |
 
 ---
 
@@ -153,7 +198,7 @@ _À compléter : besoin → implémentation → test._
 | **Dépendances obsolètes** | ~85 | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé) |
 | **Build (`tsc`)** | ✅ OK | ✅ OK |
 | **Lint** | ✅ OK | ✅ OK |
-| **Tests** | ❌ 0 (aucun runner) | ✅ **4/4 verts** (jest-expo installé) |
+| **Tests** | ❌ 0 (aucun runner) | ✅ **7/7 verts** (jest-expo : 4 C1 + 3 C2) |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
 
@@ -162,6 +207,8 @@ _À compléter : besoin → implémentation → test._
 ### Hygiène Git — historique de la branche
 
 ```
+0140e24 fix(distance): stop rounding nearby distances to "0 km"
+ea3dc07 docs(mission): add legacy maintenance report, journal and before/after evidence
 ef5d6a7 chore(security): pin vulnerable transitive deps via overrides
 1c6b73b chore(deps): upgrade ky 1.14.3 -> 2.0.2 and adapt to breaking changes
 b95c726 test: add jest-expo harness and kyApi behavioural safety net

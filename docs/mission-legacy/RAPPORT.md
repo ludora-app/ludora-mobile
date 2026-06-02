@@ -43,6 +43,7 @@
 | **Build (`tsc --noEmit`)**                 | ✅ OK                                                                                                                                                                  |
 | **Lint (`eslint .`)**                      | ✅ OK                                                                                                                                                                  |
 | **Tests / couverture**                     | ❌ **Aucun test, aucun runner installé**                                                                                                                               |
+| **Lighthouse / temps de réponse**          | _N/A_ — app mobile React Native (pas de page web Lighthouse) ; pas de backend dans ce dépôt                                                                            |
 
 > Preuves : `docs/mission-legacy/before/audit.txt`, `docs/mission-legacy/before/outdated.txt`, `docs/mission-legacy/before/build-lint.txt`.
 
@@ -196,7 +197,7 @@ Arrondi à une décimale : 400 m → **0,4 km**, 500 m → **0,5 km**, 1 400 m �
 
 ### 5.5 Non-régression
 
-Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte.
+Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte (puis 10/10 après C3).
 
 > Diff + test : commit `0140e24`.
 
@@ -204,6 +205,18 @@ Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte.
 | -------------------- | -------------- | ------------------ |
 | `convertMToKm(400)`  | `0` → « 0 km » | `0.4` → « 0.4 km » |
 | `convertMToKm(1400)` | `1` → « 1 km » | `1.4` → « 1.4 km » |
+
+**Capture avant/après du comportement (test rouge → vert) :**
+
+AVANT — bug remis (`Math.round(m / 1000)`), le test échoue (`Expected 0.4 / Received 0`) ; on voit aussi l'effet en cascade sur `formatDistance` :
+
+![test C2 rouge 1/2](images/bun-test-before-1.png)
+
+![test C2 rouge 2/2 — 3 failed, 3 passed](images/bun-test-before-2.png)
+
+APRÈS — correctif appliqué, suite complète au vert (10/10) :
+
+![test C2 vert — 10/10](images/bun-test.png)
 
 ---
 
@@ -246,7 +259,11 @@ const distanceLabel = useMemo(() => {
 
 3 tests unitaires ajoutés pour `formatDistance` (mètres arrondis à 10 m, bascule à 1 km, cas limite 999 m → 1 km). Suite complète **10/10** verte.
 
-> Diff + tests + capture de la fonctionnalité : commit `b4c819c`.
+**Capture de la fonctionnalité (tests `formatDistance` au vert dans la suite complète) :**
+
+![suite complète 10/10 incluant formatDistance](images/bun-test.png)
+
+> Diff + tests : commit `b4c819c`. _(Rendu visuel dans l'app — `field-card` affichant « 350 m » — validable au prochain build avec simulateur.)_
 
 | Distance | Avant (C1) | Après C2   | Après C3      |
 | -------- | ---------- | ---------- | ------------- |
@@ -264,6 +281,7 @@ const distanceLabel = useMemo(() => {
 | **Build (`tsc`)**                | ✅ OK                                 | ✅ OK                                                  |
 | **Lint**                         | ✅ OK                                 | ✅ OK                                                  |
 | **Tests**                        | ❌ 0 (aucun runner)                   | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3)    |
+| **Lighthouse / temps de réponse** | _N/A_ (app mobile RN)                | _N/A_ (app mobile RN)                                  |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
 

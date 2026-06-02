@@ -21,3 +21,6 @@ Log horodaté de la démarche réelle, impasses comprises.
 | **11:45** | **C2** — chasse au bug dans la couche `utils`. Repérage de `convertMToKm = Math.round(m/1000)` utilisé tel quel dans `field-card` → un terrain à 400 m s'affiche « 0 km ». |
 | **11:50** | Reproduction par test unitaire (`distance.utils.test.ts`) : `convertMToKm(400)` attendu `0.4`, reçu `0` → **rouge**. Cause racine = arrondi au km entier. |
 | **11:54** | Correctif contenu : `Math.round(m / 100) / 10` (1 décimale). Test **vert** (3/3), suite complète 7/7. Commit atomique `0140e24`. |
+| **12:05** | **C3** — évolution de l'affichage de distance. Découverte que `locales/*.json` sont **générés (Tolgee) et gitignorés** → impossible d'y committer une clé. Choix : `t('common.m', 'm')` (valeur par défaut Tolgee) pour rester committable. |
+| **12:12** | Ajout du helper pur `formatDistance` (m sous 1 km / km au-delà) + 3 tests (dont cas limite 999 m → 1 km). Tests verts. |
+| **12:18** | Intégration dans `field-card` via `useMemo`. Lint + `tsc` OK, suite complète **10/10**. Commit atomique `b4c819c`. |

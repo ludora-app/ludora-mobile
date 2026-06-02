@@ -54,7 +54,7 @@
 |---|---|---|
 | **C1 — Mise à jour** | **`ky` 1.14.3 → 2.0.2** (majeure, breaking changes) sur la couche réseau (`src/api/api.instance.ts`, `src/api/orval.instance.ts`). + sécurisation : overrides des transitives vulnérables (`protobufjs`, `xmldom`, `ws`, `postcss`, `fast-uri`, `ip-address`). **Rollback** documenté (§4). | Filet de tests vert avant ET après ; `bun audit` réduit ; lint + type-check verts. ✅ **FAIT** |
 | **C2 — Correctif** | Bug « 0 km » : `convertMToKm` (`src/utils/distance.utils.ts`) arrondissait au km entier → distances < 500 m affichées « 0 km ». Reproduit par test, corrigé (1 décimale), régression couverte. | Test rouge→vert, fix contenu à la fonction pure. ✅ **FAIT** |
-| **C3 — Évolutif** | _(à définir — petite fonctionnalité testée)_ | _En attente_ |
+| **C3 — Évolutif** | `formatDistance` (`src/utils/distance.utils.ts`) : affichage intelligent mètres/km sur la `field-card` (« 350 m » sous 1 km, « 1.4 km » au-delà). Helper pur testé + intégré. | Helper + 3 tests verts, intégré au composant. ✅ **FAIT** |
 
 ---
 
@@ -184,9 +184,51 @@ Test de nouveau vert (3/3) après correctif, suite complète **7/7** verte.
 
 ---
 
-## 6. C3 — Évolutif
+## 6. C3 — Évolutif : affichage intelligent de la distance (mètres / km)
 
-_À compléter : besoin → implémentation → test._
+### 6.1 Besoin
+
+Après le correctif C2, une distance proche s'affiche « 0.4 km » — lisible mais peu naturel. Évolution de la fonctionnalité existante d'affichage de distance sur la `field-card` : montrer les **mètres** sous 1 km (« 350 m ») et les **kilomètres** au-delà (« 1.4 km »).
+
+### 6.2 Implémentation
+
+Ajout d'un helper pur `formatDistance` (`src/utils/distance.utils.ts`) qui choisit l'unité la plus lisible et **retourne l'unité séparément** pour laisser le composant la localiser :
+
+```ts
+export type FormattedDistance = { unit: 'm' | 'km'; value: number };
+
+export const formatDistance = (meters: number): FormattedDistance => {
+  const roundedMeters = Math.round(meters / 10) * 10;
+  if (roundedMeters < 1000) {
+    return { unit: 'm', value: roundedMeters }; // ex. 350 m
+  }
+  return { unit: 'km', value: convertMToKm(meters) }; // ex. 1.4 km
+};
+```
+
+Intégration dans `field-card.component.tsx` via un `useMemo` :
+
+```tsx
+const distanceLabel = useMemo(() => {
+  if (!userDistance) return '';
+  const { unit, value } = formatDistance(userDistance);
+  const unitLabel = unit === 'km' ? t('common.km') : t('common.m', 'm');
+  return `(${value} ${unitLabel.toLowerCase()})`;
+}, [userDistance, t]);
+```
+
+**Contrainte i18n maîtrisée** : les fichiers `locales/*.json` sont **générés depuis Tolgee et gitignorés**. Pour rester 100 % committable sans dépendre d'eux, le label « mètres » utilise la **valeur par défaut** de Tolgee : `t('common.m', 'm')` renvoie « m » même si la clé n'existe pas encore côté plateforme (clé à créer dans Tolgee pour la traduction canonique).
+
+### 6.3 Tests
+
+3 tests unitaires ajoutés pour `formatDistance` (mètres arrondis à 10 m, bascule à 1 km, cas limite 999 m → 1 km). Suite complète **10/10** verte.
+
+> Diff + tests + capture de la fonctionnalité : commit `b4c819c`.
+
+| Distance | Avant (C1) | Après C2 | Après C3 |
+|---|---|---|---|
+| 350 m | « 0 km » | « 0.4 km » | **« 350 m »** |
+| 1 400 m | « 1 km » | « 1.4 km » | « 1.4 km » |
 
 ---
 
@@ -198,7 +240,7 @@ _À compléter : besoin → implémentation → test._
 | **Dépendances obsolètes** | ~85 | ~84 (`ky` à jour ; le reste hors périmètre maîtrisé) |
 | **Build (`tsc`)** | ✅ OK | ✅ OK |
 | **Lint** | ✅ OK | ✅ OK |
-| **Tests** | ❌ 0 (aucun runner) | ✅ **7/7 verts** (jest-expo : 4 C1 + 3 C2) |
+| **Tests** | ❌ 0 (aucun runner) | ✅ **10/10 verts** (jest-expo : 4 C1 + 3 C2 + 3 C3) |
 
 > Preuves : `docs/mission-legacy/after/audit.txt`, `docs/mission-legacy/after/outdated.txt`, `docs/mission-legacy/after/build-lint.txt`.
 
@@ -207,11 +249,13 @@ _À compléter : besoin → implémentation → test._
 ### Hygiène Git — historique de la branche
 
 ```
-0140e24 fix(distance): stop rounding nearby distances to "0 km"
+b4c819c feat(distance): show nearby distances in meters on the field card   # C3
+d89e39b docs(mission): document C2 correctif (distance "0 km" bug)
+0140e24 fix(distance): stop rounding nearby distances to "0 km"             # C2
 ea3dc07 docs(mission): add legacy maintenance report, journal and before/after evidence
-ef5d6a7 chore(security): pin vulnerable transitive deps via overrides
-1c6b73b chore(deps): upgrade ky 1.14.3 -> 2.0.2 and adapt to breaking changes
-b95c726 test: add jest-expo harness and kyApi behavioural safety net
+ef5d6a7 chore(security): pin vulnerable transitive deps via overrides        # C1
+1c6b73b chore(deps): upgrade ky 1.14.3 -> 2.0.2 and adapt to breaking changes # C1
+b95c726 test: add jest-expo harness and kyApi behavioural safety net         # C1 (filet)
 ```
 
 - Branche dédiée `chore/dev-legacy-maintenance`.

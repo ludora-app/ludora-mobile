@@ -1,0 +1,3 @@
+ts:check -> exit 0 (PASS)
+lint     -> exit 0 (PASS)
+tests    -> 4 passed / 4 total (jest-expo)

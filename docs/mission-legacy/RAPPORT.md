@@ -13,8 +13,8 @@
 | **Projet**          | Ludora Mobile (frontend React Native / Expo SDK 55) |
 | **Dépôt**           | https://github.com/ludora-app/ludora-mobile         |
 | **Branche mission** | `chore/dev-legacy-maintenance`                      |
-| **PR**              | _(à ouvrir — voir §7)_                              |
-| **Équipe / rôles**  | _(à compléter : qui a fait C1 / C2 / C3)_           |
+| **PR**              | https://github.com/ludora-app/ludora-mobile/pull/159 |
+| **Équipe / rôles**  | **Meberbeche Hichem Amir** — Développeur (C1 + C2 + C3) |
 
 ---
 
@@ -285,7 +285,11 @@ ef5d6a7 chore(security): pin vulnerable transitive deps via overrides        # C
 b95c726 test: add jest-expo harness and kyApi behavioural safety net         # C1 (filet)
 ```
 
-- Branche dédiée `chore/dev-legacy-maintenance`.
+**Historique Git (`git log --oneline`) :**
+
+![Historique Git de la branche](images/git-history.png)
+
+- Branche dédiée `chore/dev-legacy-maintenance`, PR [#159](https://github.com/ludora-app/ludora-mobile/pull/159) (10 commits).
 - Commits **atomiques** : 1 commit = 1 intention (filet / upgrade / sécurité), périmètres non mélangés.
 - Messages en **Conventional Commits** (validés par commitlint), hooks Husky (lint + type-check) passés à chaque commit.
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useRecyclingEffect, useViewability } from '@legendapp/list';
+import { useRecyclingEffect, useViewability } from '@legendapp/list/react-native';
 
 import { useListPerfDiagnosticFlags } from './list-perf-diagnostic-flags.hook';
 

@@ -1,5 +1,5 @@
 import { List } from '@ludo/ui';
-import { LegendListRef } from '@legendapp/list';
+import { LegendListRef } from '@legendapp/list/react-native';
 import { SharedValue } from 'react-native-reanimated';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 

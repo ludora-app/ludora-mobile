@@ -36,7 +36,8 @@ export default function DevToolsUserLoginSection() {
       if (isAuthenticated) {
         Updates.reloadAsync();
       }
-    } catch {
+    } catch (error) {
+      console.log('error', error);
       toast({
         message: 'Une erreur est survenue',
         variant: 'error',

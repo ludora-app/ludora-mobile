@@ -1,4 +1,4 @@
-import { LegendListProps, LegendListRef } from '@legendapp/list';
+import { LegendListProps, LegendListRef } from '@legendapp/list/react-native';
 
 import { StrictOmit } from '@/components/chill-ui-library';
 import { EmptyResultProps } from '@/components/ui/empty-resulat/empty-result.component';

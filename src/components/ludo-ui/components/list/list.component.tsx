@@ -3,7 +3,7 @@ import { ViewStyle } from 'react-native';
 import { cn, LoadingIndicator } from '@chillui/ui';
 import { useCallback, useMemo, useState } from 'react';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list/react-native';
 
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -188,7 +188,7 @@ export default function List(props: ListProps) {
       renderItem={renderItem}
       getItemType={getItemType}
       recycleItems
-      stickyIndices={stickyHeaderIndices}
+      stickyHeaderIndices={stickyHeaderIndices}
       {...(triggerEndReachedOnStart && { onStartReached: onEndReached })}
       onEndReached={onEndReached}
       onEndReachedThreshold={0.5}

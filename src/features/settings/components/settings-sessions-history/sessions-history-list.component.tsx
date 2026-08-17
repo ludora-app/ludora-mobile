@@ -1,5 +1,5 @@
-import { List } from '@ludo/ui';
 import { useMemo } from 'react';
+import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
@@ -19,9 +19,9 @@ export default function SessionsHistoryList() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetSessionsMe();
 
-  const handleFixedItemsSize = useMemo(
-    () => (index: number) => {
-      if (index === 0) {
+  const handleFixedItemsSize = useMemo<GetListFixedItemSize>(
+    () => (_item, _index, type) => {
+      if (type === 'sticky') {
         return LIST_STICKY_COMPONENT_HEIGHT;
       }
 

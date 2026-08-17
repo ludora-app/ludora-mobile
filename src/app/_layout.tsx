@@ -8,6 +8,7 @@ import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 import { useAuthStore } from '@/stores/auth.store';
 import FontProvider from '@/providers/font-provider';
 import MainProvider from '@/providers/main.provider';
+import { ignoreLogs } from '@/utils/ignore-logs.utils';
 import MainInitializer from '@/initializers/main.initializer';
 import { ENVIRONMENTS } from '@/constants/environments.constants';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
@@ -19,6 +20,10 @@ function StorybookHeader() {
 SplashScreen.setOptions({
   fade: true,
 });
+
+// Unavoidable on a short list with a sticky row: the sticky container cannot be borrowed from the
+// normal pool, and a list that fits in the render window has no spare container to lend.
+ignoreLogs(['[legend-list] No unused container available']);
 
 const environment = process.env.EXPO_PUBLIC_ENV || ENVIRONMENTS.PRODUCTION;
 

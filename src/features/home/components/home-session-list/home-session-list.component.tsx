@@ -1,5 +1,5 @@
-import { List } from '@ludo/ui';
 import { useMemo } from 'react';
+import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
@@ -11,9 +11,9 @@ import HomeSessionListHeader from './home-session-list-headers/home-session-list
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
-const ESTIMATED_LIST_ITEM_SIZE = 170;
-const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
-const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
+const FIXED_LIST_ITEM_SIZE = 170;
+const FIXED_LIST_STICKY_COMPONENT_SIZE = 66.33;
+const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
 
 const LIST_HEADER_HEIGHT = 176;
 const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
@@ -45,16 +45,15 @@ export default function HomeSessionList() {
 
   const { bottomTab } = useSafeArea();
 
-  const fixedEstimatedItemsSize = useMemo(
-    () => (index: number) => {
-      if (index === 0) {
-        return ESTIMATED_LIST_STICKY_COMPONENT;
+  const fixedItemsSize = useMemo<GetListFixedItemSize>(
+    () => (_item, _index, type) => {
+      if (type === 'sticky') {
+        return FIXED_LIST_STICKY_COMPONENT_SIZE;
       }
-      if (index === 1) {
-        return ESTIMATED_LIST_TOP_COMPONENT;
+      if (type === 'header_top') {
+        return FIXED_LIST_TOP_COMPONENT_SIZE;
       }
-
-      return ESTIMATED_LIST_ITEM_SIZE;
+      return FIXED_LIST_ITEM_SIZE;
     },
     [],
   );
@@ -62,9 +61,9 @@ export default function HomeSessionList() {
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
       if (sessions.length === 0) {
-        return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT + BOTTOM_PADDING_EMPTY_LIST;
+        return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE + BOTTOM_PADDING_EMPTY_LIST;
       }
-      return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT;
+      return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE;
     }
     return bottomTab;
   }, [bottomTab, sessions.length]);
@@ -87,7 +86,7 @@ export default function HomeSessionList() {
       isLoading={isLoading}
       hasRefreshControl
       refetch={refetch}
-      getFixedItemSize={fixedEstimatedItemsSize}
+      getFixedItemSize={fixedItemsSize}
       isRefetching={isRefetching}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"

@@ -1,10 +1,10 @@
 import { useToast } from '@chillui/ui';
 import { useRouter } from 'expo-router';
+import { useMemo, useState } from 'react';
 import { useTranslate } from '@tolgee/react';
-import React, { useEffect, useMemo, useState } from 'react';
 import { Box, BoxRow, Button, Chip, String } from '@ludo/ui';
 
-import dayjs from '@/lib/dayjs';
+import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -32,20 +32,14 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
 
   const { isPending: isSwitching, mutateAsync: switchTeam } = useChangeSessionTeam(sessionUid);
 
-  const isFinished = useMemo(() => {
-    if (!session?.endDate) return false;
-    return dayjs().isAfter(dayjs(session.endDate));
-  }, [session.endDate]);
-
+  const isFinished = !!session.endDate && isAfterNow(session.endDate);
   const joinedTeam = useMemo(() => session.sessionTeams?.find(team => team.isJoined), [session.sessionTeams]);
   const isSwitchingTeam = !!joinedTeam && !!selectedTeamUid && joinedTeam.teamUid !== selectedTeamUid;
+  const colorVariant = isTeamA ? 'primary' : 'secondary';
 
-  useEffect(() => {
-    if (selectedTeamUid && joinedTeam?.teamUid === selectedTeamUid) {
-      setSelectedTeamUid(null);
-    }
-  }, [joinedTeam?.teamUid, selectedTeamUid]);
-
+  if (selectedTeamUid && joinedTeam?.teamUid === selectedTeamUid) {
+    setSelectedTeamUid(null);
+  }
   const handleViewMembers = () => {
     router.navigate(ROUTES.SESSION.TEAM_UID(sessionUid));
   };
@@ -70,8 +64,6 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
     }
   };
 
-  const handleColorVariant = useMemo(() => (isTeamA ? 'primary' : 'secondary'), [isTeamA]);
-
   return (
     <Box className="gap-3">
       <BoxRow className="items-center justify-between">
@@ -85,7 +77,7 @@ export default function ChatRoomInfoSessionTeams({ session, sessionUid }: ChatRo
           contentProps={{
             className: 'px-2',
           }}
-          colorVariant={handleColorVariant}
+          colorVariant={colorVariant}
           className="px-0"
           iconProps={{
             className: 'ml-2',

@@ -20,25 +20,27 @@ import ProfilSection1Skeleton from '../components/profil-section/profil-section-
 export default function ProfilScreen() {
   const { id: userId } = useLocalSearchParams();
   const { userMeId } = useUserMe();
+  const userIdKey = (userId as string) || '';
 
-  // Defer heavy content mount until after navigation transition completes
-  const [isTransitionComplete, setIsTransitionComplete] = useState(!userId);
+  // Defer heavy content until after the navigation transition when viewing another profile.
+  // Own profile (!userIdKey) is ready immediately — no sync setState in an effect.
+  const [readyForUserId, setReadyForUserId] = useState<string | null>(userIdKey ? null : '');
 
   useEffect(() => {
-    if (!userId) {
-      setIsTransitionComplete(true);
-      return () => {};
+    if (!userIdKey) {
+      return undefined;
     }
 
     const handle = requestIdleCallback(() => {
-      setIsTransitionComplete(true);
+      setReadyForUserId(userIdKey);
     });
 
     return () => {
       cancelIdleCallback(handle);
     };
-  }, [userId]);
+  }, [userIdKey]);
 
+  const isTransitionComplete = !userIdKey || readyForUserId === userIdKey;
   const {
     data: userData,
     isLoading: isLoadingUserData,

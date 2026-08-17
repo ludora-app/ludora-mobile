@@ -14,7 +14,6 @@ type ListDiagnosticsOptions<T = unknown> = {
   getLabel?: (item: T) => string;
 };
 
-const SLOW_RENDER_MS = 50;
 const EXCESSIVE_SAME_ITEM_RENDERS = 3;
 const EXCESSIVE_MOUNTS_THRESHOLD = 3;
 const MOUNT_TRACKING_WINDOW_MS = 5_000;
@@ -45,43 +44,32 @@ function useListItemRenderDiagnostics<T extends ListItemWithUid>(
   effectiveLogs: boolean,
   effectiveReason: boolean,
 ) {
-  const renderStart = useRef(performance.now());
   const currentUid = useRef(item.uid);
   const rendersForCurrentUid = useRef(0);
   const hasMountedRef = useRef(false);
-
-  if (currentUid.current !== item.uid) {
-    currentUid.current = item.uid;
-    rendersForCurrentUid.current = 0;
-    hasMountedRef.current = false;
-  }
-
-  rendersForCurrentUid.current += 1;
-  renderStart.current = performance.now();
-
   const itemLabel = getLabel ? getLabel(item) : (item.name ?? item.uid);
 
-  if ((effectiveLogs || effectiveReason) && !hasMountedRef.current) {
-    hasMountedRef.current = true;
-    trackMount(`${label}::${item.uid}`, effectiveReason, label, itemLabel, item.uid);
-  }
-
+  // Ref access and counters belong in an effect — render must stay pure under React Compiler.
   useEffect(() => {
     if (!effectiveLogs && !effectiveReason) return;
 
-    const ms = performance.now() - renderStart.current;
+    if (currentUid.current !== item.uid) {
+      currentUid.current = item.uid;
+      rendersForCurrentUid.current = 0;
+      hasMountedRef.current = false;
+    }
+
+    rendersForCurrentUid.current += 1;
     const renderNum = rendersForCurrentUid.current;
+
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      trackMount(`${label}::${item.uid}`, effectiveReason, label, itemLabel, item.uid);
+    }
 
     if (effectiveLogs) {
       // eslint-disable-next-line no-console
-      console.log(`[PERF:RENDER] [${label}] uid=${item.uid} ${itemLabel} #${renderNum} ${ms.toFixed(1)}ms`);
-    }
-
-    if (effectiveReason && renderNum > 1 && ms > SLOW_RENDER_MS) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `[PERF:SLOW] [${label}] Slow render: ${ms.toFixed(1)}ms (>${SLOW_RENDER_MS}ms) | uid=${item.uid} ${itemLabel} render #${renderNum}`,
-      );
+      console.log(`[PERF:RENDER] [${label}] uid=${item.uid} ${itemLabel} #${renderNum}`);
     }
 
     if (effectiveReason && renderNum === EXCESSIVE_SAME_ITEM_RENDERS) {
@@ -118,12 +106,10 @@ export function useListItemRecyclingDiagnostics<T extends ListItemWithUid>(
   const { logs = false, reason = true } = opts;
   const { effectiveLogs, effectiveReason } = useListPerfDiagnosticFlags({ logs, reason });
   const selfRecycleCount = useRef(0);
-  const prevUidForRecycle = useRef(item.uid);
 
-  if (prevUidForRecycle.current !== item.uid) {
+  useEffect(() => {
     selfRecycleCount.current = 0;
-    prevUidForRecycle.current = item.uid;
-  }
+  }, [item.uid]);
 
   useListItemRenderDiagnostics(item, label, opts.getLabel, effectiveLogs, effectiveReason);
 

@@ -32,8 +32,6 @@ const DEFER_LIST_MOUNT_ITEM_THRESHOLD = 20;
 const DEFER_LIST_MOUNT_DELAY_MS = 300;
 
 export default function ChatRoomMessagesList() {
-  const [isReady, setIsReady] = useState(false);
-
   const isChatRoomGroup = useChatRoomStore(
     state => state.chatRoomInfo?.type === 'SESSION' || state.chatRoomInfo?.type === 'GROUP',
   );
@@ -46,12 +44,21 @@ export default function ChatRoomMessagesList() {
   const setScrollToEnd = useChatRoomScrollStore(state => state.setScrollToEnd);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const showScrollButtonRef = useRef(false);
+  const [hasShownList, setHasShownList] = useState(false);
+  const [readyForChatRoomId, setReadyForChatRoomId] = useState(chatRoomId);
 
   const invertList = items?.length > 0;
 
-  useEffect(() => {
-    setIsReady(false);
-  }, [chatRoomId]);
+  if (chatRoomId !== readyForChatRoomId) {
+    setReadyForChatRoomId(chatRoomId);
+    setHasShownList(false);
+  }
+
+  const canShowImmediately = isError || !isEnabled || (isSuccess && items.length < DEFER_LIST_MOUNT_ITEM_THRESHOLD);
+
+  if (canShowImmediately && !hasShownList && chatRoomId === readyForChatRoomId) {
+    setHasShownList(true);
+  }
 
   useEffect(() => {
     setScrollToEnd(() => {
@@ -62,30 +69,22 @@ export default function ChatRoomMessagesList() {
     };
   }, [setScrollToEnd]);
 
-  // defer list mount when list is long to avoid UI flickering
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-    const shouldMount = !isReady && isEnabled && !isError && isSuccess;
-    const shouldNotMount = !isReady && (isError || !isEnabled);
-    if (shouldMount) {
-      if (items.length < DEFER_LIST_MOUNT_ITEM_THRESHOLD) {
-        setIsReady(true);
-      } else {
-        timeout = setTimeout(() => {
-          setIsReady(true);
-        }, DEFER_LIST_MOUNT_DELAY_MS);
-      }
-    } else if (shouldNotMount) {
-      setIsReady(true);
+    if (hasShownList || canShowImmediately) {
+      return undefined;
+    }
+    if (!isSuccess || !isEnabled || isError) {
+      return undefined;
     }
 
-    return () => {
-      if (timeout !== undefined) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [items.length, isSuccess, isEnabled, isError, isReady]);
+    const timeout = setTimeout(() => {
+      setHasShownList(true);
+    }, DEFER_LIST_MOUNT_DELAY_MS);
 
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [hasShownList, canShowImmediately, isSuccess, isEnabled, isError, chatRoomId]);
   const handleScroll = useCallback((event: any) => {
     const { contentOffset } = event.nativeEvent;
     const shouldShow = contentOffset.y > AUTO_SCROLL_THRESHOLD;
@@ -118,7 +117,7 @@ export default function ChatRoomMessagesList() {
     [isFetchingNextPage],
   );
 
-  if (isLoading || !isReady) {
+  if (isLoading || !hasShownList) {
     return <ChatRoomMessagesListLoading />;
   }
 

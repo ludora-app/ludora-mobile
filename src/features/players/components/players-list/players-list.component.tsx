@@ -1,5 +1,5 @@
 import { useTranslate } from '@tolgee/react';
-import React, { useCallback, useMemo, useRef, type MutableRefObject } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { List } from '@/components/ludo-ui';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -24,11 +24,21 @@ export default function PlayersList() {
     useGetUsersSuggestionByFilter();
   const { mutateAsync: sendFriendInvitation } = useSendFriendInvitation();
 
-  const sendFriendInvitationRef = useRef(sendFriendInvitation) as MutableRefObject<typeof sendFriendInvitation>;
-  sendFriendInvitationRef.current = sendFriendInvitation;
+  const sendFriendInvitationRef = useRef(sendFriendInvitation);
+  const trackErrorRef = useRef(trackError);
+  const tRef = useRef(t);
 
-  const trackErrorRef = useRef(trackError) as MutableRefObject<typeof trackError>;
-  trackErrorRef.current = trackError;
+  useEffect(() => {
+    sendFriendInvitationRef.current = sendFriendInvitation;
+  }, [sendFriendInvitation]);
+
+  useEffect(() => {
+    trackErrorRef.current = trackError;
+  }, [trackError]);
+
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
 
   const onInvite = useCallback(async (userUid: string) => {
     try {
@@ -38,10 +48,10 @@ export default function PlayersList() {
     }
   }, []);
 
-  const tRef = useRef(t) as MutableRefObject<typeof t>;
-  tRef.current = t;
-
-  const stableT = useCallback(((...args: unknown[]) => (tRef.current as Function)(...args)) as typeof t, []);
+  const stableT = useCallback(
+    (...args: Parameters<typeof t>) => (tRef.current as typeof t)(...args),
+    [],
+  ) as typeof t;
 
   const contextValue = useMemo(() => ({ onInvite, t: stableT }), [onInvite, stableT]);
 

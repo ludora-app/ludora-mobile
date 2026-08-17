@@ -1,5 +1,5 @@
 import { TextInput } from 'react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { cn } from '../../../utils';
 import { inputFieldTv } from '../styles/Input.styles';
@@ -9,10 +9,12 @@ import { InputFieldProps } from '../../../types/input.types';
 export default function InputField(props: InputFieldProps) {
   const { allow, as, className, customRegex, font, onChangeText, ref, size, value, ...rest } = props;
   const [inputValue, setInputValue] = useState<string>(value || '');
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     setInputValue(value || '');
-  }, [value]);
+  }
 
   const { isStretchable, multiline } = useInputContext();
 

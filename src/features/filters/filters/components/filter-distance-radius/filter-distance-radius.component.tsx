@@ -1,6 +1,6 @@
 import { useTranslate } from '@tolgee/react';
+import { memo, useCallback, useState } from 'react';
 import { Slider } from 'react-native-awesome-slider';
-import { memo, useCallback, useEffect, useState } from 'react';
 import { Box, BoxRow, BoxRowCenterBetween, Button, Icon, String } from '@ludo/ui';
 import Animated, { FadeIn, FadeOut, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
@@ -36,10 +36,11 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 function FilterDistanceRadius() {
   const { t } = useTranslate();
-  const [distanceValue, setDistanceValue] = useState(25);
   const address = useFiltersStore(state => selectFilters(state).address);
   const { latitude, longitude } = useUserLocationStore(state => state.location) || {};
   const maxDistanceStoreValue = useFiltersStore(state => selectFilters(state).maxDistance);
+  const [distanceValue, setDistanceValue] = useState(maxDistanceStoreValue ?? 25);
+  const [prevStoreValue, setPrevStoreValue] = useState(maxDistanceStoreValue);
   const thumbScaleValue = useSharedValue(1);
   const setFilters = useFiltersStore(state => state.setFilters);
 
@@ -49,11 +50,10 @@ function FilterDistanceRadius() {
   const hasLocation = (!!latitude && !!longitude) || !!address;
   const isScrubbing = useSharedValue(false);
 
-  useEffect(() => {
-    if (!maxDistanceStoreValue) return;
+  if (maxDistanceStoreValue && maxDistanceStoreValue !== prevStoreValue) {
+    setPrevStoreValue(maxDistanceStoreValue);
     setDistanceValue(maxDistanceStoreValue);
-  }, [maxDistanceStoreValue]);
-
+  }
   useAnimatedReaction(
     () => distanceValue,
     data => {

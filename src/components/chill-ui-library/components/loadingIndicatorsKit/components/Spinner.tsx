@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { Animated, Platform } from 'react-native';
 
@@ -29,7 +29,7 @@ import { LoadingIndicatorsProps } from '../../../types';
  */
 export default function Spinner(props: LoadingIndicatorsProps) {
   const { color = '#000', size = defaultProps.size } = props;
-  const spinValue = useRef(new Animated.Value(0)).current;
+  const [spinValue] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     Animated.loop(

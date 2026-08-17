@@ -13,3 +13,4 @@ export * from './avatar.types';
 export * from './chip.types';
 export * from './icon-button.types';
 export * from './blur-view.types';
+export * from './list.types';

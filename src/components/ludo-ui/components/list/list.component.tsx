@@ -1,7 +1,7 @@
 import { list } from 'radash';
-import { ViewStyle } from 'react-native';
 import { cn, LoadingIndicator } from '@chillui/ui';
 import { useCallback, useMemo, useState } from 'react';
+import { useWindowDimensions, ViewStyle } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list/react-native';
 
@@ -12,7 +12,7 @@ import { EmptyResult } from '@/components/ui/empty-resulat';
 import { Box } from '../box';
 import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
-import { ListProps } from '../../types/list.types';
+import { ListItemType, ListProps } from '../../types/list.types';
 
 type SkeletonItem = { type: 'skeleton'; uid: string };
 type SpecialItem = { type: 'sticky' | 'header_top'; uid: string };
@@ -26,6 +26,12 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
   type: 'skeleton',
   uid: `skel-${i}`,
 }));
+
+// Stable references, so that a re-render with unchanged data is not reported as a data change.
+const STICKY_ITEM: SpecialItem = { type: 'sticky', uid: 'sticky' };
+const HEADER_TOP_ITEM: SpecialItem = { type: 'header_top', uid: 'header_top' };
+const EMPTY_ITEM: EmptyItem = { type: 'empty', uid: 'empty_res' };
+const LOADING_ITEM: LoadingItem = { type: 'loading', uid: 'loading' };
 
 export default function List(props: ListProps) {
   const {
@@ -57,6 +63,7 @@ export default function List(props: ListProps) {
   } = props;
 
   const { bottom, safeTop } = useSafeArea();
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
@@ -65,24 +72,28 @@ export default function List(props: ListProps) {
     const items: ListItem[] = [];
 
     if (ListStickyComponent) {
-      items.push({ type: 'sticky', uid: 'sticky' });
+      items.push(STICKY_ITEM);
     }
     if (ListTopComponent) {
-      items.push({ type: 'header_top', uid: 'header_top' });
+      items.push(HEADER_TOP_ITEM);
     }
 
     if (showSkeletons) {
       items.push(...SKELETON_DATA);
     } else if (isLoading && !isRefetching) {
-      items.push({ type: 'loading', uid: 'loading' });
+      items.push(LOADING_ITEM);
     } else if (isEmptyData) {
-      items.push({ type: 'empty', uid: 'empty_res' });
+      items.push(EMPTY_ITEM);
     } else {
       items.push(...(data || []));
     }
 
     return items;
   }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent, isLoading, isRefetching]);
+
+  // New Architecture reports a scroll length of 0 before the first layout, so without this hint
+  // nothing is rendered until a layout round-trip has completed.
+  const estimatedListSize = useMemo(() => ({ height: windowHeight, width: windowWidth }), [windowHeight, windowWidth]);
 
   const stickyHeaderIndices = useMemo(() => {
     if (ListStickyComponent) {
@@ -97,7 +108,7 @@ export default function List(props: ListProps) {
     }
   }, [isLoading, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  const getItemType = useCallback((item: ListItem) => {
+  const getItemType = useCallback((item: ListItem): ListItemType => {
     if (item && typeof item === 'object' && 'type' in item) {
       return item.type;
     }
@@ -188,6 +199,9 @@ export default function List(props: ListProps) {
       renderItem={renderItem}
       getItemType={getItemType}
       recycleItems
+      estimatedListSize={estimatedListSize}
+      {...(!triggerEndReachedOnStart &&
+        listHeaderComponentHeight !== undefined && { estimatedHeaderSize: listHeaderComponentHeight })}
       stickyHeaderIndices={stickyHeaderIndices}
       {...(triggerEndReachedOnStart && { onStartReached: onEndReached })}
       onEndReached={onEndReached}

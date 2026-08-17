@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { List } from '@/components/ludo-ui';
+import { GetListFixedItemSize, List } from '@/components/ludo-ui';
 import { FieldResponseDto, FieldResponseDtoType } from '@/api/generated/model';
 import CreateSessionStep2FieldCardSkeleton from '@/features/create-session/components/create-session-steps/create-session-step-2/create-session-step-2-field-card/create-session-step-2-field-card-skeleton';
 
@@ -27,19 +27,19 @@ export default function OnBoardingStep4FieldsList() {
     items: fields,
   } = useGetAllFieldsByFilter();
 
-  const fixedEstimatedItemsSize = useMemo(
-    () => (index: number, item: FieldResponseDto) => {
-      switch (index) {
-        case 0:
-          return LIST_STICKY_COMPONENT_HEIGHT;
-        case 1:
-          return LIST_TOP_COMPONENT_HEIGHT;
-        default:
-          if (item.type === FieldResponseDtoType.PRIVATE) {
-            return LIST_PRIVATE_FIELD_ITEM_HEIGHT;
-          }
-          return LIST_PUBLIC_FIELD_ITEM_HEIGHT;
+  const fixedEstimatedItemsSize = useMemo<GetListFixedItemSize<FieldResponseDto>>(
+    () => (item, _index, type) => {
+      if (type === 'sticky') {
+        return LIST_STICKY_COMPONENT_HEIGHT;
       }
+      if (type === 'header_top') {
+        return LIST_TOP_COMPONENT_HEIGHT;
+      }
+      if (item.type === FieldResponseDtoType.PRIVATE) {
+        return LIST_PRIVATE_FIELD_ITEM_HEIGHT;
+      }
+
+      return LIST_PUBLIC_FIELD_ITEM_HEIGHT;
     },
     [],
   );

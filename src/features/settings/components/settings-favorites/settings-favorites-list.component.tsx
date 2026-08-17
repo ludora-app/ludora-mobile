@@ -1,5 +1,5 @@
-import { List } from '@ludo/ui'
 import { useMemo } from 'react'
+import { GetListFixedItemSize, List } from '@ludo/ui'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
 import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card'
@@ -24,9 +24,9 @@ export default function SettingsFavoritesList() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetSessionsMe()
 
-  const handleFixedItemsSize = useMemo(
-    () => (index: number) => {
-      if (index === 0) {
+  const handleFixedItemsSize = useMemo<GetListFixedItemSize>(
+    () => (_item, _index, type) => {
+      if (type === 'sticky') {
         return LIST_STICKY_COMPONENT_HEIGHT;
       }
 

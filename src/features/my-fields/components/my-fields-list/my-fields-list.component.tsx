@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { List } from '@ludo/ui';
 import { useRouter } from 'expo-router';
+import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -25,9 +25,9 @@ export default function MyFieldsList() {
 
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } = useGetMyFields();
 
-  const handleFixedItemsSize = useMemo(
-    () => (index: number) => {
-      if (index === 0) {
+  const handleFixedItemsSize = useMemo<GetListFixedItemSize>(
+    () => (_item, _index, type) => {
+      if (type === 'sticky') {
         return LIST_STICKY_COMPONENT_HEIGHT;
       }
       return LIST_ITEM_SIZE_HEIGHT;

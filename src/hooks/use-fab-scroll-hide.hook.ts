@@ -9,24 +9,22 @@ const ANIMATION_DURATION = 200;
 export function useFabScrollHide() {
   const lastScrollY = useRef(0);
   const fabScale = useSharedValue(1);
+  const fabScaleRef = useRef(fabScale);
 
-  const handleScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const currentY = e.nativeEvent.contentOffset.y;
-      const delta = currentY - lastScrollY.current;
+  const handleScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentY = e.nativeEvent.contentOffset.y;
+    const delta = currentY - lastScrollY.current;
 
-      if (currentY <= TOP_THRESHOLD) {
-        fabScale.value = withTiming(1, { duration: ANIMATION_DURATION });
-      } else if (delta > SCROLL_THRESHOLD) {
-        fabScale.value = withTiming(0, { duration: ANIMATION_DURATION });
-      } else if (delta < -SCROLL_THRESHOLD) {
-        fabScale.value = withTiming(1, { duration: ANIMATION_DURATION });
-      }
+    if (currentY <= TOP_THRESHOLD) {
+      fabScaleRef.current.value = withTiming(1, { duration: ANIMATION_DURATION });
+    } else if (delta > SCROLL_THRESHOLD) {
+      fabScaleRef.current.value = withTiming(0, { duration: ANIMATION_DURATION });
+    } else if (delta < -SCROLL_THRESHOLD) {
+      fabScaleRef.current.value = withTiming(1, { duration: ANIMATION_DURATION });
+    }
 
-      lastScrollY.current = currentY;
-    },
-    [fabScale],
-  );
+    lastScrollY.current = currentY;
+  }, []);
 
   const fabAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: fabScale.value }],

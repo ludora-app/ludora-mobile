@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native';
-import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useRef, useState } from 'react';
 import { cn, InputMessage, useToast } from '@chillui/ui';
@@ -33,7 +33,6 @@ export default function VerifyCodeScreen() {
     formState: { errors },
     getValues,
     handleSubmit,
-    watch,
   } = useForm<VerifyCodeFormData>({
     resolver: zodResolver(formSchema),
   });
@@ -41,7 +40,7 @@ export default function VerifyCodeScreen() {
   const inputRefs = useRef<TextInput[]>([]);
   const { isPending: isVerifyingCode, mutateAsync: verifyCode } = useVerifyCode();
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const values = watch();
+  const values = useWatch({ control });
   const parsedValues = Object.values(values).join('');
 
   const refInputCallback = useCallback((ref: TextInput | null) => {

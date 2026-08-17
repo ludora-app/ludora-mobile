@@ -1,12 +1,15 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'expo-router';
 
 export const useGetOnBoardingStep = () => {
   const pathname = usePathname();
   const lastSegment = pathname.split('/').pop()?.split('-').pop();
-  const lastActiveStepRef = useRef(Number(lastSegment) || 1);
+  const parsedStep = Number(lastSegment) || 0;
+  const [fallbackStep, setFallbackStep] = useState(() => parsedStep || 1);
 
-  const activeStep = Number(lastSegment) || lastActiveStepRef.current;
-  lastActiveStepRef.current = activeStep;
-  return { activeStep };
+  if (parsedStep && parsedStep !== fallbackStep) {
+    setFallbackStep(parsedStep);
+  }
+
+  return { activeStep: parsedStep || fallbackStep };
 };

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Dimensions, LayoutChangeEvent, Platform, StatusBar } from 'react-native';
 
@@ -12,16 +12,18 @@ export function useChatRoomMessageActionsMenuPosition() {
   const insets = useSafeAreaInsets();
   const [menuHeight, setMenuHeight] = useState(160);
   const [isMeasured, setIsMeasured] = useState(false);
+  const anchorKey = anchor ? `${anchor.x}-${anchor.y}-${anchor.width}-${anchor.height}` : null;
+  const [prevAnchorKey, setPrevAnchorKey] = useState(anchorKey);
+
+  if (anchorKey !== prevAnchorKey) {
+    setPrevAnchorKey(anchorKey);
+    setIsMeasured(false);
+  }
 
   const onMenuLayout = (event: LayoutChangeEvent) => {
     setMenuHeight(event.nativeEvent.layout.height);
     setIsMeasured(true);
   };
-
-  useEffect(() => {
-    setIsMeasured(false);
-  }, [anchor]);
-
   const adjustedAnchor = useMemo(() => {
     if (!anchor) return null;
     return {

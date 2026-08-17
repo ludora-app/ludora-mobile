@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import * as Updates from 'expo-updates';
-import { useEffect, useState } from 'react';
 import { Box, BoxRow, BoxRowCenterBetween, Chip, Separator, String, Toggle } from '@ludo/ui';
 
 import { mmkvStorage } from '@/utils/mmkv-storage.utils';
@@ -18,15 +18,9 @@ const ENVIRONMENTS = [
 const apiEnvVar = process.env.EXPO_PUBLIC_API_ENV;
 
 export default function DevToolsEnvironmentSection() {
-  const [isGeneratedApiLocal, setIsGeneratedApiLocal] = useState(false);
-  const isGeneratedApi = mmkvStorage.getBoolean(MMKV_STORAGE_KEY.DEV_TOOL_ENV_KEY_IS_GENERATE_ENABLE);
-
-  useEffect(() => {
-    if (isGeneratedApi) {
-      setIsGeneratedApiLocal(isGeneratedApi);
-    }
-  }, [isGeneratedApi]);
-
+  const [isGeneratedApiLocal, setIsGeneratedApiLocal] = useState(
+    () => mmkvStorage.getBoolean(MMKV_STORAGE_KEY.DEV_TOOL_ENV_KEY_IS_GENERATE_ENABLE) ?? false,
+  );
   const handleSelectApiEnv = async (envLabel: string) => {
     await updateApiEnv(envLabel);
     if (isGeneratedApiLocal) {

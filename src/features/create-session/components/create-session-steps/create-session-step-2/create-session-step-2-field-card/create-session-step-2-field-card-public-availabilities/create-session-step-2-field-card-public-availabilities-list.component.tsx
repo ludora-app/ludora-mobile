@@ -1,8 +1,8 @@
 import { list } from 'radash';
 import { useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
+import { useState, useCallback, useMemo } from 'react';
 import { FlatList, type ListRenderItemInfo } from 'react-native';
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
 import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
@@ -68,16 +68,16 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
   uid: `skel-${i}`,
 }));
 
-export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
-  props: CreateSessionStep2FieldCardPublicAvailabilitiesListProps,
-) {
+type AvailabilitiesSlotsListProps = {
+  field: FieldResponseDto;
+  selectedDate?: string;
+};
+
+function AvailabilitiesSlotsList({ field, selectedDate }: AvailabilitiesSlotsListProps) {
   const router = useRouter();
-  const { field } = props;
   const { availabilities, uid: fieldUid } = field || {};
   const sport = useCreateSessionStore(state => state.session?.sport);
-
-  const [visibleSlots, setVisibleSlots] = useState<TimeSlot[]>([]);
-  const filterDate = useCreateSessionFiltersFieldsStore(state => state.filters.date);
+  const [visibleSlots, setVisibleSlots] = useState(() => getNextSlots(null, 10, selectedDate));
   const { endDate, selectedFieldUid, selectedSlotUid } = useCreateSessionStore(
     useShallow(state => ({
       endDate: state.session?.endDate,
@@ -85,11 +85,6 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
       selectedSlotUid: state.session?.additionalData?.publicFieldSlotUid,
     })),
   );
-
-  useEffect(() => {
-    const selectedDate = filterDate?.date;
-    setVisibleSlots(getNextSlots(null, 10, selectedDate));
-  }, [filterDate]);
 
   const loadMoreSlots = useCallback(() => {
     if (visibleSlots.length === 0) return;
@@ -165,4 +160,13 @@ export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
       contentContainerClassName="gap-2"
     />
   );
+}
+
+export default function CreateSessionStep2FieldCardPublicAvailabilitiesList(
+  props: CreateSessionStep2FieldCardPublicAvailabilitiesListProps,
+) {
+  const { field } = props;
+  const selectedDate = useCreateSessionFiltersFieldsStore(state => state.filters.date?.date);
+
+  return <AvailabilitiesSlotsList key={selectedDate ?? 'today'} field={field} selectedDate={selectedDate} />;
 }

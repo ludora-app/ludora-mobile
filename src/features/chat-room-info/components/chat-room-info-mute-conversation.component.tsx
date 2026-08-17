@@ -1,5 +1,5 @@
+import { useState } from 'react'
 import { Switch } from 'react-native'
-import { useEffect, useState } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { Box, BoxRow, BoxRowCenter, IconButton, String } from '@ludo/ui'
 import { useConversationsUpdateMuteSettings } from '@generatedApi/conversations/conversations.api'
@@ -15,13 +15,14 @@ type ChatRoomInfoMuteConversationProps = {
 export default function ChatRoomInfoMuteConversation({ chatRoomId, initialIsMuted }: ChatRoomInfoMuteConversationProps) {
   const { t } = useTranslate()
   const [isMuted, setIsMuted] = useState(initialIsMuted)
+  const [prevInitialIsMuted, setPrevInitialIsMuted] = useState(initialIsMuted)
   const invalidateConversation = useInvalidateConversationsFindOne()
   const { mutateAsync: updateMuteSettings } = useConversationsUpdateMuteSettings()
 
-  useEffect(() => {
+  if (initialIsMuted !== prevInitialIsMuted) {
+    setPrevInitialIsMuted(initialIsMuted)
     setIsMuted(initialIsMuted)
-  }, [initialIsMuted])
-
+  }
   const handleToggleMute = async () => {
     const newMuted = !isMuted
     setIsMuted(newMuted)

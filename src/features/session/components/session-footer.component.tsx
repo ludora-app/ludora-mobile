@@ -49,15 +49,8 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
 
   const isSessionFull = remainingPlayers === 0;
 
-  const isFinished = useMemo(() => {
-    if (!session?.endDate) return false;
-    return isAfterNow(session.endDate);
-  }, [session?.endDate]);
-
-  const isStarted = useMemo(() => {
-    if (!session?.startDate) return false;
-    return dayjs().isAfter(dayjs(session.startDate));
-  }, [session?.startDate]);
+  const isFinished = !!session.endDate && isAfterNow(session.endDate);
+  const isStarted = !!session.startDate && dayjs().isAfter(dayjs(session.startDate));
 
   const canJoinSession = !isSessionFull && !isJoined;
   const canSwitchTeam = isSwitching;

@@ -36,11 +36,7 @@ export default function ChatRoomInfoSessionScreen() {
     return undefined;
   }, [imageUrl, sessionData?.sport]);
 
-  const isFinished = useMemo(() => {
-    if (!sessionData?.endDate) return false;
-    return isAfterNow(sessionData.endDate);
-  }, [sessionData?.endDate]);
-
+  const isFinished = !!sessionData?.endDate && isAfterNow(sessionData.endDate);
   const shouldShowActions = !isFinished && sessionData?.isJoined;
 
   if (!sessionUid) {

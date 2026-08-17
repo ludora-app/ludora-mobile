@@ -7,7 +7,9 @@ import { useEffect, useRef } from 'react';
 export const useResetStoreOnUnmount = (resetFn: () => void) => {
   const resetFnRef = useRef(resetFn);
 
-  resetFnRef.current = resetFn;
+  useEffect(() => {
+    resetFnRef.current = resetFn;
+  }, [resetFn]);
 
   useEffect(
     () => () => {

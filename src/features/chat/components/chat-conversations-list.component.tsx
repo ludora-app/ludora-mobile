@@ -1,6 +1,6 @@
 import { List } from '@ludo/ui';
-import { LegendListRef } from '@legendapp/list/react-native';
 import { SharedValue } from 'react-native-reanimated';
+import { LegendListRef } from '@legendapp/list/react-native';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -26,28 +26,23 @@ export default function ChatConversationsList({ scrollY }: ChatConversationsList
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetAllChatRoomsByFilter(chatRoomsFilters);
 
-  const scrollYRef = scrollY;
+  const scrollYRef = useRef(scrollY);
   const listRef = useRef<LegendListRef>(null);
 
   const scrollToTop = useCallback(() => {
-    if (scrollYRef.value <= SCROLL_TO_TOP_THRESHOLD) {
+    if (scrollYRef.current.value <= SCROLL_TO_TOP_THRESHOLD) {
       listRef.current?.scrollToOffset({ animated: true, offset: 0 });
     }
-  }, [scrollYRef]);
+  }, []);
 
   useEffect(() => {
     setScrollToTop(scrollToTop);
     return () => setScrollToTop(null);
   }, [scrollToTop, setScrollToTop]);
 
-  const handleScroll = useCallback(
-    (e: { nativeEvent: { contentOffset: { y: number } } }) => {
-      'worklet';
-
-      scrollYRef.value = e.nativeEvent.contentOffset.y;
-    },
-    [scrollYRef],
-  );
+  const handleScroll = useCallback((e: { nativeEvent: { contentOffset: { y: number } } }) => {
+    scrollYRef.current.value = e.nativeEvent.contentOffset.y;
+  }, []);
 
   const contentContainerStyle = useMemo(() => ({ paddingBottom: bottomTab }), [bottomTab]);
 

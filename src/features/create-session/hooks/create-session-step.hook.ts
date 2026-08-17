@@ -1,12 +1,16 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'expo-router';
 
 export const useGetCreateSessionStep = () => {
   const pathname = usePathname();
   const lastSegment = pathname.split('/').pop()?.split('-').pop();
-  const lastActiveStepRef = useRef(Number(lastSegment) || 1);
+  const parsedStep = Number(lastSegment) || 0;
+  const [fallbackStep, setFallbackStep] = useState(() => parsedStep || 1);
 
-  const activeStep = Number(pathname.split('/').pop()?.split('-').pop()) || lastActiveStepRef.current;
-  lastActiveStepRef.current = activeStep;
-  return { activeStep };
+  // Keep the last valid step when the path briefly fails to parse (allowed render-time state adjust).
+  if (parsedStep && parsedStep !== fallbackStep) {
+    setFallbackStep(parsedStep);
+  }
+
+  return { activeStep: parsedStep || fallbackStep };
 };

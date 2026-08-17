@@ -1,7 +1,7 @@
 import { useToast } from '@chillui/ui';
-import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useTranslate } from '@tolgee/react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { BoxRow, Button, FormInput, Icon, String, WrapperGestureHandlerScrollView } from '@ludo/ui';
@@ -32,7 +32,7 @@ export default function MyFieldsAddFormSheet() {
 
   const [showSportSelector] = useState(() => !sport);
 
-  const { control, handleSubmit, setValue, watch } = useForm<CreateFieldSchema>({
+  const { control, handleSubmit, setValue } = useForm<CreateFieldSchema>({
     defaultValues: {
       address: '',
       images: [],
@@ -50,7 +50,7 @@ export default function MyFieldsAddFormSheet() {
     setValue('sports', [sport]);
   }, [sport, setValue]);
 
-  const sports = watch('sports');
+  const sports = useWatch({ control, name: 'sports' });
 
   const onSubmit = async (data: CreateFieldSchema) => {
     try {

@@ -11,7 +11,7 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { RootStackParamList } from '@/types/routes-params.types';
 import FooterWrapper from '@/components/ui/footer-wrapper/footer-wrapper.component';
 
-import { useInviteFriends } from '../queries/invite-friends-query';
+import { useInviteFriends } from '../queries/invite-friends.query';
 import { useInviteFriendsStore } from '../stores/invite-friends.store';
 
 const API_ERROR_USER_ALREADY_INVITED = API_ERRORS.INVITE_FRIENDS_TO_SESSION.USER_ALREADY_INVITED;

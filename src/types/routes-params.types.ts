@@ -60,10 +60,6 @@ export type RootStackParamList = {
   [ROUTES.IMAGE_PICKER.INDEX]: {
     goBackPath: RouteValues;
   };
-  [ROUTES.CHAT_ROOM.MESSAGE_ACTIONS]: {
-    messageId: string;
-    chatRoomId: string;
-  };
   [ROUTES.SESSION.JOINED]: {
     conversationUid: string;
     name: string;

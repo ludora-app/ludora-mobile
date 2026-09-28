@@ -21,25 +21,39 @@ export const useToastAnimation = () => {
   const scaleRef = useRef(scale);
   const progressWidthRef = useRef(progressWidth);
   const isAnimatingRef = useRef(false);
+  const showResolveRef = useRef<(() => void) | null>(null);
+  const hideResolveRef = useRef<(() => void) | null>(null);
 
-  const hideToast = useCallback((position: ToastPosition) => {
-    const offset = position === 'top' ? -DEFAULT_POSITION_OFFSET : DEFAULT_POSITION_OFFSET;
-
-    return new Promise<void>(resolve => {
-      const config = { duration: ANIMATION_DURATION, easing: Easing.in(Easing.cubic) };
-
-      opacityRef.current.value = withTiming(0, config);
-      scaleRef.current.value = withTiming(0.8, config);
-      translateYRef.current.value = withTiming(offset, config, finished => {
-        if (finished) {
-          scheduleOnRN(() => {
-            isAnimatingRef.current = false;
-            resolve();
-          });
-        }
-      });
-    });
+  const completeShow = useCallback(() => {
+    showResolveRef.current?.();
+    showResolveRef.current = null;
   }, []);
+
+  const completeHide = useCallback(() => {
+    isAnimatingRef.current = false;
+    hideResolveRef.current?.();
+    hideResolveRef.current = null;
+  }, []);
+
+  const hideToast = useCallback(
+    (position: ToastPosition) => {
+      const offset = position === 'top' ? -DEFAULT_POSITION_OFFSET : DEFAULT_POSITION_OFFSET;
+
+      return new Promise<void>(resolve => {
+        hideResolveRef.current = resolve;
+        const config = { duration: ANIMATION_DURATION, easing: Easing.in(Easing.cubic) };
+
+        opacityRef.current.value = withTiming(0, config);
+        scaleRef.current.value = withTiming(0.8, config);
+        translateYRef.current.value = withTiming(offset, config, finished => {
+          if (finished) {
+            scheduleOnRN(completeHide);
+          }
+        });
+      });
+    },
+    [completeHide],
+  );
 
   const showToast = useCallback(
     (position: ToastPosition, duration: number) => {
@@ -53,6 +67,7 @@ export const useToastAnimation = () => {
       progressWidthRef.current.value = 0;
 
       return new Promise<void>(resolve => {
+        showResolveRef.current = resolve;
         const config = { duration: ANIMATION_DURATION, easing: Easing.out(Easing.cubic) };
 
         opacityRef.current.value = withTiming(1, config);
@@ -66,12 +81,14 @@ export const useToastAnimation = () => {
             easing: Easing.linear,
           },
           finished => {
-            if (finished) scheduleOnRN(resolve);
+            if (finished) {
+              scheduleOnRN(completeShow);
+            }
           },
         );
       });
     },
-    [screenWidth],
+    [completeShow, screenWidth],
   );
 
   return {

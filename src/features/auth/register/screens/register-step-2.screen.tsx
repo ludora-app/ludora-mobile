@@ -14,7 +14,7 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import FormDatePickerInput from '@/components/ludo-ui/components/form/form-date-picker-input.component';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
-import { useRegister } from '../queries/register.hook';
+import { useRegister } from '../queries/register.query';
 import { formSchema } from '../schemas/register-step-2.schema';
 
 const EMAIL_ALREADY_EXISTS_ERROR_MESSAGE = 'User already exists';

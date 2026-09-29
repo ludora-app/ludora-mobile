@@ -31,22 +31,25 @@ const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
         const repo = 'ludora-app/ludora-back';
         const ghEnv = { ...process.env, GH_TOKEN: process.env.GH_TOKEN || process.env.GITHUB_TOKEN };
 
-        // 1. Récupérer l'ID du dernier run sur la branche (permet de récupérer l'artefact même si le run a échoué plus tard)
+        const artifactName = `swagger-${branchName}`;
+
+        // 1. Récupérer le run du dernier artefact swagger-<branche> non expiré
+        // (le dernier run de la branche peut être un pull_request, qui ne génère pas de swagger)
         const runId = execSync(
-          `gh run list --repo ${repo} --branch "${branchName}" --workflow "CI/CD Pipeline" --limit 1 --json databaseId --jq ".[0].databaseId"`,
+          `gh api "repos/${repo}/actions/artifacts?name=${artifactName}&per_page=1" --jq ".artifacts[0] | select(.expired == false) | .workflow_run.id"`,
           { env: ghEnv },
         )
           .toString()
           .trim();
 
-        if (!runId || runId === 'null') {
-          throw new Error(`No runs found on branch ${branchName}`);
+        if (!runId) {
+          throw new Error(`No ${artifactName} artifact found`);
         }
 
-        console.log(`📡 Downloading artifact from run ID: ${runId}`);
+        console.log(`📡 Downloading ${artifactName} from run ID: ${runId}`);
 
         // 2. Télécharger l'artefact du run trouvé
-        execSync(`gh run download ${runId} --repo ${repo} --pattern "swagger-*" --dir "${tempDir}"`, {
+        execSync(`gh run download ${runId} --repo ${repo} --name "${artifactName}" --dir "${tempDir}"`, {
           stdio: 'inherit',
           env: ghEnv,
         });

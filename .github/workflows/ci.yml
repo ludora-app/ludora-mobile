@@ -78,14 +78,14 @@ jobs:
             echo "⚠️ No $ARTIFACT_NAME artifact found"
           fi
 
-          # Locate the actual swagger.json file
-          SWAGGER_PATH=$(find .artifacts -name "swagger.json" | head -n 1)
+          # swagger-public.json = swagger de l'app (swagger-admin.json = dashboard admin)
+          SWAGGER_PATH=$(find .artifacts -name "swagger-public.json" 2>/dev/null | head -n 1)
           if [ -n "$SWAGGER_PATH" ]; then
             mv "$SWAGGER_PATH" ./swagger-backend.json
-            echo "✅ Swagger.json found and moved to ./swagger-backend.json"
+            echo "✅ swagger-public.json found and moved to ./swagger-backend.json"
             echo "HAS_LOCAL_SWAGGER=true" >> $GITHUB_ENV
           else
-            echo "❌ No swagger.json found, skipping local file usage."
+            echo "❌ No swagger-public.json found, skipping local file usage."
             echo "HAS_LOCAL_SWAGGER=false" >> $GITHUB_ENV
           fi
 

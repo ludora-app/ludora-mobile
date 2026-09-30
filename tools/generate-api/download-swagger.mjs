@@ -18,8 +18,8 @@ const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
       console.log(`🌐 Env is "${env}", trying to fetch artifact from GitHub...`);
 
       let branchName = 'main';
-      if (env === 'development' || env === 'staging') branchName = 'dev';
-      if (env === 'preview') branchName = 'staging';
+      // preview tape sur l'API dev (cf. api-url.mjs)
+      if (env === 'development' || env === 'staging' || env === 'preview') branchName = 'dev';
 
       try {
         const tempDir = path.resolve(process.cwd(), '.artifacts');
@@ -55,7 +55,8 @@ const env = process.env.EXPO_PUBLIC_API_ENV || 'production';
         });
 
         const files = fs.readdirSync(tempDir, { recursive: true });
-        const swaggerPath = files.find(f => f.endsWith('swagger.json'));
+        // swagger-public.json = swagger de l'app (swagger-admin.json = dashboard admin)
+        const swaggerPath = files.find(f => f.endsWith('swagger-public.json'));
 
         if (swaggerPath) {
           localFile = path.resolve(tempDir, swaggerPath);

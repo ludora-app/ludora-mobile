@@ -77,3 +77,8 @@ features/<f>/
 ## 4. When the user asks for something that conflicts
 
 If a request would break these conventions (for example a hand-written fetch, a new enum, logic in a route file), follow the convention and mention it briefly. If the user insists, do what they ask.
+
+## References
+
+- `references/feature-anatomy-examples.md`: read when you need the real folder tree and first files to open for a list, form sheet, multi-step or detail feature (workflow step 1).
+- `references/new-feature-walkthrough.md`: read when adding a new list feature end to end, or to map a done-checklist item to the file that must change.

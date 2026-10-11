@@ -9,7 +9,7 @@ Before writing, open one sibling component in the same feature and one shared eq
 
 ## 1. Imports: @ludo/ui first
 
-`@ludo/ui` (`src/components/ludo-ui`) is a thin app layer over `@chillui/ui` (`src/components/chill-ui-library`). **Features import primitives from `@ludo/ui`.** Import from `@chillui/ui` only what ludo-ui doesn't wrap: `cn`, `useToast`, `ScalePressable`, `OutlinedString`, `LoadingIndicator`, `Pellet`, `BounceBox`, `AnimatedBox`, `Dialog*`, `Carousel*`, `SegmentedControl*`, types `StrictOmit`, `WrapperProps`. Never import via `@/components/ludo-ui` / `@/components/chill-ui-library` paths, and never edit chill-ui internals for a feature need.
+`@ludo/ui` (`src/components/ludo-ui`) is a thin app layer over `@chillui/ui` (`src/components/chill-ui-library`). **Features import primitives from `@ludo/ui`.** Import from `@chillui/ui` only what ludo-ui doesn't wrap: `cn`, `useToast`, `ScalePressable`, `OutlinedString`, `LoadingIndicator`, `Pellet`, `BounceBox`, `Dialog*`, `Carousel*`, `SegmentedControl*`, types `StrictOmit`, `WrapperProps`. Never import via `@/components/ludo-ui` / `@/components/chill-ui-library` paths, and never edit chill-ui internals for a feature need.
 
 Main `@ludo/ui` components:
 
@@ -22,7 +22,7 @@ Main `@ludo/ui` components:
 | `Icon` | `name` (from generated `icons.constants`, `-solid`/`-regular`), `size`, `color`, `className` |
 | `Avatar` | `data={{ firstname, lastname, imageUrl }}`, `size`, `colorVariant` primary/secondary |
 | `Skeleton` | `variant` text/square/circle/rectangle, `className` for size |
-| `Wrapper` | `px` (md=16 default), `fill` (default true), `grow`; plus `WrapperKeyboardAwareScrollView`, `WrapperSafeAreaView`… |
+| `Wrapper` | `px` (md=16 default), `fill` (default true only on the scroll/safe-area/keyboard variants; plain `Wrapper` has no default), `grow`; plus `WrapperKeyboardAwareScrollView`, `WrapperSafeAreaView`… |
 | `ScreenLayout` | wraps every screen (background image) |
 | `ScrollView` | `contentContainerClassName`, `hasRefreshControl` + `refetch` + `isRefetching`, `bounces` |
 | `List` | see §4 |
@@ -161,3 +161,10 @@ export default function PlayersList() {
 - Reusable components that translate internally take a key prop: `titleKey`, `labelKey`, `confirmButtonTitleKey`. Otherwise pass `t(...)` results.
 - Call `t('key')` with **no default text** (the author does this in ~98% of calls). `locales/*.json` are generated from Tolgee — never hand-edit them. At the end, list every new key with a suggested FR and EN text for the user to create in Tolgee.
 - No hard-coded user-facing strings.
+
+## References
+
+- `references/shared-components-catalog.md`: read before building any card, header, footer, empty/loading state, picker or segmented control, to check what already exists in `src/components/ui/` (real props + usage site).
+- `references/ludo-ui-api.md`: read when you need exact prop types (`Button`, `String`, `List`, `Wrapper`, `Skeleton`), or to know whether a primitive comes from `@ludo/ui` or must be imported from `@chillui/ui`.
+- `references/lists-and-skeletons.md`: read when writing or changing a `List` screen, its `getFixedItemSize`, header/sticky slots, item or skeleton component.
+- `references/formsheets-and-dialogs.md`: read when writing a form sheet (single or multi-view), its header/footer, a `DialogConfirm`, or a toast.

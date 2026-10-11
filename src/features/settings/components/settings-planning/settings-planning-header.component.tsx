@@ -19,7 +19,7 @@ export default function SettingsPlanningHeader() {
         fillColor="#FFFFFF"
         strokeColor={COLORS.primary}
         strokeWidth={2}
-        fontFamily="NunitoSans700Bold"
+        fontFamily="Baloo2800ExtraBold"
         className='mt-2'
       />
     </Wrapper>

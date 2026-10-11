@@ -1,21 +1,14 @@
 import { Link } from 'expo-router';
-import { Button as ButtonChillUI, ButtonContent, ButtonIcon, ButtonLoader, ButtonTitle, cn } from '@chillui/ui';
+import { Button as ButtonChillUI, ButtonContent, ButtonIcon, ButtonLoader, ButtonTitle } from '@chillui/ui';
 
 import { Image } from '../image';
 import { ButtonProps } from '../../types/button.types';
 
 export default function Button(props: ButtonProps) {
-  const { className, contentProps, iconProps, image, isDisabled, isLoading, loaderProps, redirect, title, titleProps, ...rest } =
-    props;
+  const { contentProps, iconProps, image, isLoading, loaderProps, redirect, title, titleProps, ...rest } = props;
 
   const buttonContent = (
-    <ButtonChillUI
-      as="scale-pressable"
-      className={cn('rounded-full', className)}
-      isDisabled={isLoading || isDisabled}
-      size="lg"
-      {...rest}
-    >
+    <ButtonChillUI as="scale-pressable" isLoading={isLoading} {...rest}>
       {!isLoading && iconProps && iconProps.position === 'left-outside' && <ButtonIcon {...iconProps} />}
       <ButtonContent {...contentProps}>
         {image?.source && <Image source={image?.source} contentFit={image.contentFit} className={image.className} />}
@@ -27,7 +20,7 @@ export default function Button(props: ButtonProps) {
           </ButtonTitle>
         )}
 
-        {isLoading && <ButtonLoader name="swing" color="#FFF" {...loaderProps} />}
+        {isLoading && <ButtonLoader name="swing" {...loaderProps} />}
         {!isLoading && iconProps && iconProps.position === 'right' && <ButtonIcon {...iconProps} />}
       </ButtonContent>
     </ButtonChillUI>

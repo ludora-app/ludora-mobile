@@ -5,6 +5,7 @@ import type { ButtonProps } from '../../../types';
 export type ButtonContextValue = {
   colorVariant: ButtonProps['colorVariant'];
   isDisabled: boolean;
+  isLoading: boolean;
   size: ButtonProps['size'];
   sizingVariant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   variant: ButtonProps['variant'];

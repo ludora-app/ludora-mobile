@@ -19,10 +19,14 @@ import { useButtonContext } from '../context/ButtonContext';
  * ```
  */
 export default function ButtonTitle({ children, className, ...props }: PropsWithChildren<ButtonTitleProps>) {
-  const { colorVariant, sizingVariant, variant } = useButtonContext();
+  const { colorVariant, isDisabled, isLoading, size, sizingVariant, variant } = useButtonContext();
 
   return (
-    <String size={sizingVariant} className={cn(ButtonStringTv({ colorVariant, variant }), className)} {...props}>
+    <String
+      size={sizingVariant}
+      className={cn(ButtonStringTv({ colorVariant, isDisabled: isDisabled && !isLoading, size, variant }), className)}
+      {...props}
+    >
       {children}
     </String>
   );

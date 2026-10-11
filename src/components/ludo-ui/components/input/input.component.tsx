@@ -26,6 +26,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const showError = hasError && !!error;
+  const isDisabled = inputFieldProps?.editable === false;
   const showMessageError = !!error && hasMessageError;
   const showLengthCounter = hasLengthCounter && !!inputFieldProps?.maxLength;
 
@@ -47,23 +48,36 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 
   return (
     <InputChillUi className={className}>
-      {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
+      {!!label && (
+        <InputLabel colorVariant={showError ? 'error' : 'dark'} font="primaryBold" className="ml-0 text-[14px]">
+          {label}
+        </InputLabel>
+      )}
       <InputContainer
-        className={cn({ 'border-error': showError, 'border-primary': isFocused }, inputContainerClassName)}
+        className={cn(
+          'min-h-14 rounded-[16px] border border-input bg-white px-4',
+          {
+            'bg-darkSoft': isDisabled,
+            'border-2 border-error': showError,
+            'border-2 border-primary': isFocused && !showError,
+          },
+          inputContainerClassName,
+        )}
       >
         {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
           ref={ref}
-          placeholderTextColor={COLORS.ring}
+          placeholderTextColor={COLORS.placeholder}
           cursorColor={COLORS.primary}
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
           {...inputFieldProps}
+          className={cn('font-primary-medium text-[16px]', inputFieldProps?.className)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={[
-            { alignSelf: 'stretch', color: '#000', flex: 1 },
+            { alignSelf: 'stretch', color: isDisabled ? `${COLORS.dark}8C` : COLORS.dark, flex: 1 },
             inputFieldProps?.style,
             inputFieldProps?.multiline && { textAlignVertical: 'top' },
           ]}
@@ -76,7 +90,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         {showClearIcon && (
           <Icon
             name="close-circle-bulk"
-            color="#00000099"
+            color={`${COLORS.dark}99`}
             onPress={() => inputFieldProps?.onChangeText?.('')}
             size="sm"
             pressEffectSize="xs"
@@ -85,7 +99,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         {inputFieldProps?.secureTextEntry && (
           <Icon
             name={showPassword ? 'eye-slash-solid' : 'eye-solid'}
-            color="#00000099"
+            color={`${COLORS.dark}99`}
             onPress={() => setShowPassword(prev => !prev)}
             size="sm"
             pressEffectSize="xs"
@@ -97,8 +111,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         <Box className="flex-1 flex-row items-center">
           {showMessageError && (
             <>
-              <Icon name="warning-solid" size="xs" color="red" />
-              <String colorVariant="error" size="xs" truncate>
+              <Icon name="warning-solid" size="xs" color={COLORS.error} />
+              <String colorVariant="error" font="primarySemiBold" className="text-[13px]" truncate>
                 {error}
               </String>
             </>

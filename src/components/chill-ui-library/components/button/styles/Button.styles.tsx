@@ -1,4 +1,4 @@
-import { tv } from 'tailwind-variants';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 // Main Button Tailwind Variant
 export const ButtonTv = tv({
@@ -79,6 +79,20 @@ export const ButtonTv = tv({
       colorVariant: 'white',
       variant: 'outlined',
     },
+    // Soft variants - light tinted background, no border
+    { className: 'bg-secondarySoft', colorVariant: ['secondary', 'accent', 'danger', 'error'], variant: 'soft' },
+    { className: 'bg-primarySoft', colorVariant: 'primary', variant: 'soft' },
+    { className: 'bg-tertiarySoft', colorVariant: ['tertiary', 'warning', 'info'], variant: 'soft' },
+    { className: 'bg-darkSoft', colorVariant: ['dark', 'light', 'muted', 'neutral'], variant: 'soft' },
+    { className: 'bg-successSoft', colorVariant: 'success', variant: 'soft' },
+    { className: 'bg-white/20', colorVariant: ['white', 'inverted'], variant: 'soft' },
+    // Disabled - beige background whatever the color
+    {
+      className: 'border-transparent bg-button-disabled-background',
+      isDisabled: true,
+      variant: ['contained', 'soft'],
+    },
+    { className: 'border-button-disabled-background', isDisabled: true, variant: 'outlined' },
   ],
   variants: {
     colorVariant: {
@@ -103,20 +117,22 @@ export const ButtonTv = tv({
       true: 'self-start',
     },
     isDisabled: {
-      true: 'opacity-[0.4]',
+      true: '',
     },
+    // Ludora design system: L 54 / r18, M 48 / r16, S 44 / r14
     size: {
-      '2xl': 'h-[64px]',
-      '2xs': 'h-[28px]',
-      lg: 'h-[48px]',
-      md: 'h-[40px]',
-      sm: 'h-[36px]',
-      xl: 'h-[56px]',
-      xs: 'h-[32px]',
+      '2xl': 'h-[64px] rounded-[20px] px-8',
+      '2xs': 'h-[28px] rounded-[10px] px-2.5',
+      lg: 'h-[54px] rounded-[18px] px-7',
+      md: 'h-[48px] rounded-[16px] px-6',
+      sm: 'h-[44px] rounded-[14px] px-[18px]',
+      xl: 'h-[56px] rounded-[18px] px-7',
+      xs: 'h-[32px] rounded-[10px] px-3',
     },
     variant: {
       contained: 'border-transparent',
       outlined: 'bg-transparent',
+      soft: 'border-transparent',
       text: 'bg-transparent border-transparent',
     },
   },
@@ -354,6 +370,21 @@ export const ButtonStringTv = tv({
       colorVariant: 'white',
       variant: 'text',
     },
+    // Darker shade on outlined / text when the plain color lacks contrast on cream
+    { className: 'text-primaryDark', colorVariant: 'primary', variant: ['outlined', 'text'] },
+    { className: 'text-dark', colorVariant: ['tertiary', 'warning'], variant: ['outlined', 'text'] },
+    // Soft variants
+    { className: 'text-destructive', colorVariant: ['secondary', 'accent', 'danger', 'error'], variant: 'soft' },
+    { className: 'text-primaryDark', colorVariant: 'primary', variant: 'soft' },
+    {
+      className: 'text-dark',
+      colorVariant: ['tertiary', 'warning', 'info', 'dark', 'light', 'muted', 'neutral'],
+      variant: 'soft',
+    },
+    { className: 'text-success', colorVariant: 'success', variant: 'soft' },
+    { className: 'text-white', colorVariant: ['white', 'inverted'], variant: 'soft' },
+    // Disabled
+    { className: 'text-button-disabled-content', isDisabled: true },
   ],
   variants: {
     colorVariant: {
@@ -374,13 +405,50 @@ export const ButtonStringTv = tv({
       white: '',
     },
 
+    isDisabled: {
+      true: '',
+    },
+    // Ludora design system: L 17, M 16, S 15
+    size: {
+      '2xl': 'text-[18px] leading-[24px]',
+      '2xs': 'text-[12px] leading-[16px]',
+      lg: 'text-[17px] leading-[22px]',
+      md: 'text-[16px] leading-[22px]',
+      sm: 'text-[15px] leading-[20px]',
+      xl: 'text-[17px] leading-[22px]',
+      xs: 'text-[13px] leading-[18px]',
+    },
     variant: {
       contained: '',
       outlined: '',
-      text: '',
+      soft: '',
+      text: 'underline',
     },
   },
 });
+
+/**
+ * CSS variable holding the content color of a button (title, loader), matching ButtonStringTv
+ */
+export function getButtonContentColorVariable({
+  colorVariant = 'primary',
+  variant = 'contained',
+}: {
+  colorVariant?: ButtonColorVariant;
+  variant?: ButtonVariant;
+}) {
+  if (variant === 'contained') return `--color-button-${colorVariant}-content`;
+  if (variant === 'soft') {
+    if (['accent', 'danger', 'error', 'secondary'].includes(colorVariant)) return '--color-destructive';
+    if (colorVariant === 'primary') return '--color-primaryDark';
+    if (colorVariant === 'success') return '--color-success';
+    if (colorVariant === 'white' || colorVariant === 'inverted') return '--color-button-white-background';
+    return '--color-dark';
+  }
+  if (colorVariant === 'primary') return '--color-primaryDark';
+  if (colorVariant === 'tertiary' || colorVariant === 'warning') return '--color-dark';
+  return `--color-button-${colorVariant}-background`;
+}
 
 export const buttonContentTv = tv({
   variants: {
@@ -396,5 +464,8 @@ export const buttonContentTv = tv({
 export const twStyles = {
   content: 'flex-row items-center',
   pointerEventsNone: 'pointer-events-none',
-  touchableComponent: 'px-3 rounded-lg border-2 items-center flex-row',
+  touchableComponent: 'border-2 items-center flex-row',
 };
+
+type ButtonColorVariant = VariantProps<typeof ButtonTv>['colorVariant'];
+type ButtonVariant = VariantProps<typeof ButtonTv>['variant'];

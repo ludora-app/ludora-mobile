@@ -61,7 +61,7 @@ export default function HeaderOutlined(props: HeaderOutlinedProps) {
             fillColor="#FFFFFF"
             strokeColor={COLORS.primary}
             strokeWidth={2}
-            fontFamily="NunitoSans700Bold"
+            fontFamily="Baloo2800ExtraBold"
           />
         </Box>
       </BoxRowGrow>

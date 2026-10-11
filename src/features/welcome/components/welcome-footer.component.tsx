@@ -6,10 +6,11 @@ export default function WelcomeFooter() {
 
   return (
     <Wrapper className="mb-10 w-full gap-4">
-      <Button title={t('common.login')} size="xl" redirect="/auth/login" />
+      <Button title={t('common.login')} size="xl" colorVariant="secondary" redirect="/auth/login" />
       <Button
         title={t('common.register')}
         variant="outlined"
+        colorVariant="secondary"
         redirect="/auth/register/step-1"
         size="xl"
       />

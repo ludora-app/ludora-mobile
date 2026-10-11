@@ -1,33 +1,40 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { PropsWithChildren, useEffect } from 'react';
 import {
+  Baloo2_500Medium as Baloo2500Medium,
+  Baloo2_700Bold as Baloo2700Bold,
+  Baloo2_400Regular as Baloo2400Regular,
+  Baloo2_600SemiBold as Baloo2600SemiBold,
+  Baloo2_800ExtraBold as Baloo2800ExtraBold,
+} from '@expo-google-fonts/baloo-2';
+import {
   useFonts,
-  NunitoSans_300Light as NunitoSans300Light,
-  NunitoSans_400Regular as NunitoSans400Regular,
-  NunitoSans_600SemiBold as NunitoSans600SemiBold,
-  NunitoSans_700Bold as NunitoSans700Bold,
-  NunitoSans_900Black as NunitoSans900Black,
-  NunitoSans_300Light_Italic as NunitoSans300LightItalic,
-  NunitoSans_400Regular_Italic as NunitoSans400RegularItalic,
-  NunitoSans_600SemiBold_Italic as NunitoSans600SemiBoldItalic,
-  NunitoSans_700Bold_Italic as NunitoSans700BoldItalic,
-  NunitoSans_900Black_Italic as NunitoSans900BlackItalic,
-  NunitoSans_800ExtraBold as NunitoSans800ExtraBold,
-} from '@expo-google-fonts/nunito-sans';
+  Figtree_300Light as Figtree300Light,
+  Figtree_700Bold as Figtree700Bold,
+  Figtree_500Medium as Figtree500Medium,
+  Figtree_400Regular as Figtree400Regular,
+  Figtree_600SemiBold as Figtree600SemiBold,
+  Figtree_800ExtraBold as Figtree800ExtraBold,
+  Figtree_500Medium_Italic as Figtree500MediumItalic,
+  Figtree_400Regular_Italic as Figtree400RegularItalic,
+} from '@expo-google-fonts/figtree';
 
 export default function FontProvider({ children }: PropsWithChildren) {
+  // Figtree is the UI font (primary), Baloo 2 the title font (secondary)
   const [fontsLoaded] = useFonts({
-    NunitoSans300Light,
-    NunitoSans300LightItalic,
-    NunitoSans400Regular,
-    NunitoSans400RegularItalic,
-    NunitoSans600SemiBold,
-    NunitoSans600SemiBoldItalic,
-    NunitoSans700Bold,
-    NunitoSans700BoldItalic,
-    NunitoSans800ExtraBold,
-    NunitoSans900Black,
-    NunitoSans900BlackItalic,
+    Baloo2400Regular,
+    Baloo2500Medium,
+    Baloo2600SemiBold,
+    Baloo2700Bold,
+    Baloo2800ExtraBold,
+    Figtree300Light,
+    Figtree400Regular,
+    Figtree400RegularItalic,
+    Figtree500Medium,
+    Figtree500MediumItalic,
+    Figtree600SemiBold,
+    Figtree700Bold,
+    Figtree800ExtraBold,
   });
 
   useEffect(() => {

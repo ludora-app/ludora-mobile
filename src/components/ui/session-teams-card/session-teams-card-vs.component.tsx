@@ -16,7 +16,7 @@ export default function SessionTeamsCardVs() {
           fillColor="#FFF"
           strokeColor={COLORS.primary}
           strokeWidth={2}
-          fontFamily="NunitoSans700Bold"
+          fontFamily="Baloo2800ExtraBold"
           className='-mr-0.5'
 
         />
@@ -26,7 +26,7 @@ export default function SessionTeamsCardVs() {
           fillColor="#FFF"
           strokeColor={COLORS.secondary}
           strokeWidth={2}
-          fontFamily="NunitoSans700Bold"
+          fontFamily="Baloo2800ExtraBold"
 
         />
       </Box>

@@ -95,7 +95,6 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
     <Button
       title={buttonMessage}
       isDisabled={isButtonDisabled}
-      hasDisabledOpacity
       onPress={handleSubmit}
       className="w-full"
       isLoading={isLoading || isSendingVerificationCode}

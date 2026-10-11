@@ -1,66 +1,95 @@
 @import 'tailwindcss';
 @import 'uniwind';
 
+/* Ludora design system v0 — https://claude.ai/design (Ludora Design System) */
 @theme {
-  /* Colors */
-  --color-accent: #ce3728;
-  --color-background: #f2f4f8;
-  --color-border: #e4e4e4;
-  --color-danger: oklch(57.7% 0.245 27.325);
-  --color-darkLight: #0000001a;
-  --color-destructive: #a52523;
-  --color-error: #ff3333;
-  --color-gray: #7c7c7c;
-  --color-input: #e4e4e4;
-  --color-muted: #666;
-  --color-primary: #f15924;
-  --color-primaryHover: #f14500;
-  --color-secondary: #864c9e;
-  --color-purpleSecondary: #652f8f;
-  --color-purpleTertiary: #3c215a;
-  --color-ring: #b4b4b4;
+  /* Brand colors */
+  --color-dark: #333132; /* Anthracite: text, secondary outlines, dark backgrounds */
+  --color-darkLight: #3331321a;
+  --color-darkSoft: #f3e9d9;
+  --color-destructive: #a52523; /* Rouge foncé: pressed red, never text or background */
+  --color-primary: #f15924; /* Orange: brand, entry points, central button, links */
+  --color-primaryDark: #c9440f;
+  --color-primaryHover: #d84a15;
+  --color-primarySoft: #ffe6df;
+  --color-secondary: #ce3728; /* Rouge brique: main action (pay, confirm, create, join) */
+  --color-secondarySoft: #fbe3df;
+  --color-tertiary: #fcbd1d; /* Jaune soleil: headers, active choices, buttons on colored backgrounds */
+  --color-tertiaryHalo: #ffcb45;
+  --color-tertiarySoft: #fff1cc;
+
+  /* Neutrals */
+  --color-background: #fff8ec; /* Crème: screen background */
+  --color-border: #f0e4d0; /* Beige: card outlines */
+  --color-gray: #908a86;
+  --color-input: #e6d6bc; /* Beige: fields, separators */
+  --color-muted: #706d6a;
+  --color-placeholder: #a29d99;
+  --color-ring: #e6d6bc;
+
+  /* Feedback */
+  --color-danger: #ce3728;
+  --color-error: #ce3728;
+  --color-success: #2b6436;
+  --color-successSoft: #e3f1e5;
   --color-warning: #ff9800;
-  --color-success: #10b981;
 
   /* Button Colors */
-  --color-button-accent-background: #cbd2d9;
-  --color-button-accent-content: #ff0000;
-  --color-button-danger-background: oklch(57.7% 0.245 27.325);
+  --color-button-accent-background: #ce3728;
+  --color-button-accent-content: #fff;
+  --color-button-danger-background: #ce3728;
   --color-button-danger-content: #fff;
-  --color-button-dark-background: #000;
+  --color-button-dark-background: #333132;
   --color-button-dark-content: #fff;
-  --color-button-disabled-background: #cbd2d9;
-  --color-button-disabled-content: #666;
-  --color-button-error-background: #ff0000;
+  --color-button-disabled-background: #e6d6bc;
+  --color-button-disabled-content: #33313299;
+  --color-button-error-background: #ce3728;
   --color-button-error-content: #fff;
-  --color-button-info-background: #6ee7b7;
-  --color-button-info-content: #000;
-  --color-button-inverted-background: #f5f7fa;
+  --color-button-info-background: #fff1cc;
+  --color-button-info-content: #333132;
+  --color-button-inverted-background: #fff;
   --color-button-inverted-content: #f15924;
-  --color-button-light-background: #f5f7fa;
-  --color-button-light-content: #000;
-  --color-button-muted-background: #cbd2d9;
-  --color-button-muted-content: #666;
-  --color-button-neutral-background: #00000060;
+  --color-button-light-background: #f3e9d9;
+  --color-button-light-content: #333132;
+  --color-button-muted-background: #e6d6bc;
+  --color-button-muted-content: #333132;
+  --color-button-neutral-background: #33313299;
   --color-button-neutral-content: #fff;
   --color-button-primary-background: #f15924;
   --color-button-primary-content: #fff;
-  --color-button-secondary-background: #864c9e;
+  --color-button-secondary-background: #ce3728;
   --color-button-secondary-content: #fff;
-  --color-button-warning-background: #fcd34d;
-  --color-button-warning-content: #000;
-  --color-button-white-background: #f5f7fa;
-  --color-button-white-content: #000;
-  --color-button-success-background: #10b981;
+  --color-button-success-background: #2b6436;
   --color-button-success-content: #fff;
+  --color-button-tertiary-background: #fcbd1d;
+  --color-button-tertiary-content: #333132;
+  --color-button-warning-background: #fcbd1d;
+  --color-button-warning-content: #333132;
+  --color-button-white-background: #fff;
+  --color-button-white-content: #333132;
 
-  /* Font Families */
-  --font-primary-bold: 'NunitoSans700Bold';
-  --font-primary-extra-bold: 'NunitoSans800ExtraBold';
-  --font-primary-italic: 'NunitoSans400RegularItalic';
-  --font-primary-light: 'NunitoSans300Light';
-  --font-primary-medium: 'NunitoSans600SemiBold';
-  --font-primary-medium-italic: 'NunitoSans600SemiBoldItalic';
-  --font-primary-regular: 'NunitoSans400Regular';
-  --font-primary-semi-bold: 'NunitoSans600SemiBold';
+  /* Radii */
+  --radius-badge: 10px; /* Status and level tags */
+  --radius-control: 12px; /* Arrow buttons, segmented tabs */
+  --radius-button-sm: 14px; /* 44 px buttons, sport thumbnails, place counters */
+  --radius-field: 16px; /* 48 px buttons, fields, slots, toasts */
+  --radius-button: 18px; /* 54 px buttons */
+  --radius-card: 22px; /* Match cards, lists, sport and level choices */
+  --radius-sheet: 30px; /* Bottom sheets, modals */
+  --radius-header: 34px; /* Yellow header bottom corners */
+
+  /* Font Families: Figtree for the interface, Baloo 2 for titles */
+  --font-primary-bold: 'Figtree700Bold';
+  --font-primary-extra-bold: 'Figtree800ExtraBold';
+  --font-primary-italic: 'Figtree400RegularItalic';
+  --font-primary-light: 'Figtree300Light';
+  --font-primary-medium: 'Figtree500Medium';
+  --font-primary-medium-italic: 'Figtree500MediumItalic';
+  --font-primary-regular: 'Figtree400Regular';
+  --font-primary-semi-bold: 'Figtree600SemiBold';
+  --font-secondary-bold: 'Baloo2700Bold';
+  --font-secondary-extra-bold: 'Baloo2800ExtraBold';
+  --font-secondary-medium: 'Baloo2500Medium';
+  --font-secondary-regular: 'Baloo2400Regular';
+  --font-secondary-semi-bold: 'Baloo2600SemiBold';
 }

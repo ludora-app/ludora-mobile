@@ -73,7 +73,7 @@ export default function WelcomeCarousel() {
                   fillColor={COLORS.primary}
                   strokeColor="#FFFFFF"
                   strokeWidth={3}
-                  fontFamily="NunitoSans700Bold"
+                  fontFamily="Baloo2800ExtraBold"
                   className={item.className}
                 />
                 <String className="px-3 text-center" variant="body-3" font="primaryBold">

@@ -41,8 +41,8 @@ export const useGetField = (id: string) => {
 ```ts
 const LIMIT_RESULTS = 10;
 
-export const useGetSessionsByFilter = () => {
-  const filters = useHomeSessionsFiltersStore(state => state.filters);
+export const useGetAllSessionsByFilter = () => {
+  const filters = useHomeSessionFiltersStore(state => state.filters);
   const params = useMemo(() => ({ ...filterObjectEntries(filters), limit: LIMIT_RESULTS }), [filters]);
 
   const { data, error, isError, ...rest } = useSessionsFindAllInfinite(params, {
@@ -174,3 +174,10 @@ export const useSessionTeamStore = create<SessionTeamStore>(set => ({
 ## 9. Auth
 
 Tokens only in `expo-secure-store` (`access_token`, `refresh_token`). Login/logout only through `useAuthHelpers()` (`login(tokens)` / `logout()` — handles store, caches, device unregister, Google sign-out). Route guards read `useAuthStore`.
+
+## References
+
+- `references/query-wrappers-catalog.md`: read before writing or changing a `*.query.ts` (table of every existing wrapper and its generated hook, 404-tolerant, gated and infinite-list examples).
+- `references/mutations-and-invalidation.md`: read when writing a mutation wrapper or its call site (which `useInvalidate*` to call together per entity, try/catch + toast + trackEvent patterns).
+- `references/zustand-stores-catalog.md`: read when adding or touching a store (all stores, persisted or not, what `resetCaches` covers, chat-room scoped store).
+- `references/forms-and-schemas.md`: read when building a form or zod schema (shared `zod-schemas.utils` blocks, single form, multi-step store sync).

@@ -29,7 +29,7 @@ ESLint (`eslint.config.js`): airbnb → expo → prettier, plus perfectionist wi
   import ProfilHeader from '../components/profil-header.component';
   ```
 - **Object literal keys — alphabetical** everywhere (store initializers, `toast({ message, variant })`, `trackEvent({ data, eventName })`, `router.navigate({ params, pathname })`, returned objects `return { data, isLoading, refetch }`, query options). A comment line starts a new sorted partition.
-- **Interface members — sorted by line length**; a blank line starts a new partition (e.g. state fields, blank line, actions).
+- **Interface members — sorted by line length**; only a comment line starts a new partition — a blank line does NOT (`partitionByComment` is the only partition option).
 - `type X = {}` members and JSX props are **not** sorted — keep them logical.
 - `no-restricted-imports`: never `import dayjs from 'dayjs'` → `import dayjs from '@/lib/dayjs'`.
 - No file extensions in imports (except `.json`). Unused imports are errors.
@@ -95,3 +95,8 @@ ESLint (`eslint.config.js`): airbnb → expo → prettier, plus perfectionist wi
 ## 8. Don't copy these (outdated / drift)
 
 `interface XProps` · French comments · `TouchableOpacity` · `Platform.OS` · `store/` folder (use `stores/`) · `.query.tsx` (use `.query.ts`) · untyped `useLocalSearchParams()` · string-literal routes · `src/hooks/navigation.hook.ts` (use `navigation.hooks.ts`) · `estimatedItemSize` on List · `useFlatlistHook` · primitives imported from `@chillui/ui` or `@/components/ludo-ui` (use `@ludo/ui`) · files without semicolons · misnamed files (`… copy.ts`, `invite-friends-query.ts`, `register.hook.tsx`).
+
+## References
+
+- `references/lint-rules-in-practice.md`: read when `bun lint:fix` complains about sorting, or to see the exact perfectionist config and real sorted examples.
+- `references/known-drift.md`: read before copying a neighbouring file, to check whether it contains a pattern from §8 and where those patterns still live.

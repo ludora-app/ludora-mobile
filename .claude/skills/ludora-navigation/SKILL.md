@@ -135,4 +135,11 @@ const session = useMemo(() => {
 
 ## Known broken entries — don't copy
 
-`ROUTES.CREATE_SESSION.STEP_3_PAYMENT`, `CREATE_SESSION_CREATED`, `CHAT_ROOM.MESSAGE_ACTIONS` have no route file; `SESSION.JOINED_UID` lacks a leading slash; `STEP_5` includes `/(root)`; `on-boarding/step-4` is orphaned; `providers/safe-area.provider.tsx` is dead code; `hooks/navigation.hook.ts` is the old duplicate.
+`ROUTES.CREATE_SESSION.STEP_3_PAYMENT`, `CREATE_SESSION_CREATED`, `CHAT_ROOM.MESSAGE_ACTIONS` have no route file; `STEP_5` includes `/(root)`; `on-boarding/step-4` is orphaned; `providers/safe-area.provider.tsx` is dead code; `hooks/navigation.hook.ts` is the old duplicate (still imported by `reset-password.screen.tsx`).
+
+## References
+
+- `references/route-map.md`: read when adding or moving a route, or when a sheet/modal behaves differently on iOS vs Android (full route tree, presentation per layout, option diffs).
+- `references/routes-constants-and-params.md`: read when a route takes params or returns a value to its caller (traced examples: dynamic id, serialize/parse, return params).
+- `references/multi-step-flows.md`: read when touching create-session, on-boarding or any flow with a shared header/footer (step detection, footer logic, store sync).
+- `references/initializers-and-providers.md`: read when adding a provider or initializer (MainProvider order, which layout mounts which initializer).

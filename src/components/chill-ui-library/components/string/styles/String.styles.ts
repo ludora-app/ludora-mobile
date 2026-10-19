@@ -49,6 +49,7 @@ export const stringTv = tv({
       right: 'text-right',
     },
 
+    // title-3+ use ~1.22x line heights: tighter ones make iOS clip the top of Baloo 2 (very tall ascenders)
     variant: {
       'body-1': textSizes.md,
       'body-2': textSizes.lg,
@@ -57,12 +58,12 @@ export const stringTv = tv({
       'body-xs': textSizes.xs,
       'title-1': `${textSizes['2xl']} font-primary_bold_font`,
       'title-2': `${textSizes['3xl']} font-primary_bold_font`,
-      'title-3': `${textSizes['4xl']} font-primary_bold_font`,
-      'title-4': `${textSizes['5xl']} font-primary_bold_font`,
-      'title-5': `${textSizes['6xl']} font-primary_bold_font`,
-      'title-6': `${textSizes['7xl']} font-primary_bold_font`,
-      'title-7': `${textSizes['8xl']} font-primary_bold_font`,
-      'title-8': `${textSizes['9xl']} font-primary_bold_font`,
+      'title-3': 'text-[36px] leading-11 font-primary_bold_font',
+      'title-4': 'text-[48px] leading-14.5 font-primary_bold_font',
+      'title-5': 'text-[60px] leading-18 font-primary_bold_font',
+      'title-6': 'text-[72px] leading-22 font-primary_bold_font',
+      'title-7': 'text-[96px] leading-29 font-primary_bold_font',
+      'title-8': 'text-[128px] leading-39 font-primary_bold_font',
     },
     //
     size: {

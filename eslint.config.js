@@ -20,7 +20,7 @@ const airbnbConfig = compat.extends('airbnb').map(config => ({
 }));
 
 module.exports = defineConfig([
-  globalIgnores(['dist/*', 'node_modules/*', 'src/api/generated/*', 'android/*', 'ios/*', 'tools/*']),
+  globalIgnores(['.expo/*', 'dist/*', 'node_modules/*', 'src/api/generated/*', 'android/*', 'ios/*', 'tools/*']),
   // Same order as the legacy `extends: ['airbnb', 'expo', 'prettier']`: the Expo
   // TypeScript overrides must win over airbnb's core rules.
   ...airbnbConfig,
@@ -56,6 +56,18 @@ module.exports = defineConfig([
           ],
         },
       ],
+      // Text sizes come from String `variant` / `size`, not arbitrary `text-[15px]` classes (see ludora-ui skill)
+      'no-restricted-syntax': [
+        'warn',
+        {
+          message: 'Use the String `variant` (or `size`) prop instead of an arbitrary text-[Npx] size.',
+          selector: 'JSXAttribute[name.name=/className$/i] Literal[value=/(^|\\s)text-\\[\\d/]',
+        },
+        {
+          message: 'Use the String `variant` (or `size`) prop instead of an arbitrary text-[Npx] size.',
+          selector: 'JSXAttribute[name.name=/className$/i] TemplateElement[value.raw=/(^|\\s)text-\\[\\d/]',
+        },
+      ],
       'perfectionist/sort-imports': ['error'],
       'perfectionist/sort-interfaces': ['error'],
       'perfectionist/sort-objects': [
@@ -65,6 +77,11 @@ module.exports = defineConfig([
         },
       ],
       // 'prettier/prettier': 'error',
+      // New components are `export const X = () => {}`; older `export default function` files stay valid
+      'react/function-component-definition': [
+        'error',
+        { namedComponents: ['arrow-function', 'function-declaration'], unnamedComponents: 'arrow-function' },
+      ],
       'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
       'react/jsx-props-no-spreading': 'off',
 

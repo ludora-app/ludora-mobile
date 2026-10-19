@@ -1,6 +1,7 @@
 import { cn } from '@chillui/ui';
 import { IconButton } from '@ludo/ui';
 
+import COLORS from '@/constants/colors.contstants';
 import { useAppNavigation } from '@/hooks/navigation.hooks';
 
 type GoBackButtonProps = {
@@ -8,7 +9,7 @@ type GoBackButtonProps = {
   onPress?: () => void;
 };
 
-export default function GoBackButton(props: GoBackButtonProps) {
+export const GoBackButton = (props: GoBackButtonProps) => {
   const { className, onPress } = props;
   const { goBack } = useAppNavigation();
 
@@ -18,13 +19,16 @@ export default function GoBackButton(props: GoBackButtonProps) {
     }
     return goBack();
   };
+
   return (
     <IconButton
       iconName="arrow-left-regular"
-      className={cn('rounded-xl border border-[#D8DADC] bg-white', className)}
-      iconColor="#000"
+      className={cn('border border-border bg-white', className)}
+      iconColor={COLORS.dark}
       as="scale-pressable"
       onPress={handlePress}
+      size="lg"
+      rounded="circle"
     />
   );
-}
+};

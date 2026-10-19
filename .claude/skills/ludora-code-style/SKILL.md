@@ -68,8 +68,11 @@ ESLint (`eslint.config.js`): airbnb → expo → prettier, plus perfectionist wi
 
 ## 5. Function style
 
-- Components: `export default function Name(props: NameProps) {` then `const { a, b = default } = props;` on the first line (alphabetical). Signature destructuring is OK for memo'd list items with 1–2 props. Never `React.FC`, never arrow components, no `forwardRef` (React 19: `ref` is a prop).
-- Memoized components: `function X() {}` + `export default memo(X);` at the bottom.
+- **Components: named arrow exports** `export const Name = (props: NameProps) => {` then `const { a, b = default } = props;` on the first line (alphabetical), closed by `};`. No default export, never `React.FC`, no `forwardRef` (React 19: `ref` is a prop). Signature destructuring is OK for small components with 1–2 props.
+  - Older files still use `export default function Name()`. **Every file you add or modify in a change is migrated to `export const`**, and its importers switch to `import { Name } from '...'`.
+  - ESLint (`react/function-component-definition`) accepts both forms during the migration; never let `lint:fix` output decide the style.
+- Memoized components: `const NameComponent = (props: NameProps) => {...};` + `export const Name = memo(NameComponent);` at the bottom.
+- Route files are the only default exports left (Expo Router needs them): `import { XScreen } from '...'; export default XScreen;`.
 - Hooks, queries, utils: `export const useX = () => {}` arrow functions, named exports.
 - Private helpers in a component file: module-level `function getX() {}` above the component.
 - Early returns everywhere; one-liners allowed: `if (!userId) return;`.
@@ -79,9 +82,9 @@ ESLint (`eslint.config.js`): airbnb → expo → prettier, plus perfectionist wi
 ## 6. Constants, utils, types, barrels
 
 - `ROUTES` and `COLORS` are default exports (`import ROUTES from '@/constants/routes.constants'`; `COLORS` from `@/constants/colors.contstants` — typo is the real path). Every other constants file uses named `UPPER_SNAKE` exports.
-- Utils: small named arrow exports, no default export.
+- Utils: small named arrow exports (`export const cn = (...) => ...`), no default export.
 - Feature types: `features/<f>/types/<f>.types.ts`. Global: `src/types`.
-- Barrels only for shared UI (`src/components/ui/<x>/index.ts`) and the `@ludo/ui` / `@chillui/ui` roots. **No barrels in features** — import files directly; relative paths inside a feature, `@/` across features.
+- Barrels only for shared UI (`src/components/ui/<x>/index.ts`, `export { SessionCard } from './components/session-card.component';`) and the `@ludo/ui` / `@chillui/ui` roots. **No barrels in features** — import files directly; relative paths inside a feature, `@/` across features.
 - Platform: `IS_IOS` / `IS_ANDROID` from `@/constants/platform.constants`, not `Platform.OS`.
 - Env: `process.env.EXPO_PUBLIC_*` read into a module-level const; env names in `ENVIRONMENTS`.
 
@@ -94,7 +97,7 @@ ESLint (`eslint.config.js`): airbnb → expo → prettier, plus perfectionist wi
 
 ## 8. Don't copy these (outdated / drift)
 
-`interface XProps` · French comments · `TouchableOpacity` · `Platform.OS` · `store/` folder (use `stores/`) · `.query.tsx` (use `.query.ts`) · untyped `useLocalSearchParams()` · string-literal routes · `src/hooks/navigation.hook.ts` (use `navigation.hooks.ts`) · `estimatedItemSize` on List · `useFlatlistHook` · primitives imported from `@chillui/ui` or `@/components/ludo-ui` (use `@ludo/ui`) · files without semicolons · misnamed files (`… copy.ts`, `invite-friends-query.ts`, `register.hook.tsx`).
+`export default function X` components (migrate to `export const X = () => {}` when you touch the file) · `export { default as X }` barrel lines · `interface XProps` · French comments · `TouchableOpacity` · `Platform.OS` · `store/` folder (use `stores/`) · `.query.tsx` (use `.query.ts`) · untyped `useLocalSearchParams()` · string-literal routes · `src/hooks/navigation.hook.ts` (use `navigation.hooks.ts`) · `estimatedItemSize` on List · `useFlatlistHook` · primitives imported from `@chillui/ui` or `@/components/ludo-ui` (use `@ludo/ui`) · files without semicolons · misnamed files (`… copy.ts`, `invite-friends-query.ts`, `register.hook.tsx`).
 
 ## References
 

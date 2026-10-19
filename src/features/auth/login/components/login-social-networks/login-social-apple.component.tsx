@@ -10,7 +10,7 @@ import { useLoginApple } from '../../queries/login-apple.query';
 
 const styles = StyleSheet.create({
   button: {
-    height: 48,
+    height: 56,
     width: '100%',
   },
 });
@@ -19,7 +19,7 @@ type LoginSocialAppleProps = {
   flow: 'login' | 'register';
 };
 
-export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
+export const LoginSocialApple = ({ flow }: LoginSocialAppleProps) => {
   const { trackError, trackEvent } = useAnalytics();
   const { mutateAsync: appleLogin } = useLoginApple();
   const [isAppleAuthAvailable, setIsAppleAuthAvailable] = useState(false);
@@ -74,12 +74,17 @@ export default function LoginSocialApple({ flow }: LoginSocialAppleProps) {
   }
 
   return (
+    // Native Apple button (HIG): black style, system label and logo, size aligned with our xl buttons
     <AppleAuthentication.AppleAuthenticationButton
-      buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+      buttonType={
+        flow === 'login'
+          ? AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+          : AppleAuthentication.AppleAuthenticationButtonType.SIGN_UP
+      }
       buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE_OUTLINE}
-      cornerRadius={30}
+      cornerRadius={18}
       style={styles.button}
       onPress={handlePress}
     />
   );
-}
+};

@@ -1,10 +1,16 @@
 import { PropsWithChildren } from 'react';
 
+import { IS_ANDROID } from '@/constants/platform.constants';
+
 import type { StringProps } from '../../../types';
 
 import { cn } from '../../../utils';
 import { Text as NativeText } from './Text';
 import { stringTv, twStyles } from '../styles/String.styles';
+
+// Android pads text with the font's ascent/descent; Baloo 2 (secondary) has huge ones, so its text ends up taller
+// than on iOS. Ignored on iOS.
+const NO_FONT_PADDING = { includeFontPadding: false } as const;
 
 /**
  * The `<String />` component provides a high-level text component with predefined styling variants.
@@ -51,6 +57,7 @@ export default function String(props: PropsWithChildren<StringProps>) {
   const dynamicClasses = cn(
     stringTv({ colorVariant, font, position, size, variant }),
     !onPress && twStyles.pointerEventsNone,
+    IS_ANDROID && 'leading-none',
     className,
   );
 

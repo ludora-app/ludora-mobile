@@ -1,4 +1,3 @@
-
 import { memo } from 'react';
 import { String, BoxCenter } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
@@ -64,9 +63,9 @@ function CreateSessionStep2FieldCardPublicAvailabilitiesItem(
           </String>
         )}
         {!isSelected && (
-          <Box className="items-center justify-center p-[2px]">
+          <Box className="items-center justify-center p-0.5">
             {isOccupiedByAnotherTeam && (
-              <String className="text-center text-[10px] text-primary/80">
+              <String className="text-center text-primary/80" variant="body-xs">
                 {t('create_session.step_2.public_availabilities.team_present')}
               </String>
             )}

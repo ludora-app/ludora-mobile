@@ -16,7 +16,7 @@ Main `@ludo/ui` components:
 | Component | Key props |
 |---|---|
 | `Box`, `BoxRow`, `BoxCenter`, `BoxRowCenterBetween`, `BoxGrow`, `BoxColumn`, `BoxAbsolute`… | `className` |
-| `String` (never RN `Text`) | `variant` `body-xs`(12) `body-sm`(14) `body-1`(16, default) `body-2`(18) `body-3`(20) `title-1…8`; `font` `primaryRegular/Medium/SemiBold/Bold/ExtraBold/Light/Italic`; `colorVariant` (black default, muted, primary, secondary, white, danger, success…); `position`; `truncate`; `redirect` |
+| `String` (never RN `Text`) | `variant` `body-xs`(12) `body-sm`(14) `body-1`(16, default) `body-2`(18) `body-3`(20) `title-1…8`; `size` xs…9xl (fallback when no variant fits; never `text-[Npx]`); `font` `primaryRegular/Medium/SemiBold/Bold/ExtraBold/Light/Italic` (Figtree, default `primaryMedium`) or `secondaryBold/ExtraBold…` (Baloo 2, default for `title-*`; `title-3`+ already carry a Baloo-safe line height (chill `String.styles.ts`), don't add `leading-*`); `colorVariant` (dark default, muted, primary, secondary, white, danger, success…); `position`; `truncate`; `redirect` |
 | `Button` | `title`, `onPress`, `isLoading`, `size` 2xs…2xl (lg default), `variant` contained/outlined/text, `colorVariant`, `iconProps={{ name, position }}`, `redirect` |
 | `IconButton` | `iconName`, `iconColor`, `size`, `variant`, `colorVariant`, `isLoading` |
 | `Icon` | `name` (from generated `icons.constants`, `-solid`/`-regular`), `size`, `color`, `className` |
@@ -32,10 +32,16 @@ Main `@ludo/ui` components:
 
 ## 2. Styling
 
-- **Uniwind/Tailwind `className` by default.** Theme tokens in `src/global.css` `@theme`: `primary` (#f15924), `secondary` (#864c9e), `background` (#f2f4f8), `muted`, `border`, `danger`, `error`, `success`, `warning`, `gray`, `purpleSecondary`… No dark mode.
+- **Uniwind/Tailwind `className` by default.** Theme tokens in `src/global.css` `@theme` (Ludora design system): `primary` orange #f15924 (+ `primaryDark`, `primarySoft`), `secondary` brick red #ce3728 (main action, + `secondarySoft`), `tertiary` sun yellow #fcbd1d (+ `tertiaryHalo`, `tertiarySoft`), `dark` anthracite #333132 (+ `darkSoft`), `background` cream #fff8ec, `border`, `input`, `muted`, `placeholder`, `error`, `success`… No purple, no dark mode. Fonts: `font-primary-*` (Figtree, UI) and `font-secondary-*` (Baloo 2, titles).
+- **No arbitrary values when a Tailwind class exists** (the IDE flags them):
+  - spacing and sizes use the 4px scale, fractions included: `size-52.5` not `size-[210px]`, `pb-7.5` not `pb-[30px]`, `py-1.25` not `py-[5px]`, `leading-11` not `leading-[44px]`.
+  - radii use the design system tokens: `rounded-badge` 10, `rounded-control` 12, `rounded-button-sm` 14, `rounded-field` 16, `rounded-button` 18, `rounded-card` 22, `rounded-sheet` 30, `rounded-header` 34 (also `rounded-t-*` / `rounded-b-*`). `cn` knows them, so a `className` override still wins.
+  - **text size on `String`: never `text-[15.5px]`.** Order of preference: 1) `variant` (`body-xs` 12, `body-sm` 14, `body-1` 16, `body-2` 18, `body-3` 20, `title-1` 24, `title-2` 30, `title-3` 36, `title-4` 48…), 2) `size` (`xs` 12, `sm` 14, `md` 16, `lg` 18, `xl` 20, `2xl` 24, `3xl` 30, `4xl` 36…), both of which set the matching line height. If the design size has neither (e.g. 15.5, 38), **ask the user** which variant/size to round to instead of writing an arbitrary class. ESLint warns on `text-[<n>…]` in className.
+  - Exception: `tv()` styles (tailwind-variants has its own merge, e.g. chill Button) keep `rounded-[18px]`-style radii.
 - Recurring recipes:
-  - content sheet over the background: `bg-background rounded-t-xl`
-  - card: `bg-white rounded-xl border border-black/10 overflow-hidden`
+  - content sheet over the background: `bg-background rounded-t-sheet`
+  - card: `bg-white rounded-card border border-border overflow-hidden`
+  - colored header: `bg-tertiary rounded-b-header`
   - spacing with `gap-*` (not margins), `px-4`, `size-*`, opacity colors `border-primary/20`
 - Conditional classes: `cn('items-center gap-4', { 'mt-10': !center }, className)` — always accept and forward a `className` prop last on reusable components.
 - `style` only for: shadows (module `StyleSheet.create({ shadow: { boxShadow: '0px 2px 8px rgba(0,0,0,0.08)' } })`), safe-area paddings, measured/dynamic sizes, reanimated styles.
@@ -57,12 +63,12 @@ type SessionSummaryCardProps = {
   title: string;
 };
 
-export default function SessionSummaryCard(props: SessionSummaryCardProps) {
+export const SessionSummaryCard = (props: SessionSummaryCardProps) => {
   const { className, isLoading = false, onPressJoin, title } = props;
   const { t } = useTranslate();
 
   return (
-    <Box className={cn('gap-3 rounded-xl bg-white p-4', className)}>
+    <Box className={cn('gap-3 rounded-card bg-white p-4', className)}>
       <String font="primaryBold" variant="body-2" truncate>
         {title}
       </String>
@@ -71,13 +77,13 @@ export default function SessionSummaryCard(props: SessionSummaryCardProps) {
       </BoxRow>
     </Box>
   );
-}
+};
 ```
 
 - One component per file; median ~40 lines. Split aggressively into sub-files in a folder named after the parent (`players-list/players-list-item/players-list-item-invite.component.tsx`). Recurring suffixes: `-item`, `-item-skeleton`, `-header-sticky`, `-header-top-list`, `-footer`, `-wrapper`, `-trigger`.
 - `PropsWithChildren<XProps>` for children.
 - **Components own their data**: the screen fetches only its main entity (for loading / not-found gating, see ludora-navigation §5); a list component calls its own query hook; a header reads its store with selectors; the leaf that triggers a mutation calls it (try/catch + toast + analytics). Screens stay thin. Extract a custom hook only for reused/complex logic (`features/<f>/hooks/`).
-- Shared UI goes in `src/components/ui/<name>/components/*.component.tsx` + `index.ts` (`export { default as SessionCard } from './components/session-card.component';`). Check there first: `SessionCard`, `FieldCard`, `EmptyResult`, `ComingSoon`, `Loading`, `DialogConfirm`, `FormSheet*`, `FooterWrapper`, `HeaderOutlined`, `SegmentedControl`, `ShareButton`, `QuickActionCard`, `Calendar`, `DaysCarousel`…
+- Shared UI goes in `src/components/ui/<name>/components/*.component.tsx` + `index.ts` (`export { SessionCard } from './components/session-card.component';`). Check there first: `SessionCard`, `FieldCard`, `EmptyResult`, `ComingSoon`, `Loading`, `DialogConfirm`, `FormSheet*`, `FooterWrapper`, `HeaderOutlined`, `SegmentedControl`, `ShareButton`, `QuickActionCard`, `Calendar`, `DaysCarousel`…
 
 ## 4. Lists — always `List` from `@ludo/ui`
 
@@ -88,7 +94,7 @@ const ITEM_HEIGHT = 81;
 const GET_FIXED_ITEM_SIZE: GetListFixedItemSize = (_item, _index, type) => (type === 'sticky' ? 66 : ITEM_HEIGHT);
 const EMPTY_RESULT_PROPS = { hasRandomTitle: true, title: 'players.no_result_title' } as const;
 
-export default function PlayersList() {
+export const PlayersList = () => {
   const { bottomTab } = useSafeArea();
   const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetUsersSuggestionByFilter();
@@ -108,16 +114,16 @@ export default function PlayersList() {
       fetchNextPage={fetchNextPage}
       refetch={refetch}
       hasRefreshControl
-      contentContainerClassName="rounded-t-xl bg-background px-4"
+      contentContainerClassName="rounded-t-sheet bg-background px-4"
       contentContainerStyle={contentContainerStyle}
     />
   );
-}
+};
 ```
 
 - **Use `getFixedItemSize`** (`GetListFixedItemSize` from `@ludo/ui` types; `type` ∈ `sticky | header_top | skeleton | empty | loading | row`) as a module const or `useMemo`. Not `estimatedItemSize`.
 - Headers go inside the list: `ListHeaderComponent` / `ListTopComponent` / `ListStickyComponent` (built with `useMemo(() => <X />, [])`).
-- Items: `function X({ item }: XProps)` + `export default memo(X)`. Shared row callbacks go through a small feature context (`features/players/context/players-list.context.ts`), not props.
+- Items: `const XComponent = ({ item }: XProps) => {...};` + `export const X = memo(XComponent);`. Shared row callbacks go through a small feature context (`features/players/context/players-list.context.ts`), not props.
 - Plain RN `FlatList` only for small non-paginated nested lists.
 
 ## 5. States

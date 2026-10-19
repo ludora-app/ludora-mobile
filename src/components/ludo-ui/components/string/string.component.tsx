@@ -9,7 +9,7 @@ function getDefaultFont(variant: StringProps['variant']): StringProps['font'] {
   return 'primaryMedium';
 }
 
-export default function String(props: StringProps) {
+export const String = (props: StringProps) => {
   const { children, colorVariant = 'dark', font, redirect, truncate, variant, ...rest } = props;
 
   const isTruncated = {
@@ -37,4 +37,4 @@ export default function String(props: StringProps) {
     );
   }
   return content;
-}
+};

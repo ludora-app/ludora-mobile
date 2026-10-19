@@ -4,7 +4,7 @@ import { useTranslate } from '@tolgee/react'
 
 import COLORS from '@/constants/colors.contstants'
 import { useSafeArea } from '@/hooks/safe-area.hook'
-import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
+import { GoBackButton } from '@/components/ui/navigation/header-go-back/components/go-back-button.component'
 
 export default function SettingsPlanningHeader() {
   const { t } = useTranslate()

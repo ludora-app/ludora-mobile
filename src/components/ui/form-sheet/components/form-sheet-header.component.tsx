@@ -2,7 +2,7 @@ import { cn } from '@chillui/ui';
 import { Box, String } from '@ludo/ui';
 import { StyleSheet } from 'react-native';
 
-import GoBackButton from '../../navigation/header-go-back/components/go-back-button.component';
+import { GoBackButton } from '../../navigation/header-go-back/components/go-back-button.component';
 
 type FormSheetHeaderProps = {
   title?: string;

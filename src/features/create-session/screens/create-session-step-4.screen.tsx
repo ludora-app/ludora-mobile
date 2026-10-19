@@ -74,7 +74,7 @@ export default function CreateSessionStep4Screen() {
                 <String colorVariant="primary" font="primaryBold">
                   {t(`common.session_visibility_${visibility}`)}{' '}
                 </String>
-                <String colorVariant="primary" font="primaryRegular" className="text-[10px]">
+                <String colorVariant="primary" font="primaryRegular" variant="body-xs">
                   ({t(`common.session_visibility_description_${visibility}`)})
                 </String>
               </BoxRow>

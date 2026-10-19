@@ -26,7 +26,7 @@ src/app/_layout.tsx            root Stack: FontProvider > MainProvider > MainIni
 
 1. **Route file** in `src/app/...`, kebab-case, **`.ts`**, re-export only:
    ```ts
-   import SettingsFaqScreen from '@/features/settings/screens/settings-faq.screen';
+   import { SettingsFaqScreen } from '@/features/settings/screens/settings-faq.screen';
 
    export default SettingsFaqScreen;
    ```

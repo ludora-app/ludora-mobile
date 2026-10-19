@@ -33,7 +33,6 @@ import {
 /** Fallback si le footer n’a pas encore été mesuré (1er frame). */
 const FOOTER_HEIGHT_FALLBACK = 90;
 
-const KEYBOARD_BOTTOM_OFFSET = 80;
 
 const generateRandomTitleSuggestions = () => {
   const totalVariants = 21;
@@ -113,7 +112,6 @@ export default function CreateSessionStep3Screen() {
       contentContainerClassName="gap-5 pb-10"
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
-      bottomOffset={KEYBOARD_BOTTOM_OFFSET}
       hasKeyboardToolbar
       keyboardToolbarProps={{
         offset: { closed: 0, opened: toolbarOpenedOffset },

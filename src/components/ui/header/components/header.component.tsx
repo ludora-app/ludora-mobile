@@ -2,7 +2,7 @@ import { Box, String } from '@ludo/ui';
 import { BoxGrow, cn, WrapperProps } from '@chillui/ui';
 
 import HeaderWrapper from './header-wrapper.component';
-import GoBackButton from '../../navigation/header-go-back/components/go-back-button.component';
+import { GoBackButton } from '../../navigation/header-go-back/components/go-back-button.component';
 
 type HeaderProps = {
   title?: string;

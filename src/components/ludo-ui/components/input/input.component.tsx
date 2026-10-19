@@ -9,7 +9,7 @@ import { Icon } from '../icon';
 import { String } from '../string';
 import { InputProps } from '../../types/input.types';
 
-const Input = forwardRef<any, InputProps>((props, ref) => {
+export const Input = forwardRef<any, InputProps>((props, ref) => {
   const {
     className,
     error,
@@ -34,7 +34,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 
   const isSecure = inputFieldProps?.secureTextEntry ? !showPassword : false;
 
-  const showClearIcon = hasClearIcon && inputFieldProps?.value;
+  const showClearIcon = hasClearIcon && !isDisabled && !!inputFieldProps?.value;
 
   const handleFocus = (e: NativeSyntheticEvent<TargetedEvent>) => {
     setIsFocused(true);
@@ -49,17 +49,17 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
   return (
     <InputChillUi className={className}>
       {!!label && (
-        <InputLabel colorVariant={showError ? 'error' : 'dark'} font="primaryBold" className="ml-0 text-[14px]">
+        <InputLabel colorVariant={showError ? 'error' : 'dark'} font="primaryBold" className="ml-0 text-sm">
           {label}
         </InputLabel>
       )}
       <InputContainer
         className={cn(
-          'min-h-14 rounded-[16px] border border-input bg-white px-4',
+          'min-h-14 rounded-field border-2 border-input bg-white px-4',
           {
             'bg-darkSoft': isDisabled,
-            'border-2 border-error': showError,
-            'border-2 border-primary': isFocused && !showError,
+            'border-error': showError,
+            'border-primary': isFocused && !showError,
           },
           inputContainerClassName,
         )}
@@ -73,7 +73,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
           {...inputFieldProps}
-          className={cn('font-primary-medium text-[16px]', inputFieldProps?.className)}
+          className={cn('font-primary-medium text-base', inputFieldProps?.className)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={[
@@ -89,7 +89,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         {rightIconAction?.name && <Icon {...rightIconAction} />}
         {showClearIcon && (
           <Icon
-            name="close-circle-bulk"
+            name="close-circle-regular"
             color={`${COLORS.dark}99`}
             onPress={() => inputFieldProps?.onChangeText?.('')}
             size="sm"
@@ -98,7 +98,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         )}
         {inputFieldProps?.secureTextEntry && (
           <Icon
-            name={showPassword ? 'eye-slash-solid' : 'eye-solid'}
+            name={showPassword ? 'eye-slash-regular' : 'eye-regular'}
             color={`${COLORS.dark}99`}
             onPress={() => setShowPassword(prev => !prev)}
             size="sm"
@@ -112,7 +112,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
           {showMessageError && (
             <>
               <Icon name="warning-solid" size="xs" color={COLORS.error} />
-              <String colorVariant="error" font="primarySemiBold" className="text-[13px]" truncate>
+              <String colorVariant="error" font="primarySemiBold" variant="body-xs" truncate>
                 {error}
               </String>
             </>
@@ -132,5 +132,3 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 });
 
 Input.displayName = 'Input';
-
-export default Input;

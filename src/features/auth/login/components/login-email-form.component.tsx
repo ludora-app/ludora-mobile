@@ -6,6 +6,7 @@ import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, FormInput, String, Box, Link } from '@ludo/ui';
 
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -14,7 +15,7 @@ import { useLogin } from '../queries/login.query';
 import { formSchema } from '../schemas/login.schema';
 import { LOGIN_ERRORS } from '../constants/login-errors.constants';
 
-export default function LoginEmailForm() {
+export const LoginEmailForm = () => {
   const { t } = useTranslate();
   const { isPending: loginIsPending, mutateAsync: loginMutation } = useLogin();
   const { login } = useAuthHelpers();
@@ -71,7 +72,7 @@ export default function LoginEmailForm() {
   };
 
   return (
-    <Box className="gap-5">
+    <Box className="gap-3.5">
       <FormInput
         control={control}
         label={t('common.input_email_label')}
@@ -86,9 +87,9 @@ export default function LoginEmailForm() {
           name="password"
           placeholder="••••••••"
         />
-        <Link href="/auth/reset-password" asChild>
-          <Pressable>
-            <String size="sm" className="mt-0.5 text-right">
+        <Link href={ROUTES.AUTH.RESET_PASSWORD} asChild>
+          <Pressable className="self-end py-1.5">
+            <String font="primaryBold" colorVariant="primary" variant="body-sm">
               {t('auth.login.forgot_password')}
             </String>
           </Pressable>
@@ -99,8 +100,8 @@ export default function LoginEmailForm() {
         title={t('auth.login.button_form_title')}
         onPress={handleSubmit(onSubmit)}
         className="w-full"
-        size="lg"
+        size="xl"
       />
     </Box>
   );
-}
+};

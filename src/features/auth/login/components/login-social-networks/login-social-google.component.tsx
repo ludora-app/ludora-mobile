@@ -1,7 +1,7 @@
+import { cn } from '@chillui/ui';
 import { Button } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
-import { cn } from '@/components/chill-ui-library';
 import { ErrorResponse } from '@/api/orval.instance';
 import { IS_IOS } from '@/constants/platform.constants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -14,9 +14,10 @@ type LoginSocialGoogleProps = {
 
 const GOOGLE_ERROR_MESSAGE = "Cannot read property 'user' of null";
 const GOOGLE_ERROR_MESSAGE_2 = 'Google sign-in did not return user data';
+const GOOGLE_LABEL_COLOR = '#1F1F1F';
 
 configureGoogleSignIn();
-export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
+export const LoginSocialGoogle = ({ flow }: LoginSocialGoogleProps) => {
   const { t } = useTranslate();
   const { isPending: googleSignInPending, mutateAsync: googleSignInMutation } = useLoginGoogle();
   const { trackError, trackEvent } = useAnalytics();
@@ -61,19 +62,23 @@ export default function LoginSocialGoogle({ flow }: LoginSocialGoogleProps) {
     <Button
       iconProps={{
         name: 'google-colored',
-        position: 'left-outside',
+        position: IS_IOS ? 'left' : 'left-outside',
+        ...(IS_IOS && { size: 'sm' }),
       }}
       onPress={handleSubmit}
       variant="outlined"
+      size="xl"
+      colorVariant="dark"
       isLoading={googleSignInPending}
       title={t(`auth.${flow}.button_google_title`)}
-      className={cn('w-full border border-[#747775] bg-white', { 'border-[#000]': IS_IOS })}
+      className={cn('w-full', IS_IOS && 'border bg-white')}
       titleProps={{
-        className: 'text-[#1F1F1F]',
+        className: cn(IS_IOS && 'text-black ml-2 text-xl'),
+        ...(IS_IOS && { font: 'primarySemiBold' }),
       }}
       loaderProps={{
-        color: '#1F1F1F',
+        color: GOOGLE_LABEL_COLOR,
       }}
     />
   );
-}
+};

@@ -5,7 +5,8 @@ import { useTranslate } from '@tolgee/react';
 import { TIconsAll } from '@/constants/icons.constants';
 import { Icon } from '@/components/ludo-ui/components/icon';
 import { StringProps } from '@/components/ludo-ui/types/string.types';
-import String from '@/components/ludo-ui/components/string/string.component';
+// Direct paths, not `@ludo/ui`: the ludo-ui List imports this component, so the barrel would create a cycle
+import { String } from '@/components/ludo-ui/components/string/string.component';
 import { Wrapper } from '@/components/chill-ui-library/components/wrapper/components/Wrapper';
 
 export type EmptyResultProps = {

@@ -8,7 +8,7 @@ What `@ludo/ui` really exports (`src/components/ludo-ui`), the exact prop types 
 
 Three kinds of export:
 - **Pure re-exports of chill-ui**: all `Box*` (`components/box/index.ts`: `Box`, `BoxAbsolute`, `BoxCenter`, `BoxRowCenter`, `BoxColumnCenter`, `BoxColumnCenterBetween`, `BoxGrow`, `BoxColumn`, `BoxColumnGrow`, `BoxRow`, `BoxRowBetween`, `BoxRowCenterBetween`, `BoxRowGrow`, `BoxStack`), `Wrapper`, `WrapperScrollView`, `WrapperKeyboardAvoidingView`, `WrapperKeyboardAvoidingStickyView`, `WrapperGestureHandlerScrollView` (`components/wrapper/index.ts:1-7`), and the whole accordion (`components/accordion/index.ts`).
-- **Thin wrappers** that add app behavior: `Button` (`redirect`, `image`, rounded-full, scale-pressable), `String` (`redirect`, `truncate`, default `colorVariant="black"`), `Skeleton` (`bg-black/20`), `Toggle` (primary track color), `WrapperSafeAreaView` (Android bottom padding), `WrapperKeyboardAwareScrollView`, `ScrollView` (refresh control), `Link`, `Image`, `FormInput`.
+- **Thin wrappers** that add app behavior: `Button` (`redirect`, `image`, rounded-full, scale-pressable), `String` (`redirect`, `truncate`, default `colorVariant="black"`), `Skeleton` (`bg-black/20`), `Toggle` (primary track color), `WrapperKeyboardAwareScrollView`, `ScrollView` (refresh control), `Link`, `Image`, `FormInput`.
 - **App-only**: `List`, `ScreenLayout`, `BlurView`.
 
 ## Not wrapped: import from `@chillui/ui`
@@ -61,9 +61,9 @@ Everything else is `LegendListProps` minus `renderItem | getItemType | data | ke
 
 ## Wrapper (`chill-ui-library/types/wrapper.types.ts`)
 
-`Wrapper` is a straight re-export. `WrapperProps = WrapperBaseProps` (`:29`) = RN `ViewProps` + `className?`, `hasSafeArea?`, `edges?: ('top' | 'right' | 'bottom' | 'left')[]` + variants from `Wrapper.styles.ts:9-28`: `px` `none | xs(4) | sm(8) | md(16) | lg(24) | xl(32)` (default `md`), `fill` (`flex-1`), `grow` (`flex-grow`).
+`Wrapper` is a straight re-export. `WrapperProps = WrapperBaseProps` (`:29`) = RN `ViewProps` + `className?`, `safeArea?: WrapperSafeAreaEdge[]` (`'top'` / `'bottom'` / `'left'` / `'right'`, or with a spacing offset 1–8: `'bottom-4'` → `pb-safe-offset-4`) + variants from `Wrapper.styles.ts:9-28`: `px` `none | xs(4) | sm(8) | md(16) | lg(24) | xl(32)` (default `md`), `fill` (`flex-1`), `grow` (`flex-grow`).
 Caveat: `Wrapper.tsx:36-39` passes `fill` straight to `wrapperTv`, so a bare `<Wrapper>` is **not** `flex-1`. `wrapperDefaultProps.fill = true` (`wrapper/utils/defaultProps.ts:7`) is imported by the scroll / safe-area / keyboard variants. SKILL.md says "fill (default true)"; the repo still writes `fill={false}` on `Wrapper` (`form-sheet-footer.component.tsx:31`).
-Ludo variants: `WrapperKeyboardAwareScrollViewProps` adds `androidSafeAreaBottom?`, `keyboardToolbarProps?`, `hasKeyboardToolbar?` (`wrapper-keyboard-aware-scroll-view.types.ts:4`); `WrapperSafeAreaProps` adds `androidSafeAreaBottom?` (default `true`, adds `pb-5` on Android, `wrapper-safe-area-view.component.tsx:8-12`).
+Ludo variants: `WrapperKeyboardAwareScrollViewProps` adds `keyboardToolbarProps?`, `hasKeyboardToolbar?` (`wrapper-keyboard-aware-scroll-view.types.ts:4`). `WrapperSafeAreaView` is chill-ui's, re-exported as is (default `safeArea={['top', 'bottom']}`; `pb-safe` already adds 8px on Android).
 
 ## Skeleton (`ludo-ui/types/skeleton.types.ts:3`)
 

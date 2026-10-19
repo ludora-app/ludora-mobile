@@ -2,36 +2,31 @@ import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormInput, Button, Wrapper } from '@ludo/ui';
+import { Box, Button, FormInput, String, Wrapper, WrapperKeyboardAwareScrollView } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
-import { useDisableBack } from '@/hooks/navigation.hook';
+import { useAppNavigation } from '@/hooks/navigation.hooks';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
-import AuthHeader from '../../components/auth-header/ auth-header.component';
-import { formSchema, ResetPasswordFormData } from '../schemas/reset-password.schema';
-import ContentWapper from '../../components/content-wrapper/content-wrapper.component';
+import { formSchema, SendCodeFormData } from '../schemas/send-code.schema';
+import { AuthSwitchLink } from '../../../components/auth-switch-link.component';
+import { AuthHeader } from '../../../components/auth-header/auth-header.component';
 import { useSendVerificationCodeByEmail } from '../queries/send-verification-code.query';
 
-export default function ResetPasswordScreen() {
-  useDisableBack();
+export const SendCodeScreen = () => {
   const { t } = useTranslate();
   const { isPending: isSendingVerificationCode, mutateAsync: sendVerificationCode } = useSendVerificationCodeByEmail();
   const router = useRouter();
+  const { goBack } = useAppNavigation();
   const { trackError, trackEvent } = useAnalytics();
 
-  const {
-    control,
-    formState: { isValid },
-    handleSubmit,
-  } = useForm<ResetPasswordFormData>({
-    mode: 'onChange',
+  const { control, handleSubmit } = useForm<SendCodeFormData>({
+    mode: 'onSubmit',
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: ResetPasswordFormData) => {
+  const onSubmit = async (data: SendCodeFormData) => {
     try {
       await sendVerificationCode({ email: data.email });
       trackEvent({
@@ -52,28 +47,37 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <>
-      <HeaderGoBack title={t('auth.reset-password.title')} hasTopSafeArea />
-      <Wrapper hasSafeArea edges={['bottom']}>
-        <AuthHeader description="auth.reset-password.description" />
-        <ContentWapper>
+    <WrapperKeyboardAwareScrollView
+      px="none"
+      grow
+      mode="layout"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bounces={false}
+      safeArea={['bottom']}
+    >
+      <AuthHeader title={t('auth.reset-password.title')} mascotName="ludo-search" />
+      <Wrapper className="pt-6.5" grow>
+        <Box className="gap-3.5">
+          <String className="mb-1.5 text-center">{t('auth.reset-password.description')}</String>
           <FormInput
             control={control}
             name="email"
             label={t('common.input_email_label')}
             placeholder={t('common.input_email_placeholder')}
             keyboardType="email-address"
+            autoComplete="email"
           />
-        </ContentWapper>
-        <Button
-          title={t('common.send')}
-          onPress={handleSubmit(onSubmit)}
-          className="w-full"
-          size="lg"
-          isLoading={isSendingVerificationCode}
-          isDisabled={!isValid}
-        />
+          <Button
+            title={t('common.send')}
+            onPress={handleSubmit(onSubmit)}
+            className="w-full"
+            size="xl"
+            isLoading={isSendingVerificationCode}
+          />
+        </Box>
+        <AuthSwitchLink actionTitle={t('auth.reset-password.back_to_login')} onPress={goBack} />
       </Wrapper>
-    </>
+    </WrapperKeyboardAwareScrollView>
   );
-}
+};

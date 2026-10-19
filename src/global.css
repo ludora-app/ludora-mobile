@@ -93,3 +93,26 @@
   --font-secondary-regular: 'Baloo2400Regular';
   --font-secondary-semi-bold: 'Baloo2600SemiBold';
 }
+
+/* Safe area top / bottom: on Android the content sits flush with the status bar / gesture bar, so add spacing 2 there.
+   Uniwind ranks platform styles above plain ones, so these win over Uniwind's own `pt-safe` / `pb-safe` whatever the CSS order. */
+@utility pb-safe {
+  @variant android {
+    padding-bottom: calc(env(safe-area-inset-bottom) + --spacing(2));
+  }
+}
+
+@utility pt-safe {
+  @variant android {
+    padding-top: calc(env(safe-area-inset-top) + --spacing(2));
+  }
+}
+
+/* Raw insets on every platform (what `pb-safe` / `pt-safe` do without the Android spacing) */
+@utility pb-safe-default {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility pt-safe-default {
+  padding-top: env(safe-area-inset-top);
+}

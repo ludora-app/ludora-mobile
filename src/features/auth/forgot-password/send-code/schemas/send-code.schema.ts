@@ -6,4 +6,4 @@ export const formSchema = z.object({
   email: emailSchema(),
 });
 
-export type ResetPasswordFormData = z.infer<typeof formSchema>;
+export type SendCodeFormData = z.infer<typeof formSchema>;

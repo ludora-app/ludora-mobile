@@ -5,9 +5,8 @@ import { ScrollView } from 'react-native';
 import type { WrapperScrollViewProps } from '../../../types';
 
 import { cn } from '../../../utils';
-import { wrapperTv } from '../styles/Wrapper.styles';
 import { wrapperDefaultProps } from '../utils/defaultProps';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
+import { wrapperTv, getSafeAreaVariants } from '../styles/Wrapper.styles';
 
 /**
  * The `<WrapperScrollView />` component provides a ScrollView wrapper.
@@ -27,19 +26,21 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * ```
  *
  * @param contentContainerClassName - Custom CSS classes for the content container (nativewind only)
- * @param edges - Safe area edges to apply when hasSafeArea is true: `'top'` | `'right'` | `'bottom'` | `'left'`
+ * @param safeArea - Safe area paddings on the content container: `'top'` | `'right'` | `'bottom'` | `'left'`, or with a spacing offset 1–8 (`'bottom-4'`)
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
- * @param hasSafeArea - Whether to wrap content in SafeAreaView
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'` | `'2xl'` | `'3xl'`
  * @param ScrollViewProps - Any other props accepted by the native `ScrollView` component.
  */
 export function WrapperScrollView(props: PropsWithChildren<WrapperScrollViewProps>) {
-  const { children, contentContainerClassName, edges, fill, grow, hasSafeArea, px, ...rest } = props;
+  const { children, contentContainerClassName, fill, grow, px, safeArea, ...rest } = props;
 
-  const content = (
+  return (
     <ScrollView
-      contentContainerClassName={cn(wrapperTv({ fill, grow, px }), contentContainerClassName)}
+      contentContainerClassName={cn(
+        wrapperTv({ fill, grow, px, ...getSafeAreaVariants(safeArea) }),
+        contentContainerClassName,
+      )}
       alwaysBounceVertical={wrapperDefaultProps.alwaysBounceVertical}
       showsVerticalScrollIndicator={wrapperDefaultProps.showsVerticalScrollIndicator}
       {...rest}
@@ -47,16 +48,6 @@ export function WrapperScrollView(props: PropsWithChildren<WrapperScrollViewProp
       {children}
     </ScrollView>
   );
-
-  if (hasSafeArea) {
-    return (
-      <WrapperSafeAreaView px="none" edges={edges}>
-        {content}
-      </WrapperSafeAreaView>
-    );
-  }
-
-  return content;
 }
 
 WrapperScrollView.displayName = 'WrapperScrollView';

@@ -6,19 +6,19 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
-import { useSendVerificationCodeByEmail } from '../../reset-password/queries/send-verification-code.query';
+import { useSendVerificationCodeByEmail } from '../../send-code/queries/send-verification-code.query';
 
 const WAITING_TIME_TO_RESEND_CODE = 60; // seconds
 
 type VerifyCodeSubmitButtonProps = {
+  isCodeComplete: boolean;
   isLoading?: boolean;
   onSubmit: () => void;
   userEmail?: string;
-  code?: string;
 };
 
-export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProps) {
-  const { code, isLoading, onSubmit, userEmail } = props;
+export const VerifyCodeSubmitButton = (props: VerifyCodeSubmitButtonProps) => {
+  const { isCodeComplete, isLoading, onSubmit, userEmail } = props;
   const { t } = useTranslate();
   const { isPending: isSendingVerificationCode, mutateAsync: sendVerificationCode } = useSendVerificationCodeByEmail();
   const { toast } = useToast();
@@ -26,19 +26,19 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
 
   const [resendCodeTime, setResendCodeTime] = useState(WAITING_TIME_TO_RESEND_CODE);
 
-  const isCodeValid = code && code.length > 0;
   const isShowingResendCountdown = resendCodeTime > 0;
-  const isButtonDisabled = !isCodeValid && isShowingResendCountdown;
+  const isButtonDisabled = !isCodeComplete && isShowingResendCountdown;
+  const isResendReady = !isCodeComplete && !isShowingResendCountdown;
 
   const buttonMessage = useMemo(() => {
-    if (isCodeValid) {
-      return t('common.send');
+    if (isCodeComplete) {
+      return t('common.validate');
     }
     if (resendCodeTime > 0) {
       return t('auth.verify-code.resend_verification_code_timer', { timer: resendCodeTime });
     }
     return t('auth.verify-code.resend_verification_code');
-  }, [isCodeValid, resendCodeTime, t]);
+  }, [isCodeComplete, resendCodeTime, t]);
 
   const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -82,11 +82,11 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
   };
 
   const handleSubmit = () => {
-    if (isCodeValid) {
+    if (isCodeComplete) {
       onSubmit();
       return;
     }
-    if (resendCodeTime === 0 && !isCodeValid) {
+    if (isResendReady) {
       handleSendVerificationCode();
     }
   };
@@ -97,7 +97,9 @@ export default function VerifyCodeSubmitButton(props: VerifyCodeSubmitButtonProp
       isDisabled={isButtonDisabled}
       onPress={handleSubmit}
       className="w-full"
+      size="xl"
+      {...(isResendReady && { colorVariant: 'dark', variant: 'outlined' })}
       isLoading={isLoading || isSendingVerificationCode}
     />
   );
-}
+};

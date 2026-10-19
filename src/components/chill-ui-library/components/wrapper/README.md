@@ -63,7 +63,7 @@ import {
 </WrapperScrollView>
 
 // Safe area wrapper
-<WrapperSafeAreaView edges={['top', 'bottom']}>
+<WrapperSafeAreaView safeArea={['top', 'bottom']}>
   <String>Safe area content</String>
 </WrapperSafeAreaView>
 
@@ -110,7 +110,7 @@ A ScrollView wrapper with keyboard handling and safe area support.
 A container that automatically handles device safe areas (notch, home indicator, etc.).
 
 ```tsx
-<WrapperSafeAreaView edges={['top', 'bottom']}>
+<WrapperSafeAreaView safeArea={['top', 'bottom']}>
   <String>Safe area content</String>
 </WrapperSafeAreaView>
 ```
@@ -177,17 +177,16 @@ All versions support custom colors through the `style` prop:
 
 ### WrapperProps
 
-| Prop          | Type                                                               | Default | Description                                              |
-| ------------- | ------------------------------------------------------------------ | ------- | -------------------------------------------------------- |
-| `children`    | `ReactNode`                                                        | -       | Child components to render.                              |
-| `className`   | `string`                                                           | -       | Custom CSS classes (used with NativeWind).               |
-| `style`       | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                |
-| `fill`        | `boolean`                                                          | `false` | Whether to fill the available space.                     |
-| `grow`        | `boolean`                                                          | `false` | Whether to grow to fill parent.                          |
-| `px`          | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                              |
-| `hasSafeArea` | `boolean`                                                          | `false` | Whether to wrap content in SafeAreaView.                 |
-| `edges`       | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -       | Safe area edges to apply when hasSafeArea is true.       |
-| `...rest`     | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component. |
+| Prop        | Type                                                               | Default | Description                                                   |
+| ----------- | ------------------------------------------------------------------ | ------- | ------------------------------------------------------------- |
+| `children`  | `ReactNode`                                                        | -       | Child components to render.                                   |
+| `className` | `string`                                                           | -       | Custom CSS classes (used with NativeWind).                    |
+| `style`     | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                     |
+| `fill`      | `boolean`                                                          | `false` | Whether to fill the available space.                          |
+| `grow`      | `boolean`                                                          | `false` | Whether to grow to fill parent.                               |
+| `px`        | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                                   |
+| `safeArea`  | `WrapperSafeAreaEdge[]`                                            | -       | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`). |
+| `...rest`   | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component.      |
 
 ### WrapperScrollViewProps
 
@@ -200,43 +199,41 @@ All versions support custom colors through the `style` prop:
 | `fill`                      | `boolean`                                                          | `false`    | Whether to fill the available space.                           |
 | `grow`                      | `boolean`                                                          | `false`    | Whether to grow to fill parent.                                |
 | `px`                        | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -          | Horizontal padding variant.                                    |
-| `hasSafeArea`               | `boolean`                                                          | `false`    | Whether to wrap content in SafeAreaView.                       |
-| `edges`                     | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -          | Safe area edges to apply when hasSafeArea is true.             |
+| `safeArea`                  | `WrapperSafeAreaEdge[]`                                            | -          | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`).  |
 | `nestedScrollEnabled`       | `boolean`                                                          | `false`    | Whether nested scrolling is enabled.                           |
 | `keyboardShouldPersistTaps` | `'always' \| 'never' \| 'handled'`                                 | `'always'` | How the keyboard should behave with taps.                      |
 | `...rest`                   | `ScrollViewProps`                                                  | -          | Any other props accepted by the native `ScrollView` component. |
 
 ### WrapperSafeAreaViewProps
 
-| Prop                     | Type                                                               | Default | Description                                              |
-| ------------------------ | ------------------------------------------------------------------ | ------- | -------------------------------------------------------- |
-| `children`               | `ReactNode`                                                        | -       | Child components to render.                              |
-| `className`              | `string`                                                           | -       | Custom CSS classes (used with NativeWind).               |
-| `style`                  | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                |
-| `fill`                   | `boolean`                                                          | `false` | Whether to fill the available space.                     |
-| `grow`                   | `boolean`                                                          | `false` | Whether to grow to fill parent.                          |
-| `px`                     | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                              |
-| `edges`                  | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -       | Safe area edges to apply.                                |
-| `emulateUnlessSupported` | `boolean`                                                          | -       | Whether to emulate safe area unless supported.           |
-| `...rest`                | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component. |
+| Prop                     | Type                                                               | Default | Description                                                   |
+| ------------------------ | ------------------------------------------------------------------ | ------- | ------------------------------------------------------------- |
+| `children`               | `ReactNode`                                                        | -       | Child components to render.                                   |
+| `className`              | `string`                                                           | -       | Custom CSS classes (used with NativeWind).                    |
+| `style`                  | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                     |
+| `fill`                   | `boolean`                                                          | `false` | Whether to fill the available space.                          |
+| `grow`                   | `boolean`                                                          | `false` | Whether to grow to fill parent.                               |
+| `px`                     | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                                   |
+| `safeArea`               | `WrapperSafeAreaEdge[]`                                            | -       | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`). |
+| `emulateUnlessSupported` | `boolean`                                                          | -       | Whether to emulate safe area unless supported.                |
+| `...rest`                | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component.      |
 
 ### WrapperKeyboardAvoidingViewProps
 
-| Prop                     | Type                                                               | Default     | Description                                              |
-| ------------------------ | ------------------------------------------------------------------ | ----------- | -------------------------------------------------------- |
-| `children`               | `ReactNode`                                                        | -           | Child components to render.                              |
-| `className`              | `string`                                                           | -           | Custom CSS classes (used with NativeWind).               |
-| `style`                  | `StyleProp<ViewStyle>`                                             | -           | Additional inline styles.                                |
-| `fill`                   | `boolean`                                                          | `false`     | Whether to fill the available space.                     |
-| `grow`                   | `boolean`                                                          | `false`     | Whether to grow to fill parent.                          |
-| `px`                     | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -           | Horizontal padding variant.                              |
-| `hasSafeArea`            | `boolean`                                                          | `false`     | Whether to wrap content in SafeAreaView.                 |
-| `edges`                  | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -           | Safe area edges to apply when hasSafeArea is true.       |
-| `behavior`               | `'height' \| 'position' \| 'padding'`                              | `'padding'` | Type of keyboard avoidance behavior.                     |
-| `keyboardVerticalOffset` | `number`                                                           | `10`        | Keyboard vertical offset.                                |
-| `enabled`                | `boolean`                                                          | `true`      | Whether the keyboard avoiding view is enabled.           |
-| `contentContainerStyle`  | `StyleProp<ViewStyle>`                                             | -           | Content container style when behavior is position.       |
-| `...rest`                | `ViewProps`                                                        | -           | Any other props accepted by the native `View` component. |
+| Prop                     | Type                                                               | Default     | Description                                                   |
+| ------------------------ | ------------------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
+| `children`               | `ReactNode`                                                        | -           | Child components to render.                                   |
+| `className`              | `string`                                                           | -           | Custom CSS classes (used with NativeWind).                    |
+| `style`                  | `StyleProp<ViewStyle>`                                             | -           | Additional inline styles.                                     |
+| `fill`                   | `boolean`                                                          | `false`     | Whether to fill the available space.                          |
+| `grow`                   | `boolean`                                                          | `false`     | Whether to grow to fill parent.                               |
+| `px`                     | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -           | Horizontal padding variant.                                   |
+| `safeArea`               | `WrapperSafeAreaEdge[]`                                            | -           | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`). |
+| `behavior`               | `'height' \| 'position' \| 'padding'`                              | `'padding'` | Type of keyboard avoidance behavior.                          |
+| `keyboardVerticalOffset` | `number`                                                           | `10`        | Keyboard vertical offset.                                     |
+| `enabled`                | `boolean`                                                          | `true`      | Whether the keyboard avoiding view is enabled.                |
+| `contentContainerStyle`  | `StyleProp<ViewStyle>`                                             | -           | Content container style when behavior is position.            |
+| `...rest`                | `ViewProps`                                                        | -           | Any other props accepted by the native `View` component.      |
 
 ### WrapperKeyboardAwareScrollViewProps
 
@@ -248,8 +245,7 @@ All versions support custom colors through the `style` prop:
 | `fill`                        | `boolean`                                                          | `false`    | Whether to fill the available space.                           |
 | `grow`                        | `boolean`                                                          | `false`    | Whether to grow to fill parent.                                |
 | `px`                          | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -          | Horizontal padding variant.                                    |
-| `hasSafeArea`                 | `boolean`                                                          | `false`    | Whether to wrap content in SafeAreaView.                       |
-| `edges`                       | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -          | Safe area edges to apply when hasSafeArea is true.             |
+| `safeArea`                    | `WrapperSafeAreaEdge[]`                                            | -          | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`).  |
 | `bottomOffset`                | `number`                                                           | `20`       | Bottom offset for keyboard.                                    |
 | `disableScrollOnKeyboardHide` | `boolean`                                                          | `false`    | Whether to disable scroll on keyboard hide.                    |
 | `enabled`                     | `boolean`                                                          | `true`     | Whether the keyboard aware scroll view is enabled.             |
@@ -259,19 +255,18 @@ All versions support custom colors through the `style` prop:
 
 ### WrapperKeyboardAvoidingStickyViewProps
 
-| Prop          | Type                                                               | Default | Description                                              |
-| ------------- | ------------------------------------------------------------------ | ------- | -------------------------------------------------------- |
-| `children`    | `ReactNode`                                                        | -       | Child components to render.                              |
-| `className`   | `string`                                                           | -       | Custom CSS classes (used with NativeWind).               |
-| `style`       | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                |
-| `fill`        | `boolean`                                                          | `false` | Whether to fill the available space.                     |
-| `grow`        | `boolean`                                                          | `false` | Whether to grow to fill parent.                          |
-| `px`          | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                              |
-| `hasSafeArea` | `boolean`                                                          | `false` | Whether to wrap content in SafeAreaView.                 |
-| `edges`       | `Array<'top' \| 'right' \| 'bottom' \| 'left'>`                    | -       | Safe area edges to apply when hasSafeArea is true.       |
-| `enabled`     | `boolean`                                                          | `true`  | Whether the keyboard avoiding sticky view is enabled.    |
-| `offset`      | `{ close: number; open: number }`                                  | -       | Offset for the keyboard avoiding sticky view.            |
-| `...rest`     | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component. |
+| Prop        | Type                                                               | Default | Description                                                   |
+| ----------- | ------------------------------------------------------------------ | ------- | ------------------------------------------------------------- |
+| `children`  | `ReactNode`                                                        | -       | Child components to render.                                   |
+| `className` | `string`                                                           | -       | Custom CSS classes (used with NativeWind).                    |
+| `style`     | `StyleProp<ViewStyle>`                                             | -       | Additional inline styles.                                     |
+| `fill`      | `boolean`                                                          | `false` | Whether to fill the available space.                          |
+| `grow`      | `boolean`                                                          | `false` | Whether to grow to fill parent.                               |
+| `px`        | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| '3xl'` | -       | Horizontal padding variant.                                   |
+| `safeArea`  | `WrapperSafeAreaEdge[]`                                            | -       | Safe area paddings, side or side + offset 1–8 (`'bottom-4'`). |
+| `enabled`   | `boolean`                                                          | `true`  | Whether the keyboard avoiding sticky view is enabled.         |
+| `offset`    | `{ close: number; open: number }`                                  | -       | Offset for the keyboard avoiding sticky view.                 |
+| `...rest`   | `ViewProps`                                                        | -       | Any other props accepted by the native `View` component.      |
 
 ## Usage Examples
 
@@ -294,7 +289,7 @@ All versions support custom colors through the `style` prop:
 ### Safe Area with Keyboard Handling
 
 ```tsx
-<WrapperSafeAreaView edges={['top', 'bottom']}>
+<WrapperSafeAreaView safeArea={['top', 'bottom']}>
   <WrapperKeyboardAwareScrollView bottomOffset={20}>
     <Input placeholder="First input" />
     <Input placeholder="Second input" />
@@ -305,7 +300,7 @@ All versions support custom colors through the `style` prop:
 ### Complex Layout Composition
 
 ```tsx
-<WrapperSafeAreaView edges={['top']}>
+<WrapperSafeAreaView safeArea={['top']}>
   <WrapperKeyboardAwareScrollView bottomOffset={20} keyboardShouldPersistTaps="handled">
     <Wrapper className="p-4">
       <String className="mb-4 text-xl font-bold">Form Title</String>
@@ -401,7 +396,7 @@ The components support React Native accessibility features:
 ### Form Layout
 
 ```tsx
-<WrapperSafeAreaView edges={['top']}>
+<WrapperSafeAreaView safeArea={['top']}>
   <WrapperKeyboardAwareScrollView>
     <Wrapper className="p-4">
       <String className="mb-6 text-2xl font-bold">Create Account</String>
@@ -417,7 +412,7 @@ The components support React Native accessibility features:
 ### Modal Content
 
 ```tsx
-<WrapperSafeAreaView edges={['bottom']}>
+<WrapperSafeAreaView safeArea={['bottom']}>
   <WrapperKeyboardAvoidingView behavior="padding">
     <Wrapper className="p-4">
       <String className="mb-4 text-lg font-semibold">Settings</String>
@@ -445,7 +440,7 @@ The components support React Native accessibility features:
 
 - Ensure `react-native-safe-area-context` is installed
 - Check that your app is wrapped with `SafeAreaProvider`
-- Verify the `edges` prop is correctly configured
+- Verify the `safeArea` prop is correctly configured
 
 ### Keyboard handling issues
 

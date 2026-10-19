@@ -55,7 +55,7 @@ export const Input = forwardRef<any, InputProps>((props, ref) => {
       )}
       <InputContainer
         className={cn(
-          'min-h-14 rounded-field border-2 border-input bg-white px-4',
+          'min-h-14 rounded-field border-2 border-input bg-white px-2',
           {
             'bg-darkSoft': isDisabled,
             'border-error': showError,
@@ -73,7 +73,7 @@ export const Input = forwardRef<any, InputProps>((props, ref) => {
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
           {...inputFieldProps}
-          className={cn('font-primary-medium text-base', inputFieldProps?.className)}
+          className={cn('font-primary-medium leading-5', inputFieldProps?.className)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={[

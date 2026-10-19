@@ -1,68 +1,58 @@
-import { TextInput } from 'react-native';
+import { useState } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useRef, useState } from 'react';
-import { cn, InputMessage, useToast } from '@chillui/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Wrapper, FormInput, String, BoxRow, Box } from '@ludo/ui';
+import { Box, BoxRow, FormCodeInput, Icon, String, WrapperKeyboardAwareScrollView, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
+import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { useAppNavigation } from '@/hooks/navigation.hooks';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
 import { useVerifyCode } from '../queries/verify-code.query';
 import { VERIFY_CODE_ERRORS } from '../utils/verify-code-errors.utils';
-import AuthHeader from '../../components/auth-header/ auth-header.component';
-import { goToNextInput, goToPreviousInput } from '../utils/verify-code.utils';
 import { formSchema, VerifyCodeFormData } from '../schemas/verify-code.schema';
-import VerifyCodeSubmitButton from '../components/verify-code-submit-button.component';
-import ContentWapper from '../../components/content-wrapper/content-wrapper.component';
+import { AuthSwitchLink } from '../../../components/auth-switch-link.component';
+import { AuthHeader } from '../../../components/auth-header/auth-header.component';
+import { VERIFY_CODE_LENGTH, VERIFY_CODE_REGEX } from '../constants/verify-code.constants';
+import { VerifyCodeSubmitButton } from '../components/verify-code-submit-button.component';
 
-const VerifyCodeFieldNames = ['code1', 'code2', 'code3', 'code4', 'code5', 'code6'] as const;
+const API_ERROR_KEYS: Record<string, string> = {
+  [VERIFY_CODE_ERRORS.CODE_INCORRECT]: 'auth.verify-code.incorrect_code',
+  [VERIFY_CODE_ERRORS.EXCEEDED_ATTEMPTS]: 'auth.verify-code.exceeded_attempts',
+  [VERIFY_CODE_ERRORS.EXPIRED_CODE]: 'auth.verify-code.expired_code',
+};
 
-export default function VerifyCodeScreen() {
+export const VerifyCodeScreen = () => {
   const router = useRouter();
   const { t } = useTranslate();
-  const { toast } = useToast();
-  const { email } = useLocalSearchParams();
+  const { goBack } = useAppNavigation();
+  const { email = '' } = useLocalSearchParams<{ email: string }>();
   const { trackError, trackEvent } = useAnalytics();
   const {
     control,
     formState: { errors },
-    getValues,
     handleSubmit,
   } = useForm<VerifyCodeFormData>({
+    defaultValues: { code: '' },
     resolver: zodResolver(formSchema),
   });
 
-  const inputRefs = useRef<TextInput[]>([]);
   const { isPending: isVerifyingCode, mutateAsync: verifyCode } = useVerifyCode();
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const values = useWatch({ control });
-  const parsedValues = Object.values(values).join('');
+  const [apiErrorKey, setApiErrorKey] = useState<string | null>(null);
+  const code = useWatch({ control, name: 'code' });
 
-  const refInputCallback = useCallback((ref: TextInput | null) => {
-    if (ref && !inputRefs.current.includes(ref)) {
-      inputRefs.current.push(ref);
-    }
-  }, []);
-
-  const VerifyCodeFields = VerifyCodeFieldNames.map((name, index) => ({
-    name,
-    placeholder: `${index + 1}`,
-  }));
+  const errorKey = apiErrorKey ?? (errors.code ? 'auth.verify-code.resend_code_input_error_message' : null);
 
   const onSubmit = async (data: VerifyCodeFormData) => {
-    const code = Object.values(data).join('');
     try {
-      const response = await verifyCode({ code, email: email?.toString() });
+      const response = await verifyCode({ code: data.code, email });
       trackEvent({
         eventName: 'reset_password_verify_code_success',
       });
-      return router.replace({ params: { resetToken: response.resetToken }, pathname: ROUTES.AUTH.NEW_PASSWORD });
-      // TODO : TYPE ERRORS IF USER NOT FOUND add to code incorrect
+      router.replace({ params: { resetToken: response.resetToken }, pathname: ROUTES.AUTH.NEW_PASSWORD });
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
@@ -71,80 +61,60 @@ export default function VerifyCodeScreen() {
         },
         eventName: 'reset_password_verify_code_failed',
       });
-      let errorMessage: string = 'common.error_generic';
-      if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.CODE_INCORRECT) {
-        errorMessage = 'auth.verify-code.incorrect_code';
-      } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXPIRED_CODE) {
-        errorMessage = 'auth.verify-code.expired_code';
-      } else if (errorResponse.api_error_detail === VERIFY_CODE_ERRORS.EXCEEDED_ATTEMPTS) {
-        errorMessage = 'auth.verify-code.exceeded_attempts';
-      } else {
-        trackError({
-          error,
-          showToast: false,
-        });
+      const knownErrorKey = API_ERROR_KEYS[errorResponse.api_error_detail ?? ''];
+      if (!knownErrorKey) {
+        trackError({ error });
+        return;
       }
-      return toast({ message: t(errorMessage), variant: 'error' });
+      setApiErrorKey(knownErrorKey);
     }
   };
 
   return (
-    <>
-      <HeaderGoBack title={t('auth.verify-code.title')} hasTopSafeArea />
-      <Wrapper hasSafeArea edges={['bottom']}>
-        <AuthHeader>
-          <Box className="gap-1">
+    <WrapperKeyboardAwareScrollView
+      px="none"
+      grow
+      mode="layout"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bounces={false}
+      safeArea={['bottom']}
+    >
+      <AuthHeader title={t('auth.verify-code.title')} mascotName="ludo-idea" />
+      <Wrapper grow className="pt-6.5">
+        <Box className="gap-3.5">
+          <Box className="mb-1.5 gap-1.5">
             <String className="text-center">{t('auth.verify-code.description')}</String>
             <String font="primaryBold" variant="body-2" className="text-center">
-              {email?.toString() ?? ''}
+              {email}
             </String>
           </Box>
-        </AuthHeader>
-        <ContentWapper>
-          <BoxRow className="gap-2">
-            {VerifyCodeFields.map((field, index) => (
-              <FormInput
-                ref={refInputCallback}
-                key={index}
-                control={control}
-                name={field.name}
-                placeholder={field.placeholder}
-                hasMessageError={false}
-                className="flex-1"
-                onChangeText={(value: string) => {
-                  if (value.length >= 1 && index < VerifyCodeFieldNames.length - 1) {
-                    goToNextInput({ index, inputRefs });
-                  }
-                }}
-                inputContainerClassName={cn('justify-center items-center p-0', {
-                  'border-primary': focusedIndex === index,
-                })}
-                inputFieldClassName="text-center"
-                size="xl"
-                keyboardType="numeric"
-                allow="numbers"
-                maxLength={1}
-                onFocus={() => setFocusedIndex(index)}
-                onBlur={() => setFocusedIndex(current => (current === index ? null : current))}
-                onKeyPress={event => {
-                  const value = getValues()[field.name];
-                  goToPreviousInput({ e: event, index, inputRefs, value });
-                }}
-                hasClearIcon={false}
-              />
-            ))}
-          </BoxRow>
-          {Object.keys(errors).length > 0 && (
-            <InputMessage title={t('auth.verify-code.resend_code_input_error_message')} colorVariant="error" />
-          )}
-        </ContentWapper>
-        <VerifyCodeSubmitButton
-          isLoading={isVerifyingCode}
-          onSubmit={handleSubmit(onSubmit)}
-          userEmail={email?.toString() ?? ''}
-          code={parsedValues}
-        />
+          <Box className="gap-2">
+            <FormCodeInput
+              control={control}
+              name="code"
+              length={VERIFY_CODE_LENGTH}
+              hasError={!!errorKey}
+              onChangeText={() => setApiErrorKey(null)}
+            />
+            {!!errorKey && (
+              <BoxRow className="items-center gap-1">
+                <Icon name="warning-solid" size="xs" color={COLORS.error} />
+                <String colorVariant="error" font="primarySemiBold" variant="body-xs">
+                  {t(errorKey)}
+                </String>
+              </BoxRow>
+            )}
+          </Box>
+          <VerifyCodeSubmitButton
+            isLoading={isVerifyingCode}
+            isCodeComplete={VERIFY_CODE_REGEX.test(code)}
+            onSubmit={handleSubmit(onSubmit)}
+            userEmail={email}
+          />
+        </Box>
+        <AuthSwitchLink actionTitle={t('auth.verify-code.change_email')} onPress={goBack} />
       </Wrapper>
-    </>
+    </WrapperKeyboardAwareScrollView>
   );
-}
+};

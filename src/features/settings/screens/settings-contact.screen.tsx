@@ -52,7 +52,6 @@ export default function SettingsContactScreen() {
         grow
         px="none" keyboardShouldPersistTaps="handled"
         bounces={false}
-        androidSafeAreaBottom={false}
       >
         <SettingsHeader titleKey="settings.contact.header_title" hasTopSafeArea hasHorizontalPadding />
         <Wrapper

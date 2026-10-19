@@ -28,6 +28,7 @@ Main `@ludo/ui` components:
 | `List` | see §4 |
 | `Image` / `ImageBackground` | expo-image with `className`, `contentFit` |
 | `FormInput`, `FormDatePickerInput` | react-hook-form `control`, `name`, `label`, `placeholder` (translates errors itself) |
+| `CodeInput` / `FormCodeInput` | one-time code boxes: `length` (6 default), `value` + `onChangeText` (or `control` + `name`, one string field), `hasError`, `onComplete`; handles auto-advance, backspace, paste and OS autofill |
 | `Separator`, `Badge`, `Toggle`, `NumericInput`, `Link`, `BlurView`, `Chip`, `Accordion*` | |
 
 ## 2. Styling
@@ -37,6 +38,7 @@ Main `@ludo/ui` components:
   - spacing and sizes use the 4px scale, fractions included: `size-52.5` not `size-[210px]`, `pb-7.5` not `pb-[30px]`, `py-1.25` not `py-[5px]`, `leading-11` not `leading-[44px]`.
   - radii use the design system tokens: `rounded-badge` 10, `rounded-control` 12, `rounded-button-sm` 14, `rounded-field` 16, `rounded-button` 18, `rounded-card` 22, `rounded-sheet` 30, `rounded-header` 34 (also `rounded-t-*` / `rounded-b-*`). `cn` knows them, so a `className` override still wins.
   - **text size on `String`: never `text-[15.5px]`.** Order of preference: 1) `variant` (`body-xs` 12, `body-sm` 14, `body-1` 16, `body-2` 18, `body-3` 20, `title-1` 24, `title-2` 30, `title-3` 36, `title-4` 48…), 2) `size` (`xs` 12, `sm` 14, `md` 16, `lg` 18, `xl` 20, `2xl` 24, `3xl` 30, `4xl` 36…), both of which set the matching line height. If the design size has neither (e.g. 15.5, 38), **ask the user** which variant/size to round to instead of writing an arbitrary class. ESLint warns on `text-[<n>…]` in className.
+  - **screen side padding: always `Wrapper`, never `px-*`.** The horizontal gutter of a screen (and of full-width blocks such as auth headers or sticky footers that must line up with it) comes from `Wrapper` / `WrapperKeyboardAwareScrollView` / `WrapperSafeAreaView` and their `px` prop (`md` = 16 by default; `none` when an inner `Wrapper` provides it). Use `grow` / `fill` instead of wrapping in `BoxGrow`. `px-*` stays fine *inside* components (card, chip, button padding).
   - Exception: `tv()` styles (tailwind-variants has its own merge, e.g. chill Button) keep `rounded-[18px]`-style radii.
 - Recurring recipes:
   - content sheet over the background: `bg-background rounded-t-sheet`
@@ -47,7 +49,12 @@ Main `@ludo/ui` components:
 - `style` only for: shadows (module `StyleSheet.create({ shadow: { boxShadow: '0px 2px 8px rgba(0,0,0,0.08)' } })`), safe-area paddings, measured/dynamic sizes, reanimated styles.
 - JS color values (Icon `color`, loaders, RefreshControl): `COLORS.primary` from `@/constants/colors.contstants`.
 - Variant-heavy local styles: `tv()` from tailwind-variants in a sibling `<name>.styles.ts`.
-- Safe areas: **only** `useSafeArea()` (`@/hooks/safe-area.hook`) → `{ top, safeTop, bottom, bottomTab, insetsBottom }`. Never `useSafeAreaInsets` directly. Headers/footers take `hasTopSafeArea` / `hasBottomSafeArea`.
+- Safe areas, in order of preference:
+  1. `Wrapper` / scroll wrappers `safeArea={['top', 'bottom-4']}` (side, optional spacing offset 1–8).
+  2. Uniwind classes `pt-safe` / `pb-safe` (inset, +8px on Android, see `global.css`), `pb-safe-default` (raw inset), `pb-safe-offset-N`.
+  3. JS values (styles, toolbar insets, measured sizes): `useSafeAreaInsets()` from `react-native-safe-area-context`.
+  - `useSafeArea()` (`@/hooks/safe-area.hook`) is legacy and will be removed: don't use it in new code, don't spread it.
+  - Shared headers/footers take `hasTopSafeArea` / `hasBottomSafeArea`.
 
 ## 3. Component anatomy
 

@@ -9,7 +9,7 @@ const ROUTES = {
     NEW_PASSWORD: '/auth/new-password',
     REGISTER_STEP_1: '/auth/register/step-1',
     REGISTER_STEP_2: '/auth/register/step-2',
-    RESET_PASSWORD: '/auth/reset-password',
+    SEND_CODE: '/auth/send-code',
     VERIFY_CODE: '/auth/verify-code',
   },
   CHAT_ROOM: {

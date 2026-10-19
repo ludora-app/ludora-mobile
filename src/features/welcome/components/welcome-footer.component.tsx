@@ -1,9 +1,8 @@
-import { Box, Button } from '@ludo/ui';
 import { StyleSheet } from 'react-native';
+import { Button, Wrapper } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
 import ROUTES from '@/constants/routes.constants';
-import { useSafeArea } from '@/hooks/safe-area.hook';
 
 const styles = StyleSheet.create({
   shadow: {
@@ -13,13 +12,9 @@ const styles = StyleSheet.create({
 
 export const WelcomeFooter = () => {
   const { t } = useTranslate();
-  const { bottom } = useSafeArea();
 
   return (
-    <Box
-      className="gap-3 rounded-t-header bg-primary px-5 pt-5.5"
-      style={[styles.shadow, { paddingBottom: bottom + 8 }]}
-    >
+    <Wrapper className="gap-3 rounded-t-header bg-primary pt-5.5" style={styles.shadow} safeArea={['bottom']}>
       <Button
         title={t('welcome.create_account_button_title')}
         colorVariant="tertiary"
@@ -34,6 +29,6 @@ export const WelcomeFooter = () => {
         redirect={ROUTES.AUTH.LOGIN}
         size="xl"
       />
-    </Box>
+    </Wrapper>
   );
 };

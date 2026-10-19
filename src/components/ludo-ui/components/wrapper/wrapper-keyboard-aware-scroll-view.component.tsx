@@ -1,30 +1,24 @@
 import { useTranslate } from '@tolgee/react';
 import { KeyboardToolbar } from 'react-native-keyboard-controller';
-import { cn, WrapperKeyboardAwareScrollView as WrapperKeyboardAwareScrollViewChillUi } from '@chillui/ui';
-
-import { useSafeArea } from '@/hooks/safe-area.hook';
-import { IS_ANDROID } from '@/constants/platform.constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { WrapperKeyboardAwareScrollView as WrapperKeyboardAwareScrollViewChillUi } from '@chillui/ui';
 
 import { WrapperKeyboardAwareScrollViewProps } from '../../types/wrapper-keyboard-aware-scroll-view.types';
-
 // Mirrors KEYBOARD_TOOLBAR_HEIGHT from react-native-keyboard-controller, which the package doesn't export
 const KEYBOARD_TOOLBAR_HEIGHT = 42;
+// Space kept between the focused input and the keyboard (or the toolbar above it)
 const DEFAULT_BOTTOM_OFFSET = 20;
 
 export const WrapperKeyboardAwareScrollView = (props: WrapperKeyboardAwareScrollViewProps) => {
   const {
-    androidSafeAreaBottom = true,
     bottomOffset = DEFAULT_BOTTOM_OFFSET,
     children,
-    contentContainerClassName,
     hasKeyboardToolbar = false,
     keyboardToolbarProps,
     ...rest
   } = props;
   const { t } = useTranslate();
-  const insets = useSafeArea();
-
-  const hasAndroidSafeAreaBottom = androidSafeAreaBottom && IS_ANDROID;
+  const insets = useSafeAreaInsets();
 
   const toolbarHeight = hasKeyboardToolbar ? KEYBOARD_TOOLBAR_HEIGHT : 0;
 
@@ -33,7 +27,6 @@ export const WrapperKeyboardAwareScrollView = (props: WrapperKeyboardAwareScroll
       <WrapperKeyboardAwareScrollViewChillUi
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        contentContainerClassName={cn(hasAndroidSafeAreaBottom && 'pb-5', contentContainerClassName)}
         extraKeyboardSpace={toolbarHeight}
         {...rest}
         bottomOffset={bottomOffset + toolbarHeight}

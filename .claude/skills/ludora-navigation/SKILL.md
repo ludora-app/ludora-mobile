@@ -45,7 +45,7 @@ src/app/_layout.tsx            root Stack: FontProvider > MainProvider > MainIni
        }}
      />
      ```
-   - iOS file: same but **no `sheetCornerRadius`**; tall sheets use `presentation: 'modal'` on iOS vs `formSheet` + `sheetAllowedDetents: [0.93]` on Android; stack animation `ios_from_right` (iOS) vs `slide_from_right` (Android). Android sheets may need `contentStyle.paddingBottom: bottom` from `useSafeArea()`.
+   - iOS file: same but **no `sheetCornerRadius`**; tall sheets use `presentation: 'modal'` on iOS vs `formSheet` + `sheetAllowedDetents: [0.93]` on Android; stack animation `ios_from_right` (iOS) vs `slide_from_right` (Android). Android sheets may need `contentStyle.paddingBottom` from `useSafeAreaInsets().bottom`.
 3. **`ROUTES`** (`src/constants/routes.constants.ts`): areas and keys alphabetical, `INDEX` for area root, dynamic = pattern + builder:
    ```ts
    INFO_SESSION: '/chat-room/[chatRoomId]/info/session',
@@ -110,7 +110,7 @@ const session = useMemo(() => {
   </ScreenLayout>
   ```
 - Data screens: typed params → main query → `if (isLoading) return <Loading />;` → `if (!data) return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;` → sections. Footer as a sibling after the ScrollView.
-- Safe areas only via `useSafeArea()`.
+- Safe areas: `Wrapper` `safeArea` prop or `pt-safe` / `pb-safe` classes; JS values via `useSafeAreaInsets()`. `useSafeArea()` is legacy (being removed).
 
 ## 6. Multi-step flows (create-session, on-boarding, register)
 

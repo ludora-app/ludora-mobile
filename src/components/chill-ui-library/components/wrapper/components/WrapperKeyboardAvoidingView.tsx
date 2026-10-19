@@ -7,9 +7,8 @@ import type { WrapperKeyboardAvoidingViewProps } from '../../../types';
 
 import { Wrapper } from './Wrapper';
 import { cn } from '../../../utils';
-import { wrapperTv } from '../styles/Wrapper.styles';
 import { wrapperDefaultProps } from '../utils/defaultProps';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
+import { wrapperTv, getSafeAreaVariants } from '../styles/Wrapper.styles';
 
 /**
  * KeyboardAvoidingView wrapper component for keyboard avoidance.
@@ -20,8 +19,8 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  *   <Input placeholder="Type here" />
  * </WrapperKeyboardAvoidingView>
  *
- * // With SafeAreaView
- * <WrapperKeyboardAvoidingView hasSafeArea edges={['top', 'bottom']}>
+ * // With safe area paddings
+ * <WrapperKeyboardAvoidingView safeArea={['top', 'bottom-4']}>
  *   <Input placeholder="Type here" />
  * </WrapperKeyboardAvoidingView>
  * ```
@@ -29,8 +28,7 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`
- * @param hasSafeArea - Whether to wrap content in SafeAreaView
- * @param edges - Safe area edges to apply when hasSafeArea is true
+ * @param safeArea - Safe area paddings on the view: `'top'` | `'right'` | `'bottom'` | `'left'`, or with a spacing offset 1–8 (`'bottom-4'`)
  * @param keyboardVerticalOffset - Keyboard vertical offset
  * @param behavior - Behavior of the keyboard avoiding view
  * @param enabled - Whether the keyboard avoiding view is enabled
@@ -43,31 +41,25 @@ export function WrapperKeyboardAvoidingView(props: PropsWithChildren<WrapperKeyb
   const {
     children,
     className,
-    edges,
     fill,
     grow,
-    hasSafeArea,
     keyboardVerticalOffset = wrapperDefaultProps.keyboardVerticalOffset,
     px,
+    safeArea,
     ...rest
   } = props;
 
   if (!KeyboardAvoidingView) {
     return (
-      <Wrapper
-        className={cn(wrapperTv({ fill, grow, px }), className)}
-        hasSafeArea={hasSafeArea}
-        edges={edges}
-        {...rest}
-      >
+      <Wrapper className={className} fill={fill} grow={grow} px={px} safeArea={safeArea} {...rest}>
         {children}
       </Wrapper>
     );
   }
 
-  const content = (
+  return (
     <StyledKeyboardAvoidingView
-      className={cn(wrapperTv({ fill, grow, px }), className)}
+      className={cn(wrapperTv({ fill, grow, px, ...getSafeAreaVariants(safeArea) }), className)}
       keyboardVerticalOffset={keyboardVerticalOffset}
       enabled
       {...rest}
@@ -75,16 +67,6 @@ export function WrapperKeyboardAvoidingView(props: PropsWithChildren<WrapperKeyb
       {children}
     </StyledKeyboardAvoidingView>
   );
-
-  if (hasSafeArea) {
-    return (
-      <WrapperSafeAreaView edges={edges} px="none">
-        {content}
-      </WrapperSafeAreaView>
-    );
-  }
-
-  return content;
 }
 
 WrapperKeyboardAvoidingView.displayName = 'WrapperKeyboardAvoidingView';

@@ -87,9 +87,9 @@ export const LoginEmailForm = () => {
           name="password"
           placeholder="••••••••"
         />
-        <Link href={ROUTES.AUTH.RESET_PASSWORD} asChild>
+        <Link href={ROUTES.AUTH.SEND_CODE} asChild>
           <Pressable className="self-end py-1.5">
-            <String font="primaryBold" colorVariant="primary" variant="body-sm">
+            <String font="primaryBold" colorVariant="primary" variant="body-sm" className="underline">
               {t('auth.login.forgot_password')}
             </String>
           </Pressable>

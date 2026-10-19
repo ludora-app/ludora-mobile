@@ -9,6 +9,18 @@ const { defineConfig, globalIgnores } = require('eslint/config');
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
+// Matches a Tailwind class in a JSX `className`-like prop, as a plain string or inside a template literal
+const classNameRules = ({ message, pattern }) => [
+  { message, selector: `JSXAttribute[name.name=/className$/i] Literal[value=/${pattern}/]` },
+  { message, selector: `JSXAttribute[name.name=/className$/i] TemplateElement[value.raw=/${pattern}/]` },
+];
+
+// Text sizes come from String `variant` / `size`, not arbitrary `text-[15px]` classes (see ludora-ui skill)
+const ARBITRARY_TEXT_SIZE_RULES = classNameRules({
+  message: 'Use the String `variant` (or `size`) prop instead of an arbitrary text-[Npx] size.',
+  pattern: '(^|\\s)text-\\[\\d',
+});
+
 // eslint-config-expo already registers these, and ESLint rejects a second definition.
 const PLUGINS_OWNED_BY_EXPO = ['@typescript-eslint', 'import', 'react', 'react-hooks'];
 
@@ -56,18 +68,7 @@ module.exports = defineConfig([
           ],
         },
       ],
-      // Text sizes come from String `variant` / `size`, not arbitrary `text-[15px]` classes (see ludora-ui skill)
-      'no-restricted-syntax': [
-        'warn',
-        {
-          message: 'Use the String `variant` (or `size`) prop instead of an arbitrary text-[Npx] size.',
-          selector: 'JSXAttribute[name.name=/className$/i] Literal[value=/(^|\\s)text-\\[\\d/]',
-        },
-        {
-          message: 'Use the String `variant` (or `size`) prop instead of an arbitrary text-[Npx] size.',
-          selector: 'JSXAttribute[name.name=/className$/i] TemplateElement[value.raw=/(^|\\s)text-\\[\\d/]',
-        },
-      ],
+      'no-restricted-syntax': ['warn', ...ARBITRARY_TEXT_SIZE_RULES],
       'perfectionist/sort-imports': ['error'],
       'perfectionist/sort-interfaces': ['error'],
       'perfectionist/sort-objects': [

@@ -20,3 +20,4 @@ export * from './accordion';
 export * from './numeric-input';
 export * from './scroll-view';
 export * from './blur-view';
+export * from './code-input';

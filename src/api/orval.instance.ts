@@ -107,7 +107,10 @@ export const customInstance = async <T>({
     }
 
     if (error instanceof HTTPError) {
-      const errorContent = (await error?.response?.json()) ?? {};
+      // ky 2 already read the body into `error.data`: calling `error.response.json()` throws "body is already used"
+      const errorContent = (error.data && typeof error.data === 'object' ? error.data : {}) as NonNullable<
+        ErrorResponse['api_error']
+      >;
 
       const errorObj: ErrorResponse = {
         api_error: errorContent,

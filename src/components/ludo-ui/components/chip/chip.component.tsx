@@ -5,17 +5,34 @@ import { Image } from '../image';
 import { ChipProps } from '../../types/chip.types';
 
 export default function Button(props: ChipProps) {
-  const { className, contentProps, iconProps, image, isDisabled, isLoading, redirect, title, titleProps, ...rest } =
-    props;
+  const {
+    className,
+    contentProps,
+    iconProps,
+    image,
+    isDisabled,
+    isLoading,
+    isSelected,
+    redirect,
+    title,
+    titleProps,
+    ...rest
+  } = props;
+  const isSelectable = isSelected !== undefined;
 
   const { position: iconPosition, ...iconPropsRest } = iconProps || {};
 
   const buttonContent = (
     <ChipChillUI
       as="scale-pressable"
-      className={cn('rounded-full', className)}
+      className={cn(
+        'rounded-full',
+        { 'border-2 border-input': isSelectable, 'border-primary': isSelected },
+        className,
+      )}
       isDisabled={isLoading || isDisabled}
       {...rest}
+      {...(isSelectable && { colorVariant: isSelected ? 'primary' : 'white' })}
     >
       {!isLoading && iconProps && iconPosition === 'left-outside' && <ChipIcon {...iconPropsRest} />}
       <ChipContent {...contentProps}>

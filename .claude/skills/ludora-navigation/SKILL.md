@@ -135,7 +135,7 @@ const session = useMemo(() => {
 
 ## Known broken entries — don't copy
 
-`ROUTES.CREATE_SESSION.STEP_3_PAYMENT`, `CREATE_SESSION_CREATED`, `CHAT_ROOM.MESSAGE_ACTIONS` have no route file; `STEP_5` includes `/(root)`; `on-boarding/step-4` is orphaned; `providers/safe-area.provider.tsx` is dead code; `hooks/navigation.hook.ts` is the old duplicate (still imported by `reset-password.screen.tsx`).
+`ROUTES.CREATE_SESSION.STEP_3_PAYMENT`, `CREATE_SESSION_CREATED`, `CHAT_ROOM.MESSAGE_ACTIONS` have no route file; `STEP_5` includes `/(root)`; `providers/safe-area.provider.tsx` is dead code; `hooks/navigation.hook.ts` is the old duplicate (still imported by `reset-password.screen.tsx`).
 
 ## References
 

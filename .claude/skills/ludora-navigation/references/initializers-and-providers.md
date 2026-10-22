@@ -53,8 +53,8 @@ Convention: component returning `null` (or a thin switch) around a side-effect h
 | `SafeAreaInsetsInitializer` | `initializers/safe-area-insets/safe-area-insets.initializer.tsx` | `SafeAreaInitializer` | `Uniwind.updateInsets` + `useSafeAreaStore.setInsets` (this feeds `useSafeArea()`) |
 | `PostHogIdentifierInitializer` | `initializers/poshog-identifier.initializer.tsx` (sic) | `MainInitializer` (`:11`) | `posthog.identify` on login, `posthog.reset()` on logout, via `useAuthStore` + `useUserMe` |
 | `CheckAppVersionInitializer` | `initializers/check-app-version.initializer.tsx` | `MainInitializer` (`:12`) | on mount, `router.navigate({ params, pathname: ROUTES.APP_CHECK.INDEX })` for required/optional updates (`:42-45`, `:62-65`) |
-| `PushNotificationsInitializer` | `initializers/push-notifications.initializer.tsx` | both `(root)` layouts (`_layout.tsx:225`, `_layout.ios.tsx:206`) | registers FCM token via `useRegisterDevice`; tap handler -> `resolveNotificationRoute` -> `router.navigate` (`:27-39`) |
-| `OnBoardingInitializer` | `initializers/on-boarding/on-boarding-initializer.tsx` | both `(root)` layouts (`:226` / `:207`) | redirect to `/on-boarding/step-1` when status is `INCOMPLETE` |
+| `PushNotificationsInitializer` | `initializers/push-notifications.initializer.tsx` | both `(root)` layouts (`_layout.tsx:237`, `_layout.ios.tsx:217`) | registers FCM token via `useRegisterDevice`; tap handler -> `resolveNotificationRoute` -> `router.navigate` (`:27-39`) |
+| `OnBoardingInitializer` | `initializers/on-boarding/on-boarding-initializer.tsx` | both `(root)` layouts (`:238` / `:218`) | redirect to `ROUTES.ON_BOARDING.STEP_1` when status is `INCOMPLETE` |
 | `OnBoardingStatusInitializer` | `initializers/on-boarding/on-boarding-status.initializer.tsx` | `OnBoardingInitializer` when status is unknown | syncs `userMe.onBoardingStatus` into the persisted store |
 | `GeolocalisationInitializer` | `initializers/geolocalisation.initializer.tsx` | `(tabs)/_layout.tsx:12` | after an 800 ms timeout, `getCurrentLocation()` (`:18-23`) |
 | `ChatRoomInitializer` | `features/chat-room/components/chat-room-initializers/chat-room-initializer.component.tsx` | `features/chat-room/screens/chat-room.screen.tsx:15` | groups `ChatRoomIdInitializer`, `ChatRoomInfoInitializer`, `ChatRoomMessagesReadFallbackInitializer` (`:9-11`) |
@@ -62,13 +62,13 @@ Convention: component returning `null` (or a thin switch) around a side-effect h
 Placement rule that follows from the table:
 
 - **Global, auth-agnostic** -> `MainInitializer`. Note it sits above `Stack.Protected`, so it runs before login too: `PostHogIdentifierInitializer` and `CheckAppVersionInitializer` therefore guard on auth themselves (`isAuthenticated` check at `poshog-identifier.initializer.tsx:15,23`). `useWebsocketConnection` also reads `useAuthStore` (`hooks/web-sockets/web-sockets.hook.ts:15`).
-- **Needs an authenticated user** -> both `(root)/_layout.tsx` **and** `_layout.ios.tsx` (they must stay identical here: lines 225-226 vs 206-207).
+- **Needs an authenticated user** -> both `(root)/_layout.tsx` **and** `_layout.ios.tsx` (they must stay identical here: lines 237-238 vs 217-218).
 - **Only meaningful on tabs** -> `(tabs)/_layout.tsx`, as a child of `<Tabs>` next to `TabSlot`.
 - **Tied to one screen/route param** -> `features/<f>/components/<f>-initializers/` (chat-room is the only one today), rendered by the screen. They read route params with `useLocalSearchParams` and sync a feature store (`chat-room-id-initializer.component.tsx:9-31`).
 
 ## Initializer-shaped details worth knowing
 
-- `OnBoardingInitializer` returns a `Redirect`, not `null`, so its render must stay a pure branch on store state (`on-boarding-initializer.tsx:20-28`); `OnBoardingRedirect` skips the redirect while the pathname contains `on-boarding` or `image-picker` (`:9-11`).
+- `OnBoardingInitializer` returns a `Redirect`, not `null`, so its render must stay a pure branch on store state (`on-boarding-initializer.tsx:21-29`); `OnBoardingRedirect` skips the redirect while the pathname contains `on-boarding` (`:10-12`), which also covers the root-level `/on-boarding-sport` sheet.
 - Initializer files are not uniform: `main`, `websocket`, `push-notifications` use `<name>.initializer.tsx`; the on-boarding entry point is `on-boarding-initializer.tsx` (dash, no dot). Follow the dotted form for new files.
 - `CheckAppVersionInitializer` mixes a typed navigate with `RootStackParamList[typeof ROUTES.APP_CHECK.INDEX]` (`:19,37-45`), a good template for an initializer that navigates with params.
 - `PushNotificationsInitializer` casts the resolved route (`router.navigate(route as any)`, `:33`); a new notification target still has to match an existing route file.

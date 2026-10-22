@@ -48,7 +48,7 @@ function SessionCard({ isNextSession = false, item: session }: SessionCardProps)
   const { endDate, fieldShortAddress, gameMode, maxPlayersPerTeam, sessionTeams, sport, startDate, uid, userDistance } =
     session;
 
-  const sportImage = useMemo(() => getSportImage(sport), [sport]);
+  const sportImage = getSportImage(sport);
   const sessionImage = useMemo(() => getSessionImage(session, sport), [session, sport]);
 
   const teamA = sessionTeams?.[0];

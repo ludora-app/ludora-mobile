@@ -20,7 +20,7 @@ export default function CreateSessionLayout() {
 }
 ```
 
-`CreateSessionLayoutNav` is `<Stack screenOptions={{ animation: 'ios_from_right', headerShown: false }} />` (`:6-10`, no `Stack.Screen` children, steps are auto-discovered). On-boarding (`src/app/(root)/on-boarding/_layout.tsx:16-24`) has the same shape but lists `step-1..3` explicitly (`:9-11`) and uses `FooterWrapper` instead of `FormSheetFooter`.
+`CreateSessionLayoutNav` is `<Stack screenOptions={{ animation: 'ios_from_right', headerShown: false }} />` (`:6-10`, no `Stack.Screen` children, steps are auto-discovered). On-boarding (`src/app/(root)/on-boarding/_layout.tsx:23-31`) has the same shape inside a `Box flex-1 bg-background`, but lists `step-1` and `step-2` explicitly (`:17-18`), sets a cream `contentStyle` (`COLORS.background`, `:13`) and uses `FooterWrapper` instead of `FormSheetFooter`.
 
 Both flows are opened from `(root)/_layout*.tsx`: `create-session` with `slide_from_bottom` (`_layout.tsx:19-25`), on-boarding with no entry (push).
 
@@ -54,7 +54,7 @@ Files (all under `src/features/create-session/` unless noted):
 | Layout | `src/app/(root)/create-session/_layout.tsx` |
 | Step routes | `src/app/(root)/create-session/step-{1..5}.ts` -> `screens/create-session-step-N.screen.tsx` |
 | Tab entry | `src/app/(root)/(tabs)/create-session.tsx` (same step-1 screen); the centre tab button calls `router.navigate(ROUTES.CREATE_SESSION.STEP_1)` (`src/components/ui/navigation/tab-bar/components/tab-bar-button/tab-bar-button.component.tsx:44`) |
-| Header + stepper | `components/create-session-header/create-session-header.component.tsx`; stepper draws `list(1, 5)` circles from `activeStep` (`create-session-header-progress-stepper.component.tsx:87-92`) |
+| Header + stepper | `components/create-session-header/create-session-header.component.tsx`; its own older copy of the stepper (`create-session-header-progress-stepper.component.tsx`); new flows use `ProgressStepper` from `@ludo/ui` |
 | Footer | `components/create-session-footer/create-session-footer.component.tsx` |
 | Flow store | `store/create-session.store.ts` (`session`, `isStep3Valid`, `createdSessionUid`) |
 | Layout store | `store/create-session-layout.store.ts` (`footerHeight`) |
@@ -97,36 +97,40 @@ It also reports its height (`onLayout` -> `useCreateSessionLayoutStore.setFooter
 | Concern | File |
 |---|---|
 | Layout | `src/app/(root)/on-boarding/_layout.tsx` |
-| Step routes | `on-boarding/step-{1..4}.ts` -> `features/on-boarding/screens/on-boarding-step-N.screen.tsx` (`step-4` is not in the layout nor in `ROUTES.ON_BOARDING`) |
-| Header | `features/on-boarding/components/on-boarding-header.component.tsx` (`hasGoBack = activeStep > 1`, `HeaderProgressStepper numberOfSteps={3}`) |
+| Step routes | `on-boarding/step-{1,2}.ts` -> `features/on-boarding/screens/on-boarding-step-N.screen.tsx` |
+| Sport sheet | `src/app/(root)/on-boarding-sport.ts` (root-level, `ROUTES.ON_BOARDING.SPORT_FORM_SHEET`, param `sport`) -> `features/on-boarding/formsheets/on-boarding-sport.formsheet.tsx` |
+| Header | `features/on-boarding/components/on-boarding-header.component.tsx` (`hasGoBack = activeStep > 1`, `ProgressStepper` from `@ludo/ui` with `numberOfSteps={ON_BOARDING_STEPS_COUNT}`) |
+| Steps count | `features/on-boarding/constants/on-boarding.constants.ts:4` (`ON_BOARDING_STEPS_COUNT = 2`) |
 | Footer | `features/on-boarding/components/on-boarding-footer/on-boarding-footer.component.tsx` |
-| Flow store | `features/on-boarding/stores/on-boarding.store.ts` (`sportPreferences`, `profilePicture`, `clearAll`) |
+| Flow store | `features/on-boarding/stores/on-boarding.store.ts` (`sportPreferences`, `availabilities`, `clearAll`) |
 | Status store | `src/stores/on-boarding-status.store.ts` (persisted in MMKV) |
+
+Steps: 1 sports (one card per sport, level and game modes picked in the sheet), 2 availabilities (day x moment grid, week/weekend shortcuts, recap).
 
 ### Gate: how the user ends up here
 
-`OnBoardingInitializer` (`src/initializers/on-boarding/on-boarding-initializer.tsx:16-29`), mounted in both `(root)` layouts, switches on `onBoardingStatus`:
+`OnBoardingInitializer` (`src/initializers/on-boarding/on-boarding-initializer.tsx:17-30`), mounted in both `(root)` layouts, switches on `onBoardingStatus`:
 
 - `'COMPLETE'` -> `null`.
-- `'INCOMPLETE'` -> `OnBoardingRedirect`: `<Redirect href="/on-boarding/step-1" />` unless the pathname includes `on-boarding` or `image-picker` (`:7-14`; image-picker is allowed so step 1 can open it).
+- `'INCOMPLETE'` -> `OnBoardingRedirect`: `<Redirect href={ROUTES.ON_BOARDING.STEP_1} />` unless the pathname includes `on-boarding` (`:8-15`; this also matches `/on-boarding-sport`, so the sheet is not redirected).
 - anything else (`null`) -> `OnBoardingStatusInitializer`, which copies `userMe.onBoardingStatus` into the persisted store (`on-boarding-status.initializer.tsx:13-17`).
 
 ### Footer logic
 
-`on-boarding-footer.component.tsx:11-18`: `isFinalStep = activeStep === 3`, then `<OnBoardingFooterButtonSubmit />` else `<OnBoardingFooterButtonNext />`.
+`on-boarding-footer.component.tsx:12-31`: `isFinalStep = activeStep === ON_BOARDING_STEPS_COUNT` (`:16`), then `<OnBoardingFooterButtonSubmit />` (plus a `footer_note` line) else `<OnBoardingFooterButtonNext />`.
 
-- **Next** (`on-boarding-footer-button.next.component.tsx`): a template-literal `router.navigate` to `/on-boarding/step-<activeStep + 1>` (`:17`, literal path, not `ROUTES`). Steps 1 and 2 are skippable: title becomes `common.pass` and the variant `muted` while `profilePicture` / `sportPreferences` is empty (`:20-38`).
-- **Submit** (`on-boarding-footer-button-submit.component.tsx:26-50`): creates sport preferences if any, `updateUserMe({ onBoardingStatus: 'COMPLETE' })` (with `file` when a picture exists), then
+- **Next** (`on-boarding-footer-button-next.component.tsx`): `router.navigate(ROUTES.ON_BOARDING.STEP_2)` (`:15`). Step 1 is skippable: title becomes `common.pass` and the variant `muted` while `sportPreferences` is empty (`:12`, `:20-21`).
+- **Submit** (`on-boarding-footer-button-submit.component.tsx:28-56`): creates sport preferences if any, puts hour preferences if any (`usePutUserHoursPreferences` from `src/queries/put-user-hours-preferences.query.ts`, shared with settings, fed by `toHourPreferences(availabilities)`), `updateUserMe({ onBoardingStatus: 'COMPLETE' })`, tracks `ONBOARDING_COMPLETED` with `has_hour_preferences` / `has_sport_preferences`, then
   ```ts
   setOnBoardingStatus('COMPLETE');
   clearAll();
-  router.replace('/');
+  router.replace(ROUTES.HOME.INDEX);
   ```
-  Flipping the status store is what makes `OnBoardingInitializer` stop redirecting.
+  Flipping the status store is what makes `OnBoardingInitializer` stop redirecting. Title is `common.finish`, or `common.pass` / `muted` while `availabilities` is empty (`:62-63`).
 
 ### Store sync
 
-Steps write straight to `useOnBoardingStore`. Step 1 gets its picture through the return-param flow with `image-picker` (`on-boarding-step-1.screen.tsx:28-57`, see `routes-constants-and-params.md`) and calls `setProfilePicture(parsedSelectedImages[0])`. There is no per-step validity: the footer only reads store contents to pick its label. The flow store is cleared only on successful submit (`clearAll`), not on unmount.
+Step 1 cards open the sport sheet with typed params (`on-boarding-sports-card.component.tsx:38-41`). The sheet keeps a local draft (`level`, `gameModes`, `on-boarding-sport.formsheet.tsx:24-28`) and writes the store only on validate (`common.validate`, `upsertSportPreference` then `router.back()`, `:36-40`), or removes the sport (`:42-45`); swiping the sheet down discards the draft. Step 2 toggles groups of slots (cell, day, moment, shortcut) through `useOnBoardingAvailabilitiesToggle` (`hooks/on-boarding-availabilities-toggle.hook.ts`), which calls `setAvailabilities(group, isSelected)`. There is no per-step validity: the footer only reads store contents to pick its label. The flow store is cleared only on successful submit (`clearAll`), not on unmount.
 
 ## Register (auth)
 

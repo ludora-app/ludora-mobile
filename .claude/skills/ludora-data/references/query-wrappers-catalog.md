@@ -101,10 +101,12 @@ See `mutations-and-invalidation.md` for the invalidation matrix. Shape reference
 | useUserMe | queries/user-me.query.ts | useUsersFindMe |
 | useGetField | queries/get-field.query.ts | useFieldsFindOne |
 | useGetSessionById | queries/get-session-by-id.query.ts | useSessionsFindOne |
+| useGetSports, useGetSportGameModes(sport) | queries/get-sports.query.ts | none yet: mock `SPORTS_MOCK` (sports.constants) until GET /sports ships (SCRUM-685). No default data: `sports` is `[]` while loading, so lists show a skeleton (see `on-boarding-sports-list.component.tsx`). Sports and game modes always come from here, never from a hard-coded list |
 | useMessagesUnread | queries/get-has-messages-unreads.query.ts | useConversationsHasUnreadMessages |
 | useNotificationsUnreadCount | queries/get-notifications_unread_count.query.ts | useNotificationsGetUnreadCount |
 | useUpdateUserMe | queries/update-user-me.query.ts | useUsersUpdate |
 | usePutUserSportPreferences | queries/put-user-sport-preferences.query.ts | useSportPreferencesCreateManyWithGameModes |
+| usePutUserHoursPreferences | queries/put-user-hours-preferences.query.ts | useHourPreferencesCreateMany |
 | useChangeSessionTeam | queries/change-session-team.query.ts | useSessionPlayersSwitchTeams |
 | useSendFriendInvitation(userId) | queries/send-friend-invitation.query.ts | useFriendsCreate |
 | useRegisterDevice | queries/register-device.query.ts | useDevicesRegisterDevice |
@@ -163,7 +165,6 @@ See `mutations-and-invalidation.md` for the invalidation matrix. Shape reference
 | useRemoveUserSportPreferences | features/settings/queries/remove-user-sport-preferences.query.ts | useSportPreferencesRemove |
 | useUnblockUser(userUid) | features/settings/queries/unblock-user.query.ts | useModerationUnblockUser |
 | useGetUserHoursPreferences | features/settings/queries/user-hours-preferences/get-user-hours-preferences.query.ts | useHourPreferencesFindMyHourPreferences |
-| usePutUserHoursPreferences | features/settings/queries/user-hours-preferences/put-user-hours-preferences.query.ts | useHourPreferencesCreateMany |
 | useRemoveUserHoursPreferences | features/settings/queries/user-hours-preferences/remove-user-hours-preferences.query.ts | useHourPreferencesRemove |
 
 Non-Orval calls (`api/queries/*.query.ts`: `auth-google`, `places`, `refresh-token`, `reset-user-password`, `twenty-crm`) and dev-tools scripts (`features/dev-tools/queries/*`) are out of the Orval scope.

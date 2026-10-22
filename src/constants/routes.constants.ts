@@ -68,9 +68,9 @@ const ROUTES = {
     INDEX: '/notifications',
   },
   ON_BOARDING: {
+    SPORT_FORM_SHEET: '/on-boarding-sport',
     STEP_1: '/on-boarding/step-1',
     STEP_2: '/on-boarding/step-2',
-    STEP_3: '/on-boarding/step-3',
   },
   PROFIL: {
     ACTIONS: '/profil/[id]/actions',

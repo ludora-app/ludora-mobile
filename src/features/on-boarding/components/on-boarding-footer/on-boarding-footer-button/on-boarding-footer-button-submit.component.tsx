@@ -2,52 +2,49 @@ import { Button } from '@ludo/ui';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 
+import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useUpdateUserMe } from '@/queries/update-user-me.query';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store';
+import { usePutUserHoursPreferences } from '@/queries/put-user-hours-preferences.query';
 
 import { useOnBoardingStore } from '../../../stores/on-boarding.store';
+import { toHourPreferences } from '../../../utils/on-boarding-availabilities.utils';
 import { useCreateSportPreference } from '../../../queries/create-sport-preference.query';
 
-export default function OnBoardingFooterButtonSubmit() {
-  const router = useRouter();
+export const OnBoardingFooterButtonSubmit = () => {
   const { t } = useTranslate();
+  const router = useRouter();
   const { trackError, trackEvent } = useAnalytics();
-  const sportPreferences = useOnBoardingStore(state => state.sportPreferences);
-  const profilePicture = useOnBoardingStore(state => state.profilePicture);
-  const clearAll = useOnBoardingStore(state => state.clearAll);
+  const hasAvailabilities = useOnBoardingStore(state => state.availabilities.length > 0);
   const setOnBoardingStatus = useOnBoardingStatusStore(state => state.setOnBoardingStatus);
 
   const { isPending: isCreatingSportPreference, mutateAsync: createSportPreference } = useCreateSportPreference();
+  const { isPending: isPuttingHoursPreferences, mutateAsync: putHoursPreferences } = usePutUserHoursPreferences();
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
 
   const handleSubmit = async () => {
+    const { availabilities, clearAll, sportPreferences } = useOnBoardingStore.getState();
     try {
-      if (sportPreferences && sportPreferences.length > 0) {
+      if (sportPreferences.length > 0) {
         await createSportPreference({ sportPreferences });
       }
-      if (profilePicture) {
-        const file = {
-          name: profilePicture.fileName ?? 'avatar.jpg',
-          type: profilePicture.mimeType ?? 'image/jpeg',
-          uri: profilePicture.uri,
-        } as unknown as Blob;
-        await updateUserMe({ file, onBoardingStatus: 'COMPLETE' });
-      } else {
-        await updateUserMe({ onBoardingStatus: 'COMPLETE' });
+      if (availabilities.length > 0) {
+        await putHoursPreferences({ hourPreferences: toHourPreferences(availabilities) });
       }
+      await updateUserMe({ onBoardingStatus: 'COMPLETE' });
       trackEvent({
         data: {
-          has_profile_picture: !!profilePicture,
-          has_sport_preferences: !!sportPreferences && sportPreferences.length > 0,
+          has_hour_preferences: availabilities.length > 0,
+          has_sport_preferences: sportPreferences.length > 0,
         },
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED,
       });
       setOnBoardingStatus('COMPLETE');
       clearAll();
-      router.replace('/');
+      router.replace(ROUTES.HOME.INDEX);
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({
@@ -57,6 +54,16 @@ export default function OnBoardingFooterButtonSubmit() {
       trackError({ error });
     }
   };
-  const isPending = isCreatingSportPreference || isUpdatingUserMe;
-  return <Button title={t('common.finish')} onPress={handleSubmit} colorVariant="primary" isLoading={isPending} />;
-}
+
+  const isPending = isCreatingSportPreference || isPuttingHoursPreferences || isUpdatingUserMe;
+
+  return (
+    <Button
+      title={hasAvailabilities ? t('common.finish') : t('common.pass')}
+      colorVariant={hasAvailabilities ? 'primary' : 'muted'}
+      onPress={handleSubmit}
+      isLoading={isPending}
+      size="xl"
+    />
+  );
+};

@@ -1,21 +1,11 @@
-import { basketballBall, basketPlaceHolder, footballPlaceHolder, padelPlaceHolder, tennisPlaceHolder } from 'assets';
+import { Sport, SportItem } from '@/types/sports.types';
+import { SPORT_ASSETS } from '@/constants/sports.constants';
 
-import { SPORT_IMAGES } from '@/constants/session.constants';
-import { CreateSportPreferenceDataSport, SessionCollectionItemDtoSport } from '@/api/generated/model';
+const getSportAssets = (sport: Sport) => SPORT_ASSETS[sport] ?? SPORT_ASSETS.BASKETBALL;
 
-export const getSportImage = (sport: SessionCollectionItemDtoSport) => SPORT_IMAGES[sport] ?? basketballBall;
+export const getSportImage = (sport: Sport) => getSportAssets(sport).image;
 
-export const getSportPlaceHolder = (sport: SessionCollectionItemDtoSport) => {
-  switch (sport) {
-    case CreateSportPreferenceDataSport.BASKETBALL:
-      return basketPlaceHolder;
-    case CreateSportPreferenceDataSport.FOOTBALL:
-      return footballPlaceHolder;
-    case CreateSportPreferenceDataSport.PADEL:
-      return padelPlaceHolder;
-    case CreateSportPreferenceDataSport.TENNIS:
-      return tennisPlaceHolder;
-    default:
-      return basketPlaceHolder;
-  }
-};
+export const getSportPlaceHolder = (sport: Sport) => getSportAssets(sport).placeholder;
+
+export const getSportGameModes = ({ sport, sports }: { sport?: Sport; sports: SportItem[] }) =>
+  sports.find(item => item.code === sport)?.gameModes.map(gameMode => gameMode.code) ?? [];

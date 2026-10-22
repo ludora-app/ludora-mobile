@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useUserMe } from '@/queries/user-me.query';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { useUpdateUserMeEmail } from '../queries/update-user-me-email.query';
 import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component';

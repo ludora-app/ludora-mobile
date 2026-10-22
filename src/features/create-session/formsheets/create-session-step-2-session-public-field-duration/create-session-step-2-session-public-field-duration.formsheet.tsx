@@ -18,10 +18,10 @@ import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { IS_ANDROID } from '@/constants/platform.constants';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { CREATE_SESSION } from '../../constants/create-session.constants';
 import {
@@ -149,14 +149,14 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
           </BoxRowBetween>
         </Box>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
+      <FooterWrapper hasBottomSafeArea={IS_ANDROID}>
         <Button
           title={t('create-session-step-2.public-availabilities-form-sheet.button_confirm')}
           size="md"
           onPress={handleSubmit(handleConfirm)}
         />
         <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={() => router.back()} />
-      </FormSheetFooter>
+      </FooterWrapper>
     </Box>
   );
 }

@@ -9,7 +9,6 @@ import { getSportImage } from '@/utils/sports.utils';
 import {
   FindAllUserSportPreferenceResponseDto,
   FindAllUsersResponseDataDto,
-  SessionCollectionItemDtoSport,
 } from '@/api/generated/model';
 
 import PlayersListItemBanner from './players-list-item-banner.component';
@@ -58,7 +57,7 @@ function PlayersListItem({ item }: PlayersListItemProps) {
   const sportItems = useMemo(
     () =>
       (userSportPreferences ?? []).map((pref: FindAllUserSportPreferenceResponseDto) => ({
-        image: getSportImage(pref.sport as SessionCollectionItemDtoSport),
+        image: getSportImage(pref.sport),
         level: pref.level,
         sport: pref.sport,
       })),

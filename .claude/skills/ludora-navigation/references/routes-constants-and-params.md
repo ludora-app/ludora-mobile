@@ -6,7 +6,7 @@ Read it when you add a route that takes params, return a value to a caller, or w
 ## The three files and what the keys really are
 
 - `src/constants/routes.constants.ts`: `ROUTES` (`as const`) plus `RouteValues = Flatten<typeof ROUTES>` (`:114`).
-- `src/types/routes-params.types.ts`: `RootStackParamList` (`:4`, params the screen receives) and `ReturnStackParamList` (`:90`, params a sheet sends back).
+- `src/types/routes-params.types.ts`: `RootStackParamList` (`:4`, params the screen receives) and `ReturnStackParamList` (`:91`, params a sheet sends back).
 - `src/features/<f>/types/<f>.types.ts`: one alias per screen, `RootStackParamList[typeof ROUTES.X.Y]`.
 
 The param-list key is only a **type lookup key**. It is whatever `ROUTES` constant you index with, not necessarily the file pattern:
@@ -24,7 +24,7 @@ So: when the area root has a dynamic child, `INDEX` is the bare area and `INDEX_
 
 1. Route file `src/app/(root)/session/[id]/index.tsx` re-exports `SessionScreen`.
 2. `ROUTES.SESSION.INDEX: '/session'` and `INDEX_UID: (uid: string) => '/session/' + uid`-style builder (`routes.constants.ts:89-90`, a template literal in the source).
-3. Param type (`routes-params.types.ts:32-34`):
+3. Param type (`routes-params.types.ts:33-35`):
    ```ts
    [ROUTES.SESSION.INDEX]: {
      id: string;
@@ -48,7 +48,7 @@ So: when the area root has a dynamic child, `INDEX` is the bare area and `INDEX_
 
 1. Route files `session/[id]/session-joined.ts` and `chat-room/[chatRoomId]/index.ts`.
 2. Constants: `SESSION.JOINED` pattern and `JOINED_UID` builder (`routes.constants.ts:91-92`), `CHAT_ROOM.INDEX_UID` (`:17`).
-3. Param types: `[ROUTES.SESSION.JOINED]` (`routes-params.types.ts:63-69`) with `sessionData: string`, and `[ROUTES.CHAT_ROOM.INDEX]` (`:35-44`) with every field optional plus `sessionData?: string`. Path params and extra query params live in the same object.
+3. Param types: `[ROUTES.SESSION.JOINED]` (`routes-params.types.ts:64-70`) with `sessionData: string`, and `[ROUTES.CHAT_ROOM.INDEX]` (`:36-45`) with every field optional plus `sessionData?: string`. Path params and extra query params live in the same object.
 4. Alias: `SessionJoinedLocalParams` (`session.types.ts:6`). The chat-room alias in `session-joined.screen.tsx:12` is declared locally.
 5. Navigate with an object serialized to a string (`features/session/components/session-footer.component.tsx:88-100`):
    ```ts
@@ -88,7 +88,7 @@ Caller sends `goBackPath`, the sheet answers with `dismissTo`, the caller reads 
 
 1. Route files `filters/index.ts` (+ `filters-addresses.ts`, `filters-calendar.ts`).
 2. Constant `ROUTES.FILTERS.FILTER: '/filters'` (`routes.constants.ts:40`).
-3. Types: out (`routes-params.types.ts:19-23`) `{ goBackPath: RouteValues; source?: ...; selectedDayCarouselDate: string }`; back (`:91-93`) `{ selectedFilters: string }`. Aliases (`features/filters/filters/types/filters.types.ts:4,6`): `FiltersScreenParams`, `FiltersReturnParams`.
+3. Types: out (`routes-params.types.ts:20-24`) `{ goBackPath: RouteValues; source?: ...; selectedDayCarouselDate: string }`; back (`:92-94`) `{ selectedFilters: string }`. Aliases (`features/filters/filters/types/filters.types.ts:4,6`): `FiltersScreenParams`, `FiltersReturnParams`.
 4. Navigate (`components/ui/filters-header/components/filters-header.component.tsx:59-64`):
    ```ts
    const params: FiltersScreenParams = {
@@ -114,12 +114,11 @@ Caller sends `goBackPath`, the sheet answers with `dismissTo`, the caller reads 
    ```
    Nested hop: filters opens addresses with `{ goBackPath: ROUTES.FILTERS.FILTER }` (`filter-location.component.tsx:60-64`), so the chain is caller -> filters -> addresses -> back to filters.
 
-Second return flow with the same shape: `image-picker` (`routes-params.types.ts:60-62` out, `:101-103` back with `images: string`), sent at `features/image-picker/screens/image-picker.screen.tsx:26-33` and read at `features/on-boarding/screens/on-boarding-step-1.screen.tsx:28-46`.
+Second return flow with the same shape: `image-picker` (`routes-params.types.ts:61-63` out, `:102-104` back with `images: string`), sent at `features/image-picker/screens/image-picker.screen.tsx:26-33` and read at `features/profil/components/profil-edit/profil-edit-avatar.component.tsx:33-42`.
 
 ## Inconsistencies seen (do not copy)
 
-- `goBackPath` is typed `RouteValues` but several callers pass string literals: `'/on-boarding/step-1'` and `'/image-picker'` (`on-boarding-step-1.screen.tsx:50,55`), `'/profil/profil-edit'` (`profil-edit-avatar.component.tsx:76`), `"/create-session/step-2"`, `"/(tabs)/players"`, `"/"`. Prefer `ROUTES.*`.
-- Other literal paths: a template-literal `router.navigate` to `/on-boarding/step-<n+1>` (`on-boarding-footer-button.next.component.tsx:17`), `router.replace('/')` (`on-boarding-footer-button-submit.component.tsx:50`), `<Redirect href="/on-boarding/step-1" />` (`on-boarding-initializer.tsx:13`).
+- `goBackPath` is typed `RouteValues` but several callers pass string literals: `'/profil/profil-edit'` (`profil-edit-avatar.component.tsx:76`, which also navigates to the literal `'/image-picker'` at `:81`), `"/create-session/step-2"`, `"/(tabs)/players"`, `"/"`. Prefer `ROUTES.*`.
 - `RootStackParamList[typeof ROUTES.INVITE_FRIENDS.INDEX]` is inlined at `invite-friends-footer.component.tsx:20` and `get-user-friends-by-filter.query.ts:14` instead of using a feature alias.
 - `session-joined.screen.tsx:31` builds the share URL with `ROUTES.SESSION.INDEX_UID(conversationUid)`: a conversation uid, not a session uid (looks like a bug; the params carry `sessionUid` inside `sessionData`).
 - `SKILL.md` section 3 shows an `InviteFriendsParams` / `goBackPath` snippet for invite-friends; the real call sites are `router.navigate(ROUTES.INVITE_FRIENDS.INDEX_UID(uid))` with no extra params (e.g. `create-session-footer-buttons-created-session.component.tsx:18`).

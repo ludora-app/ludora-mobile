@@ -154,6 +154,18 @@ function AppLayoutNav() {
         }}
       />
 
+      {/* ──────────── On Boarding ──────────── */}
+      <Stack.Screen
+        name="on-boarding-sport"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          headerShown: false,
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 30,
+        }}
+      />
+
       {/* ──────────── Chat Room ──────────── */}
       <Stack.Screen
         name="chat-room/[chatRoomId]"

@@ -118,8 +118,8 @@ export interface AnalyticsEventData {
     error_message: string;
   };
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED]: {
+    has_hour_preferences: boolean;
     has_sport_preferences: boolean;
-    has_profile_picture: boolean;
   };
 
   // auth events

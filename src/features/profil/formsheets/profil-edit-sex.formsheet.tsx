@@ -11,7 +11,7 @@ import { ErrorResponse } from '@/api/orval.instance';
 import { UpdateUserDtoSex } from '@/api/generated/model';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useUpdateUserMe } from '@/queries/update-user-me.query';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component';
 import { profilEditSexSchema, ProfilEditSexSchema } from '../schemas/profil-edit-sex.schema';

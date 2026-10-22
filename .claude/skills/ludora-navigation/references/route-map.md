@@ -29,7 +29,7 @@ Legend: **push** = no `Stack.Screen` entry, inherits `screenOptions` (`animation
 
 ## Authed stack `(root)/`
 
-Both layouts: `initialRouteName="(tabs)"`, then `<PushNotificationsInitializer />` and `<OnBoardingInitializer />` beside `AppLayoutNav` (`_layout.tsx:222-229`, `_layout.ios.tsx:203-210`).
+Both layouts: `initialRouteName="(tabs)"`, then `<PushNotificationsInitializer />` and `<OnBoardingInitializer />` beside `AppLayoutNav` (`_layout.tsx:234-241`, `_layout.ios.tsx:214-221`).
 
 | Route file | Re-exports | Android | iOS |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Both layouts: `initialRouteName="(tabs)"`, then `<PushNotificationsInitializer /
 | `(tabs)/profil.tsx` | `profil/screens/profil.screen` | tabs | tabs |
 | `(tabs)/create-session.tsx` | `create-session/screens/create-session-step-1.screen` | tabs | tabs |
 | `create-session/step-{1..5}.ts` | `create-session/screens/create-session-step-N.screen` | `slide_from_bottom` + `statusBarStyle: 'dark'` (L19-25) | `slide_from_bottom` only (L19-24) |
-| `on-boarding/step-{1..4}.ts` | `on-boarding/screens/on-boarding-step-N.screen` | push (no entry) | push |
+| `on-boarding/step-{1,2}.ts` | `on-boarding/screens/on-boarding-step-{1,2}.screen` | push (no entry) | push |
 | `profil/[id]/index.ts` | `profil/screens/profil.screen` | push | push |
 | `profil/[id]/actions.tsx` | `profil/formsheets/profil-actions.formsheet` | sheet fit (L27-36) | sheet fit (L27-35) |
 | `profil/profil-edit/index.ts` | `profil/screens/profil-edit.screen` | push | push |
@@ -50,14 +50,15 @@ Both layouts: `initialRouteName="(tabs)"`, then `<PushNotificationsInitializer /
 | `session/[id]/session-joined.ts` | `session/screens/session-joined.screen` | push | push |
 | `session/[id]/session-teams.ts` | `session/formsheets/session-teams.formsheet` | sheet .93 + `slide_from_bottom` (L135-145) | `modal` + `slide_from_bottom` (L125-133) |
 | `public-field-duration.ts` | `create-session/formsheets/.../create-session-step-2-session-public-field-duration.formsheet` | sheet fit (L146-155) | sheet fit (L134-142) |
-| `chat-room/[chatRoomId]/index.ts` | `chat-room/screens/chat-room.screen` | `statusBarStyle: 'dark'` (L158-165) | explicit `ios_from_right` (L145-151) |
+| `on-boarding-sport.ts` | `on-boarding/formsheets/on-boarding-sport.formsheet` | sheet fit, `sheetCornerRadius: 30` (L158-167) | sheet fit (L145-153) |
+| `chat-room/[chatRoomId]/index.ts` | `chat-room/screens/chat-room.screen` | `statusBarStyle: 'dark'` (L170-177) | explicit `ios_from_right` (L156-162) |
 | `chat-room/[chatRoomId]/info/{private,session}.ts` | `chat-room-info/screens/chat-room-info-{private,session}.screen` | push inside `[chatRoomId]/_layout.tsx` Stack (`slide_from_right`) | same |
-| `chat-room/user-profile/[userId].ts` | `chat-room/formsheets/chat-room-user-profile.formsheet` | sheet fit (L166-175) | sheet fit (L152-160) |
-| `notifications.ts` | `notifications/screens/notifications.screen` | push (entry only sets `headerShown: false`, L178-183) | same (L163-168) |
-| `invite-friends/[sessionId]/index.ts` | `invite-friends/screens/invite-friends.screen` | push + `slide_from_bottom` (L186-193) | `modal`, no animation (L171-178) |
-| `image-picker.ts` | `image-picker/screens/image-picker.screen` | sheet fit + `slide_from_bottom` (L196-206) | sheet fit, no animation (L181-189) |
+| `chat-room/user-profile/[userId].ts` | `chat-room/formsheets/chat-room-user-profile.formsheet` | sheet fit (L178-187) | sheet fit (L163-171) |
+| `notifications.ts` | `notifications/screens/notifications.screen` | push (entry only sets `headerShown: false`, L190-195) | same (L174-179) |
+| `invite-friends/[sessionId]/index.ts` | `invite-friends/screens/invite-friends.screen` | push + `slide_from_bottom` (L198-205) | `modal`, no animation (L182-189) |
+| `image-picker.ts` | `image-picker/screens/image-picker.screen` | sheet fit + `slide_from_bottom` (L208-218) | sheet fit, no animation (L192-200) |
 | `my-fields/index.ts` | `my-fields/screens/my-fields.screen` | push | push |
-| `my-fields/add.ts` | `my-fields/formsheets/my-fields-add.formsheet` | sheet .93 (L209-217), no `headerShown: false` | `modal` (L192-198), no `headerShown: false` |
+| `my-fields/add.ts` | `my-fields/formsheets/my-fields-add.formsheet` | sheet .93 (L221-229), no `headerShown: false` | `modal` (L203-209), no `headerShown: false` |
 | `settings/{index,blocked-users,contact,faq,favorites,friends,history,planning,preferences}.ts` | `settings/screens/settings*.screen` (`history` -> `settings-sessions-history.screen`) | push | push |
 
 All sheets listed also set `contentStyle: { backgroundColor: '#FFF' }` and `headerShown: false` in both files unless noted.
@@ -72,11 +73,11 @@ Documented rules = no `sheetCornerRadius`, tall sheets `modal` vs `formSheet [0.
 - `filters/filters-addresses`: iOS keeps `paddingBottom: bottom` (L108) although the checklist says only Android sheets need it.
 - `filters/filters-calendar`: iOS drops `paddingBottom: bottom`.
 - `invite-friends/[sessionId]`: Android is a plain push animated from the bottom; iOS is a real `modal`.- `image-picker`: `slide_from_bottom` is Android-only.
+- `on-boarding-sport`: Android uses `sheetCornerRadius: 30`, not the usual `12`.
 - `my-fields/add`: neither file sets `headerShown: false` here (inherited from `screenOptions`), unlike every other sheet.
 
 ## Oddities
 
 - `(tabs)/create-session.tsx` and `create-session/step-1.ts` re-export the same step-1 screen (two aliases, two import names: `CreateSessionScreenStep1` vs `CreateSessionStep1Screen`).
 - `profil/[id]/actions.tsx`, `(tabs)/profil.tsx` and `+not-found.tsx` are `.tsx` with double quotes and/or no semicolon, unlike the `.ts` single-quote convention.
-- `on-boarding/_layout.tsx` registers only `step-1..3` (`:9-11`) although `step-4.ts` exists.
 - `Stack.Screen name` mixes styles: `filters/index` and `invite-friends/[sessionId]/index` carry the `/index` suffix, while `create-session`, `chat-room/[chatRoomId]` and `my-fields/add` are folder or file names. Copy the style of the sibling you extend.

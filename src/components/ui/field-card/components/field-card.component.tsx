@@ -4,10 +4,11 @@ import { ScalePressable } from '@chillui/ui';
 import { PropsWithChildren, useMemo } from 'react';
 import { ImageBackground, Box, Chip, Icon, String, BoxRow, Image } from '@ludo/ui';
 
+import { Sport } from '@/types/sports.types';
 import COLORS from '@/constants/colors.contstants';
 import { convertMToKm } from '@/utils/distance.utils';
 import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
-import { FieldResponseDto, FieldResponseDtoType, SessionCollectionItemDtoSport } from '@/api/generated/model';
+import { FieldResponseDto, FieldResponseDtoType, SessionsFindAllSportsItem } from '@/api/generated/model';
 
 const styles = StyleSheet.create({
   shadowBlack: {
@@ -23,10 +24,10 @@ const styles = StyleSheet.create({
 
 interface FieldCardProps {
   showType?: boolean;
+  sportImage?: Sport
   showSport?: boolean;
   onPress?: () => void;
   field: FieldResponseDto;
-  sportImage?: SessionCollectionItemDtoSport
   shadowVariant?: 'primary' | 'black' | 'secondary';
 }
 
@@ -37,8 +38,8 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
   const { fieldImages, name, shortAddress, sports, type, userDistance = 0 } = field || {};
 
 
-  const effectiveSport = sportImage ?? (sports?.[0] as SessionCollectionItemDtoSport);
-  const mainSportPlaceholder = useMemo(() => getSportPlaceHolder(effectiveSport), [effectiveSport]);
+  const effectiveSport = sportImage ?? sports?.[0] ?? SessionsFindAllSportsItem.BASKETBALL;
+  const mainSportPlaceholder = getSportPlaceHolder(effectiveSport);
 
   const fieldImage = useMemo(() => {
     const customImage = fieldImages?.find(img => img.order === 0)?.url;
@@ -76,7 +77,7 @@ export default function FieldCard(props: PropsWithChildren<FieldCardProps>) {
           <BoxRow className="mt-2 mr-2 ml-auto gap-2 items-center">
             {showSport && (
               sports.map((sport, index) => (
-                <Image source={getSportImage(sport as SessionCollectionItemDtoSport)} contentFit="cover" className="size-6" key={index} />
+                <Image source={getSportImage(sport)} contentFit="cover" className="size-6" key={index} />
               ))
             )}
             {type === FieldResponseDtoType.PUBLIC && showType && (

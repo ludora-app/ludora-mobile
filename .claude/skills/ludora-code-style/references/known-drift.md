@@ -13,12 +13,12 @@ Each item of SKILL.md §8, checked with grep on `src/` (excluding `src/component
 
 Also `export interface SessionScreenProps` with `sport: any`, unused (`src/features/session/screens/session.screen.tsx:22`).
 
-**`TouchableOpacity`** (7 files). Use the `@ludo/ui` pressables.
+**`TouchableOpacity`** (6 files). Use the `@ludo/ui` pressables.
 - `src/features/filters/filters-addresses/components/filter-addresses-list-header.component.tsx`
 - `src/features/filters/filters-addresses/components/filter-addresses-result-item/filter-addresses-result-item.component.tsx`
 - `src/features/profil/components/profil-section/profil-section-5/profil-section-5-list-segmented-control.component.tsx`
 - `src/features/profil/components/profil-section/profil-section-4/profil-section-4.component.tsx`
-- `src/features/on-boarding/screens/on-boarding-step-1.screen.tsx`
+- `src/features/image-picker/screens/image-picker.screen.tsx`
 
 **`Platform.OS`** (7 files, one is `src/constants/platform.constants.ts` where it is the definition and is fine). Use `IS_IOS` / `IS_ANDROID`.
 - `src/hooks/app-state.hook.ts:42`
@@ -37,14 +37,13 @@ Also `export interface SessionScreenProps` with `sport: any`, unused (`src/featu
 
 Imports of these paths are spread across the app; rename only as a dedicated change.
 
-**`.query.tsx`** (8 files; use `.query.ts`).
+**`.query.tsx`** (6 files; use `.query.ts`).
 - `src/features/create-session/queries/get-fields.query.tsx`
 - `src/features/create-session/queries/get-fields-by-filter.query.tsx`
-- `src/features/on-boarding/queries/get-fields.query.tsx`
 - `src/features/home/queries/get-sessions.query.tsx`
 - `src/features/auth/login/queries/login.query.tsx`
 
-(also `home/queries/get-sessions-by-filter.query.tsx`, `home/queries/get-incomming-session-me.query.tsx`, `on-boarding/queries/get-fields-by-filter.query.tsx`.)
+(also `home/queries/get-sessions-by-filter.query.tsx`, `home/queries/get-incomming-session-me.query.tsx`.)
 
 **Untyped `useLocalSearchParams()`** (6 hits; type it with a `RootStackParamList` alias).
 - `src/features/profil/screens/profil.screen.tsx:21`
@@ -53,12 +52,9 @@ Imports of these paths are spread across the app; rename only as a dedicated cha
 - `src/features/profil/components/profil-section/profil-section-3/profil-section-3-user.component.tsx:23`
 - `src/features/auth/forgot-password/new-password/screens/new-password.screen.tsx:21`
 
-**String-literal routes** (8 hits; use `ROUTES`).
+**String-literal routes** (5 hits; use `ROUTES`).
 - `src/features/profil/components/profil-header/profil-header-actions-me.component.tsx:20` (`href="/settings"`)
 - `src/features/profil/components/profil-edit/profil-edit-avatar.component.tsx:81` (`pathname: '/image-picker'`)
-- `src/features/on-boarding/screens/on-boarding-step-1.screen.tsx:55` (`pathname: '/image-picker'`)
-- `src/features/auth/login/screens/login.screen.tsx:28` (`href="/auth/register/step-1"`)
-- `src/initializers/on-boarding/on-boarding-initializer.tsx:13` (`<Redirect href="/on-boarding/step-1" />`)
 
 **`src/hooks/navigation.hook.ts`** still exists next to `navigation.hooks.ts`; both export `useDisableBack`. One importer of the old file remains: `src/features/auth/forgot-password/reset-password/screens/reset-password.screen.tsx:9`. Import from `@/hooks/navigation.hooks`.
 

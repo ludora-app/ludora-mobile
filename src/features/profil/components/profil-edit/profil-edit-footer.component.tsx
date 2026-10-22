@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 
 import { IS_ANDROID } from '@/constants/platform.constants';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 
 type ProfilEditFooterProps = {
   handleSubmit: () => void;
@@ -16,9 +16,9 @@ export default function ProfilEditFooter(props: ProfilEditFooterProps) {
   const { t } = useTranslate();
 
   return (
-    <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
+    <FooterWrapper hasBottomSafeArea={IS_ANDROID}>
       <Button title={t('common.save')} onPress={handleSubmit} isLoading={isLoading} />
       <Button title={t('common.button_cancel')} onPress={router.back} variant="outlined" />
-    </FormSheetFooter>
+    </FooterWrapper>
   );
 }

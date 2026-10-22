@@ -14,8 +14,8 @@ import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { useChangeSessionTeam } from '@/queries/change-session-team.query';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 import { ConversationCollectionResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
 import { useJoinSession } from '../queries/join-session.query';
@@ -142,7 +142,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   }, [isJoined, sideTeam]);
 
   return (
-    <FormSheetFooter hasBottomSafeArea>
+    <FooterWrapper hasBottomSafeArea>
       {showActionButton && (
         <AnimatedButton
           entering={FadeIn}
@@ -163,6 +163,6 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
           {handleCantJoinSession()}
         </String>
       )}
-    </FormSheetFooter>
+    </FooterWrapper>
   );
 }

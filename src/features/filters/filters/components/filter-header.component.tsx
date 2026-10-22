@@ -2,7 +2,7 @@ import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
 import { Box, String, Wrapper } from '@ludo/ui';
 
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { useFiltersStore } from '../store/filters.store';
 

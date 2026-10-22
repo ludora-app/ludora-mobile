@@ -3,7 +3,7 @@ import { ImageSource } from 'expo-image';
 import { Avatar, Box, Image } from '@ludo/ui';
 
 import { getSportImage, getSportPlaceHolder } from '@/utils/sports.utils';
-import { ConversationCollectionResponseData, SessionCollectionItemDtoSport } from '@/api/generated/model';
+import { ConversationCollectionResponseData } from '@/api/generated/model';
 
 interface ChatConversationListItemAvatarSessionProps {
   conversation: ConversationCollectionResponseData;
@@ -18,8 +18,9 @@ export default function ChatConversationListItemAvatarSession({
 
   const sessionImage = useMemo(() => {
     if (imageUrl) return { uri: imageUrl };
-    return getSportPlaceHolder(sport as SessionCollectionItemDtoSport);
-  }, [imageUrl, sport]) as ImageSource;
+    if (sport) return getSportPlaceHolder(sport);
+    return undefined;
+  }, [imageUrl, sport]) as ImageSource | undefined;
 
   return (
     <Box>
@@ -30,10 +31,7 @@ export default function ChatConversationListItemAvatarSession({
         }}
         colorVariant={teamLabel === 'B' ? 'secondary' : 'primary'}
       />
-      <Image
-        source={getSportImage(sport as SessionCollectionItemDtoSport)}
-        className="absolute right-0 bottom-0 size-6"
-      />
+      {sport && <Image source={getSportImage(sport)} className="absolute right-0 bottom-0 size-6" />}
     </Box>
   );
 }

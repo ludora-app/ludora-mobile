@@ -19,7 +19,7 @@ Which `useInvalidate*` helpers real wrappers call together per entity, and how c
 | useDeleteNotification | features/notifications/queries/delete-notification.query.ts:9 | NotificationsFindAll() |
 | useUpdateUserMe, useUpdateUserMeEmail, useDeleteAccount, useCancelDeleteAccount | queries/update-user-me.query.ts:10 and siblings | UsersFindMe() |
 | usePutUserSportPreferences, useRemoveUserSportPreferences | queries/put-user-sport-preferences.query.ts:39 | UsersFindMe() |
-| usePutUserHoursPreferences, useRemoveUserHoursPreferences | features/settings/queries/user-hours-preferences/ | HourPreferencesFindMyHourPreferences() |
+| usePutUserHoursPreferences, useRemoveUserHoursPreferences | queries/put-user-hours-preferences.query.ts:10 (shared by settings and on-boarding), features/settings/queries/user-hours-preferences/remove-user-hours-preferences.query.ts:9 | HourPreferencesFindMyHourPreferences() |
 | useInviteFriends | features/invite-friends/queries/invite-friends.query.ts:10-12 | FriendsFindAllMyFriends() |
 | useAddField (my-fields) | features/my-fields/queries/add-field.query.ts:9-11 | FieldsFindAllMyFields() |
 

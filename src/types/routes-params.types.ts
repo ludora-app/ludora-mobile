@@ -16,6 +16,7 @@ export type RootStackParamList = {
     sport: SessionCollectionItemDtoSport;
     endDate?: string;
   };
+  [ROUTES.ON_BOARDING.SPORT_FORM_SHEET]: { sport: SessionCollectionItemDtoSport };
   [ROUTES.FILTERS.FILTER]: {
     goBackPath: RouteValues;
     source?: 'filter_fields' | 'filter_sessions_all' | 'players_suggestions';

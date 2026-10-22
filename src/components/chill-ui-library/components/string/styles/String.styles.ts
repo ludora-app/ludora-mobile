@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 const textSizes = {
-  '2xl': 'text-[24px] leading-[32px]',
+  '2xl': 'text-[24px] leading-10',
   '3xl': 'text-[30px] leading-[36px]',
   '4xl': 'text-[36px] leading-11',
   '5xl': 'text-[48px] leading-[52px]',

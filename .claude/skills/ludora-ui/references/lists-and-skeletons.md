@@ -77,10 +77,10 @@ const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
 
 ## 4. Size depends on the item: fields lists
 
-`features/on-boarding/components/on-boarding-step-4/on-boarding-step-4-fields-list.component.tsx:30-45` (same logic in `create-session-step-2-fields-list.component.tsx:44-58`):
+`features/create-session/components/create-session-steps/create-session-step-2/create-session-step-2-fields-list/create-session-step-2-fields-list.component.tsx:44-59`:
 
 ```tsx
-const fixedEstimatedItemsSize = useMemo<GetListFixedItemSize<FieldResponseDto>>(
+const fixedItemsSize = useMemo<GetListFixedItemSize<FieldResponseDto>>(
   () => (item, _index, type) => {
     if (type === 'sticky') {
       return LIST_STICKY_COMPONENT_HEIGHT;
@@ -97,7 +97,7 @@ const fixedEstimatedItemsSize = useMemo<GetListFixedItemSize<FieldResponseDto>>(
   [],
 );
 ```
-Constants: `88`, `59.33`, `227` (public), `241` (private) (`:10-13`). Pass the item generic (`GetListFixedItemSize<FieldResponseDto>`) to type `item`. Because `FieldResponseDto` has its own `type` field, `getItemType` forwards it (`list.types.ts:13-15`), so the `type` argument is `'PUBLIC'`/`'PRIVATE'` for rows: branch on `item.type`, not on `type`. Skeleton: `CreateSessionStep2FieldCardSkeleton` = `<FieldCardSkeleton showSlots />` (`...create-session-step-2-field-card-skeleton.tsx:6`).
+Constants: `95`, `59.33`, `227` (public), `241` (private) (`:18-21`). Pass the item generic (`GetListFixedItemSize<FieldResponseDto>`) to type `item`. Because `FieldResponseDto` has its own `type` field, `getItemType` forwards it (`list.types.ts:13-15`), so the `type` argument is `'PUBLIC'`/`'PRIVATE'` for rows: branch on `item.type`, not on `type`. Skeleton: `CreateSessionStep2FieldCardSkeleton` = `<FieldCardSkeleton showSlots />` (`...create-session-step-2-field-card-skeleton.tsx:6`).
 
 ## Conventions checked across the repo
 

@@ -34,7 +34,7 @@ Persisting recipe (copy from `stores/on-boarding-status.store.ts:14-25`): `creat
 | useCreateSessionStore | features/create-session/store/create-session.store.ts | `session`, `isStep3Valid`, `createdSessionUid`, `setSession` (merge + strips `''`/null/undefined), `reset` | yes |
 | useSessionTeamStore | features/session/stores/session-team.store.ts | `teamUid`, `sideTeam`, setters, `reset` | yes |
 | useCreateSessionLayoutStore | features/create-session/store/create-session-layout.store.ts | `footerHeight`, `setFooterHeight` | no (layout only) |
-| useOnBoardingStore | features/on-boarding/stores/on-boarding.store.ts | `sportPreferences`, `profilePicture` (ImagePickerAsset), add/remove/toggle actions, `clearAll` | no |
+| useOnBoardingStore | features/on-boarding/stores/on-boarding.store.ts | `sportPreferences`, `availabilities` (`{ dayOfWeek, timePeriod }`), `upsertSportPreference`, `removeSportPreference`, `setAvailabilities(group, isSelected)`, `clearAll` | no |
 | useSettingsPreferencesStore | features/settings/stores/settings-preferences.store.ts | `sportPreferences`, `initialize`, `toggle*`, `set*` | no (no reset) |
 | useSettingsPlanningStore | features/settings/stores/settings-planning.store.ts | `planning`, `selectedDay`, `setToggleSlot` | no (no reset) |
 | useProfilStore | features/profil/stores/profil.store.ts | `selectedTab` (uses a TS `enum ProfilTab`, which the code-style skill forbids), `setSelectedTab` | no |
@@ -43,13 +43,11 @@ Persisting recipe (copy from `stores/on-boarding-status.store.ts:14-25`): `creat
 | useChatRoomScrollStore | features/chat-room/store/chat-room-scroll.store.ts | `scrollToEnd` callback, `setScrollToEnd` | no |
 | createChatRoomStore (vanilla, per instance) | features/chat-room/store/chat-room.store.ts | `chatRoomId`, `chatRoomUserId`, `lastMessageCreatedAt`, `chatRoomInfo`, setters, `addChatRoomInfo` | n/a, dies with its provider |
 
-`features/on-boarding/stores/on-boarding-filters-fields.store.ts` is an empty (0 byte) file.
-
 ## 3. Not registered in `reset-caches.utils.ts`, and why it may matter
 
 Stores holding user-derived data that survive logout in memory (the app process stays alive after `logout()`):
 - `useChatRoomOptimisticMessagesStore.pendingMessages` (messages typed by the previous user).
-- `useOnBoardingStore` (`sportPreferences`, `profilePicture`) although it already has `clearAll`.
+- `useOnBoardingStore` (`sportPreferences`, `availabilities`) although it already has `clearAll`.
 - `useSettingsPreferencesStore` and `useSettingsPlanningStore` (previous user's preferences/planning until re-`initialize`/`setPlanning`), `useWebsocketStore.connectedUsers`.
 Pure UI/ephemeral stores (`useSafeAreaStore`, `useCreateSessionLayoutStore`, `useChatRoomScrollStore`, `useChatRoomMessageActionsMenuStore`, `useProfilStore`) are harmless. When adding a store with user data, add `reset` and register it in lines 28-42 of the util.
 

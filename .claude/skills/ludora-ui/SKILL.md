@@ -29,6 +29,8 @@ Main `@ludo/ui` components:
 | `Image` / `ImageBackground` | expo-image with `className`, `contentFit` |
 | `FormInput`, `FormDatePickerInput` | react-hook-form `control`, `name`, `label`, `placeholder` (translates errors itself) |
 | `CodeInput` / `FormCodeInput` | one-time code boxes: `length` (6 default), `value` + `onChangeText` (or `control` + `name`, one string field), `hasError`, `onComplete`; handles auto-advance, backspace, paste and OS autofill |
+| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `Card`: `isSelected` (primary tint, no shadow), `onPress` (whole card pressable), `className`, `style`. White `rounded-card`, warm shadow, `p-4 gap-3`. Use it for every card instead of a local `boxShadow` |
+| `ProgressStepper` | `activeStep` (1-based), `numberOfSteps` (default 5), `className`: animated numbered circles + connectors |
 | `Separator`, `Badge`, `Toggle`, `NumericInput`, `Link`, `BlurView`, `Chip`, `Accordion*` | |
 
 ## 2. Styling
@@ -42,7 +44,7 @@ Main `@ludo/ui` components:
   - Exception: `tv()` styles (tailwind-variants has its own merge, e.g. chill Button) keep `rounded-[18px]`-style radii.
 - Recurring recipes:
   - content sheet over the background: `bg-background rounded-t-sheet`
-  - card: `bg-white rounded-card border border-border overflow-hidden`
+  - card: `Card` from `@ludo/ui` (older cards: `bg-white rounded-card border border-border` + a local shadow)
   - colored header: `bg-tertiary rounded-b-header`
   - spacing with `gap-*` (not margins), `px-4`, `size-*`, opacity colors `border-primary/20`
 - Conditional classes: `cn('items-center gap-4', { 'mt-10': !center }, className)` — always accept and forward a `className` prop last on reusable components.
@@ -139,7 +141,7 @@ export const PlayersList = () => {
 - **Section loading:** sibling `<x>-skeleton.component.tsx` mirroring the layout with `Skeleton`, then `isLoading ? <XSkeleton /> : <X />`.
 - **Not found:** `return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;`.
 - **Empty:** `EmptyResult` (`@/components/ui/empty-resulat` — typo is real) with `title` as a translation **key**, optional `hasRandomTitle`. Unbuilt feature: `ComingSoon`.
-- **Errors:** no error components; handle in the handler (see ludora-data §4): `trackError` shows the generic toast.
+- **Errors:** a failed mutation is handled in the handler (see ludora-data §4): `trackError` shows the generic toast. A failed GET that leaves a section without data renders `<ErrorResult onRetry={() => refetch()} isRetrying={isRefetching} />` (`@/components/ui/error-result`; `messageKey?` defaults to `common.error_generic`, the retry button only shows with `onRetry`).
 
 ## 6. Overlays & feedback
 
@@ -155,14 +157,14 @@ export const PlayersList = () => {
     <ProfilEditFooter handleSubmit={handleSubmit(onSubmit)} isLoading={isUpdatingUserMe} />
   </>
   ```
-  Footer built on `FormSheetFooter` (`hasBottomSafeArea={IS_ANDROID}`; primary Button + outlined cancel). Multi-view sheets: `useState<'actions' | 'report-reasons'>`.
-- Screen footers: `FooterWrapper`. Sheet/flow footers: `FormSheetFooter`.
-- **Headers:** navigation header is always hidden; screens render their own. New screens use **`HeaderOutlined`** (`@/components/ui/navigation/header-outlined`, `titleKey`, `rightContent`, `hasTopSafeArea`, `hasHorizontalPadding`), wrapped in a small feature `<Feature>Header` component. Sheets: `FormSheetHeader`. Flows (auth/on-boarding): `Header` / `HeaderProgressStepper`.
+  New sheets: `FormSheetWrapper` > `FormSheetHeader` + `FormSheetContent` + `FormSheetFooter buttonTitle onButtonPress` (named exports). Older sheets keep `FooterWrapper hasBottomSafeArea={IS_ANDROID}` (primary Button + outlined cancel). Multi-view sheets: `useState<'actions' | 'report-reasons'>`.
+- Screen and flow footers: `FooterWrapper` (`onLayout` to measure). Sheet footers: `FormSheetFooter`.
+- **Headers:** navigation header is always hidden; screens render their own. New screens use **`HeaderOutlined`** (`@/components/ui/navigation/header-outlined`, `titleKey`, `rightContent`, `hasTopSafeArea`, `hasHorizontalPadding`), wrapped in a small feature `<Feature>Header` component. Sheets: `FormSheetHeader`. New-design screens and flows: **`HeaderRounded`** (`@/components/ui/header`; `title`, `hasGoBack`, `rightContent`, children under the title such as `ProgressStepper` from `@ludo/ui`).
 
 ## 7. Icons, images, pressables, animation
 
 - Icons: `<Icon name="calendar-regular" />`. New SVG → `tools/svg-2-obj/svg/` → `bun generate:icons`. Type icon-name props as `TIconsAll`. Mascots are icons (`ludo-cry`, `mascotte-ludora`) sized via `className="size-36"`.
-- Images: `Image` from `@ludo/ui`; sport images via `getSportImage(sport)` (`@/utils/sports.utils`); static assets from `assets`.
+- Images: `Image` from `@ludo/ui`; sport images via `getSportImage(sport)` / `getSportPlaceHolder(sport)` (`@/utils/sports.utils`), bundled in `SPORT_ASSETS` (`sports.constants.ts`, typed `Record<Sport, …>`: a new sport needs its assets); no `as` cast, every generated `*Sport` enum is a `Sport`; static assets from `assets`.
 - Pressables: RN `Pressable` with `className` for rows/cards; `ScalePressable` (`@chillui/ui`) for tactile tiles/chips; `Button`/`IconButton` already animate. Navigation cards: `<Link href={ROUTES...} asChild>` or `router.navigate`. No `TouchableOpacity`.
 - Animations (Reanimated 4): `entering={FadeIn}` for mount; `useSharedValue` + `withSpring`/`withTiming` + `useAnimatedStyle` for value-driven; scroll-driven logic in a hook that returns `animatedStyle`.
 - Haptics: `useHaptics().triggerHaptic('light')` — sparingly.

@@ -4,16 +4,29 @@ Real form sheet screens (single form, multi-view), the shared `FormSheetHeader` 
 
 ## Shared building blocks
 
-Neither has an `index.ts`; import the component file:
+No `index.ts`; import the component files (named exports):
 
 ```tsx
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+import { FormSheetFooter } from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetWrapper } from '@/components/ui/form-sheet/components/form-sheet-wrapper.component';
+import { FormSheetContent } from '@/components/ui/form-sheet/components/form-sheet-content.component';
 ```
 
-- **`FormSheetHeader`** (`ui/form-sheet/components/form-sheet-header.component.tsx:7`): grabber bar (`h-1 w-12 rounded-full bg-zinc-400`) + optional title. Props: `title?: string`, `hasShadow?: boolean` (default `true`, only shown when a `title` exists), `hasGoBack?: boolean`, `goBackAction?: () => void` (defaults to `useAppNavigation().goBack`, `go-back-button.component.tsx:15-20`). Without `title` it renders only the grabber (`filter-header.component.tsx:19`, `filters-calendar.screen.tsx:27`).
-- **`FormSheetFooter`** (`ui/form-sheet/components/form-sheet-footer.component.tsx:15`): white bar with a top shadow, `gap-2 py-2`, `Wrapper fill={false}`. Props: `hasBottomSafeArea?` (default `false`; adds `paddingBottom: bottom`), `onLayout?`, `shadowVariant?: 'black' | 'primary'`, `children`. It is identical in structure to `FooterWrapper` (screen footers) apart from `onLayout` (and `className`, which only `FooterWrapper` has).
-- Footer convention: primary `Button` first, outlined cancel second; `hasBottomSafeArea={IS_ANDROID}` when the sheet has its own bottom handling (`profil-edit-footer.component.tsx:19`) or `hasBottomSafeArea` (`my-fields-add.formsheet.tsx:123`).
+New sheets use the four together (`features/on-boarding/formsheets/on-boarding-sport.formsheet.tsx`):
+
+```tsx
+<FormSheetWrapper>
+  <FormSheetHeader />
+  <FormSheetContent className="gap-4">...</FormSheetContent>
+  <FormSheetFooter buttonTitle={t('common.validate')} onButtonPress={handleValidate} isButtonDisabled={!level} />
+</FormSheetWrapper>
+```
+
+- **`FormSheetWrapper`**: root `Box` with `pt-2` (+ `pb-safe` on Android). **`FormSheetContent`**: `Wrapper fill={false}` with `pt-4 pb-6`. Both take `className`.
+- **`FormSheetHeader`**: grabber bar (`h-1.5 w-11 rounded-full bg-border`) + optional title. Props: `title?: string`, `hasGoBack?: boolean`, `goBackAction?: () => void` (defaults to `useAppNavigation().goBack`, `go-back-button.component.tsx:15-20`). Without `title` it renders only the grabber (`filter-header.component.tsx:19`, `filters-calendar.screen.tsx:27`).
+- **`FormSheetFooter`**: plain `Wrapper fill={false}` with `gap-2` (no background, shadow or safe area). Props: `buttonTitle?` + `onButtonPress?` + `isButtonDisabled?` (renders an `xl` primary `Button`), `className?`, `children` (extra buttons under it). Older sheets that need the white bar with a shadow and a bottom safe area use `FooterWrapper` instead.
+- Footer convention: primary `Button` first, outlined cancel second.
 
 ## Single-form sheet: profile name
 
@@ -38,10 +51,10 @@ import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-fo
 `ProfilEditFooter` (`features/profil/components/profil-edit/profil-edit-footer.component.tsx:13-24`) is the feature footer shared by all `profil-edit-*` sheets:
 
 ```tsx
-<FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
+<FooterWrapper hasBottomSafeArea={IS_ANDROID}>
   <Button title={t('common.save')} onPress={handleSubmit} isLoading={isLoading} />
   <Button title={t('common.button_cancel')} onPress={router.back} variant="outlined" />
-</FormSheetFooter>
+</FooterWrapper>
 ```
 
 Variant with a scrolling body and a back arrow: `features/my-fields/formsheets/my-fields-add.formsheet.tsx:100-128` uses `<FormSheetHeader title={t('my-fields.add.title')} hasGoBack />`, `WrapperGestureHandlerScrollView fill={false} contentContainerClassName="gap-5 py-5"` and the footer buttons inline with `size="md"`. Reading route params: `useLocalSearchParams<LocalSearchParams>()` where `LocalSearchParams = RootStackParamList[typeof ROUTES.MY_FIELDS.ADD]` (`:22`, `:32`).

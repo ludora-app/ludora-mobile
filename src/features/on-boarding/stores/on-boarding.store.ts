@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { CreateSportPreferenceData, CreateSportPreferenceDataGameModesItem } from '@/api/generated/model';
 
 import { OnBoardingAvailability } from '../types/on-boarding.types';
-import { isSameAvailability } from '../utils/on-boarding-availabilities.utils';
+import { isSameAvailability } from '../on-boarding-profile/utils/on-boarding-availabilities.utils';
 
 export type SportPreferences = CreateSportPreferenceData & {
   gameModes: CreateSportPreferenceDataGameModesItem[];

@@ -6,13 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, FormInput, String, WrapperKeyboardAwareScrollView, Wrapper } from '@ludo/ui';
 
 import { ErrorResponse } from '@/api/orval.instance';
+import { HeaderMascot } from '@/components/ui/header';
 import { useDisableBack } from '@/hooks/navigation.hooks';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { formSchema } from '../schemas/new-password.schema';
 import { useNewPassword } from '../queries/new-password.query';
-import { AuthHeader } from '../../../components/auth-header/auth-header.component';
 
 export const NewPasswordScreen = () => {
   useDisableBack();
@@ -60,7 +60,7 @@ export const NewPasswordScreen = () => {
       mode="layout"
       bounces={false}
     >
-      <AuthHeader title={t('auth.new-password.title')} mascotName="ludo-sunglass" hasGoBackButton={false} />
+      <HeaderMascot title={t('auth.new-password.title')} mascotName="ludo-sunglass" hasGoBackButton={false} />
       <Wrapper className="gap-3.5 pt-6.5">
         <String className="mb-1.5 text-center">{t('auth.new-password.description')}</String>
         <FormInput

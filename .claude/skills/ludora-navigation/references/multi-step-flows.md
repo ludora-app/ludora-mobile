@@ -29,7 +29,7 @@ Both flows are opened from `(root)/_layout*.tsx`: `create-session` with `slide_f
 Two identical hooks (copy-paste, one per feature):
 
 - `src/features/create-session/hooks/create-session-step.hook.ts:4-16` (`useGetCreateSessionStep`)
-- `src/features/on-boarding/hooks/on-boarding-steps.hook.ts:4-15` (`useGetOnBoardingStep`)
+- `src/features/on-boarding/on-boarding-profile/hooks/on-boarding-steps.hook.ts:4-15` (`useGetOnBoardingStep`)
 
 ```ts
 const lastSegment = pathname.split('/').pop()?.split('-').pop();
@@ -96,16 +96,18 @@ It also reports its height (`onLayout` -> `useCreateSessionLayoutStore.setFooter
 
 | Concern | File |
 |---|---|
-| Layout | `src/app/(root)/on-boarding/_layout.tsx` |
-| Step routes | `on-boarding/step-{1,2}.ts` -> `features/on-boarding/screens/on-boarding-step-N.screen.tsx` |
-| Sport sheet | `src/app/(root)/on-boarding-sport.ts` (root-level, `ROUTES.ON_BOARDING.SPORT_FORM_SHEET`, param `sport`) -> `features/on-boarding/formsheets/on-boarding-sport.formsheet.tsx` |
-| Header | `features/on-boarding/components/on-boarding-header.component.tsx` (`hasGoBack = activeStep > 1`, `ProgressStepper` from `@ludo/ui` with `numberOfSteps={ON_BOARDING_STEPS_COUNT}`) |
-| Steps count | `features/on-boarding/constants/on-boarding.constants.ts:4` (`ON_BOARDING_STEPS_COUNT = 2`) |
-| Footer | `features/on-boarding/components/on-boarding-footer/on-boarding-footer.component.tsx` |
-| Flow store | `features/on-boarding/stores/on-boarding.store.ts` (`sportPreferences`, `availabilities`, `clearAll`) |
+| Parent layout | `src/app/(root)/on-boarding/_layout.tsx`: bare Stack, clears the flow store on unmount (`useResetStoreOnUnmount(clearAll)`), `gestureEnabled: false` on `sessions/ready` and `sessions/joined` |
+| Profile layout | `src/app/(root)/on-boarding/profile/_layout.tsx` (header + stepper + footer around the steps) |
+| Step routes | `on-boarding/profile/step-{1,2}.ts` -> `features/on-boarding/on-boarding-profile/screens/on-boarding-step-N.screen.tsx` |
+| Sessions routes | `on-boarding/sessions/{ready,suggestions,joined}.ts` -> `features/on-boarding/on-boarding-sessions/screens/on-boarding-sessions-*.screen.tsx` |
+| Sport sheet | `src/app/(root)/on-boarding-sport.ts` (root-level, `ROUTES.ON_BOARDING.SPORT_FORM_SHEET`, param `sport`) -> `features/on-boarding/on-boarding-profile/formsheets/on-boarding-sport.formsheet.tsx` |
+| Header | `features/on-boarding/on-boarding-profile/components/on-boarding-header.component.tsx` (`hasGoBack = activeStep > 1`, `ProgressStepper` from `@ludo/ui` with `numberOfSteps={ON_BOARDING_STEPS_COUNT}`) |
+| Steps count | `features/on-boarding/on-boarding-profile/constants/on-boarding.constants.ts:4` (`ON_BOARDING_STEPS_COUNT = 2`) |
+| Footer | `features/on-boarding/on-boarding-profile/components/on-boarding-footer/on-boarding-footer.component.tsx` |
+| Flow store | `features/on-boarding/stores/on-boarding.store.ts` (`sportPreferences`, `availabilities`, `clearAll`), shared by both sub-features |
 | Status store | `src/stores/on-boarding-status.store.ts` (persisted in MMKV) |
 
-Steps: 1 sports (one card per sport, level and game modes picked in the sheet), 2 availabilities (day x moment grid, week/weekend shortcuts, recap).
+Steps: 1 sports (one card per sport, level and game modes picked in the sheet), 2 availabilities (day x moment grid, week/weekend shortcuts, recap). Then the sessions part: `ready` (profile ready), `suggestions` (matching sessions from `useGetOnBoardingSessionsSuggestions`, join in one tap), `joined`.
 
 ### Gate: how the user ends up here
 
@@ -123,14 +125,14 @@ Steps: 1 sports (one card per sport, level and game modes picked in the sheet), 
 - **Submit** (`on-boarding-footer-button-submit.component.tsx:28-56`): creates sport preferences if any, puts hour preferences if any (`usePutUserHoursPreferences` from `src/queries/put-user-hours-preferences.query.ts`, shared with settings, fed by `toHourPreferences(availabilities)`), `updateUserMe({ onBoardingStatus: 'COMPLETE' })`, tracks `ONBOARDING_COMPLETED` with `has_hour_preferences` / `has_sport_preferences`, then
   ```ts
   setOnBoardingStatus('COMPLETE');
-  clearAll();
-  router.replace(ROUTES.HOME.INDEX);
+  const hasAnswers = sportPreferences.length > 0 || availabilities.length > 0;
+  router.replace(hasAnswers ? ROUTES.ON_BOARDING.SESSIONS_READY : ROUTES.HOME.INDEX);
   ```
   Flipping the status store is what makes `OnBoardingInitializer` stop redirecting. Title is `common.finish`, or `common.pass` / `muted` while `availabilities` is empty (`:62-63`).
 
 ### Store sync
 
-Step 1 cards open the sport sheet with typed params (`on-boarding-sports-card.component.tsx:38-41`). The sheet keeps a local draft (`level`, `gameModes`, `on-boarding-sport.formsheet.tsx:24-28`) and writes the store only on validate (`common.validate`, `upsertSportPreference` then `router.back()`, `:36-40`), or removes the sport (`:42-45`); swiping the sheet down discards the draft. Step 2 toggles groups of slots (cell, day, moment, shortcut) through `useOnBoardingAvailabilitiesToggle` (`hooks/on-boarding-availabilities-toggle.hook.ts`), which calls `setAvailabilities(group, isSelected)`. There is no per-step validity: the footer only reads store contents to pick its label. The flow store is cleared only on successful submit (`clearAll`), not on unmount.
+Step 1 cards open the sport sheet with typed params (`on-boarding-sports-card.component.tsx:38-41`). The sheet keeps a local draft (`level`, `gameModes`, `on-boarding-sport.formsheet.tsx:24-28`) and writes the store only on validate (`common.validate`, `upsertSportPreference` then `router.back()`, `:36-40`), or removes the sport (`:42-45`); swiping the sheet down discards the draft. Step 2 toggles groups of slots (cell, day, moment, shortcut) through `useOnBoardingAvailabilitiesToggle` (`hooks/on-boarding-availabilities-toggle.hook.ts`), which calls `setAvailabilities(group, isSelected)`. There is no per-step validity: the footer only reads store contents to pick its label. The flow store is not cleared on submit: the session suggestions read it, and the parent `on-boarding/_layout.tsx` clears it when the whole on-boarding is left.
 
 ## Register (auth)
 

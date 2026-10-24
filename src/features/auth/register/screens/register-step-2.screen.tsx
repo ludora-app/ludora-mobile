@@ -8,6 +8,7 @@ import { String, Button, FormInput, WrapperKeyboardAwareScrollView, Wrapper } fr
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { HeaderMascot } from '@/components/ui/header';
 import { NAME_REGEX } from '@/utils/zod-schemas.utils';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -15,7 +16,6 @@ import FormDatePickerInput from '@/components/ludo-ui/components/form/form-date-
 
 import { useRegister } from '../queries/register.query';
 import { formSchema } from '../schemas/register-step-2.schema';
-import { AuthHeader } from '../../components/auth-header/auth-header.component';
 
 const EMAIL_ALREADY_EXISTS_ERROR_MESSAGE = 'User already exists';
 
@@ -77,7 +77,7 @@ export const RegisterStep2Screen = () => {
       keyboardShouldPersistTaps="handled"
       bounces={false}
     >
-      <AuthHeader title={t('auth.register-step-2.title')} mascotName="ludo-sunglass" />
+      <HeaderMascot title={t('auth.register-step-2.title')} mascotName="ludo-sunglass" />
       <Wrapper className="pt-6.5">
         <Box className="mb-4 flex-1 gap-3.5">
           <Box className="flex-row gap-3">

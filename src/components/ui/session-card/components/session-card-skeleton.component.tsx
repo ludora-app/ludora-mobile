@@ -1,59 +1,27 @@
-import { memo } from 'react';
-import { cn } from '@chillui/ui';
-import { Skeleton, Box, BoxGrow, BoxRow } from '@ludo/ui';
+import { Box, BoxRow, Card, Skeleton } from '@ludo/ui';
 
-interface SessionCardSkeletonProps {
-  isNextSession?: boolean;
-}
-function SessionCardSkeleton(props: SessionCardSkeletonProps) {
-  const { isNextSession } = props;
-
-  return (
-    <Box>
-      {!isNextSession && (
-        <Box className="h-16 overflow-hidden rounded-t-xl">
-          <Skeleton className="size-full rounded-none" />
+export const SessionCardSkeleton = () => (
+  <Card className="gap-2.5 p-3.5">
+    <BoxRow className="h-10 items-center gap-2.5">
+      <Skeleton variant="square" className="size-10 rounded-control" />
+      <Box className="flex-1 gap-1.5">
+        <Box className="w-36">
+          <Skeleton variant="text" size="sm" />
         </Box>
-      )}
-      <Box
-        className={cn('overflow-hidden rounded-xl border border-black/10 bg-white', {
-          'rounded-t-none border-t-0': !isNextSession,
-        })}
-      >
-        <BoxRow>
-          {/* left card content */}
-          <Box className="items-center justify-center gap-1 bg-[#F5F5F5] p-4">
-            <Skeleton variant="square" className="size-9" />
-            <Skeleton variant="text" size="xs" />
-          </Box>
-
-          {/* center card content */}
-          <BoxGrow className="gap-2 bg-white px-3 py-2">
-            <Skeleton variant="text" size="xs" />
-            <BoxRow className="items-center gap-4">
-              <BoxRow className="items-center gap-1">
-                <Skeleton variant="square" className="size-4" />
-                <Skeleton variant="text" size="xs" className="w-20" />
-              </BoxRow>
-              <BoxRow className="items-center gap-1">
-                <Skeleton variant="square" className="size-4" />
-                <Skeleton variant="text" size="xs" className="w-20" />
-              </BoxRow>
-            </BoxRow>
-            <BoxRow className="gap-1">
-              <Skeleton variant="square" className="size-4" />
-              <Skeleton variant="text" size="xs" className="w-36" />
-            </BoxRow>
-          </BoxGrow>
-
-          {/* right card content */}
-          <Box className="items-center justify-center pr-4">
-            <Skeleton variant="square" className="size-6" />
-          </Box>
-        </BoxRow>
+        <Box className="w-20">
+          <Skeleton variant="text" size="xs" />
+        </Box>
+      </Box>
+      <Skeleton variant="rectangle" className="h-6 w-16 rounded-full" />
+    </BoxRow>
+    <Skeleton variant="rectangle" className="h-1.5 rounded-full" />
+    <Box className="gap-1">
+      <Box className="h-5 w-48 justify-center">
+        <Skeleton variant="text" size="xs" />
+      </Box>
+      <Box className="h-5 w-40 justify-center">
+        <Skeleton variant="text" size="xs" />
       </Box>
     </Box>
-  );
-}
-
-export default memo(SessionCardSkeleton);
+  </Card>
+);

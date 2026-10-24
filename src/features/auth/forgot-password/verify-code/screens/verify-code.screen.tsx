@@ -8,6 +8,7 @@ import { Box, BoxRow, FormCodeInput, Icon, String, WrapperKeyboardAwareScrollVie
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { HeaderMascot } from '@/components/ui/header';
 import { useAppNavigation } from '@/hooks/navigation.hooks';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
@@ -15,7 +16,6 @@ import { useVerifyCode } from '../queries/verify-code.query';
 import { VERIFY_CODE_ERRORS } from '../utils/verify-code-errors.utils';
 import { formSchema, VerifyCodeFormData } from '../schemas/verify-code.schema';
 import { AuthSwitchLink } from '../../../components/auth-switch-link.component';
-import { AuthHeader } from '../../../components/auth-header/auth-header.component';
 import { VERIFY_CODE_LENGTH, VERIFY_CODE_REGEX } from '../constants/verify-code.constants';
 import { VerifyCodeSubmitButton } from '../components/verify-code-submit-button.component';
 
@@ -80,7 +80,7 @@ export const VerifyCodeScreen = () => {
       bounces={false}
       safeArea={['bottom']}
     >
-      <AuthHeader title={t('auth.verify-code.title')} mascotName="ludo-idea" />
+      <HeaderMascot title={t('auth.verify-code.title')} mascotName="ludo-idea" />
       <Wrapper grow className="pt-6.5">
         <Box className="gap-3.5">
           <Box className="mb-1.5 gap-1.5">

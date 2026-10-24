@@ -2,10 +2,10 @@ import { useTranslate } from '@tolgee/react';
 import { Box, Button, ScrollView, Separator, String, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
+import { HeaderHero } from '@/components/ui/header';
 import { IS_IOS } from '@/constants/platform.constants';
 
 import { AuthSwitchLink } from '../../components/auth-switch-link.component';
-import { AuthHeaderHero } from '../../components/auth-header/auth-header-hero.component';
 import { LoginSocialNetworks } from '../../login/components/login-social-networks/login-social-networks.component';
 
 export const RegisterStep1Screen = () => {
@@ -13,7 +13,7 @@ export const RegisterStep1Screen = () => {
 
   return (
     <ScrollView contentContainerClassName="grow pb-safe" bounces={false}>
-      <AuthHeaderHero mascotName="ludo-sunglass" />
+      <HeaderHero mascotName="ludo-sunglass" />
       <Wrapper grow className="gap-3 pt-6.5">
         <Box className="mb-2 gap-3">
           <String className="text-center" variant="title-3">

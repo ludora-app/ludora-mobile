@@ -13,7 +13,7 @@ import { FormSheetWrapper } from '@/components/ui/form-sheet/components/form-she
 import { FormSheetContent } from '@/components/ui/form-sheet/components/form-sheet-content.component';
 ```
 
-New sheets use the four together (`features/on-boarding/formsheets/on-boarding-sport.formsheet.tsx`):
+New sheets use the four together (`features/on-boarding/on-boarding-profile/formsheets/on-boarding-sport.formsheet.tsx`):
 
 ```tsx
 <FormSheetWrapper>

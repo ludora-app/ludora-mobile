@@ -6,7 +6,7 @@ Which `useInvalidate*` helpers real wrappers call together per entity, and how c
 
 | Wrapper | File | Invalidates (arg in parens) |
 |---|---|---|
-| useJoinSession | features/session/queries/join-session.query.ts:17-22 | SessionsFindOne(sessionUid), SessionTeamsFindTeamsBySessionUid(sessionUid), SessionsFindAllMySessions(), ConversationsFindAllByUserUid() |
+| useJoinSession | queries/join-session.query.ts:17-22 | SessionsFindOne(sessionUid), SessionTeamsFindTeamsBySessionUid(sessionUid), SessionsFindAllMySessions(), ConversationsFindAllByUserUid() |
 | useLeaveSession | features/chat-room-info/queries/leave-session.query.ts:17-23 | same four as join (plus a duplicate SessionsFindAllMySessions call) |
 | useChangeSessionTeam | queries/change-session-team.query.ts:15-19 | SessionsFindOne(sessionUid), ConversationsFindAllByUserUid(), SessionTeamsFindTeamsBySessionUid(sessionUid) |
 | useCreateSession | features/create-session/queries/create-session.query.ts:15-18 | SessionsFindAllMySessions(), ConversationsFindAllByUserUid() |

@@ -13,12 +13,12 @@ import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { useJoinSession } from '@/queries/join-session.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { useChangeSessionTeam } from '@/queries/change-session-team.query';
 import { ConversationCollectionResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
-import { useJoinSession } from '../queries/join-session.query';
 import { useSessionTeamStore } from '../stores/session-team.store';
 import { SessionJoinedLocalParams, SessionScreenLocalSearchParams } from '../types/session.types';
 

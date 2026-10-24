@@ -1,11 +1,14 @@
-import { BoxGrow } from '@ludo/ui';
 import { Stack } from 'expo-router';
 
 import COLORS from '@/constants/colors.contstants';
-import { OnBoardingHeader } from '@/features/on-boarding/components/on-boarding-header.component';
-import { OnBoardingFooter } from '@/features/on-boarding/components/on-boarding-footer/on-boarding-footer.component';
+import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
+import { useOnBoardingStore } from '@/features/on-boarding/stores/on-boarding.store';
 
-function OnBoardingLayoutNav() {
+export default function OnBoardingLayout() {
+  const clearAll = useOnBoardingStore(state => state.clearAll);
+
+  useResetStoreOnUnmount(clearAll);
+
   return (
     <Stack
       screenOptions={{
@@ -14,18 +17,8 @@ function OnBoardingLayoutNav() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="step-1" />
-      <Stack.Screen name="step-2" />
+      <Stack.Screen name="sessions/ready" options={{ animation: 'fade', gestureEnabled: false }} />
+      <Stack.Screen name="sessions/joined" options={{ gestureEnabled: false }} />
     </Stack>
-  );
-}
-
-export default function OnBoardingLayout() {
-  return (
-    <BoxGrow className="bg-background">
-      <OnBoardingHeader />
-      <OnBoardingLayoutNav />
-      <OnBoardingFooter />
-    </BoxGrow>
   );
 }

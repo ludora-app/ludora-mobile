@@ -3,7 +3,7 @@ import { ScreenLayout, Separator, Wrapper, ScrollView } from '@ludo/ui'
 
 import { useUserMe } from '@/queries/user-me.query'
 import { useSafeArea } from '@/hooks/safe-area.hook'
-import Loading from '@/components/ui/loading/loading.component'
+import { Loading } from '@/components/ui/loading/loading.component'
 
 import SettingsHeader from '../components/settings-header.component'
 import { useSettingsPreferencesStore } from '../stores/settings-preferences.store'

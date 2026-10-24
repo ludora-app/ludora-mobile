@@ -1,8 +1,12 @@
 import { cn } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
-import { BoxCenter, Button, Icon, String } from '@ludo/ui';
+// Direct paths, not `@ludo/ui`: the ludo-ui List imports this component, so the barrel would create a cycle
+import { Icon } from '@/components/ludo-ui/components/icon';
+import { BoxCenter } from '@/components/ludo-ui/components/box';
+import { Button } from '@/components/ludo-ui/components/button';
+import { String } from '@/components/ludo-ui/components/string/string.component';
 
-type ErrorResultProps = {
+export type ErrorResultProps = {
   className?: string;
   isRetrying?: boolean;
   messageKey?: string;

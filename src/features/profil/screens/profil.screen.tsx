@@ -4,7 +4,7 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
-import Loading from '@/components/ui/loading/loading.component';
+import { Loading } from '@/components/ui/loading/loading.component';
 
 import { useGetUserDataById } from '../queries/get-user-data-by-id.query';
 import ProfilHeader from '../components/profil-header/profil-header.component';

@@ -1,13 +1,14 @@
 import { LegendListProps, LegendListRef } from '@legendapp/list/react-native';
 
 import { StrictOmit } from '@/components/chill-ui-library';
+import { ErrorResultProps } from '@/components/ui/error-result/error-result.component';
 import { EmptyResultProps } from '@/components/ui/empty-resulat/empty-result.component';
 
 /**
  * Item types produced by the `List` wrapper: the rows it injects around the data,
  * and `row` for a data item.
  */
-export type ListItemType = 'empty' | 'header_top' | 'loading' | 'row' | 'skeleton' | 'sticky';
+export type ListItemType = 'empty' | 'error' | 'header_top' | 'loading' | 'row' | 'skeleton' | 'sticky';
 
 /**
  * `type` also accepts a plain string because a data item carrying its own `type`
@@ -30,6 +31,9 @@ export type ListProps = {
   hasNextPage: boolean;
   refetch?: () => Promise<any>;
   emptyResultProps?: EmptyResultProps;
+  /** Shows `ErrorResult` instead of the data when the query failed and nothing is loaded; retry calls `refetch`. */
+  isError?: boolean;
+  errorResultProps?: Pick<ErrorResultProps, 'className' | 'messageKey'>;
   ListStickyComponent?: React.ComponentType | React.ReactElement;
   ListTopComponent?: React.ComponentType | React.ReactElement;
   hasListStickyComponentTopSafeArea?: boolean;

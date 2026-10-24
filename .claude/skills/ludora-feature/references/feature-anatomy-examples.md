@@ -107,7 +107,7 @@ src/features/session/
   components/session-teams/session-teams-list/ (teams list with section header, separator, join item)
   components/session-footer.component.tsx
   formsheets/session-teams.formsheet.tsx
-  queries/get-session-teams.query.ts, join-session.query.ts
+  queries/get-session-teams.query.ts (join-session.query.ts moved to src/queries)
   stores/session-team.store.ts
   types/session.types.ts
 routes: src/app/(root)/session/[id]/{index.tsx,session-joined.ts,session-teams.ts}

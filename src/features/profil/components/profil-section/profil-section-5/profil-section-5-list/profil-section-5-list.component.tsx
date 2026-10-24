@@ -6,6 +6,7 @@ import { cn } from '@/components/chill-ui-library';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
 import { useProfilStore } from '@/features/profil/stores/profil.store';
+import { SESSION_CARD_LIST_ITEM_HEIGHT } from '@/components/ui/session-card';
 import { useGetSessionsMe } from '@/features/profil/queries/get-sessions-me.query';
 import { useGetSessionsByUserId } from '@/features/profil/queries/get-sessions-by-user-id.query';
 import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
@@ -13,8 +14,7 @@ import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlin
 import ProfilSection5ListItem from './profil-section-5-list-item.component';
 import profilSection5ListItemSkeletonComponent from './profil-section-5-list-item-skeleton.component';
 
-const ESTIMATED_LIST_ITEM_SIZE = 170;
-const GET_FIXED_ITEM_SIZE = () => ESTIMATED_LIST_ITEM_SIZE;
+const GET_FIXED_ITEM_SIZE = () => SESSION_CARD_LIST_ITEM_HEIGHT;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
 
@@ -44,6 +44,7 @@ export default function ProfilSection5MatchesList({
   const {
     fetchNextPage: fetchNextPageByUserId,
     hasNextPage: hasNextPageByUserId,
+    isError: isErrorByUserId,
     isFetchingNextPage: isFetchingNextPageByUserId,
     isLoading: isLoadingByUserId,
     isRefetching: isRefetchingByUserId,
@@ -53,6 +54,7 @@ export default function ProfilSection5MatchesList({
   const {
     fetchNextPage: fetchNextPageMe,
     hasNextPage: hasNextPageMe,
+    isError: isErrorMe,
     isFetchingNextPage: isFetchingNextPageMe,
     isLoading: isLoadingMe,
     isRefetching: isRefetchingMe,
@@ -65,6 +67,7 @@ export default function ProfilSection5MatchesList({
   const hasNextPage = userId ? hasNextPageByUserId : hasNextPageMe;
   const isFetchingNextPage = userId ? isFetchingNextPageByUserId : isFetchingNextPageMe;
   const isLoading = userId ? isLoadingByUserId : isLoadingMe;
+  const isError = userId ? isErrorByUserId : isErrorMe;
   const isRefetching = (userId ? isRefetchingByUserId : isRefetchingMe) || !!isRefetchingProfile;
 
   const handleRefresh = useCallback(async () => {
@@ -90,6 +93,7 @@ export default function ProfilSection5MatchesList({
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isError={isError}
       getFixedItemSize={GET_FIXED_ITEM_SIZE}
       isRefetching={isRefetching}
       SkeletonComponent={profilSection5ListItemSkeletonComponent}

@@ -49,7 +49,7 @@ export default function HeaderScreen(props: PropsWithChildren<HeaderProps>) {
           </String>
           {children}
           {hasNewSession && (
-            <Box className="absolute right-0 bottom-16">
+            <Box className="absolute right-0 bottom-28">
               <Icon name="mascotte-ludora" className="size-36" {...iconProps} />
             </Box>
           )}

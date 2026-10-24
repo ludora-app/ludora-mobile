@@ -8,6 +8,7 @@ import { LegendList, LegendListRenderItemProps } from '@legendapp/list/react-nat
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
+import { ErrorResult } from '@/components/ui/error-result/error-result.component';
 
 import { Box } from '../box';
 import { renderComponent } from './utils';
@@ -17,8 +18,9 @@ import { ListItemType, ListProps } from '../../types/list.types';
 type SkeletonItem = { type: 'skeleton'; uid: string };
 type SpecialItem = { type: 'sticky' | 'header_top'; uid: string };
 type EmptyItem = { type: 'empty'; uid: string };
+type ErrorItem = { type: 'error'; uid: string };
 type LoadingItem = { type: 'loading'; uid: string };
-type ListItem = SkeletonItem | SpecialItem | EmptyItem | LoadingItem;
+type ListItem = SkeletonItem | SpecialItem | EmptyItem | ErrorItem | LoadingItem;
 
 const SKELETON_COUNT = 3;
 
@@ -31,6 +33,7 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
 const STICKY_ITEM: SpecialItem = { type: 'sticky', uid: 'sticky' };
 const HEADER_TOP_ITEM: SpecialItem = { type: 'header_top', uid: 'header_top' };
 const EMPTY_ITEM: EmptyItem = { type: 'empty', uid: 'empty_res' };
+const ERROR_ITEM: ErrorItem = { type: 'error', uid: 'error_res' };
 const LOADING_ITEM: LoadingItem = { type: 'loading', uid: 'loading' };
 
 export default function List(props: ListProps) {
@@ -39,6 +42,7 @@ export default function List(props: ListProps) {
     contentContainerStyle,
     data,
     emptyResultProps,
+    errorResultProps,
     fetchNextPage,
     hasBottomSafeArea = false,
     hasHeaderTransparent,
@@ -46,6 +50,7 @@ export default function List(props: ListProps) {
     hasNextPage,
     hasRefreshControl,
     hasTopSafeArea = false,
+    isError = false,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -67,7 +72,10 @@ export default function List(props: ListProps) {
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
-  const isEmptyData = !isLoading && !isRefetching && (!data || data.length === 0);
+  const hasNoData = !data || data.length === 0;
+  const isEmptyData = !isLoading && !isRefetching && hasNoData;
+  // Kept while retrying, so the retry button shows its loader
+  const isErrorWithoutData = isError && !isLoading && hasNoData;
   const dataToRender = useMemo(() => {
     const items: ListItem[] = [];
 
@@ -82,6 +90,8 @@ export default function List(props: ListProps) {
       items.push(...SKELETON_DATA);
     } else if (isLoading && !isRefetching) {
       items.push(LOADING_ITEM);
+    } else if (isErrorWithoutData) {
+      items.push(ERROR_ITEM);
     } else if (isEmptyData) {
       items.push(EMPTY_ITEM);
     } else {
@@ -89,7 +99,16 @@ export default function List(props: ListProps) {
     }
 
     return items;
-  }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent, isLoading, isRefetching]);
+  }, [
+    showSkeletons,
+    isErrorWithoutData,
+    isEmptyData,
+    data,
+    ListTopComponent,
+    ListStickyComponent,
+    isLoading,
+    isRefetching,
+  ]);
 
   // New Architecture reports a scroll length of 0 before the first layout, so without this hint
   // nothing is rendered until a layout round-trip has completed.
@@ -133,13 +152,24 @@ export default function List(props: ListProps) {
             );
           case 'empty':
             return <EmptyResult {...emptyResultProps} />;
+          case 'error':
+            return <ErrorResult {...errorResultProps} onRetry={refetch} isRetrying={isRefetching} />;
           default:
             return <ItemComponent item={item} />;
         }
       }
       return <ItemComponent item={item} />;
     },
-    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent, emptyResultProps],
+    [
+      ItemComponent,
+      SkeletonComponent,
+      ListStickyComponent,
+      ListTopComponent,
+      emptyResultProps,
+      errorResultProps,
+      refetch,
+      isRefetching,
+    ],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {

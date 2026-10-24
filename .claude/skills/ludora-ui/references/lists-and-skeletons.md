@@ -6,7 +6,7 @@ How the `List` wrapper builds its data, and four real screens (simple, sticky he
 
 `List` feeds LegendList a synthetic array, in this order:
 1. `{ type: 'sticky' }` if `ListStickyComponent` is set, then `{ type: 'header_top' }` if `ListTopComponent` is set.
-2. Then exactly one of: 3 `{ type: 'skeleton' }` items (`isLoading && !isRefetching && SkeletonComponent`), one `{ type: 'loading' }` item (spinner, when loading without a skeleton), one `{ type: 'empty' }` item (`EmptyResult` with `emptyResultProps`), or your `data`.
+2. Then exactly one of: 3 `{ type: 'skeleton' }` items (`isLoading && !isRefetching && SkeletonComponent`), one `{ type: 'loading' }` item (spinner, when loading without a skeleton), one `{ type: 'error' }` item (`ErrorResult` with `errorResultProps`, retry = `refetch`, when `isError` and there is no data, kept while retrying), one `{ type: 'empty' }` item (`EmptyResult` with `emptyResultProps`), or your `data`.
 
 `getItemType` returns `item.type` for those objects and for any data item that has its own `type` field; otherwise `'row'` (`:111-116`). `getFixedItemSize(item, index, type)` is therefore called for sticky, header_top, skeleton, loading, empty and row items. In every list below, skeletons, empty and loading fall through to the row height, so the skeleton must be drawn at the row height.
 
@@ -72,7 +72,7 @@ const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
 - `ListStickyComponent` (`HomeSessionListHeaderSticky`, `FiltersHeader` on `bg-background py-3`, `home-session-list-header-sticky.component.tsx:30`).
 `hasListStickyComponentTopSafeArea` pushes the sticky bar below the status bar. Android bottom padding adds the sticky and top heights (`:61-69`), and an extra `BOTTOM_PADDING_EMPTY_LIST = 100` when there are no sessions.
 
-- Item/skeleton: shared `SessionCard` / `SessionCardSkeleton`. The skeleton mirrors the card: optional `h-16` banner, then `BoxRow` with a left `bg-[#F5F5F5] p-4` block, a center `BoxGrow`, and text skeletons (`session-card-skeleton.component.tsx:11-46`). `isNextSession` switches off the banner in both.
+- Item/skeleton: shared `SessionCard` / `SessionCardSkeleton` (design system 9c). The skeleton mirrors the card (sport tile, two text lines, seats pill, fill bar, two info rows). The fixed row size is `SESSION_CARD_LIST_ITEM_HEIGHT` from `@/components/ui/session-card`; update it if the card layout changes.
 - Empty: `EMPTY_RESULT_PROPS = { className: 'mt-4', hasRandomTitle: true, randomOptions: 5, title: 'home.sessions_empty_result_v' } as const` (`:23-28`); `EmptyResult` resolves `` `${title}_${n}` `` (`empty-result.component.tsx:54-59`), so keys end `_v_1.._v_5`.
 
 ## 4. Size depends on the item: fields lists
@@ -104,6 +104,7 @@ Constants: `95`, `59.33`, `227` (public), `241` (private) (`:18-21`). Pass the i
 - Sizes are hand-measured module constants (`LIST_ITEM_SIZE_HEIGHT`, `*_COMPONENT_HEIGHT`); fractional values such as `66.33` appear. Nothing computes them.
 - A constant size can be `const GET_FIXED_ITEM_SIZE = () => 95;`; mixed sizes use `useMemo<GetListFixedItemSize>` or a module-level typed const (`invite-friends-list.component.tsx:12-13`).
 - `emptyResultProps` is a module const (stable reference), `as const` or typed `EmptyResultProps`.
+- Pass `isError` from the query wrapper (wrappers must return it). `ErrorResult` and `EmptyResult` import ludo-ui primitives by direct path, never from `@ludo/ui`, because `List` imports them (cycle).
 - Skeleton and item files are siblings, `memo`-wrapped, no props.
 
 ## Known inconsistencies (do not copy)

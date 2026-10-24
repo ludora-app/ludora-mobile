@@ -141,7 +141,7 @@ See `mutations-and-invalidation.md` for the invalidation matrix. Shape reference
 | useMarkReadNotifications | features/notifications/queries/mark-read-notifications.query.ts | useNotificationsMarkAllAsRead |
 | useAcceptFriendRequest | features/notifications/queries/friend-requests/accept-friend-request.query.ts | useFriendsUpdate |
 | useDeclineFriendRequest | features/notifications/queries/friend-requests/decline-friend-request.query.ts | useFriendsUpdate |
-| useCreateSportPreference | features/on-boarding/queries/create-sport-preference.query.ts | useSportPreferencesCreateManyWithGameModes |
+| useCreateSportPreference | features/on-boarding/on-boarding-profile/queries/create-sport-preference.query.ts | useSportPreferencesCreateManyWithGameModes |
 | useGetUsersSuggestion | features/players/queries/get-users-suggestion.query.ts | useUsersFindAllInfinite |
 | useGetUsersSuggestionByFilter | features/players/queries/get-users-suggestion-by-filter.query.ts | via useGetUsersSuggestion |
 | useSendFriendInvitation() | features/players/queries/send-friend-invitation.query.ts | useFriendsCreate |
@@ -155,7 +155,7 @@ See `mutations-and-invalidation.md` for the invalidation matrix. Shape reference
 | useUpdateUserMeEmail | features/profil/queries/update-user-me-email.query.ts | useUsersUpdateEmail |
 | useUpdateUserPassword | features/profil/queries/update-user-password.query.ts | useUsersUpdatePassword |
 | useGetSessionTeams | features/session/queries/get-session-teams.query.ts | useSessionTeamsFindTeamsBySessionUid |
-| useJoinSession(sessionUid) | features/session/queries/join-session.query.ts | useSessionPlayersJoinSession |
+| useJoinSession(sessionUid) | queries/join-session.query.ts (shared: session + on-boarding-sessions) | useSessionPlayersJoinSession |
 | useDeleteAccount | features/settings/queries/delete-account/delete-account.query.ts | useUsersDeletionRequest |
 | useCancelDeleteAccount | features/settings/queries/delete-account/delete-account-cancel.query.ts | useUsersCancelDeletionRequest |
 | useGetBlockedUsers | features/settings/queries/get-blocked-users.query.ts | useModerationFindAllBlockedUsers |

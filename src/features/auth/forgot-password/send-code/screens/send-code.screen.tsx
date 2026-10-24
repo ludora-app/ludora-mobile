@@ -6,12 +6,12 @@ import { Box, Button, FormInput, String, Wrapper, WrapperKeyboardAwareScrollView
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { HeaderMascot } from '@/components/ui/header';
 import { useAppNavigation } from '@/hooks/navigation.hooks';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 
 import { formSchema, SendCodeFormData } from '../schemas/send-code.schema';
 import { AuthSwitchLink } from '../../../components/auth-switch-link.component';
-import { AuthHeader } from '../../../components/auth-header/auth-header.component';
 import { useSendVerificationCodeByEmail } from '../queries/send-verification-code.query';
 
 export const SendCodeScreen = () => {
@@ -56,7 +56,7 @@ export const SendCodeScreen = () => {
       bounces={false}
       safeArea={['bottom']}
     >
-      <AuthHeader title={t('auth.reset-password.title')} mascotName="ludo-search" />
+      <HeaderMascot title={t('auth.reset-password.title')} mascotName="ludo-search" />
       <Wrapper className="pt-6.5" grow>
         <Box className="gap-3.5">
           <String className="mb-1.5 text-center">{t('auth.reset-password.description')}</String>

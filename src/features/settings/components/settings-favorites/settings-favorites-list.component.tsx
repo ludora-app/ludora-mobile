@@ -2,13 +2,12 @@ import { useMemo } from 'react'
 import { GetListFixedItemSize, List } from '@ludo/ui'
 
 import { useSafeArea } from '@/hooks/safe-area.hook'
-import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card'
+import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from '@/components/ui/session-card'
 
 import { useGetSessionsMe } from '../../queries/get-sessions-me.query'
 import SettingsFavoritesHeader from './settings-favorites-headers/settings-favorites-header.component'
 import SettingsFavoritesHeaderSticky from './settings-favorites-headers/settings-favorites-header-sticky.component'
 
-const LIST_ITEM_SIZE_HEIGHT = 170
 const LIST_STICKY_COMPONENT_HEIGHT = 75
 const HEADER_HEIGHT = 58
 
@@ -21,7 +20,7 @@ const EMPTY_RESULT_PROPS = {
 export default function SettingsFavoritesList() {
   const { bottom } = useSafeArea()
 
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
+  const { fetchNextPage, hasNextPage, isError, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetSessionsMe()
 
   const handleFixedItemsSize = useMemo<GetListFixedItemSize>(
@@ -30,7 +29,7 @@ export default function SettingsFavoritesList() {
         return LIST_STICKY_COMPONENT_HEIGHT;
       }
 
-      return LIST_ITEM_SIZE_HEIGHT;
+      return SESSION_CARD_LIST_ITEM_HEIGHT;
     },
     [],
   );
@@ -49,6 +48,7 @@ export default function SettingsFavoritesList() {
       ListStickyComponent={listStickyComponent}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isError={isError}
       isRefetching={isRefetching}
       refetch={refetch}
       hasRefreshControl

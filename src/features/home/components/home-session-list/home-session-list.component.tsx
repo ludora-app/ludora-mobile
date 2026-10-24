@@ -3,7 +3,7 @@ import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
-import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
+import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
 import { useGetIncommingSessionMe } from '../../queries/get-incomming-session-me.query';
@@ -11,12 +11,11 @@ import HomeSessionListHeader from './home-session-list-headers/home-session-list
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
-const FIXED_LIST_ITEM_SIZE = 170;
 const FIXED_LIST_STICKY_COMPONENT_SIZE = 66.33;
 const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
 
 const LIST_HEADER_HEIGHT = 176;
-const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
+const LIST_HEADER_HEIGHT_WITH_SESSION = 256;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
 
@@ -31,6 +30,7 @@ export default function HomeSessionList() {
   const {
     fetchNextPage,
     hasNextPage,
+    isError,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -53,7 +53,7 @@ export default function HomeSessionList() {
       if (type === 'header_top') {
         return FIXED_LIST_TOP_COMPONENT_SIZE;
       }
-      return FIXED_LIST_ITEM_SIZE;
+      return SESSION_CARD_LIST_ITEM_HEIGHT;
     },
     [],
   );
@@ -84,6 +84,7 @@ export default function HomeSessionList() {
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isError={isError}
       hasRefreshControl
       refetch={refetch}
       getFixedItemSize={fixedItemsSize}

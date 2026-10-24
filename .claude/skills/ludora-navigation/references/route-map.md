@@ -38,7 +38,8 @@ Both layouts: `initialRouteName="(tabs)"`, then `<PushNotificationsInitializer /
 | `(tabs)/profil.tsx` | `profil/screens/profil.screen` | tabs | tabs |
 | `(tabs)/create-session.tsx` | `create-session/screens/create-session-step-1.screen` | tabs | tabs |
 | `create-session/step-{1..5}.ts` | `create-session/screens/create-session-step-N.screen` | `slide_from_bottom` + `statusBarStyle: 'dark'` (L19-25) | `slide_from_bottom` only (L19-24) |
-| `on-boarding/step-{1,2}.ts` | `on-boarding/screens/on-boarding-step-{1,2}.screen` | push (no entry) | push |
+| `on-boarding/profile/step-{1,2}.ts` | `on-boarding/on-boarding-profile/screens/on-boarding-step-{1,2}.screen` | push (no entry) | push |
+| `on-boarding/sessions/{ready,suggestions,joined}.ts` | `on-boarding/on-boarding-sessions/screens/on-boarding-sessions-*.screen` | push (no entry; options in `on-boarding/_layout.tsx`) | push |
 | `profil/[id]/index.ts` | `profil/screens/profil.screen` | push | push |
 | `profil/[id]/actions.tsx` | `profil/formsheets/profil-actions.formsheet` | sheet fit (L27-36) | sheet fit (L27-35) |
 | `profil/profil-edit/index.ts` | `profil/screens/profil-edit.screen` | push | push |

@@ -62,9 +62,9 @@ function HomeSessionListHeaderTopList(props: HomeSessionListHeaderTopListProps) 
       subTitle={t(hasNewSession ? 'home.header.sub_title_incoming_session' : 'home.header.sub_title')}
       hasNewSession={hasNewSession}
       leftContentClassName={!hasNewSession ? leftContentClassName : undefined}
-      className={cn('h-44 items-end', { 'h-52': hasNewSession })}
+      className={cn('h-44 items-end', { 'h-64': hasNewSession })}
     >
-      {hasNewSession && IncommingSessionMe && <SessionCard item={IncommingSessionMe} isNextSession />}
+      {hasNewSession && IncommingSessionMe && <SessionCard item={IncommingSessionMe} />}
       {!hasNewSession && (
         <Button
           title={t('home.header.button_create_match')}

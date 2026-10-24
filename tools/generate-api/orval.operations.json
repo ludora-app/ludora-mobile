@@ -53,6 +53,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "SessionsController_findRecommended": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "SessionsController_findAllMySessions": {
     "query": {
       "useInfinite": true,

@@ -20,6 +20,10 @@ export const ANALYTICS_EVENTS = {
   ONBOARDING: {
     ONBOARDING_COMPLETED: 'onboarding_completed',
     ONBOARDING_FAILED: 'onboarding_failed',
+    SESSIONS_CREATE_OWN_PRESSED: 'onboarding_sessions_create_own_pressed',
+    SESSIONS_JOINED: 'onboarding_sessions_joined',
+    SESSIONS_LINK_COPIED: 'onboarding_sessions_link_copied',
+    SESSIONS_READY_CONTINUED: 'onboarding_sessions_ready_continued',
   },
 
   // Dialog Confirm
@@ -116,6 +120,16 @@ export interface AnalyticsEventData {
   // onboarding events
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_FAILED]: {
     error_message: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_LINK_COPIED]: {
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_READY_CONTINUED]: {
+    suggestions_count: number;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_JOINED]: {
+    session_uid: string;
+    team_uid: string;
   };
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED]: {
     has_hour_preferences: boolean;

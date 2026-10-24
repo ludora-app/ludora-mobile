@@ -50,6 +50,8 @@ features/<f>/
   utils/        <name>.utils.ts
 ```
 
+**Sub-features:** a large feature can be split into sub-folders with the same layout, keeping what they share at the feature root (`auth/login`, `auth/register`; `on-boarding/on-boarding-profile` and `on-boarding/on-boarding-sessions` with `on-boarding/stores` and `on-boarding/types` shared).
+
 **Placement rule:** code starts in the feature. Move it to `src/components/ui`, `src/queries`, `src/hooks` or `src/stores` only when a second feature needs it — move, don't duplicate. Features import each other's files by direct path (`@/features/profil/queries/...`); no barrels.
 
 ## 2. Workflow

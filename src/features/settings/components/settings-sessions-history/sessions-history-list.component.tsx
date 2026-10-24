@@ -3,20 +3,19 @@ import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
-import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 import { HEADER_OUTLINED_HEIGHT } from '@/components/ui/navigation/header-outlined/header-outlined.component';
+import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetSessionsMe } from '../../queries/get-sessions-me.query';
 import SessionsHistoryHeader from './sessions-history-headers/sessions-history-header.component';
 import SessionsHistoryHeaderSticky from './sessions-history-headers/sessions-history-header-sticky.component';
 
-const LIST_ITEM_SIZE_HEIGHT = 170;
 const LIST_STICKY_COMPONENT_HEIGHT = 75;
 
 export default function SessionsHistoryList() {
   const { bottom } = useSafeArea();
 
-  const { fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
+  const { fetchNextPage, hasNextPage, isError, isFetchingNextPage, isLoading, isRefetching, items, refetch } =
     useGetSessionsMe();
 
   const handleFixedItemsSize = useMemo<GetListFixedItemSize>(
@@ -25,7 +24,7 @@ export default function SessionsHistoryList() {
         return LIST_STICKY_COMPONENT_HEIGHT;
       }
 
-      return LIST_ITEM_SIZE_HEIGHT;
+      return SESSION_CARD_LIST_ITEM_HEIGHT;
     },
     [],
   );
@@ -51,6 +50,7 @@ export default function SessionsHistoryList() {
       ListStickyComponent={listStickyComponent}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isError={isError}
       isRefetching={isRefetching}
       refetch={refetch}
       hasRefreshControl

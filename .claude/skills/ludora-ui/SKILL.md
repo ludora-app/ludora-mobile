@@ -17,7 +17,7 @@ Main `@ludo/ui` components:
 |---|---|
 | `Box`, `BoxRow`, `BoxCenter`, `BoxRowCenterBetween`, `BoxGrow`, `BoxColumn`, `BoxAbsolute`… | `className` |
 | `String` (never RN `Text`) | `variant` `body-xs`(12) `body-sm`(14) `body-1`(16, default) `body-2`(18) `body-3`(20) `title-1…8`; `size` xs…9xl (fallback when no variant fits; never `text-[Npx]`); `font` `primaryRegular/Medium/SemiBold/Bold/ExtraBold/Light/Italic` (Figtree, default `primaryMedium`) or `secondaryBold/ExtraBold…` (Baloo 2, default for `title-*`; `title-3`+ already carry a Baloo-safe line height (chill `String.styles.ts`), don't add `leading-*`); `colorVariant` (dark default, muted, primary, secondary, white, danger, success…); `position`; `truncate`; `redirect` |
-| `Button` | `title`, `onPress`, `isLoading`, `size` 2xs…2xl (lg default), `variant` contained/outlined/text, `colorVariant`, `iconProps={{ name, position }}`, `redirect` |
+| `Button` | `title`, `onPress`, `isLoading`, `size` 2xs…2xl (lg default), `variant` contained/outlined/text, `colorVariant`, `iconProps={{ name, position }}`, `redirect`, `fit` (width of its content: **required in a row next to a `flex-1` sibling**, otherwise the content is `flex-1`, the button is squeezed and its title disappears) |
 | `IconButton` | `iconName`, `iconColor`, `size`, `variant`, `colorVariant`, `isLoading` |
 | `Icon` | `name` (from generated `icons.constants`, `-solid`/`-regular`), `size`, `color`, `className` |
 | `Avatar` | `data={{ firstname, lastname, imageUrl }}`, `size`, `colorVariant` primary/secondary |
@@ -137,11 +137,11 @@ export const PlayersList = () => {
 
 ## 5. States
 
-- **Screen loading:** `if (isLoading) return <Loading />;` (`@/components/ui/loading`).
+- **Screen loading:** `if (isLoading) return <Loading />;` (`import { Loading } from '@/components/ui/loading/loading.component'`).
 - **Section loading:** sibling `<x>-skeleton.component.tsx` mirroring the layout with `Skeleton`, then `isLoading ? <XSkeleton /> : <X />`.
 - **Not found:** `return <Redirect href={ROUTES.NOT_FOUND.INDEX} />;`.
 - **Empty:** `EmptyResult` (`@/components/ui/empty-resulat` — typo is real) with `title` as a translation **key**, optional `hasRandomTitle`. Unbuilt feature: `ComingSoon`.
-- **Errors:** a failed mutation is handled in the handler (see ludora-data §4): `trackError` shows the generic toast. A failed GET that leaves a section without data renders `<ErrorResult onRetry={() => refetch()} isRetrying={isRefetching} />` (`@/components/ui/error-result`; `messageKey?` defaults to `common.error_generic`, the retry button only shows with `onRetry`).
+- **Errors:** a failed mutation is handled in the handler (see ludora-data §4): `trackError` shows the generic toast. In a `List`, pass `isError` (and optionally `errorResultProps`): the list shows `ErrorResult` with a retry wired to `refetch`. Outside a `List`, a failed GET that leaves a section without data renders `<ErrorResult onRetry={() => refetch()} isRetrying={isRefetching} />` (`@/components/ui/error-result`; `messageKey?` defaults to `common.error_generic`, the retry button only shows with `onRetry`).
 
 ## 6. Overlays & feedback
 

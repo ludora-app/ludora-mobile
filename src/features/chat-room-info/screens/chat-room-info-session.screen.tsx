@@ -6,8 +6,8 @@ import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { getSportPlaceHolder } from '@/utils/sports.utils';
-import Loading from '@/components/ui/loading/loading.component';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { Loading } from '@/components/ui/loading/loading.component';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 

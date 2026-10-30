@@ -48,6 +48,11 @@ export interface Places {
       /** Display text shown in the autocomplete dropdown */
       text: string;
     };
+    /** Text split into main text (e.g., "Créteil") and secondary text (e.g., "France") */
+    structuredFormat?: {
+      mainText: { text: string };
+      secondaryText?: { text: string };
+    };
   };
 }
 

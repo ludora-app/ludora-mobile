@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 
 import COLORS from '@/constants/colors.contstants';
 import { OnBoardingHeader } from '@/features/on-boarding/on-boarding-profile/components/on-boarding-header.component';
+import { OnBoardingContent } from '@/features/on-boarding/on-boarding-profile/components/on-boarding-content.component';
 import { OnBoardingFooter } from '@/features/on-boarding/on-boarding-profile/components/on-boarding-footer/on-boarding-footer.component';
 
 function OnBoardingProfileLayoutNav() {
@@ -16,6 +17,7 @@ function OnBoardingProfileLayoutNav() {
     >
       <Stack.Screen name="step-1" />
       <Stack.Screen name="step-2" />
+      <Stack.Screen name="step-3" />
     </Stack>
   );
 }
@@ -24,7 +26,9 @@ export default function OnBoardingProfileLayout() {
   return (
     <BoxGrow className="bg-background">
       <OnBoardingHeader />
-      <OnBoardingProfileLayoutNav />
+      <OnBoardingContent>
+        <OnBoardingProfileLayoutNav />
+      </OnBoardingContent>
       <OnBoardingFooter />
     </BoxGrow>
   );

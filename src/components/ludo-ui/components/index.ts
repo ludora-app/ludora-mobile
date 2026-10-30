@@ -23,3 +23,6 @@ export * from './blur-view';
 export * from './code-input';
 export * from './progress-stepper';
 export * from './card';
+export * from './autocomplete';
+export * from './map-view';
+export * from './slider';

@@ -7,6 +7,7 @@ import { Place, PlacesResponse } from '@/features/filters/filters-addresses/type
 export type PostPlacesParams = {
   input: string;
   queryCountries?: string[];
+  signal?: AbortSignal;
 };
 
 const API_KEY = IS_IOS
@@ -26,7 +27,7 @@ const getSecurityHeaders = () => {
   return headers;
 };
 
-export const POST = async ({ input, queryCountries = ['FR'] }: PostPlacesParams) => {
+export const POST = async ({ input, queryCountries = ['FR'], signal }: PostPlacesParams) => {
   const requestData = {
     includedRegionCodes: queryCountries || [],
     input,
@@ -40,10 +41,12 @@ export const POST = async ({ input, queryCountries = ['FR'] }: PostPlacesParams)
           'suggestions.placePrediction.placeId',
           'suggestions.placePrediction.place',
           'suggestions.placePrediction.text.text',
+          'suggestions.placePrediction.structuredFormat',
         ].join(','),
         ...getSecurityHeaders(),
       },
       json: requestData,
+      signal,
     })
     .json<PlacesResponse>();
   return data;

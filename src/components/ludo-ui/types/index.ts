@@ -17,3 +17,6 @@ export * from './list.types';
 export * from './code-input.types';
 export * from './progress-stepper.types';
 export * from './card.types';
+export * from './autocomplete.types';
+export * from './map-view.types';
+export * from './slider.types';

@@ -1,9 +1,14 @@
 import { create } from 'zustand';
 
-import { CreateSportPreferenceData, CreateSportPreferenceDataGameModesItem } from '@/api/generated/model';
+import {
+  CreateSportPreferenceData,
+  UpdatePlayAreaDtoRadiusKm,
+  CreateSportPreferenceDataGameModesItem,
+} from '@/api/generated/model';
 
-import { OnBoardingAvailability } from '../types/on-boarding.types';
+import { OnBoardingAvailability, OnBoardingPlayArea } from '../types/on-boarding.types';
 import { isSameAvailability } from '../on-boarding-profile/utils/on-boarding-availabilities.utils';
+import { ON_BOARDING_PLAY_AREA_DEFAULT_RADIUS_KM } from '../on-boarding-profile/constants/on-boarding.constants';
 
 export type SportPreferences = CreateSportPreferenceData & {
   gameModes: CreateSportPreferenceDataGameModesItem[];
@@ -12,15 +17,31 @@ export type SportPreferences = CreateSportPreferenceData & {
 type OnBoardingState = {
   availabilities: OnBoardingAvailability[];
   clearAll: () => void;
+  isPlayAreaMapVisible: boolean;
+  playArea: OnBoardingPlayArea | null;
+  playAreaRadiusKm: UpdatePlayAreaDtoRadiusKm;
   removeSportPreference: (sport: string) => void;
   setAvailabilities: (availabilities: OnBoardingAvailability[], isSelected: boolean) => void;
+  setIsPlayAreaMapVisible: (isPlayAreaMapVisible: boolean) => void;
+  setPlayArea: (playArea: OnBoardingPlayArea) => void;
+  setPlayAreaRadiusKm: (playAreaRadiusKm: UpdatePlayAreaDtoRadiusKm) => void;
   sportPreferences: SportPreferences[];
   upsertSportPreference: (sportPreference: SportPreferences) => void;
 };
 
 export const useOnBoardingStore = create<OnBoardingState>()(set => ({
   availabilities: [],
-  clearAll: () => set({ availabilities: [], sportPreferences: [] }),
+  clearAll: () =>
+    set({
+      availabilities: [],
+      isPlayAreaMapVisible: false,
+      playArea: null,
+      playAreaRadiusKm: ON_BOARDING_PLAY_AREA_DEFAULT_RADIUS_KM,
+      sportPreferences: [],
+    }),
+  isPlayAreaMapVisible: false,
+  playArea: null,
+  playAreaRadiusKm: ON_BOARDING_PLAY_AREA_DEFAULT_RADIUS_KM,
   removeSportPreference: (sport: string) =>
     set(state => ({
       sportPreferences: state.sportPreferences.filter(sportPreference => sportPreference.sport !== sport),
@@ -33,6 +54,9 @@ export const useOnBoardingStore = create<OnBoardingState>()(set => ({
       );
       return { availabilities: isSelected ? [...others, ...availabilities] : others };
     }),
+  setIsPlayAreaMapVisible: isPlayAreaMapVisible => set({ isPlayAreaMapVisible }),
+  setPlayArea: playArea => set({ playArea }),
+  setPlayAreaRadiusKm: playAreaRadiusKm => set({ playAreaRadiusKm }),
   sportPreferences: [],
   upsertSportPreference: sportPreference =>
     set(state => {

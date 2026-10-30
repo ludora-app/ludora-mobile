@@ -18,8 +18,13 @@ export const ANALYTICS_EVENTS = {
 
   // Onboarding
   ONBOARDING: {
+    LOCATION_PERMISSION_DENIED: 'onboarding_location_permission_denied',
+    LOCATION_PERMISSION_GRANTED: 'onboarding_location_permission_granted',
+    MAP_OPENED: 'onboarding_map_opened',
     ONBOARDING_COMPLETED: 'onboarding_completed',
     ONBOARDING_FAILED: 'onboarding_failed',
+    PLACE_SEARCHED: 'onboarding_place_searched',
+    PLAY_AREA_SKIPPED: 'onboarding_play_area_skipped',
     SESSIONS_CREATE_OWN_PRESSED: 'onboarding_sessions_create_own_pressed',
     SESSIONS_JOINED: 'onboarding_sessions_joined',
     SESSIONS_LINK_COPIED: 'onboarding_sessions_link_copied',
@@ -134,6 +139,7 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED]: {
     has_hour_preferences: boolean;
     has_sport_preferences: boolean;
+    play_area_radius_km: number | null;
   };
 
   // auth events

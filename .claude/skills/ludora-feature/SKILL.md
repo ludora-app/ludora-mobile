@@ -56,6 +56,7 @@ features/<f>/
 
 ## 2. Workflow
 
+0. **Spec and decisions.** If the work adds, changes or removes behaviour, start with `/opsx:propose` (see `CLAUDE.md` → *OpenSpec*), read the existing requirement in `openspec/specs/` and the ADRs it touches in `docs/adr/`, and cite them in the change's `design.md`. A choice that will constrain the next features (new library, new external service, personal data rule) gets a new ADR. Bug fixes and refactors skip this step.
 1. **Explore first.** Read the closest existing feature with the same shape (list → `players`/`settings-favorites`; form sheet → `profil` formsheets; multi-step → `create-session`; detail screen → `session`). Check `src/components/ui` and `src/queries` for something reusable. Check the date of the reference files; the newest pattern wins.
 2. **Data:** find the generated hook (`src/api/generated/api/<tag>/`), write or reuse the `*.query.ts` wrapper with invalidation (ludora-data).
 3. **State:** add a feature store only if state is shared between components or steps; otherwise use local `useState`.
@@ -73,6 +74,7 @@ features/<f>/
 - [ ] New store: has `reset()` and is registered in `src/utils/reset-caches.utils.ts`.
 - [ ] Mutations invalidate everything they affect. Call sites track success and failure.
 - [ ] Loading, empty and not-found states are handled.
+- [ ] Behaviour change: the OpenSpec change's `tasks.md` is ticked, and the change is synced and archived before review. New architecture decision: an ADR is added to `docs/adr/` and its index.
 - [ ] Nothing from the "don't copy" lists (ludora-code-style §8, ludora-navigation end).
 - [ ] If the change can't be tested in the simulator from here, say so. Don't claim it works.
 

@@ -11,6 +11,7 @@ import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store';
 import { usePutUserHoursPreferences } from '@/queries/put-user-hours-preferences.query';
 
 import { useOnBoardingStore } from '../../../../stores/on-boarding.store';
+import { useUpdatePlayArea } from '../../../queries/update-play-area.query';
 import { toHourPreferences } from '../../../utils/on-boarding-availabilities.utils';
 import { useCreateSportPreference } from '../../../queries/create-sport-preference.query';
 
@@ -24,9 +25,10 @@ export const OnBoardingFooterButtonSubmit = () => {
   const { isPending: isCreatingSportPreference, mutateAsync: createSportPreference } = useCreateSportPreference();
   const { isPending: isPuttingHoursPreferences, mutateAsync: putHoursPreferences } = usePutUserHoursPreferences();
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
+  const { isPending: isUpdatingPlayArea, mutateAsync: updatePlayArea } = useUpdatePlayArea();
 
   const handleSubmit = async () => {
-    const { availabilities, sportPreferences } = useOnBoardingStore.getState();
+    const { availabilities, playArea, playAreaRadiusKm, sportPreferences } = useOnBoardingStore.getState();
     try {
       if (sportPreferences.length > 0) {
         await createSportPreference({ sportPreferences });
@@ -34,16 +36,21 @@ export const OnBoardingFooterButtonSubmit = () => {
       if (availabilities.length > 0) {
         await putHoursPreferences({ hourPreferences: toHourPreferences(availabilities) });
       }
+      if (playArea) {
+        const { latitude, longitude } = playArea;
+        await updatePlayArea({ latitude, longitude, radiusKm: playAreaRadiusKm });
+      }
       await updateUserMe({ onBoardingStatus: 'COMPLETE' });
       trackEvent({
         data: {
           has_hour_preferences: availabilities.length > 0,
           has_sport_preferences: sportPreferences.length > 0,
+          play_area_radius_km: playArea ? playAreaRadiusKm : null,
         },
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED,
       });
       setOnBoardingStatus('COMPLETE');
-      const hasAnswers = sportPreferences.length > 0 || availabilities.length > 0;
+      const hasAnswers = sportPreferences.length > 0 || availabilities.length > 0 || !!playArea;
       router.replace(hasAnswers ? ROUTES.ON_BOARDING.SESSIONS_READY : ROUTES.HOME.INDEX);
     } catch (error) {
       const errorResponse = error as ErrorResponse;
@@ -55,7 +62,7 @@ export const OnBoardingFooterButtonSubmit = () => {
     }
   };
 
-  const isPending = isCreatingSportPreference || isPuttingHoursPreferences || isUpdatingUserMe;
+  const isPending = isCreatingSportPreference || isPuttingHoursPreferences || isUpdatingPlayArea || isUpdatingUserMe;
 
   return (
     <Button

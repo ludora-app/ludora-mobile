@@ -74,6 +74,7 @@ const ROUTES = {
     SPORT_FORM_SHEET: '/on-boarding-sport',
     STEP_1: '/on-boarding/profile/step-1',
     STEP_2: '/on-boarding/profile/step-2',
+    STEP_3: '/on-boarding/profile/step-3',
   },
   PROFIL: {
     ACTIONS: '/profil/[id]/actions',

@@ -29,4 +29,5 @@ Husky runs `bun lint` and `bun ts:check`. Run `bun check:all` (lint:fix + ts:che
 
 - `gh pr create --base develop`, title identical to the commit format (`<type>(SCRUM-<n>): <subject>`); squash merge appends `(#PR)`.
 - Body: what changed and why, how it was tested (simulator/device, platform), and any follow-up (e.g. a temporary patch to remove, Tolgee keys to create, `bun generate:api` needed).
+- **OpenSpec**: if the branch carries an OpenSpec change, run `/opsx:archive` (which offers the sync) **before** putting the PR in review, so the reviewer reads an up-to-date `openspec/specs/`. Mention the change and any new ADR (`docs/adr/`) in the body. If review changes the behaviour, open a new change; never un-archive.
 - CI (`.github/workflows/ci.yml`) regenerates the API from the backend swagger and validates on push to develop/staging/main.

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { LoadingIndicator } from '@chillui/ui';
+import { cn , LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
 
@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
 });
 
 export const AutocompleteSuggestions = <T extends AutocompleteItem>(props: AutocompleteSuggestionsProps<T>) => {
-  const { emptyLabelKey = 'common.no_result_found', isLoading, itemIconName, items, onSelect } = props;
+  const { className, emptyLabelKey = 'common.no_result_found', isLoading, itemIconName, items, onSelect } = props;
   const { t } = useTranslate();
 
   const hasItems = items.length > 0;
 
   return (
-    <Box className="overflow-hidden rounded-2xl border border-border bg-white" style={styles.shadow}>
+    <Box className={cn('overflow-hidden rounded-2xl border border-border bg-white', className)} style={styles.shadow}>
       {isLoading && !hasItems && (
         <Box className="min-h-13 items-center justify-center">
           <LoadingIndicator name="swing" color={COLORS.primary} />

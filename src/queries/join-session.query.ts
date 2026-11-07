@@ -4,10 +4,12 @@ import {
   useInvalidateConversationsFindAllByUserUid,
   useInvalidateSessionsFindAllMySessions,
   useInvalidateSessionsFindOne,
+  useInvalidateSessionsGetMyStats,
   useInvalidateSessionTeamsFindTeamsBySessionUid,
 } from '@/api/generated/invalidate-queries';
 
 export const useJoinSession = (sessionUid: JoinSessionDto['sessionUid']) => {
+  const invalidateSessionsGetMyStats = useInvalidateSessionsGetMyStats();
   const invalideSessionById = useInvalidateSessionsFindOne();
   const invalideTeamsBySessionId = useInvalidateSessionTeamsFindTeamsBySessionUid();
   const invalidateSessionsFindAllMySessions = useInvalidateSessionsFindAllMySessions();
@@ -19,6 +21,7 @@ export const useJoinSession = (sessionUid: JoinSessionDto['sessionUid']) => {
         invalideTeamsBySessionId(sessionUid);
         invalidateSessionsFindAllMySessions();
         invalidateConversationsFindAllMe();
+        invalidateSessionsGetMyStats();
       },
     },
   });

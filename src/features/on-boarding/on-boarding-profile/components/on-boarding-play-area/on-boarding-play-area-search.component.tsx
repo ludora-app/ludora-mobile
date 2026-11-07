@@ -1,18 +1,16 @@
-import { useState } from 'react';
-import { debounce } from 'radash';
 import { Autocomplete } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
 
 import { SearchPlace } from '@/api/utils/api.types';
-import { useGetPlace } from '@/api/hooks/places.hook';
+import { usePlaceSearch } from '@/hooks/place-search.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 
 import { useOnBoardingStore } from '../../../stores/on-boarding.store';
-import { useSearchPlayAreaPlaces } from '../../queries/search-places.query';
-import { ON_BOARDING_PLACES_MIN_QUERY_LENGTH } from '../../constants/on-boarding.constants';
-
-const SEARCH_DEBOUNCE_MS = 300;
+import {
+  ON_BOARDING_PLACES_MAX_SUGGESTIONS,
+  ON_BOARDING_PLACES_MIN_QUERY_LENGTH,
+} from '../../constants/on-boarding.constants';
 
 type OnBoardingPlayAreaSearchProps = {
   className?: string;
@@ -24,26 +22,28 @@ type OnBoardingPlayAreaSearchProps = {
 export const OnBoardingPlayAreaSearch = (props: OnBoardingPlayAreaSearchProps) => {
   const { className, inputContainerClassName, onChangeQuery, query } = props;
   const { t } = useTranslate();
-  const getPlace = useGetPlace();
   const { trackError, trackEvent } = useAnalytics();
   const setPlayArea = useOnBoardingStore(state => state.setPlayArea);
-  const [debouncedQuery, setDebouncedQuery] = useState(query);
-  const [debouncedSetQuery] = useState(() => debounce({ delay: SEARCH_DEBOUNCE_MS }, setDebouncedQuery));
-  const { isLoading, places } = useSearchPlayAreaPlaces(debouncedQuery);
-
-  const isSearching = isLoading || query.trim() !== debouncedQuery.trim();
+  const { getCoordinates, isSearching, places, resetSearch, search } = usePlaceSearch({
+    context: 'OnBoardingPlayAreaSearch',
+    limit: ON_BOARDING_PLACES_MAX_SUGGESTIONS,
+    minQueryLength: ON_BOARDING_PLACES_MIN_QUERY_LENGTH,
+    query,
+  });
 
   const handleChangeQuery = (text: string) => {
     onChangeQuery(text);
-    debouncedSetQuery(text);
+    search(text);
   };
 
-  const handleSelectPlace = async ({ description, id, label, location }: SearchPlace) => {
+  const handleSelectPlace = async (place: SearchPlace) => {
     try {
-      const coordinates = location ?? (await getPlace(id))?.location;
+      const coordinates = await getCoordinates(place);
       if (!coordinates) return;
+      const { description, label } = place;
       setPlayArea({ description, isCurrentLocation: false, label, ...coordinates });
-      handleChangeQuery('');
+      onChangeQuery('');
+      resetSearch();
       trackEvent({ eventName: ANALYTICS_EVENTS.ONBOARDING.PLACE_SEARCHED });
     } catch (error) {
       trackError({ error, extra: { context: 'handleSelectPlace' } });

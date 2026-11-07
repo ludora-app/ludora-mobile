@@ -19,6 +19,17 @@ export default function OnBoardingLayout() {
     >
       <Stack.Screen name="sessions/ready" options={{ animation: 'fade', gestureEnabled: false }} />
       <Stack.Screen name="sessions/joined" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="sessions/invite" options={{ gestureEnabled: false }} />
+      {/* In this stack, so validating the sheet goes back to the prepared session */}
+      <Stack.Screen
+        name="sessions/duration"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 30,
+        }}
+      />
     </Stack>
   );
 }

@@ -6,6 +6,7 @@ import { Box, BoxCenter, BoxRow, Button, Card, CardDescription, CardTitle, Icon 
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { LUDORA_WEBSITE_URL } from '@/constants/links.constants';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 
 type OnBoardingSessionsJoinedInviteProps = {
@@ -19,7 +20,7 @@ export const OnBoardingSessionsJoinedInvite = (props: OnBoardingSessionsJoinedIn
   const { trackEvent } = useAnalytics();
 
   const handleCopy = async () => {
-    await Clipboard.setStringAsync(`https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(sessionUid)}`);
+    await Clipboard.setStringAsync(`${LUDORA_WEBSITE_URL}${ROUTES.SESSION.INDEX_UID(sessionUid)}`);
     toast({ message: t('on-boarding.sessions.joined.link_copied'), variant: 'success' });
     trackEvent({ data: { session_uid: sessionUid }, eventName: ANALYTICS_EVENTS.ONBOARDING.SESSIONS_LINK_COPIED });
   };

@@ -163,7 +163,7 @@ export const PlayersList = () => {
 
 ## 7. Icons, images, pressables, animation
 
-- Icons: `<Icon name="calendar-regular" />`. New SVG → `tools/svg-2-obj/svg/` → `bun generate:icons`. Type icon-name props as `TIconsAll`. Mascots are icons (`ludo-cry`, `mascotte-ludora`) sized via `className="size-36"`.
+- Icons: `<Icon name="calendar-regular" />`. A missing icon always comes from the Iconsax MCP → `tools/svg-2-obj/svg/` → `bun generate:icons`: follow the **`ludora-icons`** skill. Type icon-name props as `TIconsAll`. Mascots are icons (`ludo-cry`, `mascotte-ludora`) sized via `className="size-36"`.
 - Images: `Image` from `@ludo/ui`; sport images via `getSportImage(sport)` / `getSportPlaceHolder(sport)` (`@/utils/sports.utils`), bundled in `SPORT_ASSETS` (`sports.constants.ts`, typed `Record<Sport, …>`: a new sport needs its assets); no `as` cast, every generated `*Sport` enum is a `Sport`; static assets from `assets`.
 - Pressables: RN `Pressable` with `className` for rows/cards; `ScalePressable` (`@chillui/ui`) for tactile tiles/chips; `Button`/`IconButton` already animate. Navigation cards: `<Link href={ROUTES...} asChild>` or `router.navigate`. No `TouchableOpacity`.
 - Animations (Reanimated 4): `entering={FadeIn}` for mount; `useSharedValue` + `withSpring`/`withTiming` + `useAnimatedStyle` for value-driven; scroll-driven logic in a hook that returns `animatedStyle`.

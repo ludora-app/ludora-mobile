@@ -68,7 +68,11 @@ const ROUTES = {
     INDEX: '/notifications',
   },
   ON_BOARDING: {
+    DURATION_FORM_SHEET: '/on-boarding/sessions/duration',
+    SESSIONS_FIELDS: '/on-boarding/sessions/fields',
+    SESSIONS_INVITE: '/on-boarding/sessions/invite',
     SESSIONS_JOINED: '/on-boarding/sessions/joined',
+    SESSIONS_PREPARED: '/on-boarding/sessions/prepared',
     SESSIONS_READY: '/on-boarding/sessions/ready',
     SESSIONS_SUGGESTIONS: '/on-boarding/sessions/suggestions',
     SPORT_FORM_SHEET: '/on-boarding-sport',

@@ -3,6 +3,7 @@ import { useTranslate } from '@tolgee/react';
 import { BoxCenter, Button, String, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
+import { useUserMe } from '@/queries/user-me.query';
 import { MascotHalo } from '@/components/ui/mascot-halo';
 import { useDisableBack } from '@/hooks/navigation.hooks';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
@@ -10,26 +11,32 @@ import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 
 import { useGetRecommendedSessions } from '../queries/get-recommended-sessions.query';
 
+function getDescriptionKey({ hasPlayArea, hasSuggestions }: { hasPlayArea: boolean; hasSuggestions: boolean }) {
+  if (!hasPlayArea) return 'on-boarding.sessions.ready.description_no_place';
+  if (hasSuggestions) return 'on-boarding.sessions.ready.description_suggestions';
+  return 'on-boarding.sessions.ready.description_no_match';
+}
+
 export const OnBoardingProfilReadyScreen = () => {
   const { t } = useTranslate();
   const router = useRouter();
   const { trackEvent } = useAnalytics();
-  const { isError, isLoading, suggestions } = useGetRecommendedSessions();
+  const { isLoading: isLoadingUserMe, userMe } = useUserMe();
+  const { isError, isLoading: isLoadingSuggestions, suggestions } = useGetRecommendedSessions();
 
   useDisableBack();
 
-  const hasSuggestions = suggestions.length > 0 || isError;
+  const isLoading = isLoadingUserMe || isLoadingSuggestions;
+  const hasPlayArea = !!userMe?.playArea;
+  // Without place, the suggestions are skipped: the prepared session asks for it
+  const hasSuggestions = hasPlayArea && (suggestions.length > 0 || isError);
 
   const handlePress = () => {
     trackEvent({
-      data: { suggestions_count: suggestions.length },
+      data: { has_play_area: hasPlayArea, suggestions_count: suggestions.length },
       eventName: ANALYTICS_EVENTS.ONBOARDING.SESSIONS_READY_CONTINUED,
     });
-    if (hasSuggestions) {
-      router.navigate(ROUTES.ON_BOARDING.SESSIONS_SUGGESTIONS);
-      return;
-    }
-    router.dismissTo(ROUTES.HOME.INDEX);
+    router.navigate(hasSuggestions ? ROUTES.ON_BOARDING.SESSIONS_SUGGESTIONS : ROUTES.ON_BOARDING.SESSIONS_PREPARED);
   };
 
   return (
@@ -41,16 +48,12 @@ export const OnBoardingProfilReadyScreen = () => {
         </String>
         {!isLoading && (
           <String variant="body-2" font="primarySemiBold" className="text-center">
-            {t(
-              hasSuggestions
-                ? 'on-boarding.sessions.ready.description_suggestions'
-                : 'on-boarding.sessions.ready.description_no_match',
-            )}
+            {t(getDescriptionKey({ hasPlayArea, hasSuggestions }))}
           </String>
         )}
       </BoxCenter>
       <Button
-        title={t(hasSuggestions ? 'on-boarding.sessions.ready.see_sessions' : 'on-boarding.sessions.go_home')}
+        title={t(hasSuggestions ? 'on-boarding.sessions.ready.see_sessions' : 'on-boarding.sessions.ready.see_my_session')}
         colorVariant="secondary"
         size="xl"
         isLoading={isLoading}

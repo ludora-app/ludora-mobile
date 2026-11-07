@@ -372,7 +372,7 @@ export const ButtonStringTv = tv({
     },
     // Darker shade on outlined / text when the plain color lacks contrast on cream
     { className: 'text-primaryDark', colorVariant: 'primary', variant: ['outlined', 'text'] },
-    { className: 'text-dark', colorVariant: ['tertiary', 'warning'], variant: ['outlined', 'text'] },
+    { className: 'text-dark', colorVariant: ['tertiary', 'warning', 'light', 'muted'], variant: ['outlined', 'text'] },
     // Soft variants
     { className: 'text-destructive', colorVariant: ['secondary', 'accent', 'danger', 'error'], variant: 'soft' },
     { className: 'text-primaryDark', colorVariant: 'primary', variant: 'soft' },

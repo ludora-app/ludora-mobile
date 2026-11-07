@@ -100,5 +100,11 @@
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"
     }
+  },
+  "UsersController_findCompatible": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
   }
 }

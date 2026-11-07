@@ -22,7 +22,7 @@ export const LoginScreen = () => {
       bounces={false}
       safeArea={['bottom']}
     >
-      <HeaderMascot title={t('auth.login.header_title')} mascotName="ludo-idea-2" />
+      <HeaderMascot titleProps={{ title: t('auth.login.header_title') }} mascotName="ludo-idea-2" />
       <Wrapper grow className="pt-6.5">
         <Box className="gap-3.5">
           <LoginEmailForm />

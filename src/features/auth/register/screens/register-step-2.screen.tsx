@@ -77,7 +77,7 @@ export const RegisterStep2Screen = () => {
       keyboardShouldPersistTaps="handled"
       bounces={false}
     >
-      <HeaderMascot title={t('auth.register-step-2.title')} mascotName="ludo-sunglass" />
+      <HeaderMascot titleProps={{ title: t('auth.register-step-2.title') }} mascotName="ludo-sunglass" />
       <Wrapper className="pt-6.5">
         <Box className="mb-4 flex-1 gap-3.5">
           <Box className="flex-row gap-3">

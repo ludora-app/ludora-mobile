@@ -7,6 +7,7 @@ import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from 
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
 import { useGetIncommingSessionMe } from '../../queries/get-incomming-session-me.query';
+import { useGetIsFirstSessionPending } from '../../queries/get-is-first-session-pending.query';
 import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
@@ -44,6 +45,7 @@ export default function HomeSessionList() {
   const hasNewSession = showSessionCard && !IncommingSessionMeIsLoading;
 
   const { bottomTab } = useSafeArea();
+  const { isFirstSessionPending } = useGetIsFirstSessionPending();
 
   const fixedItemsSize = useMemo<GetListFixedItemSize>(
     () => (_item, _index, type) => {
@@ -51,11 +53,12 @@ export default function HomeSessionList() {
         return FIXED_LIST_STICKY_COMPONENT_SIZE;
       }
       if (type === 'header_top') {
-        return FIXED_LIST_TOP_COMPONENT_SIZE;
+        // The first session card makes the top header taller: let the list measure it
+        return isFirstSessionPending ? undefined : FIXED_LIST_TOP_COMPONENT_SIZE;
       }
       return SESSION_CARD_LIST_ITEM_HEIGHT;
     },
-    [],
+    [isFirstSessionPending],
   );
 
   const paddingBottom = useMemo(() => {

@@ -2,11 +2,13 @@ import { useSessionsCreate } from '@generatedApi/sessions/sessions.api';
 
 import { CreateSessionFromRequestDto } from '@/api/generated/model';
 import {
-  useInvalidateConversationsFindAllByUserUid,
+  useInvalidateSessionsGetMyStats,
   useInvalidateSessionsFindAllMySessions,
+  useInvalidateConversationsFindAllByUserUid,
 } from '@/api/generated/invalidate-queries';
 
 export const useCreateSession = () => {
+  const invalidateSessionsGetMyStats = useInvalidateSessionsGetMyStats();
   const invalidateIncommingSessionMe = useInvalidateSessionsFindAllMySessions();
   const invalidateConversationsFindAllMe = useInvalidateConversationsFindAllByUserUid();
 
@@ -15,6 +17,7 @@ export const useCreateSession = () => {
       onSuccess: () => {
         invalidateIncommingSessionMe();
         invalidateConversationsFindAllMe();
+        invalidateSessionsGetMyStats();
       },
     },
   });

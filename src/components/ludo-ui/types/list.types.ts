@@ -31,6 +31,8 @@ export type ListProps = {
   hasNextPage: boolean;
   refetch?: () => Promise<any>;
   emptyResultProps?: EmptyResultProps;
+  /** Replaces `EmptyResult` when the empty state needs its own layout. */
+  EmptyComponent?: React.ComponentType | React.ReactElement;
   /** Shows `ErrorResult` instead of the data when the query failed and nothing is loaded; retry calls `refetch`. */
   isError?: boolean;
   errorResultProps?: Pick<ErrorResultProps, 'className' | 'messageKey'>;

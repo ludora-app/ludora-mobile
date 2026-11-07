@@ -36,11 +36,19 @@ const EMPTY_ITEM: EmptyItem = { type: 'empty', uid: 'empty_res' };
 const ERROR_ITEM: ErrorItem = { type: 'error', uid: 'error_res' };
 const LOADING_ITEM: LoadingItem = { type: 'loading', uid: 'loading' };
 
+const LIST_ITEM_TYPES = new Set<unknown>(['empty', 'error', 'header_top', 'loading', 'skeleton', 'sticky']);
+
+// A data item can have its own `type` field (a field is PUBLIC or PRIVATE): only the list's own items are typed
+function isListItem(item: unknown): item is ListItem {
+  return !!item && typeof item === 'object' && 'type' in item && LIST_ITEM_TYPES.has(item.type);
+}
+
 export default function List(props: ListProps) {
   const {
     contentContainerClassName,
     contentContainerStyle,
     data,
+    EmptyComponent,
     emptyResultProps,
     errorResultProps,
     fetchNextPage,
@@ -127,16 +135,11 @@ export default function List(props: ListProps) {
     }
   }, [isLoading, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  const getItemType = useCallback((item: ListItem): ListItemType => {
-    if (item && typeof item === 'object' && 'type' in item) {
-      return item.type;
-    }
-    return 'row';
-  }, []);
+  const getItemType = useCallback((item: ListItem): ListItemType => (isListItem(item) ? item.type : 'row'), []);
 
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<ListItem>) => {
-      if (item && typeof item === 'object' && 'type' in item) {
+      if (isListItem(item)) {
         switch (item.type) {
           case 'skeleton':
             return SkeletonComponent ? <SkeletonComponent /> : null;
@@ -151,7 +154,7 @@ export default function List(props: ListProps) {
               </Box>
             );
           case 'empty':
-            return <EmptyResult {...emptyResultProps} />;
+            return EmptyComponent ? renderComponent(EmptyComponent) : <EmptyResult {...emptyResultProps} />;
           case 'error':
             return <ErrorResult {...errorResultProps} onRetry={refetch} isRetrying={isRefetching} />;
           default:
@@ -165,6 +168,7 @@ export default function List(props: ListProps) {
       SkeletonComponent,
       ListStickyComponent,
       ListTopComponent,
+      EmptyComponent,
       emptyResultProps,
       errorResultProps,
       refetch,

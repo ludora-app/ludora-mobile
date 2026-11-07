@@ -50,8 +50,8 @@ export const OnBoardingFooterButtonSubmit = () => {
         eventName: ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED,
       });
       setOnBoardingStatus('COMPLETE');
-      const hasAnswers = sportPreferences.length > 0 || availabilities.length > 0 || !!playArea;
-      router.replace(hasAnswers ? ROUTES.ON_BOARDING.SESSIONS_READY : ROUTES.HOME.INDEX);
+      // Only the sport is required to prepare a first session
+      router.replace(sportPreferences.length > 0 ? ROUTES.ON_BOARDING.SESSIONS_READY : ROUTES.HOME.INDEX);
     } catch (error) {
       const errorResponse = error as ErrorResponse;
       trackEvent({

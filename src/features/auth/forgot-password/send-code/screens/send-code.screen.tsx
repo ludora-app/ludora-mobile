@@ -56,7 +56,7 @@ export const SendCodeScreen = () => {
       bounces={false}
       safeArea={['bottom']}
     >
-      <HeaderMascot title={t('auth.reset-password.title')} mascotName="ludo-search" />
+      <HeaderMascot titleProps={{ title: t('auth.reset-password.title') }} mascotName="ludo-search" />
       <Wrapper className="pt-6.5" grow>
         <Box className="gap-3.5">
           <String className="mb-1.5 text-center">{t('auth.reset-password.description')}</String>

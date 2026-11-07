@@ -1,5 +1,5 @@
 import { BoxRowBetween, cn } from '@chillui/ui';
-import { Box, Icon, String, Wrapper } from '@ludo/ui';
+import { Box, Icon, String, StringProps, Wrapper } from '@ludo/ui';
 
 import { TIconsAll } from '@/constants/icons.constants';
 
@@ -13,7 +13,11 @@ type HeaderMascotProps = {
   hasMascotHalo?: boolean;
   mascotClassName?: string;
   mascotName: TIconsAll;
-  title: string;
+  titleProps: {
+    className?: string;
+    title: string;
+    variant?: StringProps['variant'];
+  };
 };
 
 export const HeaderMascot = (props: HeaderMascotProps) => {
@@ -24,7 +28,7 @@ export const HeaderMascot = (props: HeaderMascotProps) => {
     hasMascotHalo = false,
     mascotClassName,
     mascotName,
-    title,
+    titleProps,
   } = props;
 
   return (
@@ -32,8 +36,8 @@ export const HeaderMascot = (props: HeaderMascotProps) => {
       {hasGoBackButton && <GoBackButton />}
       <BoxRowBetween>
         <Box className="mt-2 flex-1 pb-4">
-          <String font="secondaryExtraBold" variant="title-3">
-            {title}
+          <String font="secondaryExtraBold" variant={titleProps.variant ?? 'title-3'} className={titleProps.className}>
+            {titleProps.title}
           </String>
           {!!description && (
             <String variant="body-sm" font="primarySemiBold">

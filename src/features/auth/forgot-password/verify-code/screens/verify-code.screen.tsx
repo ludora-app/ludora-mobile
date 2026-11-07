@@ -80,7 +80,7 @@ export const VerifyCodeScreen = () => {
       bounces={false}
       safeArea={['bottom']}
     >
-      <HeaderMascot title={t('auth.verify-code.title')} mascotName="ludo-idea" />
+      <HeaderMascot titleProps={{ title: t('auth.verify-code.title') }} mascotName="ludo-idea" />
       <Wrapper grow className="pt-6.5">
         <Box className="gap-3.5">
           <Box className="mb-1.5 gap-1.5">

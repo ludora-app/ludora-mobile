@@ -6,6 +6,7 @@ import { BoxRow, BoxRowCenterBetween, Icon, Wrapper } from '@ludo/ui'
 import ROUTES from '@/constants/routes.constants'
 import { useAppNavigation } from '@/hooks/navigation.hooks'
 import { useAnalytics } from '@/hooks/analytics-trackers.hook'
+import { LUDORA_WEBSITE_URL } from '@/constants/links.constants'
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants'
 
 type SessionSectionImagesHeaderProps = {
@@ -24,7 +25,7 @@ export default function SessionSectionImagesHeader({ sessionUid }: SessionSectio
   }
 
   const handleShareLink = async () => {
-    const url = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(sessionUid)}`;
+    const url = `${LUDORA_WEBSITE_URL}${ROUTES.SESSION.INDEX_UID(sessionUid)}`;
     try {
       await Share.share({
         message: t('session.share_message', { url }),

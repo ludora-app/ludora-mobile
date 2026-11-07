@@ -11,7 +11,7 @@ export const OnBoardingSessionsSuggestionsScreen = () => {
   return (
     <>
       <HeaderMascot
-        title={t('on-boarding.sessions.suggestions.title')}
+        titleProps={{ title: t('on-boarding.sessions.suggestions.title') }}
         description={t('on-boarding.sessions.suggestions.description')}
         mascotName="ludo-search"
         hasMascotHalo

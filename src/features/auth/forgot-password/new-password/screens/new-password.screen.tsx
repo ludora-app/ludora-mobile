@@ -60,7 +60,7 @@ export const NewPasswordScreen = () => {
       mode="layout"
       bounces={false}
     >
-      <HeaderMascot title={t('auth.new-password.title')} mascotName="ludo-sunglass" hasGoBackButton={false} />
+      <HeaderMascot titleProps={{ title: t('auth.new-password.title') }} mascotName="ludo-sunglass" hasGoBackButton={false} />
       <Wrapper className="gap-3.5 pt-6.5">
         <String className="mb-1.5 text-center">{t('auth.new-password.description')}</String>
         <FormInput

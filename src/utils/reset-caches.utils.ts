@@ -9,6 +9,7 @@ import { useMyFieldsFilterStore } from '@/features/my-fields/stores/my-fields-fi
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 import { useInviteFriendsStore } from '@/features/invite-friends/stores/invite-friends.store';
 import { useHomeSessionFiltersStore } from '@/features/home/stores/home-sessions-filters.store';
+import { useOnBoardingSessionsStore } from '@/features/on-boarding/stores/on-boarding-sessions.store';
 import { useNotificationsFilterStore } from '@/features/notifications/stores/notifications-filter.store';
 import { useSettingsHistoryFilterStore } from '@/features/settings/stores/settings-history-filter.store';
 import { useInviteFriendsFilterStore } from '@/features/invite-friends/stores/invite-friends-filter.store';
@@ -40,4 +41,5 @@ export const resetCaches = () => {
   useInviteFriendsStore.getState().reset();
   useSessionTeamStore.getState().reset();
   useUserLocationStore.getState().reset();
+  useOnBoardingSessionsStore.getState().reset();
 };

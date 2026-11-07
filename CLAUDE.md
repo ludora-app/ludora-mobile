@@ -7,6 +7,7 @@ Expo SDK 57 / React Native 0.86 app. Stack: Expo Router, `@ludo/ui` (over `@chil
 Load the project skills:
 - **`ludora-feature`** (architecture and workflow) and **`ludora-code-style`**: always.
 - `ludora-ui`, `ludora-data`, `ludora-navigation`: depending on the task.
+- `ludora-icons`: any missing icon (always from the Iconsax MCP).
 - `ludora-native-build`: build or upgrade issues.
 - `ludora-ship`: commits and PRs.
 

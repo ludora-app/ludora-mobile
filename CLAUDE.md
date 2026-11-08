@@ -48,6 +48,7 @@ openspec --version                          # 1.12.0, the reference version
 
 - Install **1.12.0**, not `@latest`. Bumping means running `openspec update` **in the same PR** and naming the version in the description.
 - `.claude/commands/opsx/*` and `.claude/skills/openspec-*` are **generated**: never hand-edit them.
+- Profile **`custom`** = the `core` workflows plus `verify`: set it before any `openspec update` ([`docs/openspec.md`](docs/openspec.md)).
 - Artifacts (proposal, design, specs, tasks) are written in **English**.
 - **Every feature, redesign or behaviour change starts here**: read the ADRs it touches and cite them in its `design.md`, then code. A feature that needs to go against an ADR stops: the answer is a new ADR that supersedes it, not code that ignores it.
 
@@ -65,6 +66,7 @@ Commands:
 - `/opsx:explore`: the shape is unclear. Thinking only, no implementation.
 - `/opsx:propose`: creates the change with its artifacts (proposal, design, spec delta, tasks).
 - `/opsx:apply`: implements the tasks.
+- `/opsx:verify`: checks that the code matches the change (tasks, requirements, scenarios, design). Run it before archiving.
 - `/opsx:sync`: merges the delta into the living spec **without** archiving.
 - `/opsx:update`: revises a change's planning artifacts; never edits code.
 - `/opsx:archive`: once the implementation is ready for review.

@@ -132,7 +132,7 @@ async function handleSelection(selectedEnv) {
       if (answer === 'y') {
         console.log(`\n${COLORS.cyan}🚀 Regenerating API...${COLORS.reset}`);
         try {
-          execSync('pnpm run generate:api', { stdio: 'inherit' });
+          execSync('bun run generate:api', { stdio: 'inherit' });
           console.log(`\n${COLORS.green}✅ API regenerated!${COLORS.reset}`);
         } catch (error) {
           console.error(`\n${COLORS.yellow}❌ Error during API regeneration.${COLORS.reset}`);

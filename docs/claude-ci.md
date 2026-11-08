@@ -57,6 +57,10 @@ Renew the OAuth token before it expires: every Claude job fails with an authenti
 5. The workflow then checks the branch name, the commit (and PR title) format, that `.github/` is untouched and, in update mode, that the history was not rewritten. It runs `bun lint` and `bun ts:check` again, then pushes (never a force push). Create opens the PR into the target branch; update pushes on the PR and comments a summary of the changes on it.
 6. A comment on the ticket gives the PR link, says that nothing changed, or gives the reason and the run link when Claude stopped or a check failed. It never starts with `@claude`, so it cannot trigger a new run.
 
+### Jira statuses
+
+When Claude starts, the ticket moves to **En cours**. When the PR is opened or updated, it moves to **Développé**. When Claude is blocked, fails or changes nothing, the ticket goes back to the status it had before. A ticket already `ON DEV`, `ON STAGING` or `ON MAIN` is never moved. The status names are the `env` of `claude-jira.yml` (`JIRA_STATUS_IN_PROGRESS`, `JIRA_STATUS_DONE`): the workflow uses whichever transition leads to them.
+
 ### Target branch
 
 The PR targets `develop` unless the ticket description has a line with the branch to target:

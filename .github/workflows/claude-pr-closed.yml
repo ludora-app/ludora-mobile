@@ -1,0 +1,31 @@
+name: Claude PR closed
+
+# A PR opened by Claude and closed without merge may leave Tolgee keys behind:
+# Claude creates them before the review.
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  notify:
+    name: 🗑️ Claude PR closed without merge
+    if: github.event.pull_request.merged == false && github.event.pull_request.user.login == 'claude[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout the notification action
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          sparse-checkout: .github/actions
+
+      - name: Notify Discord
+        uses: ./.github/actions/discord-notify
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_CLAUDE }}
+          message: '🗑️ **La PR #${{ github.event.pull_request.number }} de Claude a été fermée sans merge** : pense à supprimer les clés Tolgee listées dans sa description'
+          color: grey
+          links: '[voir la PR](${{ github.event.pull_request.html_url }})'

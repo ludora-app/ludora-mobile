@@ -160,6 +160,10 @@ Every Claude workflow posts what Claude starts, does and ends in a Discord chann
 
 The mention is only added to ⛔, ⚠️ and ❌. Messages carry the ticket title and links (PR, Jira, logs), never the ticket description. A Jira run stopped before the checkout (an invalid `Target`) is reported in Jira only.
 
+## Model
+
+Every Claude workflow runs **Claude Opus 5.5 with high effort** (`--model claude-opus-5-5 --effort high` in `claude_args`). It draws on the Max quota faster than Sonnet: to save quota, switch a workflow back to `--model claude-sonnet-5-5` or lower the effort. Opus at high effort is slower, so the job timeouts are 30 min (review), 45 min (`@claude`) and 90 min (Jira).
+
 ## Limits
 
 - **Shared quota.** CI runs draw from the same Max usage (5-hour window and weekly limit) as local Claude Code and the backend. Every Claude workflow shares the `claude` concurrency group, so only one runs at a time. GitHub keeps one run pending per group: a third trigger while one runs and one waits replaces the waiting one.

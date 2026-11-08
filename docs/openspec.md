@@ -46,6 +46,17 @@ Regenerating with another version rewrites every generated file, and a version t
 
 Only Claude Code is configured (`openspec init --tools claude`). If another assistant joins, add it with `openspec update` and the matching `--tools`, in its own PR.
 
+## Why the profile is `custom` with `verify`
+
+The generated commands depend on the OpenSpec profile, a global setting of each machine (`~/.config/openspec/config.json`), not of the repo. The default `core` profile has no `verify`, and `verify` is what checks, before the archive, that the code matches the change: every task done, every requirement and scenario covered, the design followed. The Jira CI runs it before every archive, so the repo uses the `core` workflows plus `verify`:
+
+```bash
+openspec config set profile custom
+openspec config set workflows '["propose","explore","apply","update","sync","archive","verify"]'
+```
+
+Set it before any `openspec update`: with another profile, the update removes or adds commands and skills, and the diff shows it.
+
 ## Why `config.yaml` stays a schema line
 
 Project conventions already live in `CLAUDE.md` and the `ludora-*` skills. Repeating the stack and the rules in `openspec/config.yaml` `context:` would duplicate them, then drift. The schema is `spec-driven`; the rules an agent follows are in `CLAUDE.md`.

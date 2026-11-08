@@ -374,10 +374,18 @@ jobs:
             You are on `${{ steps.target.outputs.base }}`, the branch the pull request will target.
             1. Pick the type (feat, fix, refactor, perf, style, docs, test, chore, ci) and create the branch:
                `git switch -c <type>/${{ steps.key.outputs.key }}`.
-            2. Decide with the OpenSpec table in `CLAUDE.md`. If the ticket changes behaviour, create the change first
-               (`openspec-propose` skill), then implement it, then archive it (`openspec-archive-change` skill, with
-               the sync), since the pull request goes straight to review.
-            3. Implement, check and commit (one or more commits).
+            2. Explore (`openspec-explore` skill, thinking only): read the `openspec/specs/` requirements of the area,
+               the `docs/adr/` records it touches and the existing code. Then decide with the OpenSpec table in
+               `CLAUDE.md` whether the ticket needs a change.
+            3. With a change, follow the whole flow, in this order:
+               - Propose (`openspec-propose` skill): proposal, design citing the ADRs, spec delta, tasks.
+               - Apply (`openspec-apply-change` skill): implement the tasks and tick them in `tasks.md`.
+               - Verify (`openspec-verify-change` skill): fix every CRITICAL issue and the WARNINGs you can, then
+                 verify again. Never archive with a CRITICAL issue left: stop with status blocked instead.
+               - Archive (`openspec-archive-change` skill, with the sync), since the pull request goes straight to
+                 review.
+               Without a change, implement directly.
+            4. Check and commit (one or more commits). The OpenSpec artifacts go in the commits too.
 
             ## MODE update
             You are on `${{ steps.find.outputs.branch }}`, the branch of the open pull request. The ticket changed after
@@ -386,17 +394,19 @@ jobs:
                `git diff origin/${{ steps.target.outputs.base }}...HEAD`, and the pull request discussion:
                `gh pr view ${{ steps.find.outputs.number }} --comments`.
             2. Apply the request on top of the existing work, with new commits. Keep what the request does not change.
-            3. The OpenSpec change of the first implementation is already archived. If the request changes behaviour
-               again, write a new change (propose, implement, archive), as `CLAUDE.md` asks.
+            3. The OpenSpec change of the first implementation is already archived: never edit or un-archive it. If
+               the request changes behaviour again, write a new change with the same flow as MODE create (explore,
+               propose, apply, verify, archive), as `CLAUDE.md` asks.
             4. If nothing needs to change, make no commit and return `status: unchanged` with the reason.
 
             ## Result (structured output)
             - `status: done`, MODE create: `branch`, `pr_title` (the commit format, e.g.
               `feat(${{ steps.key.outputs.key }}): add x`) and `pr_body` in French: what changed and why, how it was
-              checked (lint and ts:check in CI, not run on a device), the OpenSpec change and any new ADR, the Tolgee
+              checked (lint and ts:check in CI, not run on a device), the OpenSpec change (its name and the verify
+              report: the summary table and the WARNINGs or SUGGESTIONs left) and any new ADR, the Tolgee
               keys created (key, fr, en) or still to create, the Iconsax icons added, and the follow-ups.
             - `status: done`, MODE update: `branch` and `summary` in French: what changed since the last version and
-              why, plus the Tolgee keys and icons added.
+              why, plus the new OpenSpec change and its verify report if there is one, the Tolgee keys and icons added.
             - `status: unchanged`: `reason` in French.
             - `status: blocked`: `reason` in French (unclear ticket, missing endpoint, checks that keep failing...).
 
@@ -407,7 +417,6 @@ jobs:
           BASE: ${{ steps.target.outputs.base }}
           BEFORE: ${{ steps.start.outputs.sha }}
           EXPECTED_BRANCH: ${{ steps.find.outputs.branch }}
-          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           KEY: ${{ steps.key.outputs.key }}
           MODE: ${{ steps.find.outputs.mode }}
@@ -462,6 +471,18 @@ jobs:
           bun install --frozen-lockfile || fail "bun.lock n'est pas à jour avec package.json."
           bun run lint || fail "bun lint échoue."
           bun run ts:check || fail "bun ts:check échoue."
+
+          # claude-code-action revokes its app token when it ends: ask for a new one, so the push and the PR
+          # are still made by claude[bot] (a GITHUB_TOKEN push would not start the PR checks).
+          OIDC=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=claude-code-github-action" | jq -r '.value // empty') || true
+          [ -n "$OIDC" ] || fail "Impossible d'obtenir le jeton OIDC GitHub pour pousser la branche."
+          GH_TOKEN=$(curl -sSf -X POST -H "Authorization: Bearer $OIDC" \
+            https://api.anthropic.com/api/github/github-app-token-exchange | jq -r '.token // .app_token // empty') || true
+          [ -n "$GH_TOKEN" ] || fail "Impossible d'obtenir un jeton de l'app Claude pour pousser la branche."
+          echo "::add-mask::$GH_TOKEN"
+          export GH_TOKEN
+          trap 'curl -sS -o /dev/null -X DELETE -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/installation/token || true' EXIT
 
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 

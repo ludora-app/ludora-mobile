@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useUsersFindCompatibleInfinite } from '@generatedApi/users/users.api';
+import { useUsersFindAllCompatibleUsersInfinite } from '@generatedApi/users/users.api';
 
-import { UsersFindCompatibleParams } from '@/api/generated/model';
+import { UsersFindAllCompatibleUsersParams } from '@/api/generated/model';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
 import { PreparedSessionValues } from '../utils/prepared-session.utils';
@@ -22,7 +22,7 @@ export const useGetCompatiblePlayers = ({
 }) => {
   const publishedSessionUid = useOnBoardingSessionsStore(state => state.publishedSessionUid);
 
-  const params = useMemo<UsersFindCompatibleParams>(
+  const params = useMemo<UsersFindAllCompatibleUsersParams>(
     () => ({
       fieldUid: fieldUid ?? '',
       gameMode: preparedSession?.gameMode,
@@ -35,7 +35,7 @@ export const useGetCompatiblePlayers = ({
     [fieldUid, preparedSession, publishedSessionUid],
   );
 
-  const { data, error, isError, ...rest } = useUsersFindCompatibleInfinite(params, {
+  const { data, error, isError, ...rest } = useUsersFindAllCompatibleUsersInfinite(params, {
     query: {
       enabled: !!fieldUid && !!preparedSession,
       getNextPageParam: lastPage => lastPage?.data?.nextCursor,

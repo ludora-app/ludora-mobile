@@ -1,3 +1,5 @@
+## [1.8.0-next.1](https://github.com/ludora-app/ludora-mobile/compare/v1.7.0...v1.8.0-next.1) (2026-11-08)
+
 ## [1.8.0-alpha.4](https://github.com/ludora-app/ludora-mobile/compare/v1.8.0-alpha.3...v1.8.0-alpha.4) (2026-11-08)
 
 ## [1.8.0-alpha.3](https://github.com/ludora-app/ludora-mobile/compare/v1.8.0-alpha.2...v1.8.0-alpha.3) (2026-10-19)

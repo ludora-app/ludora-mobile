@@ -1,0 +1,39 @@
+name: Claude MCP servers
+description: Write the MCP config (Iconsax, Tolgee) passed to claude-code-action with --mcp-config. A server whose key is empty is left out.
+
+inputs:
+  iconsax-api-key:
+    description: Iconsax API key, without the Bearer prefix
+    required: false
+    default: ''
+  tolgee-api-key:
+    description: Tolgee project API key (tgpak_...) dedicated to the CI
+    required: false
+    default: ''
+
+outputs:
+  config:
+    description: Path of the MCP config file
+    value: ${{ steps.write.outputs.config }}
+
+runs:
+  using: composite
+  steps:
+    - name: Write the MCP config
+      id: write
+      shell: bash
+      env:
+        ICONSAX_API_KEY: ${{ inputs.iconsax-api-key }}
+        TOLGEE_API_KEY: ${{ inputs.tolgee-api-key }}
+      run: |
+        DIR="$RUNNER_TEMP/mcp"
+        mkdir -p "$DIR"
+        jq -n --arg iconsax "$ICONSAX_API_KEY" --arg tolgee "$TOLGEE_API_KEY" '{
+          mcpServers: (
+            (if $iconsax != "" then {iconsax: {type: "http", url: "https://app.iconsax.io/api/mcp", headers: {Authorization: ("Bearer " + $iconsax)}}} else {} end)
+            + (if $tolgee != "" then {tolgee: {type: "http", url: "https://contex-tolgee.ludora.fr/mcp/developer", headers: {"X-API-Key": $tolgee}}} else {} end)
+          )
+        }' > "$DIR/servers.json"
+        chmod 600 "$DIR/servers.json"
+        echo "MCP servers: $(jq -r '.mcpServers | keys | join(", ") | if . == "" then "none" else . end' "$DIR/servers.json")"
+        echo "config=$DIR/servers.json" >> "$GITHUB_OUTPUT"

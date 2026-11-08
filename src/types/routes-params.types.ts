@@ -16,6 +16,8 @@ export type RootStackParamList = {
     sport: SessionCollectionItemDtoSport;
     endDate?: string;
   };
+  [ROUTES.ON_BOARDING.SESSIONS_JOINED]: { sessionUid: string };
+  [ROUTES.ON_BOARDING.SPORT_FORM_SHEET]: { sport: SessionCollectionItemDtoSport };
   [ROUTES.FILTERS.FILTER]: {
     goBackPath: RouteValues;
     source?: 'filter_fields' | 'filter_sessions_all' | 'players_suggestions';
@@ -59,10 +61,6 @@ export type RootStackParamList = {
   };
   [ROUTES.IMAGE_PICKER.INDEX]: {
     goBackPath: RouteValues;
-  };
-  [ROUTES.CHAT_ROOM.MESSAGE_ACTIONS]: {
-    messageId: string;
-    chatRoomId: string;
   };
   [ROUTES.SESSION.JOINED]: {
     conversationUid: string;

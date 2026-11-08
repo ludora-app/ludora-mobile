@@ -1,6 +1,6 @@
 import { BoxRowCenterBetween, Separator, String, WrapperGestureHandlerScrollView } from '@ludo/ui';
 
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import CreateSessionStep3PaymentFormSheetTrigger from './create-session-step-3-payment-trigger.component';
 

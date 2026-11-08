@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import GoBackButton from '@/components/ui/navigation/header-go-back/components/go-back-button.component';
+import { GoBackButton } from '@/components/ui/navigation/header-go-back/components/go-back-button.component';
 
 import CreateSessionHeaderProgressStepper from './create-session-header-progress-stepper.component';
 

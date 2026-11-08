@@ -140,7 +140,6 @@ export default function CreateSessionFooterButtonNextStep(props: CreateSessionFo
     <Button
       title={t('common.button_next')}
       isDisabled={!handleButtonDisabled}
-      hasDisabledOpacity
       onPress={handleSubmit}
     />
   );

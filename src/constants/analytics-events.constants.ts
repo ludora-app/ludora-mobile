@@ -18,13 +18,37 @@ export const ANALYTICS_EVENTS = {
 
   // Onboarding
   ONBOARDING: {
+    FIELD_CHOSEN: 'onboarding_field_chosen',
+    LOCATION_PERMISSION_DENIED: 'onboarding_location_permission_denied',
+    LOCATION_PERMISSION_GRANTED: 'onboarding_location_permission_granted',
+    MAP_OPENED: 'onboarding_map_opened',
     ONBOARDING_COMPLETED: 'onboarding_completed',
     ONBOARDING_FAILED: 'onboarding_failed',
+    PLACE_SEARCHED: 'onboarding_place_searched',
+    PLAY_AREA_SKIPPED: 'onboarding_play_area_skipped',
+    PREPARED_SESSION_NOT_PUBLISHED: 'onboarding_prepared_session_not_published',
+    PREPARED_SESSION_PLAYERS_INVITED: 'onboarding_prepared_session_players_invited',
+    PREPARED_SESSION_PUBLISH_FAILED: 'onboarding_prepared_session_publish_failed',
+    PREPARED_SESSION_PUBLISHED: 'onboarding_prepared_session_published',
+    PREPARED_SESSION_VIEWED: 'onboarding_prepared_session_viewed',
+    REMINDER_CARD_CREATE_PRESSED: 'onboarding_reminder_card_create_pressed',
+    REMINDER_CARD_JOIN_PRESSED: 'onboarding_reminder_card_join_pressed',
+    SESSIONS_CREATE_OWN_PRESSED: 'onboarding_sessions_create_own_pressed',
+    SESSIONS_GO_HOME_PRESSED: 'onboarding_sessions_go_home_pressed',
+    SESSIONS_JOINED: 'onboarding_sessions_joined',
+    SESSIONS_LINK_COPIED: 'onboarding_sessions_link_copied',
+    SESSIONS_LINK_SHARED: 'onboarding_sessions_link_shared',
+    SESSIONS_READY_CONTINUED: 'onboarding_sessions_ready_continued',
   },
 
   // Dialog Confirm
   DIALOG_CONFIRM: {
     DIALOG_CONFIRM_OPEN: 'dialog_confirm_open',
+  },
+
+  // Dialog Choice
+  DIALOG_CHOICE: {
+    DIALOG_CHOICE_OPEN: 'dialog_choice_open',
   },
 
   // Auth Flow
@@ -117,9 +141,43 @@ export interface AnalyticsEventData {
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_FAILED]: {
     error_message: string;
   };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_LINK_COPIED]: {
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_JOINED]: {
+    session_uid: string;
+    team_uid: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_LINK_SHARED]: {
+    channel: string;
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.SESSIONS_READY_CONTINUED]: {
+    has_play_area: boolean;
+    suggestions_count: number;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.PREPARED_SESSION_PLAYERS_INVITED]: {
+    invited_count: number;
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.PREPARED_SESSION_PUBLISH_FAILED]: {
+    error_message: string;
+    invited_count: number;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.FIELD_CHOSEN]: {
+    duration_minutes: number;
+    field_uid: string;
+    has_position: boolean;
+  };
+  [ANALYTICS_EVENTS.ONBOARDING.PREPARED_SESSION_PUBLISHED]: {
+    invited_count: number;
+    session_uid: string;
+    sport: string;
+  };
   [ANALYTICS_EVENTS.ONBOARDING.ONBOARDING_COMPLETED]: {
+    has_hour_preferences: boolean;
     has_sport_preferences: boolean;
-    has_profile_picture: boolean;
+    play_area_radius_km: number | null;
   };
 
   // auth events
@@ -316,6 +374,9 @@ export interface AnalyticsEventData {
   // **
   // dialog confirm events
   // **
+  [ANALYTICS_EVENTS.DIALOG_CHOICE.DIALOG_CHOICE_OPEN]: {
+    source: string;
+  };
   [ANALYTICS_EVENTS.DIALOG_CONFIRM.DIALOG_CONFIRM_OPEN]: {
     source: string;
   };

@@ -1,8 +1,11 @@
+import { useCSSVariable } from 'uniwind';
+
 import type { ButtonLoaderProps } from '../../../types';
 
 import { Box } from '../../box';
 import { useButtonContext } from '../context/ButtonContext';
 import { LoadingIndicator } from '../../loadingIndicatorsKit';
+import { getButtonContentColorVariable } from '../styles/Button.styles';
 
 /**
  * ButtonLoader component for showing loading state within a Button.
@@ -21,12 +24,19 @@ import { LoadingIndicator } from '../../loadingIndicatorsKit';
  * ```
  */
 export default function ButtonLoader(props: ButtonLoaderProps) {
-  const { sizingVariant } = useButtonContext();
+  const { colorVariant, sizingVariant, variant } = useButtonContext();
   const { name = 'spinner' } = props;
+  // Same color as the title it replaces
+  const contentColor = useCSSVariable(getButtonContentColorVariable({ colorVariant, variant }));
 
   return (
     <Box>
-      <LoadingIndicator name={name} size={sizingVariant} {...props} />
+      <LoadingIndicator
+        name={name}
+        size={sizingVariant}
+        color={typeof contentColor === 'string' ? contentColor : undefined}
+        {...props}
+      />
     </Box>
   );
 }

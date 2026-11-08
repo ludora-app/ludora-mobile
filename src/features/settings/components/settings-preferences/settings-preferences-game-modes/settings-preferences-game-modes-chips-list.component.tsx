@@ -2,12 +2,11 @@ import { Fragment } from 'react'
 import { useTranslate } from '@tolgee/react'
 import { Box, BoxRow, Icon, Image, Separator, String } from '@ludo/ui'
 
-import { getSportImage } from '@/utils/sports.utils'
-import { GAMEMODES_BY_SPORT } from '@/constants/session.constants'
+import { useGetSports } from '@/queries/get-sports.query'
+import { getSportImage, getSportGameModes } from '@/utils/sports.utils'
 import {
   CreateSportPreferenceDataGameModesItem,
   CreateSportPreferenceDataSport,
-  SessionCollectionItemDtoSport,
 } from '@/api/generated/model'
 
 import { useSettingsPreferencesStore } from '../../../stores/settings-preferences.store'
@@ -19,6 +18,7 @@ interface SettingsPreferencesGameModeSectionProps {
 
 export default function SettingsPreferencesGameModesChipsList(props: SettingsPreferencesGameModeSectionProps) {
   const { onToggleGameMode } = props
+  const { sports } = useGetSports()
   const sportPreferences = useSettingsPreferencesStore(state => state.sportPreferences)
 
   const { t } = useTranslate()
@@ -38,11 +38,11 @@ export default function SettingsPreferencesGameModesChipsList(props: SettingsPre
         <Fragment key={pref.sport}>
           <Box className="gap-3">
             <BoxRow className="items-center gap-2">
-              <Image source={getSportImage(pref.sport as SessionCollectionItemDtoSport)} className="size-8" />
+              <Image source={getSportImage(pref.sport)} className="size-8" />
               <String font="primarySemiBold">{pref.sport}</String>
             </BoxRow>
             <BoxRow className="flex-wrap gap-2">
-              {GAMEMODES_BY_SPORT[pref.sport as SessionCollectionItemDtoSport]?.map((gameMode) => (
+              {getSportGameModes({ sport: pref.sport, sports }).map((gameMode) => (
                 <SettingsPreferencesGameModeChip
                   key={gameMode}
                   gameMode={gameMode}

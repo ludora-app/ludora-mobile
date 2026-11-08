@@ -1,12 +1,9 @@
 import { z } from 'zod';
 
+import { VERIFY_CODE_REGEX } from '../constants/verify-code.constants';
+
 export const formSchema = z.object({
-  code1: z.string().min(1).max(1),
-  code2: z.string().min(1).max(1),
-  code3: z.string().min(1).max(1),
-  code4: z.string().min(1).max(1),
-  code5: z.string().min(1).max(1),
-  code6: z.string().min(1).max(1),
+  code: z.string().regex(VERIFY_CODE_REGEX),
 });
 
 export type VerifyCodeFormData = z.infer<typeof formSchema>;

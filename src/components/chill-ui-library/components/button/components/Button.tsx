@@ -92,8 +92,8 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
     className,
     colorVariant = buttonDefaultProps.colorVariant,
     fit = buttonDefaultProps.fit,
-    hasDisabledOpacity,
     isDisabled,
+    isLoading = buttonDefaultProps.isLoading,
     onPress,
     size = buttonDefaultProps.size,
     style,
@@ -107,11 +107,12 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
       colorVariant,
       fit,
       isDisabled: !!isDisabled,
+      isLoading,
       size,
       sizingVariant,
       variant,
     }),
-    [colorVariant, isDisabled, size, sizingVariant, variant, fit],
+    [colorVariant, isDisabled, isLoading, size, sizingVariant, variant, fit],
   );
 
   return (
@@ -124,13 +125,14 @@ const Button = forwardRef<any, PropsWithChildren<ButtonProps>>((props, ref) => {
           ButtonTv({
             colorVariant,
             fit,
-            isDisabled: !!isDisabled && hasDisabledOpacity,
+            // A loading button is not pressable but keeps its colors
+            isDisabled: !!isDisabled && !isLoading,
             size,
             variant,
           }),
           className,
         )}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || isLoading}
         onPress={onPress}
         style={style}
       >

@@ -4,8 +4,8 @@ import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Box, Separator, Wrapper, ScrollView } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
-import Loading from '@/components/ui/loading/loading.component';
 import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
+import { Loading } from '@/components/ui/loading/loading.component';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
 
 import SessionFooter from '../components/session-footer.component';

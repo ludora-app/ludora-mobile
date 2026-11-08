@@ -5,8 +5,8 @@ import { useTranslate } from '@tolgee/react';
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { useCreateSession } from '@/queries/create-session.query';
 import { CreateSessionFromRequestDto } from '@/api/generated/model';
-import { useCreateSession } from '@/features/create-session/queries/create-session.query';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
 
 export default function CreateSessionFooterButtonCreateSession() {

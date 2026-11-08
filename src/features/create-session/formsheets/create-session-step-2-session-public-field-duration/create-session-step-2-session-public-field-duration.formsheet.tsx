@@ -1,5 +1,5 @@
-import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
@@ -18,10 +18,10 @@ import dayjs from '@/lib/dayjs';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { IS_ANDROID } from '@/constants/platform.constants';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { useCreateSessionStore } from '@/features/create-session/store/create-session.store';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { CREATE_SESSION } from '../../constants/create-session.constants';
 import {
@@ -50,7 +50,6 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
     control,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm<CreateSessionStep2SessionPublicFieldDurationFormSchema>({
     defaultValues: {
       duration: calculateDurationFromDates(),
@@ -59,7 +58,7 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
     resolver: zodResolver(createSessionStep2SessionPublicFieldDurationFormSchema(t, startDate)),
   });
 
-  const duration = watch('duration');
+  const duration = useWatch({ control, name: 'duration' });
 
   const num = parseInt(duration, 10);
   const isValidDuration =
@@ -123,7 +122,7 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
           {t('create-session-step-2.public-availabilities-form-sheet.warning_title')}
         </String>
 
-        <BoxRow className="bg-primary/10 mb-6 items-center gap-3 rounded-lg p-3">
+        <BoxRow className="mb-6 items-center gap-3 rounded-lg bg-primary/10 p-3">
           <Icon name="warning-solid" size="md" color={COLORS.primary} />
           <String className="flex-1">
             {t('create-session-step-2.public-availabilities-form-sheet.warning_description')}
@@ -135,7 +134,7 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
             {t('create-session-step-2.public-availabilities-form-sheet.match_details')}
           </String>
 
-          <BoxRowBetween className="border-ring border-b pb-3">
+          <BoxRowBetween className="border-b border-ring pb-3">
             <String font="primaryBold">{t('common.date')}</String>
             <String font="primaryBold">{matchDetails.date}</String>
           </BoxRowBetween>
@@ -150,14 +149,14 @@ export default function CreateSessionStep2SessionPublicFieldDurationFormSheet() 
           </BoxRowBetween>
         </Box>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter hasBottomSafeArea={IS_ANDROID}>
+      <FooterWrapper hasBottomSafeArea={IS_ANDROID}>
         <Button
           title={t('create-session-step-2.public-availabilities-form-sheet.button_confirm')}
           size="md"
           onPress={handleSubmit(handleConfirm)}
         />
         <Button title={t('common.button_cancel')} variant="outlined" size="md" onPress={() => router.back()} />
-      </FormSheetFooter>
+      </FooterWrapper>
     </Box>
   );
 }

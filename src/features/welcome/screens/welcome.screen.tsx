@@ -1,19 +1,23 @@
 import { bigLogo } from 'assets';
-import { BoxGrow, Image, Wrapper } from '@ludo/ui';
+import { useTranslate } from '@tolgee/react';
+import { Box, Image, String, Wrapper } from '@ludo/ui';
 
-import WelcomeFooter from '../components/welcome-footer.component';
-import WelcomeCarousel from '../components/welcome-carousel.component';
+import { WelcomeFooter } from '../components/welcome-footer.component';
+import { WelcomeMatchesPreview } from '../components/welcome-matches-preview/welcome-matches-preview.component';
 
-export default function WelcomeComponent() {
+export const WelcomeScreen = () => {
+  const { t } = useTranslate();
 
   return (
-    // top2 : #ede9d0
-    <BoxGrow className="bg-[#ffe7d6]">
-      <Wrapper px='none' hasSafeArea className='items-center justify-center' fill >
-        <Image source={bigLogo} contentFit="contain" className="size-36" />
-        <WelcomeCarousel />
-        <WelcomeFooter />
+    <>
+      <Wrapper grow className="gap-4.5 overflow-hidden" safeArea={['top']}>
+        <Box className="pb-1.5">
+          <Image source={bigLogo} contentFit="contain" className="h-16.5 w-26" />
+        </Box>
+        <String variant="title-3">{t('welcome.title')}</String>
+        <WelcomeMatchesPreview />
       </Wrapper>
-    </BoxGrow>
+      <WelcomeFooter />
+    </>
   );
-}
+};

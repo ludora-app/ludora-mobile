@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { Box, Icon, Image, String } from '@ludo/ui';
 import { Pressable, ScrollView } from 'react-native';
+import { ImagePickerAsset } from 'expo-image-picker';
 import { useController, UseControllerProps } from 'react-hook-form';
 
 import COLORS from '@/constants/colors.contstants';
@@ -20,6 +21,20 @@ export type FieldImage = {
 
 type AddFieldImagesProps = UseControllerProps<CreateFieldSchema>;
 
+function toFieldImages(pickedImages: ImagePickerAsset[], startOrder: number): FieldImage[] {
+  return pickedImages.map((img, index) => ({
+    name: img.fileName ?? `image-${startOrder + index}`,
+    order: startOrder + index,
+    type: img.mimeType ?? 'image/jpeg',
+    uri: img.uri,
+  }));
+}
+
+function mergeImages(prev: FieldImage[], pickedImages: ImagePickerAsset[]): FieldImage[] {
+  const merged = [...prev, ...toFieldImages(pickedImages, prev.length)].slice(0, MAX_IMAGES);
+  return merged.map((img, i) => ({ ...img, order: i }));
+}
+
 export default function AddFieldImages(props: AddFieldImagesProps) {
   const { control, name } = props;
   const { t } = useTranslate();
@@ -27,35 +42,24 @@ export default function AddFieldImages(props: AddFieldImagesProps) {
     field: { onChange: onChangeImages },
     fieldState: { error },
   } = useController({ control, name });
-  const { handlePickImage, images: pickedImages } = usePickImage();
+  const { handlePickImage } = usePickImage();
   const [images, setImages] = useState<FieldImage[]>([]);
 
-  useEffect(() => {
-    if (pickedImages && pickedImages.length > 0) {
-      setImages(prev => {
-        const newImages: FieldImage[] = pickedImages.map((img, index) => ({
-          name: img.fileName ?? `image-${Date.now()}`,
-          order: prev.length + index,
-          type: img.mimeType ?? 'image/jpeg',
-          uri: img.uri,
-        }));
-        const merged = [...prev, ...newImages].slice(0, MAX_IMAGES);
-        const next = merged.map((img, i) => ({ ...img, order: i }));
-        onChangeImages(next);
-        return next;
-      });
-    }
-  }, [pickedImages, onChangeImages]);
-
-  const handleAddImage = () => {
+  const handleAddImage = async () => {
     if (images.length >= MAX_IMAGES) return;
-    handlePickImage({ isCamera: false, isMultiple: true });
+    const pickedImages = await handlePickImage({ isCamera: false, isMultiple: true });
+    if (!pickedImages?.length) return;
+
+    setImages(prev => {
+      const next = mergeImages(prev, pickedImages);
+      onChangeImages(next);
+      return next;
+    });
   };
 
   const handleRemoveImage = (index: number) => {
     setImages(prev => {
-      const filtered = prev.filter((_, i) => i !== index);
-      const next = filtered.map((img, i) => ({ ...img, order: i }));
+      const next = prev.filter((_, i) => i !== index).map((img, i) => ({ ...img, order: i }));
       onChangeImages(next);
       return next;
     });

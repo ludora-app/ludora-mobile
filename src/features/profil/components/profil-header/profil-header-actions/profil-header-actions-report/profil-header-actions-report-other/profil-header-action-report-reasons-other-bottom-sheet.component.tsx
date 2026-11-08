@@ -1,7 +1,7 @@
 import { Button } from '@ludo/ui'
 import { useTranslate } from '@tolgee/react'
 
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component'
+import { FormSheetFooter } from '@/components/ui/form-sheet/components/form-sheet-footer.component'
 
 interface ProfilHeaderActionReportReasonsOtherBottomSheetProps {
   onPress: () => void

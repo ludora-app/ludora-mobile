@@ -1,11 +1,11 @@
 import { useTranslate } from '@tolgee/react'
 import { Box, Button, String } from '@ludo/ui'
 
-import type { SportProps } from '@/constants/sports.constants'
+import type { SportItem } from '@/types/sports.types'
 
 import { cn } from '@/components/chill-ui-library'
 import { getSportImage } from '@/utils/sports.utils'
-import { SPORTS } from '@/constants/sports.constants'
+import { useGetSports } from '@/queries/get-sports.query'
 
 import type { CreateFieldSchema } from '../../schemas/create-field.schema'
 
@@ -17,16 +17,16 @@ type AddFieldSportSelectorProps = {
 function AddFieldSportSelectorItem(props: {
   onPress: () => void
   selected: boolean
-  sport: SportProps
+  sport: SportItem
 }) {
   const { onPress, selected, sport } = props
   const { t } = useTranslate()
-  const sportImage = getSportImage(sport.name)
+  const sportImage = getSportImage(sport.code)
 
   return (
     <Button
       size="xl"
-      title={t(`common.session_sport_${sport.name}`)}
+      title={t(`common.session_sport_${sport.code}`)}
       image={{ className: 'size-6', contentFit: 'contain', source: sportImage }}
       contentProps={{
         className: 'gap-2',
@@ -43,6 +43,7 @@ function AddFieldSportSelectorItem(props: {
 export default function AddFieldSportSelector(props: AddFieldSportSelectorProps) {
   const { selectedSports, setValue } = props
   const { t } = useTranslate()
+  const { sports } = useGetSports()
 
   return (
     <Box>
@@ -50,12 +51,12 @@ export default function AddFieldSportSelector(props: AddFieldSportSelectorProps)
         {t('create-session-steps.step_1.select_sport')}
       </String>
       <Box className="flex flex-row flex-wrap gap-3">
-        {SPORTS.map(sport => (
+        {sports.map(sport => (
           <AddFieldSportSelectorItem
-            key={sport.id}
+            key={sport.code}
             sport={sport}
-            selected={selectedSports?.length === 1 && selectedSports[0] === sport.name}
-            onPress={() => setValue('sports', [sport.name])}
+            selected={selectedSports?.length === 1 && selectedSports[0] === sport.code}
+            onPress={() => setValue('sports', [sport.code])}
           />
         ))}
       </Box>

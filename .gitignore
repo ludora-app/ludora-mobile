@@ -58,3 +58,6 @@ dev.GoogleService-Info.plist
 locales
 /src/constants/icons.constants.ts
 service-account-file.json
+
+# graphify (local knowledge graph, each dev generates their own)
+graphify-out/

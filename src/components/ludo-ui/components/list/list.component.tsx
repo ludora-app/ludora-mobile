@@ -1,24 +1,26 @@
 import { list } from 'radash';
-import { ViewStyle } from 'react-native';
 import { cn, LoadingIndicator } from '@chillui/ui';
 import { useCallback, useMemo, useState } from 'react';
+import { useWindowDimensions, ViewStyle } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list/react-native';
 
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { EmptyResult } from '@/components/ui/empty-resulat';
+import { ErrorResult } from '@/components/ui/error-result/error-result.component';
 
 import { Box } from '../box';
 import { renderComponent } from './utils';
 import ListFooter from './list-footer.component';
-import { ListProps } from '../../types/list.types';
+import { ListItemType, ListProps } from '../../types/list.types';
 
 type SkeletonItem = { type: 'skeleton'; uid: string };
 type SpecialItem = { type: 'sticky' | 'header_top'; uid: string };
 type EmptyItem = { type: 'empty'; uid: string };
+type ErrorItem = { type: 'error'; uid: string };
 type LoadingItem = { type: 'loading'; uid: string };
-type ListItem = SkeletonItem | SpecialItem | EmptyItem | LoadingItem;
+type ListItem = SkeletonItem | SpecialItem | EmptyItem | ErrorItem | LoadingItem;
 
 const SKELETON_COUNT = 3;
 
@@ -27,12 +29,28 @@ const SKELETON_DATA: SkeletonItem[] = list(SKELETON_COUNT).map((_, i) => ({
   uid: `skel-${i}`,
 }));
 
+// Stable references, so that a re-render with unchanged data is not reported as a data change.
+const STICKY_ITEM: SpecialItem = { type: 'sticky', uid: 'sticky' };
+const HEADER_TOP_ITEM: SpecialItem = { type: 'header_top', uid: 'header_top' };
+const EMPTY_ITEM: EmptyItem = { type: 'empty', uid: 'empty_res' };
+const ERROR_ITEM: ErrorItem = { type: 'error', uid: 'error_res' };
+const LOADING_ITEM: LoadingItem = { type: 'loading', uid: 'loading' };
+
+const LIST_ITEM_TYPES = new Set<unknown>(['empty', 'error', 'header_top', 'loading', 'skeleton', 'sticky']);
+
+// A data item can have its own `type` field (a field is PUBLIC or PRIVATE): only the list's own items are typed
+function isListItem(item: unknown): item is ListItem {
+  return !!item && typeof item === 'object' && 'type' in item && LIST_ITEM_TYPES.has(item.type);
+}
+
 export default function List(props: ListProps) {
   const {
     contentContainerClassName,
     contentContainerStyle,
     data,
+    EmptyComponent,
     emptyResultProps,
+    errorResultProps,
     fetchNextPage,
     hasBottomSafeArea = false,
     hasHeaderTransparent,
@@ -40,6 +58,7 @@ export default function List(props: ListProps) {
     hasNextPage,
     hasRefreshControl,
     hasTopSafeArea = false,
+    isError = false,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -57,32 +76,51 @@ export default function List(props: ListProps) {
   } = props;
 
   const { bottom, safeTop } = useSafeArea();
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const showSkeletons = isLoading && !isRefetching && !!SkeletonComponent;
-  const isEmptyData = !isLoading && !isRefetching && (!data || data.length === 0);
+  const hasNoData = !data || data.length === 0;
+  const isEmptyData = !isLoading && !isRefetching && hasNoData;
+  // Kept while retrying, so the retry button shows its loader
+  const isErrorWithoutData = isError && !isLoading && hasNoData;
   const dataToRender = useMemo(() => {
     const items: ListItem[] = [];
 
     if (ListStickyComponent) {
-      items.push({ type: 'sticky', uid: 'sticky' });
+      items.push(STICKY_ITEM);
     }
     if (ListTopComponent) {
-      items.push({ type: 'header_top', uid: 'header_top' });
+      items.push(HEADER_TOP_ITEM);
     }
 
     if (showSkeletons) {
       items.push(...SKELETON_DATA);
     } else if (isLoading && !isRefetching) {
-      items.push({ type: 'loading', uid: 'loading' });
+      items.push(LOADING_ITEM);
+    } else if (isErrorWithoutData) {
+      items.push(ERROR_ITEM);
     } else if (isEmptyData) {
-      items.push({ type: 'empty', uid: 'empty_res' });
+      items.push(EMPTY_ITEM);
     } else {
       items.push(...(data || []));
     }
 
     return items;
-  }, [showSkeletons, isEmptyData, data, ListTopComponent, ListStickyComponent, isLoading, isRefetching]);
+  }, [
+    showSkeletons,
+    isErrorWithoutData,
+    isEmptyData,
+    data,
+    ListTopComponent,
+    ListStickyComponent,
+    isLoading,
+    isRefetching,
+  ]);
+
+  // New Architecture reports a scroll length of 0 before the first layout, so without this hint
+  // nothing is rendered until a layout round-trip has completed.
+  const estimatedListSize = useMemo(() => ({ height: windowHeight, width: windowWidth }), [windowHeight, windowWidth]);
 
   const stickyHeaderIndices = useMemo(() => {
     if (ListStickyComponent) {
@@ -97,16 +135,11 @@ export default function List(props: ListProps) {
     }
   }, [isLoading, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  const getItemType = useCallback((item: ListItem) => {
-    if (item && typeof item === 'object' && 'type' in item) {
-      return item.type;
-    }
-    return 'row';
-  }, []);
+  const getItemType = useCallback((item: ListItem): ListItemType => (isListItem(item) ? item.type : 'row'), []);
 
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<ListItem>) => {
-      if (item && typeof item === 'object' && 'type' in item) {
+      if (isListItem(item)) {
         switch (item.type) {
           case 'skeleton':
             return SkeletonComponent ? <SkeletonComponent /> : null;
@@ -121,14 +154,26 @@ export default function List(props: ListProps) {
               </Box>
             );
           case 'empty':
-            return <EmptyResult {...emptyResultProps} />;
+            return EmptyComponent ? renderComponent(EmptyComponent) : <EmptyResult {...emptyResultProps} />;
+          case 'error':
+            return <ErrorResult {...errorResultProps} onRetry={refetch} isRetrying={isRefetching} />;
           default:
             return <ItemComponent item={item} />;
         }
       }
       return <ItemComponent item={item} />;
     },
-    [ItemComponent, SkeletonComponent, ListStickyComponent, ListTopComponent, emptyResultProps],
+    [
+      ItemComponent,
+      SkeletonComponent,
+      ListStickyComponent,
+      ListTopComponent,
+      EmptyComponent,
+      emptyResultProps,
+      errorResultProps,
+      refetch,
+      isRefetching,
+    ],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {
@@ -188,7 +233,10 @@ export default function List(props: ListProps) {
       renderItem={renderItem}
       getItemType={getItemType}
       recycleItems
-      stickyIndices={stickyHeaderIndices}
+      estimatedListSize={estimatedListSize}
+      {...(!triggerEndReachedOnStart &&
+        listHeaderComponentHeight !== undefined && { estimatedHeaderSize: listHeaderComponentHeight })}
+      stickyHeaderIndices={stickyHeaderIndices}
       {...(triggerEndReachedOnStart && { onStartReached: onEndReached })}
       onEndReached={onEndReached}
       onEndReachedThreshold={0.5}

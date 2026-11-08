@@ -21,5 +21,5 @@ export const useGetSessionsMe = (enabled: boolean) => {
 
   const items = useMemo(() => data?.pages.flatMap(page => page.data.items) ?? [], [data]);
 
-  return { ...rest, items };
+  return { ...rest, isError, items };
 };

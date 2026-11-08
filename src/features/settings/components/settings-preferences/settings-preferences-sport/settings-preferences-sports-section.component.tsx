@@ -1,7 +1,8 @@
 import { useTranslate } from '@tolgee/react'
 import { Box, BoxRowCenterBetween, String } from '@ludo/ui'
 
-import { SPORTS, SportProps } from '@/constants/sports.constants'
+import { SportItem } from '@/types/sports.types'
+import { useGetSports } from '@/queries/get-sports.query'
 import { useSettingsPreferencesStore } from '@/features/settings/stores/settings-preferences.store'
 
 import SettingsPreferencesSportItem from './settings-preferences-sport-item.component'
@@ -10,10 +11,11 @@ import SettingsPreferencesSportItem from './settings-preferences-sport-item.comp
 
 export default function SettingsPreferencesSportsSection() {
   const { t } = useTranslate()
+  const { sports } = useGetSports()
   const toggleSportPreference = useSettingsPreferencesStore(state => state.toggleSportPreference)
 
-  const handleSportPress = (sport: SportProps) => {
-    toggleSportPreference(sport.name)
+  const handleSportPress = (sport: SportItem) => {
+    toggleSportPreference(sport.code)
   }
 
   return (
@@ -25,9 +27,9 @@ export default function SettingsPreferencesSportsSection() {
         {t('settings.preferences.sports_description')}
       </String>
       <BoxRowCenterBetween className="flex-wrap gap-5">
-        {SPORTS.map(sport => (
+        {sports.map(sport => (
           <SettingsPreferencesSportItem
-            key={sport.id}
+            key={sport.code}
             onPress={handleSportPress}
             sport={sport}
           />

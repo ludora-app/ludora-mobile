@@ -23,7 +23,7 @@ export function useAutoPlay({
   setCurrentIndex,
   totalItems,
 }: UseAutoPlayProps) {
-  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!autoPlay || totalItems === 0) {

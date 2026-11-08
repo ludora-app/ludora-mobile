@@ -24,6 +24,5 @@ export type ButtonProps = ChillUiButtonProps & {
     position?: 'left' | 'right' | 'left-outside' | 'right-outside';
     name: TIconsAll;
   };
-  isLoading?: boolean;
   loaderProps?: Omit<ButtonLoaderProps, 'name'>;
 };

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Image } from '@ludo/ui';
 import { Carousel, CarouselContent, CarouselDots, CarouselElement, CarouselItem } from '@chillui/ui';
 
@@ -18,7 +17,7 @@ export default function SessionSectionImages(props: SessionSectionImagesProps) {
 
   const { fieldImages, sport } = session || {};
 
-  const sportPlaceholder = useMemo(() => getSportPlaceHolder(sport), [sport]);
+  const sportPlaceholder = getSportPlaceHolder(sport);
 
   const sessionImages: FindOneSessionResponseData['fieldImages'] =
     fieldImages && fieldImages?.length > 0 ? fieldImages : [{ order: 1, url: sportPlaceholder }];

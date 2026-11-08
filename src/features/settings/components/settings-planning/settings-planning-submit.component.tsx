@@ -5,11 +5,11 @@ import { useToast } from '@/components/chill-ui-library';
 import { HourPreferenceData } from '@/api/generated/model';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
+import { usePutUserHoursPreferences } from '@/queries/put-user-hours-preferences.query';
 
 import SettingsFooterSubmit from '../settings-footer-submit.component';
 import { checkIsPlanningDirty } from '../../utils/settings-planning.utils';
 import { useSettingsPlanningStore } from '../../stores/settings-planning.store';
-import { usePutUserHoursPreferences } from '../../queries/user-hours-preferences/put-user-hours-preferences.query';
 import { useRemoveUserHoursPreferences } from '../../queries/user-hours-preferences/remove-user-hours-preferences.query';
 
 type SettingsPlanningSubmitProps = {

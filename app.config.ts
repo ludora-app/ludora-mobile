@@ -31,6 +31,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     android: {
       ...config.android,
+      ...(process.env.GOOGLE_MAPS_ANDROID_API_KEY && {
+        config: { ...config.android?.config, googleMaps: { apiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY } },
+      }),
       ...(hasAndroidServices && { googleServicesFile: googleServicesAndroid }),
       package: bundleIdentifier,
     },

@@ -18,4 +18,5 @@ export type ChipProps = ChillUiChipProps & {
     name: TIconsAll;
   };
   isLoading?: boolean;
+  isSelected?: boolean;
 };

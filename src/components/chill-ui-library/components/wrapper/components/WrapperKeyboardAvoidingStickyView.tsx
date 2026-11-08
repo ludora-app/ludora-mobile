@@ -7,8 +7,7 @@ import type { WrapperKeyboardAvoidingStickyViewProps } from '../../../types';
 
 import { Wrapper } from './Wrapper';
 import { cn } from '../../../utils';
-import { wrapperTv } from '../styles/Wrapper.styles';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
+import { wrapperTv, getSafeAreaVariants } from '../styles/Wrapper.styles';
 
 /**
  * The `<WrapperKeyboardAvoidingStickyView />` component provides a KeyboardStickyView wrapper for keyboard avoidance with sticky behavior.
@@ -28,10 +27,9 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * ```
  *
  * @param className - Custom CSS classes for the wrapper (NativeWind only)
- * @param edges - Safe area edges to apply when hasSafeArea is true: `'top'` | `'right'` | `'bottom'` | `'left'`
+ * @param safeArea - Safe area paddings on the view: `'top'` | `'right'` | `'bottom'` | `'left'`, or with a spacing offset 1–8 (`'bottom-4'`)
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
- * @param hasSafeArea - Whether to wrap content in SafeAreaView
  * @param offset - Offset for the keyboard avoiding sticky view: `{ close: number; open: number }`
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`
  * @param ViewProps - Any other props accepted by the native `View` component.
@@ -39,36 +37,25 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
 
 const StyledKeyboardStickyView = withUniwind(KeyboardStickyView);
 export function WrapperKeyboardAvoidingStickyView(props: PropsWithChildren<WrapperKeyboardAvoidingStickyViewProps>) {
-  const { children, className, edges, fill, grow, hasSafeArea, px, style, ...rest } = props;
+  const { children, className, fill, grow, px, safeArea, style, ...rest } = props;
 
   if (!KeyboardStickyView) {
     return (
-      <Wrapper
-        className={cn(wrapperTv({ fill, grow, px }), className)}
-        hasSafeArea={hasSafeArea}
-        edges={edges}
-        {...rest}
-      >
+      <Wrapper className={className} fill={fill} grow={grow} px={px} safeArea={safeArea} style={style} {...rest}>
         {children}
       </Wrapper>
     );
   }
 
-  const content = (
-    <StyledKeyboardStickyView className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
+  return (
+    <StyledKeyboardStickyView
+      className={cn(wrapperTv({ fill, grow, px, ...getSafeAreaVariants(safeArea) }), className)}
+      style={style}
+      {...rest}
+    >
       {children}
     </StyledKeyboardStickyView>
   );
-
-  if (hasSafeArea) {
-    return (
-      <WrapperSafeAreaView edges={edges} px="none">
-        {content}
-      </WrapperSafeAreaView>
-    );
-  }
-
-  return content;
 }
 
 WrapperKeyboardAvoidingStickyView.displayName = 'WrapperKeyboardAvoidingStickyView';

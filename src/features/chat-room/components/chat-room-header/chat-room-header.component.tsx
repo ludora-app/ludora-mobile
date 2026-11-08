@@ -12,7 +12,6 @@ import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { getSportPlaceHolder } from '@/utils/sports.utils';
 import { RootStackParamList } from '@/types/routes-params.types';
-import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 
 import { useChatRoomStore } from '../../context/chat-room-store-context';
 import { useChatRoomSessionTeam } from '../../utils/chat-room-session-team.utils';
@@ -48,7 +47,7 @@ export default function ChatRoomHeader() {
   const getAvatarImage = (): ImageSource | undefined => {
     if (imageUrl) return { uri: imageUrl };
     if (chatRoomIsGroup && sessionSport)
-      return getSportPlaceHolder(sessionSport as SessionCollectionItemDtoSport) as ImageSource;
+      return getSportPlaceHolder(sessionSport) as ImageSource;
     return undefined;
   };
   const avatarImage = getAvatarImage();

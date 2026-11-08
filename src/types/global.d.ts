@@ -1,3 +1,5 @@
+declare module '*.css';
+
 declare module '*.jpg' {
   const path: string;
   export default path;

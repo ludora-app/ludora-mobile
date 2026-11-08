@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/stores/auth.store';
 import { resetCaches } from '@/utils/reset-caches.utils';
@@ -20,7 +19,6 @@ type AuthTokens = {
 
 export function useAuthHelpers() {
   const { trackError } = useAnalytics();
-  const queryClient = useQueryClient();
   const { mutateAsync: signOut } = useGoogleSignOut();
   const { mutateAsync: unregisterDeviceAsync } = useUnRegisterDevice();
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
@@ -39,7 +37,6 @@ export function useAuthHelpers() {
   const logout = useCallback(async () => {
     setIsAuthenticated(false);
     resetCaches();
-    queryClient.clear();
 
     try {
       const fcmToken = await pushNotificationService.getFCMToken();
@@ -60,7 +57,6 @@ export function useAuthHelpers() {
       trackError({ error, showToast: false });
     }
   }, [
-    queryClient,
     signOut,
     setAccessTokenStorage,
     setRefreshTokenStorage,

@@ -13,12 +13,12 @@ import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { useJoinSession } from '@/queries/join-session.query';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { useChangeSessionTeam } from '@/queries/change-session-team.query';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 import { ConversationCollectionResponseDataType, FindOneSessionResponseData } from '@/api/generated/model';
 
-import { useJoinSession } from '../queries/join-session.query';
 import { useSessionTeamStore } from '../stores/session-team.store';
 import { SessionJoinedLocalParams, SessionScreenLocalSearchParams } from '../types/session.types';
 
@@ -49,15 +49,8 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
 
   const isSessionFull = remainingPlayers === 0;
 
-  const isFinished = useMemo(() => {
-    if (!session?.endDate) return false;
-    return isAfterNow(session.endDate);
-  }, [session?.endDate]);
-
-  const isStarted = useMemo(() => {
-    if (!session?.startDate) return false;
-    return dayjs().isAfter(dayjs(session.startDate));
-  }, [session?.startDate]);
+  const isFinished = !!session.endDate && isAfterNow(session.endDate);
+  const isStarted = !!session.startDate && dayjs().isAfter(dayjs(session.startDate));
 
   const canJoinSession = !isSessionFull && !isJoined;
   const canSwitchTeam = isSwitching;
@@ -149,7 +142,7 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
   }, [isJoined, sideTeam]);
 
   return (
-    <FormSheetFooter hasBottomSafeArea>
+    <FooterWrapper hasBottomSafeArea>
       {showActionButton && (
         <AnimatedButton
           entering={FadeIn}
@@ -170,6 +163,6 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
           {handleCantJoinSession()}
         </String>
       )}
-    </FormSheetFooter>
+    </FooterWrapper>
   );
 }

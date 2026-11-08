@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router'
 import { useTranslate } from '@tolgee/react'
 
 import { FormSheetView } from '@/features/profil/types'
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component'
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component'
 
 type ProfilHeaderActionsHeaderProps = {
   view: FormSheetView

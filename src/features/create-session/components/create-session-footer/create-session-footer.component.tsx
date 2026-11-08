@@ -1,4 +1,4 @@
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 
 import { useGetCreateSessionStep } from '../../hooks/create-session-step.hook';
 import { useCreateSessionLayoutStore } from '../../store/create-session-layout.store';
@@ -14,13 +14,13 @@ export default function CreateSessionFooter() {
   const showCreatedSessionButtons = activeStep === 5;
 
   return (
-    <FormSheetFooter
+    <FooterWrapper
       hasBottomSafeArea
       onLayout={e => setFooterHeight(e.nativeEvent.layout.height)}
     >
       {showNextStepButton && <CreateSessionFooterButtonNextStep activeStep={activeStep} />}
       {showCreateSessionButton && <CreateSessionFooterButtonCreateSession />}
       {showCreatedSessionButtons && <CreatedSessionFooterButtonsCreatedSession />}
-    </FormSheetFooter>
+    </FooterWrapper>
   );
 }

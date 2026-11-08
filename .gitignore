@@ -46,6 +46,7 @@ app-example
 # generated api
 /src/api/generated
 /tools/generate-api/swagger.json
+/swagger-backend.json
 
 # Firebase
 google-services.json

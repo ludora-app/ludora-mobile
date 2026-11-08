@@ -11,7 +11,7 @@ Claude Code runs non-interactively in GitHub Actions through [`anthropics/claude
 
 `issue_comment`, `repository_dispatch` and `workflow_dispatch` always run the workflow file from the default branch, so `claude.yml` and `claude-jira.yml` change behaviour only once they reach `main`. `pull_request` workflows run the file from the PR itself.
 
-All of them prepare the repo with the composite action `.github/actions/setup-ludora` (bun, envconsul, the `ludora-back` swagger, `generate:api`, `generate:translations:local`, `generate:icons`), the same preparation as `ci.yml`. Claude can then run `bun check:all`, and the husky pre-commit hook runs on its commits. bun is pinned to the version that writes `bun.lock` locally (`1.3.14`): a newer bun rewrites the lockfile and `--frozen-lockfile` fails, so bump both together.
+All of them prepare the repo with the composite action `.github/actions/setup-ludora` (bun, envconsul, the `ludora-back` swagger, `generate:api`, `generate:translations:local`, `generate:icons`), the same preparation as `ci.yml`. Claude can then run `bun check:all`, and the husky pre-commit hook runs on its commits. bun is pinned to the version that writes `bun.lock` locally (`1.4.4`, also the one claude-code-action installs): another bun rewrites the lockfile and `--frozen-lockfile` fails, so bump the local bun, `bun-version` in `setup-ludora` and `@types/bun` together.
 
 ## Setup (once)
 

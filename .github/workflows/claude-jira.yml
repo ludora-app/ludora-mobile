@@ -407,7 +407,6 @@ jobs:
           BASE: ${{ steps.target.outputs.base }}
           BEFORE: ${{ steps.start.outputs.sha }}
           EXPECTED_BRANCH: ${{ steps.find.outputs.branch }}
-          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           KEY: ${{ steps.key.outputs.key }}
           MODE: ${{ steps.find.outputs.mode }}
@@ -462,6 +461,18 @@ jobs:
           bun install --frozen-lockfile || fail "bun.lock n'est pas à jour avec package.json."
           bun run lint || fail "bun lint échoue."
           bun run ts:check || fail "bun ts:check échoue."
+
+          # claude-code-action revokes its app token when it ends: ask for a new one, so the push and the PR
+          # are still made by claude[bot] (a GITHUB_TOKEN push would not start the PR checks).
+          OIDC=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=claude-code-github-action" | jq -r '.value // empty') || true
+          [ -n "$OIDC" ] || fail "Impossible d'obtenir le jeton OIDC GitHub pour pousser la branche."
+          GH_TOKEN=$(curl -sSf -X POST -H "Authorization: Bearer $OIDC" \
+            https://api.anthropic.com/api/github/github-app-token-exchange | jq -r '.token // .app_token // empty') || true
+          [ -n "$GH_TOKEN" ] || fail "Impossible d'obtenir un jeton de l'app Claude pour pousser la branche."
+          echo "::add-mask::$GH_TOKEN"
+          export GH_TOKEN
+          trap 'curl -sS -o /dev/null -X DELETE -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/installation/token || true' EXIT
 
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 

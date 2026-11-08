@@ -4,19 +4,19 @@ import { cn, Separator as SeparatorChillUi, SeparatorContent, SeparatorDivider }
 import { String } from '../string';
 import { SeparatorProps } from '../../types';
 
-export default function Separator(props: SeparatorProps) {
+export const Separator = (props: SeparatorProps) => {
   const { className, deviderClassName, title, titleProps } = props;
 
   return (
-    <SeparatorChillUi className={cn('gap-2', className)}>
-      <SeparatorDivider className={cn('bg-[#D8DADC]', deviderClassName)} />
+    <SeparatorChillUi className={cn('gap-3', className)}>
+      <SeparatorDivider className={cn('bg-input', deviderClassName)} />
       {!!title && (
         <SeparatorContent>
-          <String variant="body-xs" colorVariant="muted" {...titleProps}>
+          <String variant="body-sm" className="text-dark/75" {...titleProps}>
             {title}
           </String>
         </SeparatorContent>
       )}
     </SeparatorChillUi>
   );
-}
+};

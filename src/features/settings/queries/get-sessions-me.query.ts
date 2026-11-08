@@ -30,5 +30,5 @@ export const useGetSessionsMe = () => {
 
   const items = data?.pages.flatMap(page => page.data.items) ?? [];
 
-  return { ...rest, items };
+  return { ...rest, isError, items };
 };

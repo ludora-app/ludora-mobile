@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
 import { cn } from '@/components/chill-ui-library/utils';
 
@@ -19,10 +19,12 @@ function NumericInput({
   value = 0,
 }: PropsWithChildren<NumericInputProps>) {
   const [internalValue, setInternalValue] = useState(value);
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     setInternalValue(value);
-  }, [value]);
+  }
 
   const handleValueChange = useCallback(
     (newValue: number) => {

@@ -10,17 +10,25 @@ import {
 
 import { wrapperTv } from '../components/wrapper/styles/Wrapper.styles';
 
+type WrapperSafeAreaSide = 'top' | 'right' | 'bottom' | 'left';
+
+export type WrapperSafeAreaOffset = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+/**
+ * Safe area edge: `'bottom'` pads by the inset, `'bottom-4'` by the inset plus spacing 4 (16px)
+ */
+export type WrapperSafeAreaEdge = WrapperSafeAreaSide | `${WrapperSafeAreaSide}-${WrapperSafeAreaOffset}`;
+
 /**
  * Base props for Wrapper components
  */
 export type WrapperBaseProps = ViewProps &
-  VariantProps<typeof wrapperTv> & {
+  // Safe area variants are driven by `safeArea` only
+  Omit<VariantProps<typeof wrapperTv>, 'safeBottom' | 'safeLeft' | 'safeRight' | 'safeTop'> & {
     /** Custom CSS classes for the wrapper (NativeWind only) */
     className?: string;
-    /** Whether to wrap content in SafeAreaView */
-    hasSafeArea?: boolean;
-    /** Safe area edges to apply when hasSafeArea is true */
-    edges?: ('top' | 'right' | 'bottom' | 'left')[];
+    /** Safe area edges to pad, optionally with a spacing offset (`'bottom-4'`) */
+    safeArea?: WrapperSafeAreaEdge[];
   };
 
 /**
@@ -49,7 +57,6 @@ export type WrapperGestureHandlerScrollViewProps = WrapperBaseProps &
  * Props for WrapperSafeAreaView component
  */
 export type WrapperSafeAreaViewProps = WrapperBaseProps & {
-  edges?: ('top' | 'right' | 'bottom' | 'left')[];
   emulateUnlessSupported?: boolean;
 };
 

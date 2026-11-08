@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import type { NumericInputFieldProps } from '../../../types/numericInput.types';
 
@@ -11,10 +11,12 @@ export default function NumericInputField(props: NumericInputFieldProps) {
   const { className, content, ref, ...rest } = props;
   const { isDisabled, onValueChange, size, value } = useNumericInputContext();
   const [displayValue, setDisplayValue] = useState(value?.toString());
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     setDisplayValue(value?.toString());
-  }, [value]);
+  }
 
   const handleOnChange = useCallback(
     (text: string) => {

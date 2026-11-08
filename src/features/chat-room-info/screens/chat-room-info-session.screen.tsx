@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { ImageSource } from 'expo-image';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Avatar, BoxCenter, BoxGrow, ScreenLayout, ScrollView, Separator, String, Wrapper } from '@ludo/ui';
@@ -7,10 +6,9 @@ import { isAfterNow } from '@/utils/time.utils';
 import ROUTES from '@/constants/routes.constants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { getSportPlaceHolder } from '@/utils/sports.utils';
-import Loading from '@/components/ui/loading/loading.component';
 import { RootStackParamList } from '@/types/routes-params.types';
+import { Loading } from '@/components/ui/loading/loading.component';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
-import { SessionCollectionItemDtoSport } from '@/api/generated/model';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
 
 import ChatRoomInfoHeader from '../components/chat-room-info-header.component';
@@ -29,18 +27,13 @@ export default function ChatRoomInfoSessionScreen() {
 
   const { data: sessionData, isLoading: isLoadingSession } = useGetSessionById(sessionUid);
 
-  const avatarImage = useMemo((): ImageSource | undefined => {
+  const getAvatarImage = (): ImageSource | undefined => {
     if (imageUrl) return { uri: imageUrl };
-    if (sessionData?.sport)
-      return getSportPlaceHolder(sessionData.sport as SessionCollectionItemDtoSport) as ImageSource;
+    if (sessionData?.sport) return getSportPlaceHolder(sessionData.sport) as ImageSource;
     return undefined;
-  }, [imageUrl, sessionData?.sport]);
+  };
 
-  const isFinished = useMemo(() => {
-    if (!sessionData?.endDate) return false;
-    return isAfterNow(sessionData.endDate);
-  }, [sessionData?.endDate]);
-
+  const isFinished = !!sessionData?.endDate && isAfterNow(sessionData.endDate);
   const shouldShowActions = !isFinished && sessionData?.isJoined;
 
   if (!sessionUid) {
@@ -68,7 +61,7 @@ export default function ChatRoomInfoSessionScreen() {
             <Avatar
               data={{
                 firstname: name,
-                imageUrl: avatarImage,
+                imageUrl: getAvatarImage(),
               }}
               size="2xl"
               className="rounded-2xl"

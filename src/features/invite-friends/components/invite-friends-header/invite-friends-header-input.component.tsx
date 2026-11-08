@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form';
 import { debounce, isString } from 'radash';
 import { useTranslate } from '@tolgee/react';
 import { FormInput, Wrapper } from '@ludo/ui';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useRef } from 'react';
 
@@ -12,11 +12,11 @@ import InviteFriendsHeaderInvitedFriends from './invite-friends-header-invited-f
 export default function InviteFriendsHeaderInput() {
   const { t } = useTranslate();
   const setFilter = useInviteFriendsFilterStore(state => state.setFilter);
-  const { control, watch } = useForm({
+  const { control } = useForm({
     defaultValues: { search: '' },
     resolver: zodResolver(inviteFriendsSearchSchema),
   });
-  const inputValue = watch('search');
+  const inputValue = useWatch({ control, name: 'search' });
 
   const handleSearch = useCallback(
     async (searchValue: string) => {

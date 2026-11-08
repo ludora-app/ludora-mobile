@@ -1,13 +1,13 @@
 import { createContext, useContext } from 'react';
 
-import type { ButtonProps } from '../../../types';
+import type { ChipProps } from '../../../types';
 
 export type ChipContextValue = {
-  colorVariant: ButtonProps['colorVariant'];
+  colorVariant: ChipProps['colorVariant'];
   isDisabled: boolean;
-  size: ButtonProps['size'];
+  size: ChipProps['size'];
   sizingVariant: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-  variant: ButtonProps['variant'];
+  variant: ChipProps['variant'];
 };
 
 export const ChipContext = createContext<ChipContextValue | null>(null);

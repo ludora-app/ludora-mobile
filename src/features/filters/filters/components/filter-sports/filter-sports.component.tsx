@@ -2,36 +2,16 @@ import { useTranslate } from '@tolgee/react';
 import { Box, BoxRow, BoxRowCenterBetween, Icon, String } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
+import { useGetSports } from '@/queries/get-sports.query';
 import { SessionsFindAllSportsItem } from '@/api/generated/model';
 
 import FilterSportsItem from './filter-sports-item.component';
 import { useFiltersStore, selectFilters } from '../../store/filters.store';
 
-interface SportProps {
-  id: number;
-  name: SessionsFindAllSportsItem;
-}
-const sports: SportProps[] = [
-  {
-    id: 1,
-    name: SessionsFindAllSportsItem.TENNIS,
-  },
-  {
-    id: 2,
-    name: SessionsFindAllSportsItem.FOOTBALL,
-  },
-  {
-    id: 3,
-    name: SessionsFindAllSportsItem.BASKETBALL,
-  },
-  {
-    id: 4,
-    name: SessionsFindAllSportsItem.PADEL,
-  },
-];
 export default function FilterSports() {
   const selecteSports = useFiltersStore(state => selectFilters(state)?.sports);
   const { t } = useTranslate();
+  const { sports } = useGetSports();
 
   return (
     <Box className="gap-3 rounded-xl border border-ring bg-white p-3 py-2">
@@ -58,7 +38,7 @@ export default function FilterSports() {
       </BoxRowCenterBetween>
       <Box className="flex flex-row flex-wrap gap-3">
         {sports.map(sport => (
-          <FilterSportsItem key={sport.id} sport={sport} />
+          <FilterSportsItem key={sport.code} sport={sport} />
         ))}
       </Box>
     </Box>

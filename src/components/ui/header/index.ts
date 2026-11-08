@@ -1,4 +1,4 @@
-export { default as Header } from './components/header.component';
+export { HeaderHero } from './components/header-hero.component';
+export { HeaderMascot } from './components/header-mascot.component';
+export { HeaderRounded } from './components/header-rounded.component';
 export { default as HeaderScreen } from './components/header-screen.component';
-export { default as HeaderWrapper } from './components/header-wrapper.component';
-export { default as HeaderProgressStepper } from './components/header-progress-stepper.component';

@@ -4,6 +4,7 @@ import { Box, BoxRow, Button } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ShareButton } from '@/components/ui/share-button';
+import { LUDORA_WEBSITE_URL } from '@/constants/links.constants';
 
 import { useCreateSessionStore } from '../../store/create-session.store';
 
@@ -18,7 +19,7 @@ export default function CreatedSessionFooterButtonsCreatedSession() {
     router.navigate(ROUTES.INVITE_FRIENDS.INDEX_UID(createdSessionUid));
   };
 
-  const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(createdSessionUid ?? '')}`;
+  const shareUrl = `${LUDORA_WEBSITE_URL}${ROUTES.SESSION.INDEX_UID(createdSessionUid ?? '')}`;
 
   return (
     <Box className="w-full gap-4">

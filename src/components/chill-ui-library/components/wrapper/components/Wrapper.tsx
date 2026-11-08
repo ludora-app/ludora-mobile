@@ -4,8 +4,7 @@ import type { WrapperProps } from '../../../types';
 
 import { Box } from '../../box';
 import { cn } from '../../../utils';
-import { wrapperTv } from '../styles/Wrapper.styles';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
+import { wrapperTv, getSafeAreaVariants } from '../styles/Wrapper.styles';
 
 /**
  * The `<Wrapper />` component provides a flexible container with default styling and SafeAreaView support.
@@ -25,31 +24,20 @@ import { WrapperSafeAreaView } from './WrapperSafeAreaView';
  * ```
  *
  * @param className - Custom CSS classes for the wrapper (NativeWind)
- * @param edges - Safe area edges to apply when hasSafeArea is true: `'top'` | `'right'` | `'bottom'` | `'left'`
+ * @param safeArea - Safe area paddings: `'top'` | `'right'` | `'bottom'` | `'left'`, or with a spacing offset 1–8 (`'bottom-4'`)
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
- * @param hasSafeArea - Whether to wrap content in SafeAreaView
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`
  * @param ViewProps - Any other props accepted by the native `View` component.
  */
 export function Wrapper(props: PropsWithChildren<WrapperProps>) {
-  const { children, className, edges, fill, grow, hasSafeArea, px, ...rest } = props;
+  const { children, className, fill, grow, px, safeArea, ...rest } = props;
 
-  const content = (
-    <Box className={cn(wrapperTv({ fill, grow, px }), className)} {...rest}>
+  return (
+    <Box className={cn(wrapperTv({ fill, grow, px, ...getSafeAreaVariants(safeArea) }), className)} {...rest}>
       {children}
     </Box>
   );
-
-  if (hasSafeArea) {
-    return (
-      <WrapperSafeAreaView edges={edges} px="none">
-        {content}
-      </WrapperSafeAreaView>
-    );
-  }
-
-  return content;
 }
 
 Wrapper.displayName = 'Wrapper';

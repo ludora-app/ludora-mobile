@@ -1,22 +1,22 @@
-import { List } from '@ludo/ui';
 import { useMemo } from 'react';
+import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { IS_ANDROID } from '@/constants/platform.constants';
-import { SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
+import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
 
 import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
 import { useGetIncommingSessionMe } from '../../queries/get-incomming-session-me.query';
+import { useGetIsFirstSessionPending } from '../../queries/get-is-first-session-pending.query';
 import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
 import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
 import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
 
-const ESTIMATED_LIST_ITEM_SIZE = 170;
-const ESTIMATED_LIST_STICKY_COMPONENT = 66.33;
-const ESTIMATED_LIST_TOP_COMPONENT = 132.66;
+const FIXED_LIST_STICKY_COMPONENT_SIZE = 66.33;
+const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
 
 const LIST_HEADER_HEIGHT = 176;
-const LIST_HEADER_HEIGHT_WITH_SESSION = 210;
+const LIST_HEADER_HEIGHT_WITH_SESSION = 256;
 
 const BOTTOM_PADDING_EMPTY_LIST = 100;
 
@@ -31,6 +31,7 @@ export default function HomeSessionList() {
   const {
     fetchNextPage,
     hasNextPage,
+    isError,
     isFetchingNextPage,
     isLoading,
     isRefetching,
@@ -44,27 +45,28 @@ export default function HomeSessionList() {
   const hasNewSession = showSessionCard && !IncommingSessionMeIsLoading;
 
   const { bottomTab } = useSafeArea();
+  const { isFirstSessionPending } = useGetIsFirstSessionPending();
 
-  const fixedEstimatedItemsSize = useMemo(
-    () => (index: number) => {
-      if (index === 0) {
-        return ESTIMATED_LIST_STICKY_COMPONENT;
+  const fixedItemsSize = useMemo<GetListFixedItemSize>(
+    () => (_item, _index, type) => {
+      if (type === 'sticky') {
+        return FIXED_LIST_STICKY_COMPONENT_SIZE;
       }
-      if (index === 1) {
-        return ESTIMATED_LIST_TOP_COMPONENT;
+      if (type === 'header_top') {
+        // The first session card makes the top header taller: let the list measure it
+        return isFirstSessionPending ? undefined : FIXED_LIST_TOP_COMPONENT_SIZE;
       }
-
-      return ESTIMATED_LIST_ITEM_SIZE;
+      return SESSION_CARD_LIST_ITEM_HEIGHT;
     },
-    [],
+    [isFirstSessionPending],
   );
 
   const paddingBottom = useMemo(() => {
     if (IS_ANDROID) {
       if (sessions.length === 0) {
-        return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT + BOTTOM_PADDING_EMPTY_LIST;
+        return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE + BOTTOM_PADDING_EMPTY_LIST;
       }
-      return bottomTab + ESTIMATED_LIST_STICKY_COMPONENT + ESTIMATED_LIST_TOP_COMPONENT;
+      return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE;
     }
     return bottomTab;
   }, [bottomTab, sessions.length]);
@@ -85,9 +87,10 @@ export default function HomeSessionList() {
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isLoading={isLoading}
+      isError={isError}
       hasRefreshControl
       refetch={refetch}
-      getFixedItemSize={fixedEstimatedItemsSize}
+      getFixedItemSize={fixedItemsSize}
       isRefetching={isRefetching}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"

@@ -1,8 +1,8 @@
 import { list, shuffle } from 'radash';
-import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
 import { FlatList, Keyboard } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
+import { useForm, useWatch } from 'react-hook-form';
 import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -33,10 +33,8 @@ import {
 /** Fallback si le footer n’a pas encore été mesuré (1er frame). */
 const FOOTER_HEIGHT_FALLBACK = 90;
 
-const KEYBOARD_BOTTOM_OFFSET = 80;
 
 const generateRandomTitleSuggestions = () => {
-
   const totalVariants = 21;
   const numberOfSuggestions = 5;
   const allIndices = list(totalVariants).map((_, index) => index + 1);
@@ -68,7 +66,6 @@ export default function CreateSessionStep3Screen() {
     control,
     formState: { isValid },
     setValue,
-    watch,
   } = useForm<CreateSessionStep3Schema>({
     defaultValues: {
       description: description || undefined,
@@ -89,7 +86,7 @@ export default function CreateSessionStep3Screen() {
   }, [isValid, setIsStep3Valid]);
 
   // Sync form values with store
-  const watchedValues = watch();
+  const watchedValues = useWatch({ control });
   useEffect(() => {
     const cleanedValues = {
       description: watchedValues.description?.trim(),
@@ -115,7 +112,6 @@ export default function CreateSessionStep3Screen() {
       contentContainerClassName="gap-5 pb-10"
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
-      bottomOffset={KEYBOARD_BOTTOM_OFFSET}
       hasKeyboardToolbar
       keyboardToolbarProps={{
         offset: { closed: 0, opened: toolbarOpenedOffset },
@@ -225,6 +221,6 @@ export default function CreateSessionStep3Screen() {
           </BoxGrow>
         </BoxRowCenterBetween>
       </Box>
-    </WrapperKeyboardAwareScrollView >
+    </WrapperKeyboardAwareScrollView>
   );
 }

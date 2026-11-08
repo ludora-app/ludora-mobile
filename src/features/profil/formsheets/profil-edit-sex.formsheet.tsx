@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { useToast } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { Chip, Wrapper } from '@ludo/ui';
-import { useForm } from 'react-hook-form';
 import { useTranslate } from '@tolgee/react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useUserMe } from '@/queries/user-me.query';
@@ -11,7 +11,7 @@ import { ErrorResponse } from '@/api/orval.instance';
 import { UpdateUserDtoSex } from '@/api/generated/model';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useUpdateUserMe } from '@/queries/update-user-me.query';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component';
 import { profilEditSexSchema, ProfilEditSexSchema } from '../schemas/profil-edit-sex.schema';
@@ -36,14 +36,14 @@ export default function ProfilEditSexFormsheet() {
   const { trackError, trackEvent, trackIdentity } = useAnalytics();
   const { isPending: isUpdatingUserMe, mutateAsync: updateUserMe } = useUpdateUserMe();
 
-  const { handleSubmit, setValue, watch } = useForm<z.infer<typeof profilEditSexSchema>>({
+  const { control, handleSubmit, setValue } = useForm<z.infer<typeof profilEditSexSchema>>({
     defaultValues: {
       sex: userMeSex ?? undefined,
     },
     resolver: zodResolver(profilEditSexSchema),
   });
 
-  const selectedSex = watch('sex');
+  const selectedSex = useWatch({ control, name: 'sex' });
 
   const onSubmit = async (data: ProfilEditSexSchema) => {
     try {

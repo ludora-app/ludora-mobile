@@ -1,8 +1,8 @@
-import { useForm } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
 import { isString, debounce } from 'radash';
 import { useTranslate } from '@tolgee/react';
 import { FormInput, Wrapper } from '@ludo/ui';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useChatStore } from '../../store/chat.store';
@@ -10,14 +10,13 @@ import { ChatInputSchema, schema } from '../../schemas/chat.schema';
 
 const DEBOUNCE_DELAY = 300;
 
-
 export default function ChatConversationsHeaderSearch() {
   const { t } = useTranslate();
-  const { control, watch } = useForm<ChatInputSchema>({
+  const { control } = useForm<ChatInputSchema>({
     resolver: zodResolver(schema),
   });
 
-  const search = watch('search');
+  const search = useWatch({ control, name: 'search' });
   const setFilters = useChatStore(state => state.setFilters);
 
   const debouncedSearchRef = useRef(
@@ -33,7 +32,7 @@ export default function ChatConversationsHeaderSearch() {
   }, [search]);
 
   return (
-    <Wrapper className='pt-safe-offset-1'>
+    <Wrapper className="pt-safe-offset-1">
       <FormInput
         control={control}
         name="search"

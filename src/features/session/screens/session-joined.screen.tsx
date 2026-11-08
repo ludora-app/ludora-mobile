@@ -4,6 +4,7 @@ import { Box, BoxRow, Button, Icon, String, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ShareButton } from '@/components/ui/share-button';
+import { LUDORA_WEBSITE_URL } from '@/constants/links.constants';
 import { RootStackParamList } from '@/types/routes-params.types';
 import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
@@ -28,7 +29,7 @@ export default function SessionJoinedScreen() {
       pathname: ROUTES.CHAT_ROOM.INDEX_UID(conversationUid),
     });
   };
-  const shareUrl = `https://www.ludora.fr${ROUTES.SESSION.INDEX_UID(conversationUid)}`;
+  const shareUrl = `${LUDORA_WEBSITE_URL}${ROUTES.SESSION.INDEX_UID(conversationUid)}`;
 
   return (
     <>

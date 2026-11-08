@@ -1,4 +1,6 @@
-import { ViewProps, ViewStyle } from 'react-native';
+import type { AnimatedStyle } from 'react-native-reanimated';
+
+import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
 /**
  * Props for the BounceBox component.
@@ -7,7 +9,7 @@ import { ViewProps, ViewStyle } from 'react-native';
  * Can be triggered manually or automatically at specified intervals.
  *
  */
-export interface BounceBoxProps extends ViewProps {
+export interface BounceBoxProps extends Omit<ViewProps, 'style'> {
   /** Duration of the bounce animation in milliseconds. */
   duration?: number;
 
@@ -30,7 +32,7 @@ export interface BounceBoxProps extends ViewProps {
   className?: string;
 
   /** Style for the component. */
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle | AnimatedStyle<ViewStyle>>;
 }
 
 /**

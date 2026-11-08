@@ -23,5 +23,5 @@ export const useGetSessionsByUserId = (userId: string) => {
 
   useGetMethodErrorTracking({ error, isError });
 
-  return { ...rest, items };
+  return { ...rest, isError, items };
 };

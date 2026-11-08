@@ -1,7 +1,7 @@
 import { cn } from '@chillui/ui';
 import { Wrapper } from '@ludo/ui';
 import { PropsWithChildren } from 'react';
-import { StyleSheet } from 'react-native';
+import { LayoutChangeEvent, StyleSheet } from 'react-native';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 
@@ -17,10 +17,11 @@ type FooterWrapperProps = {
   hasBottomSafeArea?: boolean;
   shadowVariant?: 'black' | 'primary';
   className?: string;
+  onLayout?: (event: LayoutChangeEvent) => void;
 };
 
 export default function FooterWrapper(props: PropsWithChildren<FooterWrapperProps>) {
-  const { children, className, hasBottomSafeArea = false, shadowVariant = 'black' } = props;
+  const { children, className, hasBottomSafeArea = false, onLayout, shadowVariant = 'black' } = props;
   const { bottom } = useSafeArea();
   return (
     <Wrapper
@@ -30,6 +31,7 @@ export default function FooterWrapper(props: PropsWithChildren<FooterWrapperProp
         hasBottomSafeArea && { paddingBottom: bottom },
       ]}
       fill={false}
+      onLayout={onLayout}
     >
       {children}
     </Wrapper>

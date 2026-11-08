@@ -16,8 +16,8 @@ import QuickActionCard from '@/components/ui/quick-action-card.component';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 import { useReportUser } from '@/features/profil/queries/report-user.query';
 import { BoxRowCenterBetween, useToast } from '@/components/chill-ui-library';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
 import { CreateReportDtoReason, FindOneConversationResponseDataType } from '@/api/generated/model';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import ChatRoomUserProfileBlockUser from '../components/chat-room-user-profil-formsheet/chat-room-user-profile-block-user.component';
 import ChatRoomUserProfileReportUser from '../components/chat-room-user-profil-formsheet/chat-room-user-profile-report-user.component';

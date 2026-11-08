@@ -1,16 +1,16 @@
 import { tv } from 'tailwind-variants';
 
 const textSizes = {
-  '2xl': 'text-[24px] leading-[32px]',
+  '2xl': 'text-[24px] leading-10',
   '3xl': 'text-[30px] leading-[36px]',
-  '4xl': 'text-[36px] leading-[40px]',
+  '4xl': 'text-[36px] leading-11',
   '5xl': 'text-[48px] leading-[52px]',
   '6xl': 'text-[60px] leading-[64px]',
   '7xl': 'text-[72px] leading-[76px]',
   '8xl': 'text-[96px] leading-[100px]',
   '9xl': 'text-[128px] leading-[132px]',
   lg: 'text-[18px] leading-[28px]',
-  md: 'text-[16px] leading-[24px]',
+  md: 'text-[16px] leading-6',
   sm: 'text-[14px] leading-[20px]',
   xl: 'text-[20px] leading-[28px]',
   xs: 'text-[12px] leading-[16px]',
@@ -49,6 +49,7 @@ export const stringTv = tv({
       right: 'text-right',
     },
 
+    // title-3+ use ~1.22x line heights: tighter ones make iOS clip the top of Baloo 2 (very tall ascenders)
     variant: {
       'body-1': textSizes.md,
       'body-2': textSizes.lg,

@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import { isAfterNow } from '@/utils/time.utils';
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import Loading from '@/components/ui/loading/loading.component';
+import { Loading } from '@/components/ui/loading/loading.component';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
 import { SessionTeamsLocalSearchParams } from '@/features/session/types/session.types';
 import { useGetSessionTeams } from '@/features/session/queries/get-session-teams.query';

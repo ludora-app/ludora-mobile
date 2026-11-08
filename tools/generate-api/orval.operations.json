@@ -53,6 +53,12 @@
       "useInfiniteQueryParam": "cursor"
     }
   },
+  "SessionsController_findRecommended": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
   "SessionsController_findAllMySessions": {
     "query": {
       "useInfinite": true,
@@ -90,6 +96,12 @@
     }
   },
   "UsersController_findAll": {
+    "query": {
+      "useInfinite": true,
+      "useInfiniteQueryParam": "cursor"
+    }
+  },
+  "UsersController_findCompatible": {
     "query": {
       "useInfinite": true,
       "useInfiniteQueryParam": "cursor"

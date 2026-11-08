@@ -4,24 +4,22 @@ import { useForm } from 'react-hook-form';
 import { Box, useToast } from '@chillui/ui';
 import { useTranslate } from '@tolgee/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { String, Button, FormInput, WrapperKeyboardAwareScrollView } from '@ludo/ui';
+import { String, Button, FormInput, WrapperKeyboardAwareScrollView, Wrapper } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { ErrorResponse } from '@/api/orval.instance';
+import { HeaderMascot } from '@/components/ui/header';
 import { NAME_REGEX } from '@/utils/zod-schemas.utils';
 import { useAuthHelpers } from '@/hooks/auth-helpers.hook';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import FormDatePickerInput from '@/components/ludo-ui/components/form/form-date-picker-input.component';
-import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
 
-import { useRegister } from '../queries/register.hook';
+import { useRegister } from '../queries/register.query';
 import { formSchema } from '../schemas/register-step-2.schema';
 
 const EMAIL_ALREADY_EXISTS_ERROR_MESSAGE = 'User already exists';
 
-const KEYBOARD_BOTTOM_OFFSET = 80;
-
-export default function RegisterStep2Screen() {
+export const RegisterStep2Screen = () => {
   const router = useRouter();
   const { isPending: registerPending, mutateAsync: registerUser } = useRegister();
   const { t } = useTranslate();
@@ -70,34 +68,34 @@ export default function RegisterStep2Screen() {
   };
 
   return (
-    <>
-      <HeaderGoBack title={t('auth.register-step-2.title')} titleProps={{ variant: 'title-1' }} hasTopSafeArea />
-      <WrapperKeyboardAwareScrollView
-        hasSafeArea
-        edges={['bottom']}
-        contentContainerClassName="pt-5"
-        hasKeyboardToolbar
-        bottomOffset={KEYBOARD_BOTTOM_OFFSET}
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-      >
-        <Box className="mb-5 flex-1 gap-5">
-          <Box className="flex-row gap-4">
-            <Box className="flex-1">
-              <FormInput
-                name="lastname"
-                placeholder={t('common.input_lastname_placeholder')}
-                control={control}
-                label={t('common.input_lastname_label')}
-                customRegex={NAME_REGEX}
-              />
-            </Box>
+    <WrapperKeyboardAwareScrollView
+      safeArea={['bottom']}
+      px="none"
+      hasKeyboardToolbar
+      mode="layout"
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bounces={false}
+    >
+      <HeaderMascot titleProps={{ title: t('auth.register-step-2.title') }} mascotName="ludo-sunglass" />
+      <Wrapper className="pt-6.5">
+        <Box className="mb-4 flex-1 gap-3.5">
+          <Box className="flex-row gap-3">
             <Box className="flex-1">
               <FormInput
                 name="firstname"
                 placeholder={t('common.input_firstname_placeholder')}
                 control={control}
                 label={t('common.input_firstname_label')}
+                customRegex={NAME_REGEX}
+              />
+            </Box>
+            <Box className="flex-1">
+              <FormInput
+                name="lastname"
+                placeholder={t('common.input_lastname_placeholder')}
+                control={control}
+                label={t('common.input_lastname_label')}
                 customRegex={NAME_REGEX}
               />
             </Box>
@@ -133,54 +131,54 @@ export default function RegisterStep2Screen() {
           <Button
             title={t('auth.register-step-2.button_title')}
             onPress={handleSubmit(onSubmit)}
-            className="mt-4 w-full"
-            // isDisabled={!isValid}
+            className="mt-1 w-full"
+            size="xl"
             isLoading={registerPending}
           />
         </Box>
-        <String size="sm" useFastText={false} onPress={() => {}}>
+        <String useFastText={false} variant="body-xs">
           {t('auth.register-step-2.acceptance_part_1')}
           <String
-            size="sm"
             useFastText={false}
             font="primaryBold"
             className="underline"
+            variant="body-xs"
             onPress={() => router.navigate(ROUTES.LEGAL.CGU_MENTIONS)}
           >
             {t('auth.register-step-2.acceptance_part_2')}
           </String>
           {t('auth.register-step-2.acceptance_part_3')}
           <String
-            size="sm"
             useFastText={false}
             font="primaryBold"
             className="underline"
+            variant="body-xs"
             onPress={() => router.navigate(ROUTES.LEGAL.CGV)}
           >
             {t('auth.register-step-2.acceptance_part_4')}
           </String>
           {t('auth.register-step-2.acceptance_part_5')}
           <String
-            size="sm"
             useFastText={false}
             font="primaryBold"
             className="underline"
+            variant="body-xs"
             onPress={() => router.navigate(ROUTES.LEGAL.NON_DISCRIMINATION)}
           >
             {t('auth.register-step-2.acceptance_part_6')}
           </String>
           {t('auth.register-step-2.acceptance_part_7')}
           <String
-            size="sm"
             useFastText={false}
             font="primaryBold"
             className="underline"
+            variant="body-xs"
             onPress={() => router.navigate(ROUTES.LEGAL.PRIVACY)}
           >
             {t('auth.register-step-2.acceptance_part_8')}
           </String>
         </String>
-      </WrapperKeyboardAwareScrollView>
-    </>
+      </Wrapper>
+    </WrapperKeyboardAwareScrollView>
   );
-}
+};

@@ -37,7 +37,7 @@ async function handleRefreshToken(refreshToken: string): Promise<string | null> 
 const kyApi = ky.create({
   hooks: {
     afterResponse: [
-      async (request, _options, response) => {
+      async ({ request, response }) => {
         const isRefreshRequest = request.url.includes('/auth-b2c/refresh-token');
         if (response.status === 401 && !isRefreshRequest) {
           const refreshToken = await SecureStore.getItemAsync('refresh_token');
@@ -67,7 +67,7 @@ const kyApi = ky.create({
       },
     ],
     beforeRequest: [
-      async request => {
+      async ({ request }) => {
         const token = await SecureStore.getItemAsync('access_token');
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`);
@@ -75,7 +75,7 @@ const kyApi = ky.create({
       },
     ],
   },
-  prefixUrl: getApiUrl(),
+  prefix: getApiUrl(),
   retry: {
     limit: 3,
     methods: ['get', 'put', 'delete', 'patch'],

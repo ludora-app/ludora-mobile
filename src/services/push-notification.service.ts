@@ -1,3 +1,4 @@
+import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
@@ -170,6 +171,42 @@ class PushNotificationService {
   }
 
   /**
+   * Firebase v26 auto-registers for remote messages after permission on device.
+   * On ARM64 simulators it intentionally skips APNs registration, so getToken always fails.
+   */
+  private static isUnregisteredMessagingError(error: unknown): boolean {
+    if (!error || typeof error !== 'object') {
+      return false;
+    }
+
+    const { code, message } = error as { code?: string; message?: string };
+    return code === 'messaging/unregistered' || message?.includes('unregistered') === true;
+  }
+
+  private static async getFCMTokenFromFirebase(
+    messaging: unknown,
+    attempt = 0,
+    maxAttempts = 5,
+  ): Promise<string> {
+    try {
+      return await getToken(messaging);
+    } catch (error) {
+      const shouldRetry =
+        PushNotificationService.isUnregisteredMessagingError(error) && attempt < maxAttempts - 1;
+
+      if (!shouldRetry) {
+        throw error;
+      }
+
+      await new Promise<void>(resolve => {
+        setTimeout(resolve, 400 * (attempt + 1));
+      });
+
+      return PushNotificationService.getFCMTokenFromFirebase(messaging, attempt + 1, maxAttempts);
+    }
+  }
+
+  /**
    * Get FCM token
    */
   async getFCMToken(): Promise<string | null> {
@@ -184,16 +221,29 @@ class PushNotificationService {
       return token;
     }
 
+    if (Platform.OS === 'ios' && !Device.isDevice) {
+      return null;
+    }
+
     const messaging = getMessaging();
-    const token = await getToken(messaging);
-    this.fcmToken = token;
 
-    this.unsubscribeOnTokenRefresh = onTokenRefresh(messaging, (newToken: string) => {
-      this.fcmToken = newToken;
-      this.onTokenRefresh?.(newToken);
-    });
+    try {
+      const token = await PushNotificationService.getFCMTokenFromFirebase(messaging);
+      this.fcmToken = token;
 
-    return token;
+      this.unsubscribeOnTokenRefresh = onTokenRefresh(messaging, (newToken: string) => {
+        this.fcmToken = newToken;
+        this.onTokenRefresh?.(newToken);
+      });
+
+      return token;
+    } catch (error) {
+      if (PushNotificationService.isUnregisteredMessagingError(error)) {
+        return null;
+      }
+
+      throw error;
+    }
   }
 
   /**

@@ -9,7 +9,7 @@ const ROUTES = {
     NEW_PASSWORD: '/auth/new-password',
     REGISTER_STEP_1: '/auth/register/step-1',
     REGISTER_STEP_2: '/auth/register/step-2',
-    RESET_PASSWORD: '/auth/reset-password',
+    SEND_CODE: '/auth/send-code',
     VERIFY_CODE: '/auth/verify-code',
   },
   CHAT_ROOM: {
@@ -19,9 +19,6 @@ const ROUTES = {
     INFO_PRIVATE_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/private`,
     INFO_SESSION: '/chat-room/[chatRoomId]/info/session',
     INFO_SESSION_UID: (chatRoomId?: string) => `/chat-room/${chatRoomId}/info/session`,
-    MESSAGE_ACTIONS: '/chat-room/[chatRoomId]/message-actions/[messageId]',
-    MESSAGE_ACTIONS_UID: ({ chatRoomId, messageId }: { chatRoomId: string; messageId: string }) =>
-      `/chat-room/${chatRoomId}/message-actions/${messageId}`,
     USER_PROFILE: '/chat-room/user-profile/[userId]',
     USER_PROFILE_UID: (userId: string) => `/chat-room/user-profile/${userId}`,
   },
@@ -34,9 +31,6 @@ const ROUTES = {
     STEP_3_PAYMENT: '/create-session/create-session-step-3-payment',
     STEP_4: '/create-session/step-4',
     STEP_5: '/(root)/create-session/step-5',
-  },
-  CREATE_SESSION_CREATED: {
-    INDEX: '/(root)/create-session-created',
   },
   DEV_TOOLS: {
     INDEX: '/dev-tools',
@@ -74,9 +68,17 @@ const ROUTES = {
     INDEX: '/notifications',
   },
   ON_BOARDING: {
-    STEP_1: '/on-boarding/step-1',
-    STEP_2: '/on-boarding/step-2',
-    STEP_3: '/on-boarding/step-3',
+    DURATION_FORM_SHEET: '/on-boarding/sessions/duration',
+    SESSIONS_FIELDS: '/on-boarding/sessions/fields',
+    SESSIONS_INVITE: '/on-boarding/sessions/invite',
+    SESSIONS_JOINED: '/on-boarding/sessions/joined',
+    SESSIONS_PREPARED: '/on-boarding/sessions/prepared',
+    SESSIONS_READY: '/on-boarding/sessions/ready',
+    SESSIONS_SUGGESTIONS: '/on-boarding/sessions/suggestions',
+    SPORT_FORM_SHEET: '/on-boarding-sport',
+    STEP_1: '/on-boarding/profile/step-1',
+    STEP_2: '/on-boarding/profile/step-2',
+    STEP_3: '/on-boarding/profile/step-3',
   },
   PROFIL: {
     ACTIONS: '/profil/[id]/actions',
@@ -95,7 +97,7 @@ const ROUTES = {
     INDEX: '/session',
     INDEX_UID: (uid: string) => `/session/${uid}`,
     JOINED: '/session/[id]/session-joined',
-    JOINED_UID: (uid: string) => `session/${uid}/session-joined`,
+    JOINED_UID: (uid: string) => `/session/${uid}/session-joined`,
     TEAM_UID: (uid: string) => `/session/${uid}/session-teams`,
     TEAMS: '/session/[id]/session-teams',
   },

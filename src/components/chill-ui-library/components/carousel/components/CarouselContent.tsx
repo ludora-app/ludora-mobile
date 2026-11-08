@@ -1,9 +1,13 @@
-import { useEffect, useRef } from 'react';
 import { FlatList, ViewToken } from 'react-native';
+import { Children, useCallback, useEffect } from 'react';
 
 import { useCarousel } from './CarouselContext';
 import { useAutoPlay } from '../hooks/useAutoPlay';
 import { CarouselContentProps } from '../../../types';
+
+const VIEWABILITY_CONFIG = {
+  itemVisiblePercentThreshold: 50,
+};
 
 /**
  * CarouselContent component manages the scrollable content area of the carousel (Tailwind version).
@@ -37,21 +41,23 @@ function CarouselContent(props: CarouselContentProps) {
     totalItems,
   } = useCarousel();
 
-  // Convert children to array for FlatList
-  const items = Array.isArray(children) ? children : [children];
-  const validItems = items.filter(Boolean);
+  const validItems = Children.toArray(children).filter(Boolean);
+  const itemCount = validItems.length;
 
   useEffect(() => {
-    setTotalItems(validItems.length);
-  }, [setTotalItems, validItems]);
+    setTotalItems(itemCount);
+  }, [itemCount, setTotalItems]);
 
-  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems.length > 0 && viewableItems[0].index !== null) {
-      setCurrentIndex(viewableItems[0].index);
-    }
-  }).current;
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      const nextIndex = viewableItems[0]?.index;
+      if (nextIndex != null) {
+        setCurrentIndex(nextIndex);
+      }
+    },
+    [setCurrentIndex],
+  );
 
-  // AutoPlay logic
   useAutoPlay({
     autoPlay,
     autoPlayDirection,
@@ -67,9 +73,7 @@ function CarouselContent(props: CarouselContentProps) {
     <FlatList
       keyExtractor={(_, index) => `carousel-item-${index}`}
       pagingEnabled
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 50,
-      }}
+      viewabilityConfig={VIEWABILITY_CONFIG}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       className={className}

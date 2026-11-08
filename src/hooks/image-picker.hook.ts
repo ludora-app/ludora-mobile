@@ -44,21 +44,23 @@ export function usePickImage() {
   const handlePickImage = useCallback(
     async ({ isCamera, isMultiple }: { isCamera: boolean; isMultiple: boolean }) => {
       // Empêche les appels concurrents
-      if (isPending) return;
+      if (isPending) return null;
 
       if (isMountedRef.current) setIsPending(true);
 
       try {
         const pickedAssets = await pickImageImplementation(isCamera, isMultiple);
 
-        if (!isMountedRef.current) return;
+        if (!isMountedRef.current) return null;
 
         // null = l'utilisateur a annulé : on conserve la sélection précédente
         if (pickedAssets !== null) {
           setImages(pickedAssets);
         }
+
+        return pickedAssets;
       } catch (err: unknown) {
-        if (!isMountedRef.current) return;
+        if (!isMountedRef.current) return null;
 
         trackError({ error: err, showToast: false });
 
@@ -79,7 +81,7 @@ export function usePickImage() {
               text: t('common.button_open_settings'),
             },
           ]);
-          return;
+          return null;
         }
 
         toast({
@@ -87,6 +89,7 @@ export function usePickImage() {
           position: 'top',
           variant: 'error',
         });
+        return null;
       } finally {
         if (isMountedRef.current) setIsPending(false);
       }

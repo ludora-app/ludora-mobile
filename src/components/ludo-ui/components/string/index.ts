@@ -1,1 +1,1 @@
-export { default as String } from './string.component';
+export { String } from './string.component';

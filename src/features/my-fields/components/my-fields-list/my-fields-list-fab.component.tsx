@@ -1,12 +1,12 @@
-import type { AnimatedStyle } from 'react-native-reanimated'
-
 import { Icon } from '@ludo/ui'
+import { Pressable } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { Pressable, type StyleProp } from 'react-native'
+
+import type { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook'
 
 type MyFieldsListFabProps = {
   onPress: () => void
-  animatedStyle: StyleProp<AnimatedStyle<Record<string, unknown>>>
+  animatedStyle: ReturnType<typeof useFabScrollHide>['fabAnimatedStyle']
 }
 
 export default function MyFieldsListFab(props: MyFieldsListFabProps) {

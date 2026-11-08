@@ -1,6 +1,6 @@
-import { List } from '@ludo/ui';
 import { useMemo } from 'react';
 import { useRouter } from 'expo-router';
+import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import ROUTES from '@/constants/routes.constants';
 import { useFabScrollHide } from '@/hooks/use-fab-scroll-hide.hook';
@@ -19,8 +19,6 @@ const LIST_TOP_COMPONENT_HEIGHT = 95;
 const LIST_STICKY_COMPONENT_HEIGHT = 59.33;
 const LIST_PUBLIC_FIELD_ITEM_HEIGHT = 227;
 const LIST_PRIVATE_FIELD_ITEM_HEIGHT = 241;
-
-const DRAW_DISTANCE = 500;
 
 const EMPTY_RESULT_PROPS = {
   hasRandomTitle: true,
@@ -43,19 +41,19 @@ export default function CreateSessionStep2FieldsList() {
     refetch,
   } = useGetAllFieldsByFilter();
 
-  const fixedEstimatedItemsSize = useMemo(
-    () => (index: number, item: FieldResponseDto) => {
-      switch (index) {
-        case 0:
-          return LIST_STICKY_COMPONENT_HEIGHT;
-        case 1:
-          return LIST_TOP_COMPONENT_HEIGHT;
-        default:
-          if (item.type === FieldResponseDtoType.PRIVATE) {
-            return LIST_PRIVATE_FIELD_ITEM_HEIGHT;
-          }
-          return LIST_PUBLIC_FIELD_ITEM_HEIGHT;
+  const fixedItemsSize = useMemo<GetListFixedItemSize<FieldResponseDto>>(
+    () => (item, _index, type) => {
+      if (type === 'sticky') {
+        return LIST_STICKY_COMPONENT_HEIGHT;
       }
+      if (type === 'header_top') {
+        return LIST_TOP_COMPONENT_HEIGHT;
+      }
+      if (item.type === FieldResponseDtoType.PRIVATE) {
+        return LIST_PRIVATE_FIELD_ITEM_HEIGHT;
+      }
+
+      return LIST_PUBLIC_FIELD_ITEM_HEIGHT;
     },
     [],
   );
@@ -78,14 +76,13 @@ export default function CreateSessionStep2FieldsList() {
         hasNextPage={hasNextPage}
         hasRefreshControl
         isFetchingNextPage={isFetchingNextPage}
-        getFixedItemSize={fixedEstimatedItemsSize}
+        getFixedItemSize={fixedItemsSize}
         SkeletonComponent={CreateSessionStep2FieldCardSkeleton}
         ItemComponent={CreateSessionStep2FieldCard}
         ListStickyComponent={CreateSessionStep2FieldsListHeaderSticky}
         ListHeaderComponent={CreateSessionStep2FieldsListHeader}
         ListTopComponent={CreateSessionStep2FieldsListHeaderTopList}
         onScroll={handleScroll}
-        drawDistance={DRAW_DISTANCE}
         emptyResultProps={EMPTY_RESULT_PROPS}
       />
       <MyFieldsListFab onPress={handleAddField} animatedStyle={fabAnimatedStyle} />

@@ -2,7 +2,7 @@ import { Wrapper } from '@ludo/ui';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { Calendar } from '@/components/ui/calendar';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { FiltersCalendarReturnParams, FiltersCalendarScreenParams } from '../types/filters-calendar.types';
 

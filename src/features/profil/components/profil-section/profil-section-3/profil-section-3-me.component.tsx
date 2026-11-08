@@ -4,12 +4,13 @@ import { BoxRow, Button, Link } from '@ludo/ui';
 import ROUTES from '@/constants/routes.constants';
 import { useUserMe } from '@/queries/user-me.query';
 import { ShareButton } from '@/components/ui/share-button';
+import { LUDORA_WEBSITE_URL } from '@/constants/links.constants';
 
 export default function ProfilSection3Me() {
   const { userMeId } = useUserMe();
   const { t } = useTranslate();
 
-  const shareUrl = `https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`;
+  const shareUrl = `${LUDORA_WEBSITE_URL}${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`;
 
   return (
     <BoxRow className="items-center gap-2">
@@ -22,7 +23,7 @@ export default function ProfilSection3Me() {
       <ShareButton
         message={t('profil.share_my_profile_message', { url: shareUrl })}
         title={t('profil.share_my_profile_title')}
-        url={`https://www.ludora.fr${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`}
+        url={`${LUDORA_WEBSITE_URL}${ROUTES.PROFIL.INDEX_UID(userMeId ?? '')}`}
         iconButtonProps={{
           className: 'p-2 rounded-full',
           size: 'xs',

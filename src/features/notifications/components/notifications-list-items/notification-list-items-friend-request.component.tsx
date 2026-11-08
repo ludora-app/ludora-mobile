@@ -18,7 +18,7 @@ import {
 import { formatNotificationTime } from '../../utils/time.utils';
 import NotificationsListItemsContainer from './notifications-list-items-container.component';
 import { useAcceptFriendRequest } from '../../queries/friend-requests/accept-friend-request.query';
-import { useDeclineFriendRequest } from '../../queries/friend-requests/decline-friend-request.query copy';
+import { useDeclineFriendRequest } from '../../queries/friend-requests/decline-friend-request.query';
 
 interface NotificationListItemsFriendRequestProps {
   item: NotificationResponseData;

@@ -1,7 +1,7 @@
 import { useToast } from '@chillui/ui';
-import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useTranslate } from '@tolgee/react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { BoxRow, Button, FormInput, Icon, String, WrapperGestureHandlerScrollView } from '@ludo/ui';
@@ -10,10 +10,10 @@ import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
+import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { RootStackParamList } from '@/types/routes-params.types';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
-import FormSheetFooter from '@/components/ui/form-sheet/components/form-sheet-footer.component';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { useAddField } from '../queries/add-field.query';
 import AddFieldImages from '../components/add-field/add-field-images.component';
@@ -32,7 +32,7 @@ export default function MyFieldsAddFormSheet() {
 
   const [showSportSelector] = useState(() => !sport);
 
-  const { control, handleSubmit, setValue, watch } = useForm<CreateFieldSchema>({
+  const { control, handleSubmit, setValue } = useForm<CreateFieldSchema>({
     defaultValues: {
       address: '',
       images: [],
@@ -50,7 +50,7 @@ export default function MyFieldsAddFormSheet() {
     setValue('sports', [sport]);
   }, [sport, setValue]);
 
-  const sports = watch('sports');
+  const sports = useWatch({ control, name: 'sports' });
 
   const onSubmit = async (data: CreateFieldSchema) => {
     try {
@@ -120,10 +120,10 @@ export default function MyFieldsAddFormSheet() {
           </String>
         </BoxRow>
       </WrapperGestureHandlerScrollView>
-      <FormSheetFooter hasBottomSafeArea>
+      <FooterWrapper hasBottomSafeArea>
         <Button title={t('common.add')} onPress={handleSubmit(onSubmit)} isLoading={isAddingField} size="md" />
         <Button title={t('common.button_cancel')} variant="outlined" onPress={router.back} size="md" />
-      </FormSheetFooter>
+      </FooterWrapper>
     </>
   );
 }

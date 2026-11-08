@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Badge, IconButton } from '@ludo/ui';
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import { MessageCollectionItemDto } from '@/api/generated/model';
@@ -24,8 +24,8 @@ function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButto
 
   const lastMessageUid = lastMessage?.uid;
   const isLastMessageFromMe = lastMessage?.isSender;
-  const lastMessageUidRef = useRef(lastMessageUid);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
+  const [prevLastMessageUid, setPrevLastMessageUid] = useState(lastMessageUid);
 
   const scrollButtonStyle = useAnimatedStyle(() => ({
     opacity: withTiming(isVisible ? 1 : 0, { duration: 200 }),
@@ -35,27 +35,23 @@ function ChatRoomMessagesListScrollButton(props: ChatRoomMessagesListScrollButto
     ] as any,
   }));
 
-  useEffect(() => {
-    if (lastMessageUid && lastMessageUid !== lastMessageUidRef.current) {
-      if (isVisible && !isLastMessageFromMe) {
-        setNewMessagesCount(prev => prev + 1);
-      }
-      lastMessageUidRef.current = lastMessageUid;
-    }
-  }, [lastMessageUid, isVisible, isLastMessageFromMe]);
-
-  useEffect(() => {
-    if (!isVisible) {
-      setNewMessagesCount(0);
-    }
-  }, [isVisible]);
-
   const colorVariant = useMemo(() => {
     if (type === 'SESSION') {
       return isTeamA ? 'primary' : 'secondary';
     }
     return 'primary';
   }, [type, isTeamA]);
+
+  if (lastMessageUid && lastMessageUid !== prevLastMessageUid) {
+    setPrevLastMessageUid(lastMessageUid);
+    if (isVisible && !isLastMessageFromMe) {
+      setNewMessagesCount(count => count + 1);
+    }
+  }
+
+  if (!isVisible && newMessagesCount !== 0) {
+    setNewMessagesCount(0);
+  }
 
   return (
     <Animated.View

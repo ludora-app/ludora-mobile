@@ -4,7 +4,7 @@ import { BoxRow, String, StringProps, Wrapper, Icon, BoxRowCenterBetween } from 
 import { useSafeArea } from '@/hooks/safe-area.hook';
 import { TIconsAll } from '@/constants/icons.constants';
 
-import GoBackButton from './go-back-button.component';
+import { GoBackButton } from './go-back-button.component';
 
 type HeaderGoBackProps = {
   className?: string;

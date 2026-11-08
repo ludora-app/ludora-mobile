@@ -1,24 +1,35 @@
 import { Stack } from 'expo-router';
 
-import OnBoardingHeader from '@/features/on-boarding/components/on-boarding-header.component';
-import OnBoardingFooter from '@/features/on-boarding/components/on-boarding-footer/on-boarding-footer.component';
-
-function OnBoardingLayoutNav() {
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="step-1" />
-      <Stack.Screen name="step-2" />
-      <Stack.Screen name="step-3" />
-    </Stack>
-  );
-}
+import COLORS from '@/constants/colors.contstants';
+import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
+import { useOnBoardingStore } from '@/features/on-boarding/stores/on-boarding.store';
 
 export default function OnBoardingLayout() {
+  const clearAll = useOnBoardingStore(state => state.clearAll);
+
+  useResetStoreOnUnmount(clearAll);
+
   return (
-    <>
-      <OnBoardingHeader />
-      <OnBoardingLayoutNav />
-      <OnBoardingFooter />
-    </>
+    <Stack
+      screenOptions={{
+        animation: 'ios_from_right',
+        contentStyle: { backgroundColor: COLORS.background },
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="sessions/ready" options={{ animation: 'fade', gestureEnabled: false }} />
+      <Stack.Screen name="sessions/joined" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="sessions/invite" options={{ gestureEnabled: false }} />
+      {/* In this stack, so validating the sheet goes back to the prepared session */}
+      <Stack.Screen
+        name="sessions/duration"
+        options={{
+          contentStyle: { backgroundColor: '#FFF' },
+          presentation: 'formSheet',
+          sheetAllowedDetents: 'fitToContents',
+          sheetCornerRadius: 30,
+        }}
+      />
+    </Stack>
   );
 }

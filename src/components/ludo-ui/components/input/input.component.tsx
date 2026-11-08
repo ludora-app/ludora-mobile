@@ -9,7 +9,7 @@ import { Icon } from '../icon';
 import { String } from '../string';
 import { InputProps } from '../../types/input.types';
 
-const Input = forwardRef<any, InputProps>((props, ref) => {
+export const Input = forwardRef<any, InputProps>((props, ref) => {
   const {
     className,
     error,
@@ -26,6 +26,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
   } = props;
   const [isFocused, setIsFocused] = useState(false);
   const showError = hasError && !!error;
+  const isDisabled = inputFieldProps?.editable === false;
   const showMessageError = !!error && hasMessageError;
   const showLengthCounter = hasLengthCounter && !!inputFieldProps?.maxLength;
 
@@ -33,7 +34,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 
   const isSecure = inputFieldProps?.secureTextEntry ? !showPassword : false;
 
-  const showClearIcon = hasClearIcon && inputFieldProps?.value;
+  const showClearIcon = hasClearIcon && !isDisabled && !!inputFieldProps?.value;
 
   const handleFocus = (e: NativeSyntheticEvent<TargetedEvent>) => {
     setIsFocused(true);
@@ -47,23 +48,36 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 
   return (
     <InputChillUi className={className}>
-      {!!label && <InputLabel colorVariant={showError ? 'error' : 'dark'}>{label}</InputLabel>}
+      {!!label && (
+        <InputLabel colorVariant={showError ? 'error' : 'dark'} font="primaryBold" className="ml-0 text-sm">
+          {label}
+        </InputLabel>
+      )}
       <InputContainer
-        className={cn({ 'border-error': showError, 'border-primary': isFocused }, inputContainerClassName)}
+        className={cn(
+          'min-h-14 rounded-field border-2 border-input bg-white px-2',
+          {
+            'bg-darkSoft': isDisabled,
+            'border-error': showError,
+            'border-primary': isFocused && !showError,
+          },
+          inputContainerClassName,
+        )}
       >
         {leftIconAction?.name && <Icon {...leftIconAction} className="mr-2" />}
 
         <InputField
           ref={ref}
-          placeholderTextColor={COLORS.ring}
+          placeholderTextColor={COLORS.placeholder}
           cursorColor={COLORS.primary}
           selectionColor={IS_IOS ? COLORS.primary : `${COLORS.primary}70`}
           selectionHandleColor={COLORS.primary}
           {...inputFieldProps}
+          className={cn('font-primary-medium leading-5', inputFieldProps?.className)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={[
-            { alignSelf: 'stretch', color: '#000', flex: 1 },
+            { alignSelf: 'stretch', color: isDisabled ? `${COLORS.dark}8C` : COLORS.dark, flex: 1 },
             inputFieldProps?.style,
             inputFieldProps?.multiline && { textAlignVertical: 'top' },
           ]}
@@ -75,8 +89,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         {rightIconAction?.name && <Icon {...rightIconAction} />}
         {showClearIcon && (
           <Icon
-            name="close-circle-bulk"
-            color="#00000099"
+            name="close-circle-regular"
+            color={`${COLORS.dark}99`}
             onPress={() => inputFieldProps?.onChangeText?.('')}
             size="sm"
             pressEffectSize="xs"
@@ -84,8 +98,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         )}
         {inputFieldProps?.secureTextEntry && (
           <Icon
-            name={showPassword ? 'eye-slash-solid' : 'eye-solid'}
-            color="#00000099"
+            name={showPassword ? 'eye-slash-regular' : 'eye-regular'}
+            color={`${COLORS.dark}99`}
             onPress={() => setShowPassword(prev => !prev)}
             size="sm"
             pressEffectSize="xs"
@@ -97,8 +111,8 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
         <Box className="flex-1 flex-row items-center">
           {showMessageError && (
             <>
-              <Icon name="warning-solid" size="xs" color="red" />
-              <String colorVariant="error" size="xs" truncate>
+              <Icon name="warning-solid" size="xs" color={COLORS.error} />
+              <String colorVariant="error" font="primarySemiBold" variant="body-xs" truncate>
                 {error}
               </String>
             </>
@@ -118,5 +132,3 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
 });
 
 Input.displayName = 'Input';
-
-export default Input;

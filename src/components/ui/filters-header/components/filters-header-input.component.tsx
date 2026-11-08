@@ -1,6 +1,6 @@
 import { StrictOmit } from '@chillui/ui';
-import { useForm } from 'react-hook-form';
 import { debounce, isString } from 'radash';
+import { useForm, useWatch } from 'react-hook-form';
 import { FormInput, FormInputProps } from '@ludo/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -12,10 +12,10 @@ export type FiltersHeaderInputProps = StrictOmit<FormInputProps<FiltersHeaderInp
 export default function FiltersHeaderInput(props: FiltersHeaderInputProps) {
   const { onChangeText, ...rest } = props;
 
-  const { control, watch } = useForm<FiltersHeaderInputSchema>({
+  const { control } = useForm<FiltersHeaderInputSchema>({
     resolver: zodResolver(filtersHeaderInputSchema),
   });
-  const inputValue = watch('search');
+  const inputValue = useWatch({ control, name: 'search' });
 
   const handleSearch = useCallback(
     async (searchValue: string) => {

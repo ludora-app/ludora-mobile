@@ -1,39 +1,40 @@
-import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { String, Separator, Link, WrapperKeyboardAwareScrollView, BoxGrow } from '@ludo/ui';
+import { Box, Separator, WrapperKeyboardAwareScrollView, Wrapper } from '@ludo/ui';
 
-import { useSafeArea } from '@/hooks/safe-area.hook';
-import HeaderGoBack from '@/components/ui/navigation/header-go-back/components/header-go-back.component';
+import ROUTES from '@/constants/routes.constants';
+import { HeaderMascot } from '@/components/ui/header';
 
-import LoginEmailForm from '../components/login-email-form.component';
-import LoginSocialNetworks from '../components/login-social-networks/login-social-networks.component';
+import { LoginEmailForm } from '../components/login-email-form.component';
+import { AuthSwitchLink } from '../../components/auth-switch-link.component';
+import { LoginSocialNetworks } from '../components/login-social-networks/login-social-networks.component';
 
-export default function LoginScreen() {
+export const LoginScreen = () => {
   const { t } = useTranslate();
-  const { bottom } = useSafeArea();
 
   return (
-    <>
-      <HeaderGoBack title={t('auth.login.header_title')} hasTopSafeArea />
-      <WrapperKeyboardAwareScrollView
-        androidSafeAreaBottom={false}
-        contentContainerClassName="grow"
-        style={{ paddingBottom: bottom }}
-      >
-        <BoxGrow className="mt-10 pb-5">
+    <WrapperKeyboardAwareScrollView
+      px="none"
+      hasKeyboardToolbar
+      mode="layout"
+      grow
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      bounces={false}
+      safeArea={['bottom']}
+    >
+      <HeaderMascot titleProps={{ title: t('auth.login.header_title') }} mascotName="ludo-idea-2" />
+      <Wrapper grow className="pt-6.5">
+        <Box className="gap-3.5">
           <LoginEmailForm />
-          <Separator title={t('common.or')} className="my-5" />
+          <Separator title={t('common.or')} />
           <LoginSocialNetworks flow="login" />
-        </BoxGrow>
-        <Link href="/auth/register/step-1" asChild replace>
-          <Pressable className="flex-row items-center justify-center">
-            <String>{t('auth.login.dont_have_an_account')} </String>
-            <String font="primaryBold" colorVariant="primary" className="underline">
-              {t('auth.login.dont_have_an_account_create_account')}
-            </String>
-          </Pressable>
-        </Link>
-      </WrapperKeyboardAwareScrollView>
-    </>
+        </Box>
+        <AuthSwitchLink
+          href={ROUTES.AUTH.REGISTER_STEP_1}
+          question={t('auth.login.dont_have_an_account')}
+          actionTitle={t('auth.login.dont_have_an_account_create_account')}
+        />
+      </Wrapper>
+    </WrapperKeyboardAwareScrollView>
   );
-}
+};

@@ -4,10 +4,8 @@ import { withUniwind } from 'uniwind';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import { cn } from '../../../utils';
-import { wrapperTv } from '../styles/Wrapper.styles';
-import { wrapperDefaultProps } from '../utils/defaultProps';
-import { WrapperSafeAreaView } from './WrapperSafeAreaView';
 import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
+import { wrapperTv, getSafeAreaVariants } from '../styles/Wrapper.styles';
 
 /**
  * KeyboardAwareScrollView wrapper component for better keyboard handling.
@@ -18,8 +16,8 @@ import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
  *   <Input placeholder="Type here" />
  * </WrapperKeyboardAwareScrollView>
  *
- * // With SafeAreaView
- * <WrapperKeyboardAwareScrollView hasSafeArea edges={['top', 'bottom']}>
+ * // With safe area paddings on the content
+ * <WrapperKeyboardAwareScrollView safeArea={['top', 'bottom-4']}>
  *   <Input placeholder="Type here" />
  * </WrapperKeyboardAwareScrollView>
  * ```
@@ -27,8 +25,7 @@ import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
  * @param fill - Whether to fill the wrapper
  * @param grow - Whether to grow the wrapper
  * @param px - Horizontal padding variant: `'none'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`
- * @param hasSafeArea - Whether to wrap content in SafeAreaView
- * @param edges - Safe area edges to apply when hasSafeArea is true
+ * @param safeArea - Safe area paddings on the content container: `'top'` | `'right'` | `'bottom'` | `'left'`, or with a spacing offset 1–8 (`'bottom-4'`)
  * @param bottomOffset - Bottom offset for keyboard
  * @param disableScrollOnKeyboardHide - Whether to disable scroll on keyboard hide
  * @param enabled - Whether the keyboard aware scroll view is enabled
@@ -38,37 +35,19 @@ import { WrapperKeyboardAwareScrollViewProps } from '../../../types';
 
 const StyledKeyboardAwareScrollView = withUniwind(KeyboardAwareScrollView);
 export function WrapperKeyboardAwareScrollView(props: PropsWithChildren<WrapperKeyboardAwareScrollViewProps>) {
-  const {
-    bottomOffset = wrapperDefaultProps.bottomOffset,
-    children,
-    contentContainerClassName,
-    edges,
-    fill,
-    grow,
-    hasSafeArea,
-    px,
-    ...rest
-  } = props;
+  const { children, contentContainerClassName, fill, grow, px, safeArea, ...rest } = props;
 
-  const content = (
+  return (
     <StyledKeyboardAwareScrollView
-      contentContainerClassName={cn(wrapperTv({ fill, grow, px }), contentContainerClassName)}
-      bottomOffset={bottomOffset}
+      contentContainerClassName={cn(
+        wrapperTv({ fill, grow, px, ...getSafeAreaVariants(safeArea) }),
+        contentContainerClassName,
+      )}
       {...rest}
     >
       {children}
     </StyledKeyboardAwareScrollView>
   );
-
-  if (hasSafeArea) {
-    return (
-      <WrapperSafeAreaView edges={edges} px="none">
-        {content}
-      </WrapperSafeAreaView>
-    );
-  }
-
-  return content;
 }
 
 WrapperKeyboardAwareScrollView.displayName = 'WrapperKeyboardAwareScrollView';

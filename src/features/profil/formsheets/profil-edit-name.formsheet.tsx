@@ -10,7 +10,7 @@ import { useUserMe } from '@/queries/user-me.query';
 import { ErrorResponse } from '@/api/orval.instance';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { useUpdateUserMe } from '@/queries/update-user-me.query';
-import FormSheetHeader from '@/components/ui/form-sheet/components/form-sheet-header.component';
+import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 
 import { profilEditNameSchema } from '../schemas/profil-edit-name.schema';
 import ProfilEditFooter from '../components/profil-edit/profil-edit-footer.component';

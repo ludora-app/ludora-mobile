@@ -8,6 +8,6 @@ export const buttonDefaultProps = {
   isDisabled: false,
   isLoading: false,
   position: 'center' as ButtonContentProps['position'],
-  size: 'md' as const,
+  size: 'lg' as const,
   variant: 'contained' as const,
 };

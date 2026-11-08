@@ -1,13 +1,13 @@
 import { BoxCenter } from '@ludo/ui';
+import { LoadingIndicator } from '@chillui/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { LoadingIndicator } from '@/components/chill-ui-library';
 
-interface LoadingProps {
+type LoadingProps = {
   loadingColor?: string;
-}
+};
 
-export default function Loading(props: LoadingProps) {
+export const Loading = (props: LoadingProps) => {
   const { loadingColor = COLORS.primary } = props;
 
   return (
@@ -15,4 +15,4 @@ export default function Loading(props: LoadingProps) {
       <LoadingIndicator name="swing" color={loadingColor} size="xl" />
     </BoxCenter>
   );
-}
+};

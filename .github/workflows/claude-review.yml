@@ -21,7 +21,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository &&
       (github.event.pull_request.user.type != 'Bot' || github.event.pull_request.user.login == 'claude[bot]')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       contents: read
       id-token: write
@@ -50,6 +50,8 @@ jobs:
           show_full_output: false
           claude_args: |
             --max-turns 40
+            --model claude-opus-5-5
+            --effort high
             --allowedTools "Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*)"
             --json-schema '{"type":"object","properties":{"bugs":{"type":"integer"},"rules":{"type":"integer"},"minor":{"type":"integer"}},"required":["bugs","rules","minor"]}'
           prompt: |

@@ -11,7 +11,7 @@ Claude Code runs non-interactively in GitHub Actions through [`anthropics/claude
 
 `issue_comment`, `repository_dispatch` and `workflow_dispatch` always run the workflow file from the default branch, so `claude.yml` and `claude-jira.yml` change behaviour only once they reach `main`. `pull_request` workflows run the file from the PR itself.
 
-All of them prepare the repo with the composite action `.github/actions/setup-ludora` (bun, envconsul, the `ludora-back` swagger, `generate:api`, `generate:translations:local`, `generate:icons`), the same preparation as `ci.yml`. Claude can then run `bun check:all`, and the husky pre-commit hook runs on its commits.
+All of them prepare the repo with the composite action `.github/actions/setup-ludora` (bun, envconsul, the `ludora-back` swagger, `generate:api`, `generate:translations:local`, `generate:icons`), the same preparation as `ci.yml`. Claude can then run `bun check:all`, and the husky pre-commit hook runs on its commits. bun is pinned to the version that writes `bun.lock` locally (`1.3.14`): a newer bun rewrites the lockfile and `--frozen-lockfile` fails, so bump both together.
 
 ## Setup (once)
 
@@ -46,7 +46,7 @@ Renew the OAuth token before it expires: every Claude job fails with an authenti
 - Write `@claude <request>` in a PR comment, an inline review comment or a review body. Issues are not handled: tickets live in Jira.
 - Only `OWNER`, `MEMBER` and `COLLABORATOR` comments start the job, and the action checks write access again. An outside comment triggers nothing.
 - The setup runs on the default branch code, never on code from the PR. The action then checks out the PR branch, so a PR that changes dependencies is linted with the `main` install.
-- Claude may edit files, run `bun check:all`, `bun test`, `bun generate:icons`, read-only `git` and `gh pr` commands, use the Iconsax and Tolgee MCP servers, then commit and push **on the PR branch only**. Commits follow `type(SCRUM-n): subject`, with the key taken from the branch name.
+- Claude may edit files, run `bun check:all`, `bun test`, `bun generate:icons`, the dependency commands (`bun install`, `bun add`, `bun remove`, `bun update`, `bun outdated`, `bun run doctor`, `bunx expo install`), read docs on `docs.expo.dev`, `expo.dev`, `github.com` and `npmjs.com` only, read-only `git` and `gh pr` commands, use the Iconsax and Tolgee MCP servers, then commit and push **on the PR branch only**. Commits follow `type(SCRUM-n): subject`, with the key taken from the branch name.
 
 ## Jira ticket to pull request (`claude-jira.yml`)
 
@@ -137,6 +137,24 @@ Tolgee:
 - Create a **project API key** for the CI (Tolgee → Ludora project → Integrate → API keys), not a personal token. Scopes: `keys.view`, `keys.create`, `translations.view`, `translations.edit`. Set an expiry date.
 - Keys are created in Tolgee **before** the PR is reviewed. If the PR is dropped or changed, delete the orphan keys: the PR body lists every key Claude created.
 - `locales/*.json` is not refreshed in the CI. Run `bun generate:translations:local` locally after the merge.
+
+## Discord notifications
+
+Every Claude workflow posts what Claude starts, does and ends in a Discord channel, through the composite action `.github/actions/discord-notify`. Without the secret, nothing is posted.
+
+| Setting                  | Where                                                             | Value                                                                                     |
+| ------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `DISCORD_WEBHOOK_CLAUDE` | Secret                                                            | The channel webhook (channel settings → Integrations → Webhooks → New webhook → Copy URL) |
+| `DISCORD_MENTION`        | Variable (Settings → Secrets and variables → Actions → Variables) | Who is pinged when action is needed: `<@user id>` or `<@&role id>`. Empty means no ping.  |
+
+| Workflow               | Start                                                      | End                                                                                               |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `claude-jira.yml`      | 🚀 started working on SCRUM-n / 🔁 picked SCRUM-n up again | ✅ opened PR #n · 🔄 updated PR #n · 💤 changed nothing · ⛔ blocked · ⚠️ usage limit · ❌ failed |
+| `claude-review.yml`    | 👀 started reviewing PR #n                                 | 📝 reviewed PR #n: counts by severity, or nothing to report · ⚠️ · ❌                             |
+| `claude.yml`           | 🤖 started working on PR #n                                | 🛠️ pushed n commits · 💬 answered · ⚠️ · ❌                                                       |
+| `claude-pr-closed.yml` |                                                            | 🗑️ a Claude PR was closed without merge: delete its Tolgee keys                                   |
+
+The mention is only added to ⛔, ⚠️ and ❌. Messages carry the ticket title and links (PR, Jira, logs), never the ticket description. A Jira run stopped before the checkout (an invalid `Target`) is reported in Jira only.
 
 ## Limits
 

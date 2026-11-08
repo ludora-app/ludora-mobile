@@ -94,6 +94,7 @@ jobs:
           TARGET=$(jq -r '(.fields.description // "") | [split("\n")[]
             | capture("^[\\s*_]*(?:target|cible)[\\s*_]*:[\\s*_]*(?<b>[A-Za-z0-9._/-]+)"; "i")?] | first | .b // "develop"' "$DIR/raw.json")
           echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "summary=$(jq -r '.fields.summary' "$DIR/raw.json" | tr '\n\r' '  ')" >> "$GITHUB_OUTPUT"
 
           {
             jq -r --arg target "$TARGET" '
@@ -206,7 +207,9 @@ jobs:
       - name: Record the starting point
         id: start
         if: steps.ticket.outputs.skip == 'false'
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "time=$(date +%s)" >> "$GITHUB_OUTPUT"
 
       # A merged or closed PR can leave its branch behind: stop before Claude spends any quota.
       - name: Check that the ticket branch is free
@@ -222,6 +225,18 @@ jobs:
             printf '%s' "$MESSAGE" > "$RUNNER_TEMP/jira/failure.txt"
             exit 1
           fi
+
+      - name: Notify Discord (start)
+        if: steps.ticket.outputs.skip == 'false'
+        uses: ./.github/actions/discord-notify
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_CLAUDE }}
+          message: >-
+            ${{ steps.find.outputs.mode == 'update'
+            && format('🔁 **Claude a repris {0}** pour appliquer ta dernière demande', steps.key.outputs.key)
+            || format('🚀 **Claude a commencé à travailler sur {0}** : {1} (vers `{2}`)', steps.key.outputs.key, steps.ticket.outputs.summary, steps.target.outputs.base) }}
+          links: >-
+            ${{ format('[Jira]({0}/browse/{1}) · [Logs]({2}/{3}/actions/runs/{4})', secrets.JIRA_BASE_URL, steps.key.outputs.key, github.server_url, github.repository, github.run_id) }}
 
       - name: 🧰 Setup Ludora (deps, API, translations, icons)
         if: steps.ticket.outputs.skip == 'false'
@@ -263,7 +278,7 @@ jobs:
             --permission-mode acceptEdits
             --add-dir ${{ runner.temp }}/jira
             --mcp-config ${{ steps.mcp.outputs.config }}
-            --allowedTools "Read,Glob,Grep,LS,Bash(git switch -c:*),Bash(git checkout -b:*),Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(bun check:all),Bash(bun run check:all),Bash(bun lint:*),Bash(bun run lint:*),Bash(bun ts:check),Bash(bun run ts:check),Bash(bun test:*),Bash(bun run test:*),Bash(openspec:*),mcp__iconsax__search_icons,mcp__iconsax__search_pro_icons,mcp__iconsax__get_icon,mcp__iconsax__get_pro_icon,mcp__iconsax__get_icon_as_code,mcp__iconsax__get_pro_icon_as_code,mcp__iconsax__list_categories,mcp__iconsax__get_icons_by_category,mcp__tolgee__search_keys,mcp__tolgee__get_key,mcp__tolgee__list_keys,mcp__tolgee__list_namespaces,mcp__tolgee__list_languages,mcp__tolgee__get_translations,mcp__tolgee__create_keys,Bash(bun generate:icons),Bash(bun run generate:icons)"
+            --allowedTools "Read,Glob,Grep,LS,Bash(git switch -c:*),Bash(git checkout -b:*),Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(bun check:all),Bash(bun run check:all),Bash(bun lint:*),Bash(bun run lint:*),Bash(bun ts:check),Bash(bun run ts:check),Bash(bun test:*),Bash(bun run test:*),Bash(openspec:*),mcp__iconsax__search_icons,mcp__iconsax__search_pro_icons,mcp__iconsax__get_icon,mcp__iconsax__get_pro_icon,mcp__iconsax__get_icon_as_code,mcp__iconsax__get_pro_icon_as_code,mcp__iconsax__list_categories,mcp__iconsax__get_icons_by_category,mcp__tolgee__search_keys,mcp__tolgee__get_key,mcp__tolgee__list_keys,mcp__tolgee__list_namespaces,mcp__tolgee__list_languages,mcp__tolgee__get_translations,mcp__tolgee__create_keys,Bash(bun generate:icons),Bash(bun run generate:icons),Bash(bun install:*),Bash(bun add:*),Bash(bun remove:*),Bash(bun update:*),Bash(bun outdated:*),Bash(bun pm:*),Bash(bun why:*),Bash(bun run doctor),Bash(bun doctor),Bash(bun run install:check),Bash(bun run install:fix),Bash(bunx expo-doctor:*),Bash(bunx expo install:*),Bash(npx expo install:*),WebFetch(domain:docs.expo.dev),WebFetch(domain:expo.dev),WebFetch(domain:github.com),WebFetch(domain:raw.githubusercontent.com),WebFetch(domain:www.npmjs.com),WebFetch(domain:npmjs.com)"
             --json-schema '{"type":"object","properties":{"status":{"type":"string","enum":["done","unchanged","blocked"]},"branch":{"type":"string"},"pr_title":{"type":"string"},"pr_body":{"type":"string"},"summary":{"type":"string"},"reason":{"type":"string"}},"required":["status"]}'
           prompt: |
             You are working on the Jira ticket ${{ steps.key.outputs.key }} of the Ludora mobile app, unattended, in GitHub Actions.
@@ -303,6 +318,10 @@ jobs:
             ## Always
             - Read `CLAUDE.md` and load the skills it asks for (`ludora-feature` and `ludora-code-style` always, the
               others depending on the task). Read the `docs/adr/` records the work touches.
+            - Dependencies: an Expo-managed package goes through `bunx expo install <package>` (never `bun add`), any
+              other through `bun add`. `bun run doctor` (expo-doctor) wins over `bun outdated`. For a major bump, read the
+              changelog or migration guide (`node_modules/<package>/CHANGELOG.md`, or the web on docs.expo.dev, github.com
+              and npmjs.com only) and adapt the code. `bun install --frozen-lockfile` must pass at the end.
             - Never edit `src/api/generated`, `locales`, `src/constants/icons.constants.ts` or `.github/`. If the work
               needs a backend endpoint that is not in `src/api/generated`, stop with status blocked.
             - `bun check:all` must pass before each commit. Commit with
@@ -398,6 +417,7 @@ jobs:
             fail "Les commits modifient .github/."
           fi
 
+          bun install --frozen-lockfile || fail "bun.lock n'est pas à jour avec package.json."
           bun run lint || fail "bun lint échoue."
           bun run ts:check || fail "bun ts:check échoue."
 
@@ -415,6 +435,69 @@ jobs:
             echo "url=$URL" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Summarize the outcome
+        id: outcome
+        if: always() && steps.ticket.outputs.skip == 'false'
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+          KEY: ${{ steps.key.outputs.key }}
+          MODE: ${{ steps.find.outputs.mode }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+          RESULT: ${{ steps.claude.outputs.structured_output }}
+          BASE: ${{ steps.target.outputs.base }}
+          START: ${{ steps.start.outputs.time }}
+        run: |
+          STATUS=$(printf '%s' "${RESULT:-null}" | jq -r '.status // empty' 2>/dev/null || true)
+          REASON=$(printf '%s' "${RESULT:-null}" | jq -r '.reason // empty' 2>/dev/null || true)
+          FAILURE=$(cat "$RUNNER_TEMP/jira/failure.txt" 2>/dev/null || true)
+          MINUTES=$(( ( $(date +%s) - ${START:-$(date +%s)} ) / 60 ))
+          PR="${PR_URL##*/}"
+
+          QUOTA=false
+          if [ -n "$EXECUTION_FILE" ] && [ -f "$EXECUTION_FILE" ] &&
+            jq -r '[.[]? | select(.type == "result")] | last | "\(.result // "") \(.subtype // "")"' "$EXECUTION_FILE" 2>/dev/null |
+            grep -qiE 'usage limit|rate.?limit'; then
+            QUOTA=true
+          fi
+
+          if [ -n "$PR_URL" ] && [ "$MODE" == "update" ]; then
+            STATE=updated
+          elif [ -n "$PR_URL" ]; then
+            STATE=opened
+          elif [ "$STATUS" == "unchanged" ] && [ -z "$FAILURE" ]; then
+            STATE=unchanged
+          elif [ "$STATUS" == "blocked" ]; then
+            STATE=blocked
+          elif [ "$QUOTA" == "true" ]; then
+            STATE=quota
+          else
+            STATE=failed
+            REASON="${FAILURE:-$REASON}"
+          fi
+          REASON=$(printf '%s' "$REASON" | tr '\n\r' '  ')
+
+          {
+            echo "state=$STATE"
+            echo "reason=$REASON"
+            echo "pr=$PR"
+            echo "minutes=$MINUTES"
+          } >> "$GITHUB_OUTPUT"
+
+          # Discord message for this state.
+          case "$STATE" in
+            opened) MSG="✅ **Claude a ouvert la PR #$PR pour $KEY** (vers \`$BASE\`) en $MINUTES min"; COLOR=green; ALERT=false ;;
+            updated) MSG="🔄 **Claude a mis à jour la PR #$PR de $KEY**"; COLOR=green; ALERT=false ;;
+            unchanged) MSG="💤 **Claude n'a rien changé sur $KEY**${REASON:+ : $REASON}"; COLOR=grey; ALERT=false ;;
+            blocked) MSG="⛔ **Claude est bloqué sur $KEY**${REASON:+ : $REASON}"; COLOR=orange; ALERT=true ;;
+            quota) MSG="⚠️ **Claude a atteint sa limite d'utilisation** sur $KEY : il reprendra dans quelques heures"; COLOR=orange; ALERT=true ;;
+            *) MSG="❌ **Claude n'a pas réussi $KEY**${REASON:+ : $REASON}"; COLOR=red; ALERT=true ;;
+          esac
+          {
+            echo "message=$MSG"
+            echo "color=$COLOR"
+            echo "alert=$ALERT"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Comment on the Jira ticket
         if: always() && steps.ticket.outputs.skip == 'false'
         env:
@@ -422,27 +505,32 @@ jobs:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
           KEY: ${{ steps.key.outputs.key }}
-          MODE: ${{ steps.find.outputs.mode }}
           PR_URL: ${{ steps.pr.outputs.url }}
-          RESULT: ${{ steps.claude.outputs.structured_output }}
+          REASON: ${{ steps.outcome.outputs.reason }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          STATE: ${{ steps.outcome.outputs.state }}
         run: |
           # Never starts with @claude, so it cannot trigger the comment rule again.
-          STATUS=$(printf '%s' "${RESULT:-null}" | jq -r '.status // empty' 2>/dev/null || true)
-          REASON=$(printf '%s' "${RESULT:-null}" | jq -r '.reason // empty' 2>/dev/null || true)
-          FAILURE=$(cat "$RUNNER_TEMP/jira/failure.txt" 2>/dev/null || true)
-
-          if [ -n "$PR_URL" ] && [ "$MODE" == "update" ]; then
-            BODY="🤖 Claude a mis à jour la PR : $PR_URL (le détail est en commentaire de la PR)."
-          elif [ -n "$PR_URL" ]; then
-            BODY="🤖 Claude a ouvert la PR : $PR_URL (à relire avant le merge)."
-          elif [ "$STATUS" == "unchanged" ] && [ -z "$FAILURE" ]; then
-            BODY="🤖 Claude n'a rien modifié.${REASON:+ Raison : $REASON}"
-          else
-            MESSAGE="${FAILURE:-$REASON}"
-            BODY="🤖 Claude n'a pas pu traiter ce ticket.${MESSAGE:+ Raison : $MESSAGE} Logs : $RUN_URL"
-          fi
+          case "$STATE" in
+            updated) BODY="🤖 Claude a mis à jour la PR : $PR_URL (le détail est en commentaire de la PR)." ;;
+            opened) BODY="🤖 Claude a ouvert la PR : $PR_URL (à relire avant le merge)." ;;
+            unchanged) BODY="🤖 Claude n'a rien modifié.${REASON:+ Raison : $REASON}" ;;
+            quota) BODY="🤖 Claude a atteint sa limite d'utilisation : relance plus tard avec un commentaire @claude. Logs : $RUN_URL" ;;
+            *) BODY="🤖 Claude n'a pas pu traiter ce ticket.${REASON:+ Raison : $REASON} Logs : $RUN_URL" ;;
+          esac
 
           jq -n --arg body "$BODY" '{body: $body}' | curl -sSf -o /dev/null -X POST \
             -u "$JIRA_EMAIL:$JIRA_API_TOKEN" -H "Content-Type: application/json" \
             --data @- "$JIRA_BASE_URL/rest/api/2/issue/$KEY/comment"
+
+      # The local action needs the checkout: a run stopped before it (invalid target) is reported in Jira only.
+      - name: Notify Discord (end)
+        if: always() && steps.ticket.outputs.skip == 'false' && steps.start.outputs.sha != ''
+        uses: ./.github/actions/discord-notify
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_CLAUDE }}
+          message: ${{ steps.outcome.outputs.message }}
+          color: ${{ steps.outcome.outputs.color }}
+          mention: ${{ steps.outcome.outputs.alert == 'true' && vars.DISCORD_MENTION || '' }}
+          links: >-
+            ${{ steps.pr.outputs.url && format('[voir la PR]({0}) · ', steps.pr.outputs.url) || '' }}${{ format('[Jira]({0}/browse/{1}) · [Logs]({2}/{3}/actions/runs/{4})', secrets.JIRA_BASE_URL, steps.key.outputs.key, github.server_url, github.repository, github.run_id) }}

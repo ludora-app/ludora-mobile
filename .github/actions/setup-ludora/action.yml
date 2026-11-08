@@ -33,7 +33,9 @@ runs:
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
       with:
-        bun-version: latest
+        # Same version as the one that writes bun.lock locally: a newer bun rewrites the lockfile
+        # and --frozen-lockfile fails. Bump it together with the local bun.
+        bun-version: 1.3.14
 
     - name: Cache Bun dependencies
       uses: actions/cache@v4

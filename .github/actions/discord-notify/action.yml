@@ -1,0 +1,64 @@
+name: Discord notification
+description: Post a Claude status message to the Discord channel. Does nothing without a webhook, and never fails the job.
+
+inputs:
+  webhook:
+    description: Discord webhook URL (secret DISCORD_WEBHOOK_CLAUDE)
+    required: false
+    default: ''
+  message:
+    description: The sentence shown first, in Markdown (e.g. "🚀 **Claude a commencé à travailler sur SCRUM-1**")
+    required: true
+  details:
+    description: Optional second line (a reason, a summary)
+    required: false
+    default: ''
+  color:
+    description: blue (in progress), green (done), orange (blocked), red (failure), grey (nothing to do)
+    required: false
+    default: blue
+  links:
+    description: Optional Markdown links appended to the message (e.g. "[voir la PR](https://...)")
+    required: false
+    default: ''
+  mention:
+    description: Discord mention posted with the message (e.g. <@123> or <@&456>); only for what needs action
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Post to Discord
+      shell: bash
+      env:
+        COLOR: ${{ inputs.color }}
+        DETAILS: ${{ inputs.details }}
+        LINKS: ${{ inputs.links }}
+        MENTION: ${{ inputs.mention }}
+        MESSAGE: ${{ inputs.message }}
+        WEBHOOK: ${{ inputs.webhook }}
+      run: |
+        if [ -z "$WEBHOOK" ]; then
+          echo "No Discord webhook, notification skipped."
+          exit 0
+        fi
+        case "$COLOR" in
+          green) C=5763719 ;;
+          orange) C=15105570 ;;
+          red) C=15548997 ;;
+          grey) C=9807270 ;;
+          *) C=3447003 ;;
+        esac
+        DESC="$MESSAGE"
+        [ -n "$DETAILS" ] && DESC="$DESC"$'\n'"$DETAILS"
+        [ -n "$LINKS" ] && DESC="$DESC"$'\n'"$LINKS"
+        jq -n --arg content "$MENTION" --arg desc "$DESC" --argjson color "$C" \
+          --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg repo "$GITHUB_REPOSITORY" '{
+            username: "Claude",
+            content: $content,
+            allowed_mentions: {parse: ["users", "roles"]},
+            embeds: [{description: $desc, color: $color, timestamp: $ts, footer: {text: $repo}}]
+          }' |
+          curl -sS -o /dev/null -w "Discord: HTTP %{http_code}\n" -H "Content-Type: application/json" --data @- "$WEBHOOK" ||
+          echo "Discord notification failed, ignored."

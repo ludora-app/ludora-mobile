@@ -33,7 +33,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Notify Discord (start)
+        uses: ./.github/actions/discord-notify
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_CLAUDE }}
+          message: '👀 **Claude a commencé à relire la PR #${{ github.event.pull_request.number }}** (${{ github.event.pull_request.user.login }})'
+          links: '[voir la PR](${{ github.event.pull_request.html_url }})'
+
       - name: Review with Claude
+        id: review
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -43,6 +51,7 @@ jobs:
           claude_args: |
             --max-turns 40
             --allowedTools "Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*)"
+            --json-schema '{"type":"object","properties":{"bugs":{"type":"integer"},"rules":{"type":"integer"},"minor":{"type":"integer"}},"required":["bugs","rules","minor"]}'
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -84,3 +93,54 @@ jobs:
               If you found nothing, the summary says so in one line.
             - Write every comment in French.
             - Never approve, request changes, push or edit files: you only comment.
+            - Return the number of issues you reported as structured output: `bugs` (🔴), `rules` (🟠), `minor` (🟡).
+
+      - name: Summarize the review
+        id: outcome
+        if: always()
+        env:
+          CONCLUSION: ${{ steps.review.outcome }}
+          EXECUTION_FILE: ${{ steps.review.outputs.execution_file }}
+          NUMBER: ${{ github.event.pull_request.number }}
+          RESULT: ${{ steps.review.outputs.structured_output }}
+        run: |
+          BUGS=$(printf '%s' "${RESULT:-null}" | jq -r '.bugs // empty' 2>/dev/null || true)
+          RULES=$(printf '%s' "${RESULT:-null}" | jq -r '.rules // empty' 2>/dev/null || true)
+          MINOR=$(printf '%s' "${RESULT:-null}" | jq -r '.minor // empty' 2>/dev/null || true)
+
+          plural() { [ "$1" -gt 1 ] && printf '%s %s' "$1" "$3" || printf '%s %s' "$1" "$2"; }
+
+          if [ "$CONCLUSION" == "success" ] && [ -n "$BUGS" ]; then
+            PARTS=()
+            [ "$BUGS" -gt 0 ] && PARTS+=("$(plural "$BUGS" bug bugs)")
+            [ "$RULES" -gt 0 ] && PARTS+=("$(plural "$RULES" "règle non respectée" "règles non respectées")")
+            [ "$MINOR" -gt 0 ] && PARTS+=("$(plural "$MINOR" "point mineur" "points mineurs")")
+            if [ ${#PARTS[@]} -eq 0 ]; then
+              MSG="📝 **Claude a relu la PR #$NUMBER** : rien à signaler"; COLOR=green
+            else
+              MSG="📝 **Claude a relu la PR #$NUMBER** : $(IFS=,; echo "${PARTS[*]}" | sed 's/,/, /g')"
+              [ "$BUGS" -gt 0 ] && COLOR=orange || COLOR=green
+            fi
+            ALERT=false
+          elif [ -n "$EXECUTION_FILE" ] && [ -f "$EXECUTION_FILE" ] &&
+            jq -r '[.[]? | select(.type == "result")] | last | "\(.result // "") \(.subtype // "")"' "$EXECUTION_FILE" 2>/dev/null |
+            grep -qiE 'usage limit|rate.?limit'; then
+            MSG="⚠️ **Claude a atteint sa limite d'utilisation** : la relecture de la PR #$NUMBER n'a pas pu se faire"; COLOR=orange; ALERT=true
+          else
+            MSG="❌ **Claude n'a pas réussi à relire la PR #$NUMBER**"; COLOR=red; ALERT=true
+          fi
+          {
+            echo "message=$MSG"
+            echo "color=$COLOR"
+            echo "alert=$ALERT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Notify Discord (end)
+        if: always()
+        uses: ./.github/actions/discord-notify
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_CLAUDE }}
+          message: ${{ steps.outcome.outputs.message }}
+          color: ${{ steps.outcome.outputs.color }}
+          mention: ${{ steps.outcome.outputs.alert == 'true' && vars.DISCORD_MENTION || '' }}
+          links: '[voir la PR](${{ github.event.pull_request.html_url }}) · [Logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'

@@ -21,6 +21,11 @@ concurrency:
   group: claude
   cancel-in-progress: false
 
+# Jira statuses Claude moves the ticket to (matched on the status a transition leads to).
+env:
+  JIRA_STATUS_DONE: Développé
+  JIRA_STATUS_IN_PROGRESS: En cours
+
 jobs:
   implement:
     name: 🤖 Claude works on the ticket
@@ -95,6 +100,7 @@ jobs:
             | capture("^[\\s*_]*(?:target|cible)[\\s*_]*:[\\s*_]*(?<b>[A-Za-z0-9._/-]+)"; "i")?] | first | .b // "develop"' "$DIR/raw.json")
           echo "target=$TARGET" >> "$GITHUB_OUTPUT"
           echo "summary=$(jq -r '.fields.summary' "$DIR/raw.json" | tr '\n\r' '  ')" >> "$GITHUB_OUTPUT"
+          echo "status=$(jq -r '.fields.status.name' "$DIR/raw.json")" >> "$GITHUB_OUTPUT"
 
           {
             jq -r --arg target "$TARGET" '
@@ -225,6 +231,40 @@ jobs:
             printf '%s' "$MESSAGE" > "$RUNNER_TEMP/jira/failure.txt"
             exit 1
           fi
+
+      - name: Move the ticket to In progress
+        id: jira_start
+        if: steps.ticket.outputs.skip == 'false'
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          KEY: ${{ steps.key.outputs.key }}
+          STATUS: ${{ steps.ticket.outputs.status }}
+        run: |
+          # Moves the ticket to the status named in $1, through whichever transition leads there. Never fails the job.
+          move() {
+            ID=$(curl -sSf -u "$JIRA_EMAIL:$JIRA_API_TOKEN" -H "Accept: application/json" \
+              "$JIRA_BASE_URL/rest/api/2/issue/$KEY/transitions" |
+              jq -r --arg s "$1" '[.transitions[] | select(.to.name == $s)][0].id // empty') || true
+            if [ -z "$ID" ]; then
+              echo "::warning::No Jira transition to $1"
+              return 0
+            fi
+            jq -n --arg id "$ID" '{transition: {id: $id}}' | curl -sSf -o /dev/null -X POST \
+              -u "$JIRA_EMAIL:$JIRA_API_TOKEN" -H "Content-Type: application/json" \
+              --data @- "$JIRA_BASE_URL/rest/api/2/issue/$KEY/transitions" && echo "Jira: $KEY → $1" ||
+              echo "::warning::Jira transition to $1 failed"
+          }
+
+          # A ticket already shipped (ON DEV, ON STAGING, ON MAIN) never goes back.
+          case "$STATUS" in
+            "ON DEV" | "ON STAGING" | "ON MAIN") echo "moved=false" >> "$GITHUB_OUTPUT" ;;
+            *)
+              [ "$STATUS" == "$JIRA_STATUS_IN_PROGRESS" ] || move "$JIRA_STATUS_IN_PROGRESS"
+              echo "moved=true" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
 
       - name: Notify Discord (start)
         if: steps.ticket.outputs.skip == 'false'
@@ -497,6 +537,37 @@ jobs:
             echo "color=$COLOR"
             echo "alert=$ALERT"
           } >> "$GITHUB_OUTPUT"
+
+      # PR opened or updated: Développé. Otherwise the ticket goes back to where it was before Claude started.
+      - name: Move the ticket
+        if: always() && steps.jira_start.outputs.moved == 'true'
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          KEY: ${{ steps.key.outputs.key }}
+          PREVIOUS: ${{ steps.ticket.outputs.status }}
+          STATE: ${{ steps.outcome.outputs.state }}
+        run: |
+          # Moves the ticket to the status named in $1, through whichever transition leads there. Never fails the job.
+          move() {
+            ID=$(curl -sSf -u "$JIRA_EMAIL:$JIRA_API_TOKEN" -H "Accept: application/json" \
+              "$JIRA_BASE_URL/rest/api/2/issue/$KEY/transitions" |
+              jq -r --arg s "$1" '[.transitions[] | select(.to.name == $s)][0].id // empty') || true
+            if [ -z "$ID" ]; then
+              echo "::warning::No Jira transition to $1"
+              return 0
+            fi
+            jq -n --arg id "$ID" '{transition: {id: $id}}' | curl -sSf -o /dev/null -X POST \
+              -u "$JIRA_EMAIL:$JIRA_API_TOKEN" -H "Content-Type: application/json" \
+              --data @- "$JIRA_BASE_URL/rest/api/2/issue/$KEY/transitions" && echo "Jira: $KEY → $1" ||
+              echo "::warning::Jira transition to $1 failed"
+          }
+
+          case "$STATE" in
+            opened | updated) move "$JIRA_STATUS_DONE" ;;
+            *) [ "$PREVIOUS" == "$JIRA_STATUS_IN_PROGRESS" ] || move "$PREVIOUS" ;;
+          esac
 
       - name: Comment on the Jira ticket
         if: always() && steps.ticket.outputs.skip == 'false'

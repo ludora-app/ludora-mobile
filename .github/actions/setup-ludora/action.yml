@@ -116,6 +116,9 @@ runs:
         fi
         bun run generate:api
         rm -f swagger-backend.json
+        # generate:api rewrites this tracked file from the downloaded swagger. The client is generated
+        # by now: restore it so the CI never commits a swagger-specific version.
+        git checkout -- tools/generate-api/orval.operations.json 2> /dev/null || true
 
     - name: 🌐 Generate Translations (with Vault)
       shell: bash

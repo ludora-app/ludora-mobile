@@ -23,94 +23,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: 🧰 Setup Ludora (deps, API, translations, icons)
+        uses: ./.github/actions/setup-ludora
         with:
-          node-version: 22
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: 🔐 Install HashiCorp envconsul
-        run: |
-          sudo apt-get update && sudo apt-get install -y unzip
-          wget https://releases.hashicorp.com/envconsul/0.13.4/envconsul_0.13.4_linux_amd64.zip
-          unzip envconsul_0.13.4_linux_amd64.zip
-          sudo mv envconsul /usr/local/bin/
-
-      - name: 📥 Download Swagger from Backend
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          REPO_BRANCH="${{ github.ref_name }}"
-          if [ "$REPO_BRANCH" == "develop" ] || [ "$REPO_BRANCH" == "staging" ]; then
-            REPO_BRANCH="dev"
-          fi
-
-          echo "🔍 Searching for Swagger artifact on backend branch: $REPO_BRANCH"
-
-          # 1. On récupère le run du dernier artefact swagger-<branche> non expiré
-          # (le dernier run de la branche peut être un pull_request, qui ne génère pas de swagger)
-          ARTIFACT_NAME="swagger-$REPO_BRANCH"
-          RUN_ID=$(gh api "repos/ludora-app/ludora-back/actions/artifacts?name=$ARTIFACT_NAME&per_page=1" \
-            --jq '.artifacts[0] | select(.expired == false) | .workflow_run.id' || true)
-
-          if [ -n "$RUN_ID" ]; then
-            echo "📡 Downloading $ARTIFACT_NAME from run ID: $RUN_ID"
-            mkdir -p .artifacts
-            gh run download "$RUN_ID" --repo ludora-app/ludora-back \
-              --name "$ARTIFACT_NAME" \
-              --dir .artifacts || echo "⚠️ Download failed"
-          else
-            echo "⚠️ No $ARTIFACT_NAME artifact found"
-          fi
-
-          # swagger-public.json = swagger de l'app (swagger-admin.json = dashboard admin)
-          SWAGGER_PATH=$(find .artifacts -name "swagger-public.json" 2>/dev/null | head -n 1)
-          if [ -n "$SWAGGER_PATH" ]; then
-            mv "$SWAGGER_PATH" ./swagger-backend.json
-            echo "✅ swagger-public.json found and moved to ./swagger-backend.json"
-            echo "HAS_LOCAL_SWAGGER=true" >> $GITHUB_ENV
-          else
-            echo "❌ No swagger-public.json found, skipping local file usage."
-            echo "HAS_LOCAL_SWAGGER=false" >> $GITHUB_ENV
-          fi
-
-      - name: 🎨 Generate API Hooks (with Vault)
-        run: |
-          if [ "$HAS_LOCAL_SWAGGER" == "true" ]; then
-            export SWAGGER_FILE="./swagger-backend.json"
-          fi
-          bun run generate:api
-        env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
-          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
-          EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
-
-      - name: 🌐 Generate Translations (with Vault)
-        run: bun run generate:translations:local
-        env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
-          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
-          EXPO_PUBLIC_API_ENV: ${{ secrets.EXPO_PUBLIC_API_ENV }}
-
-      - name: 🖼️ Generate Icons
-        run: bun run generate:icons
+          api-env: ${{ secrets.EXPO_PUBLIC_API_ENV }}
+          gh-token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          vault-addr: ${{ secrets.VAULT_ADDR }}
+          vault-role-id: ${{ secrets.VAULT_ROLE_ID }}
+          vault-secret-id: ${{ secrets.VAULT_SECRET_ID }}
 
       - name: 🛠️ Run checks (Lint & Type Check)
         run: bun run check:all

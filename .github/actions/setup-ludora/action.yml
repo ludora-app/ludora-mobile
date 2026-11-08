@@ -1,0 +1,129 @@
+name: Setup Ludora
+description: Install dependencies and generate the gitignored files (API client, translations, icons) the app needs to lint and type-check.
+
+inputs:
+  api-env:
+    description: EXPO_PUBLIC_API_ENV used by the generators
+    required: true
+  backend-branch:
+    description: ludora-back branch whose swagger artifact is used. Empty means derived from the current ref (develop and staging use dev).
+    required: false
+    default: ''
+  gh-token:
+    description: Token allowed to read the ludora-back artifacts
+    required: true
+  vault-addr:
+    description: Vault address
+    required: true
+  vault-role-id:
+    description: Vault AppRole role id
+    required: true
+  vault-secret-id:
+    description: Vault AppRole secret id
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Cache Bun dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-bun-
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: 🔐 Install HashiCorp envconsul
+      shell: bash
+      run: |
+        sudo apt-get update && sudo apt-get install -y unzip
+        wget -q https://releases.hashicorp.com/envconsul/0.13.4/envconsul_0.13.4_linux_amd64.zip
+        unzip -q envconsul_0.13.4_linux_amd64.zip
+        sudo mv envconsul /usr/local/bin/
+        rm -f envconsul_0.13.4_linux_amd64.zip
+
+    - name: 📥 Download Swagger from Backend
+      shell: bash
+      env:
+        BACKEND_BRANCH: ${{ inputs.backend-branch }}
+        GH_TOKEN: ${{ inputs.gh-token }}
+        REF_NAME: ${{ github.ref_name }}
+      run: |
+        REPO_BRANCH="$BACKEND_BRANCH"
+        if [ -z "$REPO_BRANCH" ]; then
+          REPO_BRANCH="$REF_NAME"
+          if [ "$REPO_BRANCH" == "develop" ] || [ "$REPO_BRANCH" == "staging" ]; then
+            REPO_BRANCH="dev"
+          fi
+        fi
+
+        echo "🔍 Searching for Swagger artifact on backend branch: $REPO_BRANCH"
+
+        # 1. On récupère le run du dernier artefact swagger-<branche> non expiré
+        # (le dernier run de la branche peut être un pull_request, qui ne génère pas de swagger)
+        ARTIFACT_NAME="swagger-$REPO_BRANCH"
+        RUN_ID=$(gh api "repos/ludora-app/ludora-back/actions/artifacts?name=$ARTIFACT_NAME&per_page=1" \
+          --jq '.artifacts[0] | select(.expired == false) | .workflow_run.id' || true)
+
+        if [ -n "$RUN_ID" ]; then
+          echo "📡 Downloading $ARTIFACT_NAME from run ID: $RUN_ID"
+          mkdir -p .artifacts
+          gh run download "$RUN_ID" --repo ludora-app/ludora-back \
+            --name "$ARTIFACT_NAME" \
+            --dir .artifacts || echo "⚠️ Download failed"
+        else
+          echo "⚠️ No $ARTIFACT_NAME artifact found"
+        fi
+
+        # swagger-public.json = swagger de l'app (swagger-admin.json = dashboard admin)
+        SWAGGER_PATH=$(find .artifacts -name "swagger-public.json" 2>/dev/null | head -n 1)
+        if [ -n "$SWAGGER_PATH" ]; then
+          mv "$SWAGGER_PATH" ./swagger-backend.json
+          echo "✅ swagger-public.json found and moved to ./swagger-backend.json"
+          echo "HAS_LOCAL_SWAGGER=true" >> $GITHUB_ENV
+        else
+          echo "❌ No swagger-public.json found, skipping local file usage."
+          echo "HAS_LOCAL_SWAGGER=false" >> $GITHUB_ENV
+        fi
+        rm -rf .artifacts
+
+    - name: 🎨 Generate API Hooks (with Vault)
+      shell: bash
+      env:
+        EXPO_PUBLIC_API_ENV: ${{ inputs.api-env }}
+        VAULT_ADDR: ${{ inputs.vault-addr }}
+        VAULT_ROLE_ID: ${{ inputs.vault-role-id }}
+        VAULT_SECRET_ID: ${{ inputs.vault-secret-id }}
+      run: |
+        if [ "$HAS_LOCAL_SWAGGER" == "true" ]; then
+          export SWAGGER_FILE="./swagger-backend.json"
+        fi
+        bun run generate:api
+        rm -f swagger-backend.json
+
+    - name: 🌐 Generate Translations (with Vault)
+      shell: bash
+      env:
+        EXPO_PUBLIC_API_ENV: ${{ inputs.api-env }}
+        VAULT_ADDR: ${{ inputs.vault-addr }}
+        VAULT_ROLE_ID: ${{ inputs.vault-role-id }}
+        VAULT_SECRET_ID: ${{ inputs.vault-secret-id }}
+      run: bun run generate:translations:local
+
+    - name: 🖼️ Generate Icons
+      shell: bash
+      run: bun run generate:icons

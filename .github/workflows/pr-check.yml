@@ -1,0 +1,41 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: pr-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: 🛠️ Lint & Type Check
+    # Fork PRs get no secrets, so the generators cannot reach Vault.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 🧰 Setup Ludora (deps, API, translations, icons)
+        uses: ./.github/actions/setup-ludora
+        with:
+          api-env: ${{ secrets.EXPO_PUBLIC_API_ENV }}
+          backend-branch: dev
+          gh-token: ${{ secrets.GH_TOKEN }}
+          vault-addr: ${{ secrets.VAULT_ADDR }}
+          vault-role-id: ${{ secrets.VAULT_ROLE_ID }}
+          vault-secret-id: ${{ secrets.VAULT_SECRET_ID }}
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Type check
+        run: bun run ts:check

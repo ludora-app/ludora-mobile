@@ -9,6 +9,8 @@ import { useGetMyUpcomingSessions } from '../queries/get-my-upcoming-sessions.qu
 import { useGetIsFirstSessionPending } from '../queries/get-is-first-session-pending.query';
 import { useGetHomeRecommendedSessions } from '../queries/get-home-recommended-sessions.query';
 
+const NO_UIDS: ReadonlySet<string> = new Set();
+
 /**
  * Everything the home screen needs to choose its featured card (decision A2), and the uids behind the list badges.
  */
@@ -53,8 +55,8 @@ export const useGetHomeFeatured = () => {
   return {
     joinedUids,
     nextMatch,
-    // Never "Pour toi" on an empty profile: the recommendations are not fetched without a sport
-    recommendedUids,
+    // Never "Pour toi" on an empty profile, even from recommendations still in the cache
+    recommendedUids: hasSportPreferences ? recommendedUids : NO_UIDS,
     refetch,
     state,
     suggestion: suggestions[0] ?? null,

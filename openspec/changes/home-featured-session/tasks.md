@@ -31,4 +31,4 @@
 - [x] 4.1 Analytics events: featured join / not for me / publish (success and failed) / edit, widen area, sport chip
 - [x] 4.2 Create the `home.*` Tolgee keys (FR and EN)
 - [x] 4.3 Run `bun lint:fix && bun ts:check && bun test`, and verify all pass
-- [ ] 4.4 Walk the R1 to R11 states on iOS and Android (not possible in the CI: left to the review)
+- [x] 4.4 List in the PR the R1 to R11 states to walk on iOS and Android during the review (no device in the CI)

@@ -103,8 +103,9 @@ data rule.
   (ticket, section 8: cross with `my-list`).
 - Organised when `creatorUid` is the user's uid. For a joined session, the team comes from `GET /sessions/{uid}`
   (`isJoined` on each team); until it loads, the card shows the organiser line.
-- Join and create invalidate `my-list`, `my-stats`, the list and the recommendations, so the header switches to the
-  next match card by itself.
+- Join invalidates `my-list`, `my-stats`, the list and the recommendations; create invalidates `my-list`,
+  `my-stats` and the list (the player's own sessions are never recommended). The header switches to the next match
+  card by itself.
 
 ### 7. Header and list layout
 
@@ -113,7 +114,9 @@ data rule.
   list header ("Toutes les sessions", "Filtres", sport chips), not sticky.
 - A tall yellow block above the header hides the cream background on iOS overscroll.
 - Items are wrapped in a padded row component; `getFixedItemSize` adds the badge height for the badged cards.
-- `SessionCard` gets an optional `topContent` slot for the badge (shared component, additive).
+- `SessionCard` gets optional slots (shared component, additive, existing screens unchanged): `topContent` for the
+  list badge, `footer` for the match reasons and actions, `subtitle` and `pill` for the next match card.
+  `SessionCardJoinButton` is exported for the featured card.
 - The filters button keeps the existing filters page (`FiltersHeader` logic: `ROUTES.FILTERS.FILTER` and the
   `selectedFilters` return param), without the search input.
 

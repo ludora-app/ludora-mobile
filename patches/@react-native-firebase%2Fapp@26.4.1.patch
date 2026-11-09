@@ -1,0 +1,13 @@
+diff --git a/plugin/build/ios/appDelegate.js b/plugin/build/ios/appDelegate.js
+index 322970e62981abb762d0d6cd5b5e1944d56cf680..18c8c2721c5e1d8bc6af8f2aea0232e15c3a29c2 100644
+--- a/plugin/build/ios/appDelegate.js
++++ b/plugin/build/ios/appDelegate.js
+@@ -74,7 +74,7 @@ function modifyObjcAppDelegate(contents) {
+ }
+ function modifySwiftAppDelegate(contents) {
+     const methodInvocationBlock = `FirebaseApp.configure()`;
+-    const methodInvocationLineMatcher = /(?:self\.moduleName\s*=\s*"([^"]*)")|(?:factory\.startReactNative\()/;
++    const methodInvocationLineMatcher = /(?:self\.moduleName\s*=\s*"([^"]*)")|(?:factory\.startReactNative\()|(?:return\s+super\.application\(\s*application\s*,\s*didFinishLaunchingWithOptions:\s*launchOptions\s*\))/;
+     // Add import
+     contents = addImport(contents, 'import FirebaseCore', /^[ \t]*import\s+FirebaseCore[ \t]*$/m, /^[ \t]*import\s+Expo[ \t]*$/m, /^[ \t]*import\b[^\r\n]*$/m);
+     // To avoid potential issues with existing changes from older plugin versions

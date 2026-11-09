@@ -1,7 +1,7 @@
 import { cn } from '@chillui/ui';
 import { debounce } from 'radash';
-import { FlatList, useWindowDimensions, ViewToken } from 'react-native';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, ListViewToken, useWindowDimensions } from 'react-native';
 
 import { Dayjs } from '@/lib/dayjs';
 
@@ -49,7 +49,7 @@ export default function DaysCarousel(props: DateCarouselProps) {
     [setSelected, debouncedOnSelect],
   );
 
-  const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+  const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ListViewToken[] }) => {
     const indices = viewableItems.map(item => item.index).filter((i): i is number => i !== null);
     setVisibleIndices(indices);
   }, []);

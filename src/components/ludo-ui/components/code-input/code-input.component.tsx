@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { cn } from '@chillui/ui';
-import { TextInput, TextInputKeyPressEvent } from 'react-native';
+import { TextInputInstance, TextInputKeyPressEvent } from 'react-native';
 
 import { BoxRow } from '../box';
 import { Input } from '../input';
@@ -19,7 +19,7 @@ const EMPTY_BOX = ' ';
  */
 export const CodeInput = (props: CodeInputProps) => {
   const { className, hasError = false, length = DEFAULT_CODE_LENGTH, onChangeText, onComplete, value = '' } = props;
-  const inputRefs = useRef<(TextInput | null)[]>([]);
+  const inputRefs = useRef<(TextInputInstance | null)[]>([]);
   const boxes = Array.from({ length }, (_, index) => value[index]?.trim() ?? '');
 
   const updateBoxes = ({ focusIndex, nextBoxes }: { focusIndex: number; nextBoxes: string[] }) => {
@@ -80,7 +80,7 @@ export const CodeInput = (props: CodeInputProps) => {
       {Array.from({ length }, (_, index) => (
         <Input
           key={index}
-          ref={(ref: TextInput | null) => {
+          ref={(ref: TextInputInstance | null) => {
             inputRefs.current[index] = ref;
           }}
           className="flex-1"

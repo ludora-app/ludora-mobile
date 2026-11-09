@@ -1,15 +1,17 @@
-import { memo } from 'react';
-import { Pressable } from 'react-native';
+import { memo, Ref } from 'react';
 import { useTranslate } from '@tolgee/react';
 import { TabTriggerSlotProps } from 'expo-router/ui';
+import { Pressable, ViewInstance } from 'react-native';
 import { Icon, String, BoxColumnCenter } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
 import { TabRoutes } from '@/constants/tabs-routes.constants';
 
-export type TabButtonProps = TabTriggerSlotProps & Pick<TabRoutes, 'iconName' | 'iconNameActive' | 'text'>;
+// expo-router still types the slot ref as `RefAttributes<View>`, which the RN 0.87+ Strict API no longer accepts
+export type TabButtonProps = Omit<TabTriggerSlotProps, 'ref'> &
+  Pick<TabRoutes, 'iconName' | 'iconNameActive' | 'text'> & { ref?: Ref<ViewInstance> };
 
-function TabBarItem({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) {
+const TabBarItemComponent = ({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) => {
   const { t } = useTranslate();
 
   return (
@@ -26,6 +28,6 @@ function TabBarItem({ iconName, iconNameActive, isFocused, text, ...props }: Tab
       </BoxColumnCenter>
     </Pressable>
   );
-}
+};
 
-export default memo(TabBarItem, (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused);
+export const TabBarItem = memo(TabBarItemComponent, (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused);

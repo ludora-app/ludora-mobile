@@ -12,7 +12,7 @@ import {
 
 import ChatRoomMessageListItemWrapperTime from './chat-room-message-list-item-wrapper-time.component';
 import ChatRoomMessageListItemWrapperAvatar from './chat-room-message-list-item-wrapper-avatar.component';
-import ChatRoomMessageListItemWrapperBubble from './chat-room-message-list-item-wrapper-bubble.component';
+import { ChatRoomMessageListItemWrapperBubble } from './chat-room-message-list-item-wrapper-bubble.component';
 import ChatRoomMessageListItemWrapperIndicators from './chat-room-message-list-item-wrapper-indicators/chat-room-message-list-item-wrapper-indicators.component';
 
 type ChatRoomMessageListItemWrapperProps = {

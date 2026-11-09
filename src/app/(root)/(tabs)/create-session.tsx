@@ -1,3 +1,3 @@
-import CreateSessionScreenStep1 from '@/features/create-session/screens/create-session-step-1.screen';
+import { CreateSessionStep1Screen } from '@/features/create-session/screens/create-session-step-1.screen';
 
-export default CreateSessionScreenStep1;
+export default CreateSessionStep1Screen;

@@ -1,7 +1,7 @@
 import { cn } from '@chillui/ui';
 import { String } from '@ludo/ui';
 import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable, ScrollView, ScrollViewInstance } from 'react-native';
 
 import dayjs from '@/lib/dayjs';
 
@@ -19,7 +19,7 @@ type TimeSlotChipsProps = {
 /** Horizontal row of start times (`15:00`), the selected one highlighted. */
 export const TimeSlotChips = (props: TimeSlotChipsProps) => {
   const { className, onSelect, selectedSlot, slots } = props;
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<ScrollViewInstance>(null);
 
   const selectedIndex = selectedSlot ? slots.findIndex(slot => dayjs(slot).isSame(selectedSlot, 'minute')) : -1;
 

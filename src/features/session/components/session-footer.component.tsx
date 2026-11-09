@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useToast } from '@chillui/ui';
-import { ScrollView } from 'react-native';
 import { Button, String } from '@ludo/ui';
 import { useTranslate } from '@tolgee/react';
+import { ScrollViewInstance } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useInvalidateSessionsFindOne } from '@api/generated/invalidate-queries';
@@ -24,12 +24,12 @@ import { SessionJoinedLocalParams, SessionScreenLocalSearchParams } from '../typ
 
 type SessionFooterProps = {
   session: FindOneSessionResponseData;
-  scrollViewRef: React.RefObject<ScrollView>;
+  scrollViewRef: React.RefObject<ScrollViewInstance | null>;
 };
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
-export default function SessionFooter({ scrollViewRef, session }: SessionFooterProps) {
+export const SessionFooter = ({ scrollViewRef, session }: SessionFooterProps) => {
   const router = useRouter();
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const invalidateSessionById = useInvalidateSessionsFindOne();
@@ -165,4 +165,4 @@ export default function SessionFooter({ scrollViewRef, session }: SessionFooterP
       )}
     </FooterWrapper>
   );
-}
+};

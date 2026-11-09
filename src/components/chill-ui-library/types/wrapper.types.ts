@@ -1,7 +1,6 @@
 import { VariantProps } from 'tailwind-variants';
 import { ComponentType, RefObject } from 'react';
-import { ViewProps, ScrollViewProps, ScrollView } from 'react-native';
-import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler';
+import { ViewProps, ScrollViewProps, ScrollViewInstance } from 'react-native';
 import {
   KeyboardAvoidingViewProps,
   KeyboardStickyViewProps,
@@ -41,7 +40,7 @@ export type WrapperProps = WrapperBaseProps;
  */
 export type WrapperScrollViewProps = WrapperBaseProps &
   ScrollViewProps & {
-    ref?: RefObject<ScrollView | null>;
+    ref?: RefObject<ScrollViewInstance | null>;
   };
 
 /**
@@ -50,7 +49,7 @@ export type WrapperScrollViewProps = WrapperBaseProps &
 export type WrapperGestureHandlerScrollViewProps = WrapperBaseProps &
   ScrollViewProps & {
     contentContainerClassName?: string;
-    ref?: RefObject<GestureHandlerScrollView | null>;
+    ref?: RefObject<ScrollViewInstance | null>;
   };
 
 /**

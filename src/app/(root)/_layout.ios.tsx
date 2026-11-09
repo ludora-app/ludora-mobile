@@ -4,12 +4,17 @@ import { useSafeArea } from '@/hooks/safe-area.hook';
 import OnBoardingInitializer from '@/initializers/on-boarding/on-boarding-initializer';
 import PushNotificationsInitializer from '@/initializers/push-notifications.initializer';
 
+// Expo Router 58 no longer reads `initialRouteName` from the navigator props: the first route is the layout anchor
+// eslint-disable-next-line camelcase
+export const unstable_settings = {
+  anchor: '(tabs)',
+};
+
 function AppLayoutNav() {
   const { bottom } = useSafeArea();
 
   return (
     <Stack
-      initialRouteName="(tabs)"
       screenOptions={{
         animation: 'ios_from_right',
         headerShown: false,

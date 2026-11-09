@@ -1,6 +1,7 @@
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import { AndroidImportance } from 'expo-notifications';
 
 // Import Firebase Messaging modular API
 let getMessaging: any = null;
@@ -122,7 +123,7 @@ class PushNotificationService {
 
     const commonConfig = {
       enableVibrate: true,
-      importance: Notifications.AndroidImportance.MAX,
+      importance: AndroidImportance.MAX,
       showBadge: true,
       vibrationPattern: [0, 250, 250, 250],
     };

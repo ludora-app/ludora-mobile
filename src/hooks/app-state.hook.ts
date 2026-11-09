@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { AppState, AppStateStatus, Platform } from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
+
+import { IS_IOS } from '@/constants/platform.constants';
 
 const useAppStateChange = (onActive: () => void, onInactive?: () => void) => {
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      // RN 0.87+ types `AppState.currentState` as nullable (not known yet at launch)
+      if (appState.current?.match(/inactive|background/) && nextAppState === 'active') {
         onActive();
       } else if (appState.current === 'active' && nextAppState.match(/inactive|background/)) {
         onInactive && onInactive();
@@ -39,7 +42,7 @@ export const useAppState = ({ onlyIos }: { onlyIos: boolean }) => {
     };
   }, []);
 
-  const appStateToReturn = Platform.OS === 'ios' && onlyIos ? appState : 'active';
+  const appStateToReturn = IS_IOS && onlyIos ? appState : 'active';
 
   return { appState: appStateToReturn };
 };

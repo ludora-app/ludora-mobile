@@ -2,17 +2,15 @@ import { memo } from 'react';
 import { Pellet } from '@chillui/ui';
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { TabTriggerSlotProps } from 'expo-router/ui';
 import { Icon, String, Box, BoxColumnCenter } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { TabRoutes } from '@/constants/tabs-routes.constants';
 import { useMessagesUnread } from '@/queries/get-has-messages-unreads.query';
 
-export type TabButtonProps = TabTriggerSlotProps & Pick<TabRoutes, 'iconName' | 'iconNameActive' | 'text'>;
+import { TabButtonProps } from './tab-bar-item.component';
 
-function TabBarItemMessages({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) {
-  const { data: getHasUnreadMessages } = useMessagesUnread()
+const TabBarItemMessagesComponent = ({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) => {
+  const { data: getHasUnreadMessages } = useMessagesUnread();
 
   const { hasUnreadMessages } = getHasUnreadMessages || {};
   const { t } = useTranslate();
@@ -20,7 +18,7 @@ function TabBarItemMessages({ iconName, iconNameActive, isFocused, text, ...prop
   return (
     <Pressable {...props}>
       <BoxColumnCenter className="grow gap-0.5 pt-6">
-        <Box className='relative'>
+        <Box className="relative">
           {hasUnreadMessages && <Pellet className="absolute right-0 top-0 z-50" />}
           <Icon name={isFocused ? iconNameActive : iconName} color={isFocused ? COLORS.primary : '#9DB2CE'} />
         </Box>
@@ -34,6 +32,9 @@ function TabBarItemMessages({ iconName, iconNameActive, isFocused, text, ...prop
       </BoxColumnCenter>
     </Pressable>
   );
-}
+};
 
-export default memo(TabBarItemMessages, (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused);
+export const TabBarItemMessages = memo(
+  TabBarItemMessagesComponent,
+  (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused,
+);

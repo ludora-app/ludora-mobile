@@ -1,4 +1,4 @@
-import { Pressable, View } from 'react-native';
+import { Pressable, ViewInstance } from 'react-native';
 import { useState, useRef, PropsWithChildren } from 'react';
 
 import { RipplePressableProps } from '@/components/chill-ui-library/types';
@@ -50,7 +50,7 @@ function RipplePressable(props: PropsWithChildren<RipplePressableProps>) {
   const [ripples, setRipples] = useState<
     { id: number; x: number; y: number; timestamp: number; width: number; height: number }[]
   >([]);
-  const containerRef = useRef<View>(null);
+  const containerRef = useRef<ViewInstance>(null);
   const rippleIdCounter = useRef(0);
 
   // Extract borderRadius from children

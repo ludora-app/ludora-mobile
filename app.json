@@ -24,7 +24,8 @@
         "@stripe/stripe-react-native",
         {
           "merchantIdentifier": "merchant.com.ludora",
-          "enableGooglePay": true
+          "enableGooglePay": true,
+          "disableSPM": true
         }
       ],
       [
@@ -80,7 +81,8 @@
       "./plugins/with-non-modular-headers",
       "./plugins/with-android-manifest-fixes",
       "expo-apple-authentication",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-maps"
     ],
     "name": "Ludora",
     "slug": "ludora",

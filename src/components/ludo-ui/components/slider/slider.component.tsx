@@ -2,7 +2,7 @@ import { cn } from '@chillui/ui';
 import { useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { Box } from '../box';
@@ -58,16 +58,17 @@ export const Slider = <T extends SliderValue>(props: SliderProps<T>) => {
   };
 
   // Pan also handles taps: onBegin fires on touch down and onFinalize on release
-  const gesture = Gesture.Pan()
-    .onBegin(event => {
+  const gesture = usePanGesture({
+    onBegin: event => {
       isDragging.set(true);
       moveTo(event.x);
-    })
-    .onUpdate(event => moveTo(event.x))
-    .onFinalize(() => {
+    },
+    onFinalize: () => {
       isDragging.set(false);
       position.set(withSpring((currentIndex.get() / lastIndex) * width.get(), SPRING_CONFIG));
-    });
+    },
+    onUpdate: event => moveTo(event.x),
+  });
 
   const fillStyle = useAnimatedStyle(() => ({ width: position.get() }));
   const thumbStyle = useAnimatedStyle(() => ({ transform: [{ translateX: position.get() - THUMB_SIZE / 2 }] }));

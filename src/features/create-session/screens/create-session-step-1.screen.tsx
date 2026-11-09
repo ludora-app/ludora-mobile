@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { ScrollView } from 'react-native';
 import { useTranslate } from '@tolgee/react';
+import { ScrollViewInstance } from 'react-native';
 import { Box, WrapperScrollView } from '@ludo/ui';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -15,8 +15,8 @@ import CreateSessionStep1Part2 from '../components/create-session-steps/create-s
 import CreateSessionStep1Part3 from '../components/create-session-steps/create-session-step-1/create-session-step-1-part-3/create-session-step-1-part-3.component';
 import CreateSessionStep1Part4 from '../components/create-session-steps/create-session-step-1/create-session-step-1-part-4/create-session-step-1-part-4.component';
 
-export default function CreateSessionStep1() {
-  const scrollViewRef = useRef<ScrollView>(null);
+export const CreateSessionStep1Screen = () => {
+  const scrollViewRef = useRef<ScrollViewInstance>(null);
   const { t } = useTranslate();
   const hasScrolledToP3 = useRef(false);
   const hasScrolledToP4 = useRef(false);
@@ -98,4 +98,4 @@ export default function CreateSessionStep1() {
       )}
     </WrapperScrollView>
   );
-}
+};

@@ -31,14 +31,23 @@ export const ANALYTICS_EVENTS = {
     PREPARED_SESSION_PUBLISH_FAILED: 'onboarding_prepared_session_publish_failed',
     PREPARED_SESSION_PUBLISHED: 'onboarding_prepared_session_published',
     PREPARED_SESSION_VIEWED: 'onboarding_prepared_session_viewed',
-    REMINDER_CARD_CREATE_PRESSED: 'onboarding_reminder_card_create_pressed',
-    REMINDER_CARD_JOIN_PRESSED: 'onboarding_reminder_card_join_pressed',
     SESSIONS_CREATE_OWN_PRESSED: 'onboarding_sessions_create_own_pressed',
     SESSIONS_GO_HOME_PRESSED: 'onboarding_sessions_go_home_pressed',
     SESSIONS_JOINED: 'onboarding_sessions_joined',
     SESSIONS_LINK_COPIED: 'onboarding_sessions_link_copied',
     SESSIONS_LINK_SHARED: 'onboarding_sessions_link_shared',
     SESSIONS_READY_CONTINUED: 'onboarding_sessions_ready_continued',
+  },
+
+  // Home
+  HOME: {
+    AREA_WIDENED: 'home_area_widened',
+    FEATURED_NOT_FOR_ME_PRESSED: 'home_featured_not_for_me_pressed',
+    FEATURED_PREPARED_EDIT_PRESSED: 'home_featured_prepared_edit_pressed',
+    FEATURED_PREPARED_PUBLISH_FAILED: 'home_featured_prepared_publish_failed',
+    FEATURED_PREPARED_PUBLISHED: 'home_featured_prepared_published',
+    FEATURED_SESSION_JOINED: 'home_featured_session_joined',
+    SPORT_CHIP_SELECTED: 'home_sport_chip_selected',
   },
 
   // Dialog Confirm
@@ -178,6 +187,28 @@ export interface AnalyticsEventData {
     has_hour_preferences: boolean;
     has_sport_preferences: boolean;
     play_area_radius_km: number | null;
+  };
+
+  // home events
+  [ANALYTICS_EVENTS.HOME.AREA_WIDENED]: {
+    distance_km: number;
+  };
+  [ANALYTICS_EVENTS.HOME.SPORT_CHIP_SELECTED]: {
+    sport: string;
+  };
+  [ANALYTICS_EVENTS.HOME.FEATURED_NOT_FOR_ME_PRESSED]: {
+    session_uid: string;
+  };
+  [ANALYTICS_EVENTS.HOME.FEATURED_PREPARED_PUBLISH_FAILED]: {
+    error_message: string;
+  };
+  [ANALYTICS_EVENTS.HOME.FEATURED_SESSION_JOINED]: {
+    session_uid: string;
+    team_uid: string;
+  };
+  [ANALYTICS_EVENTS.HOME.FEATURED_PREPARED_PUBLISHED]: {
+    session_uid: string;
+    sport: string;
   };
 
   // auth events

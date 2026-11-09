@@ -2,6 +2,7 @@ import { useSessionsCreate } from '@generatedApi/sessions/sessions.api';
 
 import { CreateSessionFromRequestDto } from '@/api/generated/model';
 import {
+  useInvalidateSessionsFindAll,
   useInvalidateSessionsGetMyStats,
   useInvalidateSessionsFindAllMySessions,
   useInvalidateConversationsFindAllByUserUid,
@@ -11,6 +12,7 @@ export const useCreateSession = () => {
   const invalidateSessionsGetMyStats = useInvalidateSessionsGetMyStats();
   const invalidateIncommingSessionMe = useInvalidateSessionsFindAllMySessions();
   const invalidateConversationsFindAllMe = useInvalidateConversationsFindAllByUserUid();
+  const invalidateSessionsFindAll = useInvalidateSessionsFindAll();
 
   const mutation = useSessionsCreate({
     mutation: {
@@ -18,6 +20,7 @@ export const useCreateSession = () => {
         invalidateIncommingSessionMe();
         invalidateConversationsFindAllMe();
         invalidateSessionsGetMyStats();
+        invalidateSessionsFindAll();
       },
     },
   });

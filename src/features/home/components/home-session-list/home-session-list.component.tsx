@@ -2,32 +2,22 @@ import { useMemo } from 'react';
 import { GetListFixedItemSize, List } from '@ludo/ui';
 
 import { useSafeArea } from '@/hooks/safe-area.hook';
-import { IS_ANDROID } from '@/constants/platform.constants';
-import { SESSION_CARD_LIST_ITEM_HEIGHT, SessionCard, SessionCardSkeleton } from '@/components/ui/session-card';
+import { SessionCollectionItemDto } from '@/api/generated/model';
+import { SESSION_CARD_LIST_ITEM_HEIGHT } from '@/components/ui/session-card';
 
-import { useGetAllSessionsByFilter } from '../../queries/get-sessions-by-filter.query';
-import { useGetIncommingSessionMe } from '../../queries/get-incomming-session-me.query';
-import { useGetIsFirstSessionPending } from '../../queries/get-is-first-session-pending.query';
-import HomeSessionListHeader from './home-session-list-headers/home-session-list-header.component';
-import HomeSessionListHeaderSticky from './home-session-list-headers/home-session-list-header-sticky.component';
-import HomeSessionListHeaderTopList from './home-session-list-headers/home-session-list-header-top-list.component';
+import { HomeHeader } from '../home-header/home-header.component';
+import { useGetHomeFeatured } from '../../hooks/home-featured.hook';
+import { HomeSessionListEmpty } from './home-session-list-empty.component';
+import { useGetHomeSessions } from '../../queries/get-home-sessions.query';
+import { HomeSessionListItem } from './home-session-list-item/home-session-list-item.component';
+import { getHomeSessionBadge, HomeSessionListContext } from '../../context/home-session-list.context';
+import { HomeSessionListItemSkeleton } from './home-session-list-item/home-session-list-item-skeleton.component';
+import { HOME_SESSION_LIST_ITEM_BADGE_HEIGHT } from './home-session-list-item/home-session-list-item-badge.component';
 
-const FIXED_LIST_STICKY_COMPONENT_SIZE = 66.33;
-const FIXED_LIST_TOP_COMPONENT_SIZE = 132.66;
-
-const LIST_HEADER_HEIGHT = 176;
-const LIST_HEADER_HEIGHT_WITH_SESSION = 256;
-
-const BOTTOM_PADDING_EMPTY_LIST = 100;
-
-const EMPTY_RESULT_PROPS = {
-  className: 'mt-4',
-  hasRandomTitle: true,
-  randomOptions: 5,
-  title: 'home.sessions_empty_result_v',
-} as const;
-
-export default function HomeSessionList() {
+/** The whole home screen: the yellow header with the featured card, then "Toutes les sessions". */
+export const HomeSessionList = () => {
+  const { bottomTab } = useSafeArea();
+  const { joinedUids, nextMatch, recommendedUids, refetch: refetchFeatured, state, suggestion } = useGetHomeFeatured();
   const {
     fetchNextPage,
     hasNextPage,
@@ -36,74 +26,50 @@ export default function HomeSessionList() {
     isLoading,
     isRefetching,
     items: sessions,
-    refetch,
-  } = useGetAllSessionsByFilter();
-  const { data: IncommingSessionMe, isLoading: IncommingSessionMeIsLoading } = useGetIncommingSessionMe();
+    refetch: refetchSessions,
+  } = useGetHomeSessions();
 
-  const showSessionCard = !!IncommingSessionMe?.uid;
+  const contextValue = useMemo(() => ({ joinedUids, recommendedUids }), [joinedUids, recommendedUids]);
 
-  const hasNewSession = showSessionCard && !IncommingSessionMeIsLoading;
-
-  const { bottomTab } = useSafeArea();
-  const { isFirstSessionPending } = useGetIsFirstSessionPending();
-
-  const fixedItemsSize = useMemo<GetListFixedItemSize>(
-    () => (_item, _index, type) => {
-      if (type === 'sticky') {
-        return FIXED_LIST_STICKY_COMPONENT_SIZE;
-      }
-      if (type === 'header_top') {
-        // The first session card makes the top header taller: let the list measure it
-        return isFirstSessionPending ? undefined : FIXED_LIST_TOP_COMPONENT_SIZE;
-      }
-      return SESSION_CARD_LIST_ITEM_HEIGHT;
+  const getFixedItemSize = useMemo<GetListFixedItemSize<SessionCollectionItemDto>>(
+    () => (item, _index, type) => {
+      if (type === 'skeleton') return SESSION_CARD_LIST_ITEM_HEIGHT;
+      if (type !== 'row') return undefined;
+      const badge = getHomeSessionBadge({ joinedUids, recommendedUids, uid: item.uid });
+      return SESSION_CARD_LIST_ITEM_HEIGHT + (badge ? HOME_SESSION_LIST_ITEM_BADGE_HEIGHT : 0);
     },
-    [isFirstSessionPending],
+    [joinedUids, recommendedUids],
   );
-
-  const paddingBottom = useMemo(() => {
-    if (IS_ANDROID) {
-      if (sessions.length === 0) {
-        return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE + BOTTOM_PADDING_EMPTY_LIST;
-      }
-      return bottomTab + FIXED_LIST_STICKY_COMPONENT_SIZE + FIXED_LIST_TOP_COMPONENT_SIZE;
-    }
-    return bottomTab;
-  }, [bottomTab, sessions.length]);
 
   const listHeaderComponent = useMemo(
-    () => <HomeSessionListHeaderTopList hasNewSession={hasNewSession} IncommingSessionMe={IncommingSessionMe} />,
-    [hasNewSession, IncommingSessionMe],
+    () => <HomeHeader nextMatch={nextMatch} state={state} suggestion={suggestion} />,
+    [nextMatch, state, suggestion],
   );
 
-  const listTopComponent = useMemo(() => <HomeSessionListHeader />, []);
-  const listStickyComponent = useMemo(() => <HomeSessionListHeaderSticky />, []);
+  const contentContainerStyle = useMemo(() => ({ paddingBottom: bottomTab }), [bottomTab]);
+
+  const refetch = () => Promise.all([refetchSessions(), refetchFeatured()]);
 
   return (
-    <List
-      data={sessions}
-      ItemComponent={SessionCard}
-      fetchNextPage={fetchNextPage}
-      hasNextPage={hasNextPage}
-      isFetchingNextPage={isFetchingNextPage}
-      isLoading={isLoading}
-      isError={isError}
-      hasRefreshControl
-      refetch={refetch}
-      getFixedItemSize={fixedItemsSize}
-      isRefetching={isRefetching}
-      keyboardDismissMode="interactive"
-      keyboardShouldPersistTaps="handled"
-      SkeletonComponent={SessionCardSkeleton}
-      ListHeaderComponent={listHeaderComponent}
-      hasListStickyComponentTopSafeArea
-      ListTopComponent={listTopComponent}
-      ListStickyComponent={listStickyComponent}
-      hasHeaderTransparent
-      listHeaderComponentHeight={hasNewSession ? LIST_HEADER_HEIGHT_WITH_SESSION : LIST_HEADER_HEIGHT}
-      contentContainerClassName="bg-background rounded-t-xl px-4"
-      contentContainerStyle={{ paddingBottom }}
-      emptyResultProps={EMPTY_RESULT_PROPS}
-    />
+    <HomeSessionListContext value={contextValue}>
+      <List
+        data={sessions}
+        ItemComponent={HomeSessionListItem}
+        SkeletonComponent={HomeSessionListItemSkeleton}
+        EmptyComponent={HomeSessionListEmpty}
+        ListHeaderComponent={listHeaderComponent}
+        getFixedItemSize={getFixedItemSize}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        isLoading={isLoading}
+        isError={isError}
+        isRefetching={isRefetching}
+        refetch={refetch}
+        hasRefreshControl
+        contentContainerClassName="bg-background"
+        contentContainerStyle={contentContainerStyle}
+      />
+    </HomeSessionListContext>
   );
-}
+};

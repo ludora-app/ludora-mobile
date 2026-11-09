@@ -32,13 +32,14 @@ const calculateNumberOfFilters = (filters: FiltersProps): number => {
 
 interface HomeSessionFiltersStore {
   reset: () => void;
-
+  widenArea: () => void;
   filters: FiltersProps;
-
   numberOfFilters: number;
-
+  /** The player asked for the wide distance after an empty list ("Élargir à 20 km"). */
+  isAreaWidened: boolean;
   setFilters: (filters: FiltersProps) => void;
 }
+
 const getStartDay = () => {
   const now = dayjs();
   if (now.hour() >= 22) {
@@ -54,6 +55,7 @@ export const useHomeSessionFiltersStore = create<HomeSessionFiltersStore>((set, 
       source: 'day-carousel',
     },
   },
+  isAreaWidened: false,
   numberOfFilters: 0,
   reset: () => {
     set({
@@ -63,6 +65,7 @@ export const useHomeSessionFiltersStore = create<HomeSessionFiltersStore>((set, 
           source: 'day-carousel',
         },
       },
+      isAreaWidened: false,
       numberOfFilters: 0,
     });
   },
@@ -74,4 +77,5 @@ export const useHomeSessionFiltersStore = create<HomeSessionFiltersStore>((set, 
       numberOfFilters: calculateNumberOfFilters(updatedFilters),
     });
   },
+  widenArea: () => set({ isAreaWidened: true }),
 }));

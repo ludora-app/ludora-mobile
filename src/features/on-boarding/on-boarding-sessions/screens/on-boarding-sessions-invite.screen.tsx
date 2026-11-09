@@ -11,9 +11,9 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { formatSessionStartDate } from '@/utils/sessions.utils';
 import { Loading } from '@/components/ui/loading/loading.component';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
+import { useGetCompatiblePlayers } from '@/queries/get-compatible-players.query';
 
 import { useGetPreparedSession } from '../queries/get-prepared-session.query';
-import { useGetCompatiblePlayers } from '../queries/get-compatible-players.query';
 import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
 import { usePublishPreparedSession } from '../queries/publish-prepared-session.query';
 import OnBoardingSessionsInvitePlayer from '../components/on-boarding-sessions-invite/on-boarding-sessions-invite-player.component';
@@ -46,7 +46,7 @@ export const OnBoardingSessionsInviteScreen = () => {
     isRefetching,
     players,
     refetch,
-  } = useGetCompatiblePlayers({ fieldUid: field?.uid, preparedSession });
+  } = useGetCompatiblePlayers({ fieldUid: field?.uid, preparedSession, sessionUid: publishedSessionUid });
 
   const invitedCount = invitedUserUids.length;
   const hasPlayers = players.length > 0;

@@ -6,9 +6,9 @@ import { useSportPreferencesFindMySportPreferences } from '@generatedApi/sport-p
 import { useUserMe } from '@/queries/user-me.query';
 import { useGetSports } from '@/queries/get-sports.query';
 import { FieldsFindAllVerifiedType } from '@/api/generated/model';
+import { getPreparedSession } from '@/utils/prepared-session.utils';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
-import { getPreparedSession } from '../utils/prepared-session.utils';
 import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
 
 /**

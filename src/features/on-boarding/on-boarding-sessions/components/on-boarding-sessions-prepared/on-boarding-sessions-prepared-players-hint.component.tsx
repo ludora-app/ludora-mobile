@@ -3,9 +3,10 @@ import { useTranslate } from '@tolgee/react';
 import { Avatar, BoxRow, String } from '@ludo/ui';
 
 import dayjs from '@/lib/dayjs';
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
+import { useGetCompatiblePlayers } from '@/queries/get-compatible-players.query';
 
-import { PreparedSessionValues } from '../../utils/prepared-session.utils';
-import { useGetCompatiblePlayers } from '../../queries/get-compatible-players.query';
+import { useOnBoardingSessionsStore } from '../../../stores/on-boarding-sessions.store';
 
 const AVATARS_COUNT = 2;
 
@@ -24,7 +25,12 @@ function getMomentKey(hour: number) {
 export const OnBoardingSessionsPreparedPlayersHint = (props: OnBoardingSessionsPreparedPlayersHintProps) => {
   const { fieldUid, preparedSession } = props;
   const { t } = useTranslate();
-  const { players, totalCount } = useGetCompatiblePlayers({ fieldUid, preparedSession });
+  const publishedSessionUid = useOnBoardingSessionsStore(state => state.publishedSessionUid);
+  const { players, totalCount } = useGetCompatiblePlayers({
+    fieldUid,
+    preparedSession,
+    sessionUid: publishedSessionUid,
+  });
 
   if (totalCount === 0) return null;
 

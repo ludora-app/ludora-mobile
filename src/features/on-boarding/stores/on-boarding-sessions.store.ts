@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 
 import { FieldResponseDto } from '@/api/generated/model';
-
-import { PreparedSessionValues } from '../on-boarding-sessions/utils/prepared-session.utils';
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
 
 type PendingSlot = {
   field: FieldResponseDto;

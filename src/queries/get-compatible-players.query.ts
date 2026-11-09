@@ -1,27 +1,25 @@
 import { useMemo } from 'react';
 import { useUsersFindAllCompatibleUsersInfinite } from '@generatedApi/users/users.api';
 
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
 import { UsersFindAllCompatibleUsersParams } from '@/api/generated/model';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
-
-import { PreparedSessionValues } from '../utils/prepared-session.utils';
-import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
 
 const COMPATIBLE_PLAYERS_LIMIT = 10;
 
 /**
- * The players compatible with the prepared session, before or after it is published:
- * once published, its players and already invited players are excluded.
+ * The players compatible with a prepared session, before or after it is published:
+ * with the published session's uid, its players and already invited players are excluded.
  */
 export const useGetCompatiblePlayers = ({
   fieldUid,
   preparedSession,
+  sessionUid,
 }: {
   fieldUid?: string;
   preparedSession: PreparedSessionValues | null;
+  sessionUid?: string | null;
 }) => {
-  const publishedSessionUid = useOnBoardingSessionsStore(state => state.publishedSessionUid);
-
   const params = useMemo<UsersFindAllCompatibleUsersParams>(
     () => ({
       fieldUid: fieldUid ?? '',
@@ -30,9 +28,9 @@ export const useGetCompatiblePlayers = ({
       limit: COMPATIBLE_PLAYERS_LIMIT,
       sport: preparedSession?.sport ?? 'FOOTBALL',
       startDate: preparedSession?.startDate.toISOString() ?? '',
-      ...(publishedSessionUid && { sessionUid: publishedSessionUid }),
+      ...(sessionUid && { sessionUid }),
     }),
-    [fieldUid, preparedSession, publishedSessionUid],
+    [fieldUid, preparedSession, sessionUid],
   );
 
   const { data, error, isError, ...rest } = useUsersFindAllCompatibleUsersInfinite(params, {

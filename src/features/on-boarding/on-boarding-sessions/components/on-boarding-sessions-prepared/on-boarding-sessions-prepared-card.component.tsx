@@ -13,8 +13,7 @@ import { TIconsAll } from '@/constants/icons.constants';
 import { FieldResponseDto } from '@/api/generated/model';
 import { useDurationLabel } from '@/components/ui/duration-picker';
 import { formatDateShort, formatToHour } from '@/utils/time.utils';
-
-import { PreparedSessionValues } from '../../utils/prepared-session.utils';
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
 
 type OnBoardingSessionsPreparedCardProps = {
   field: FieldResponseDto | null;

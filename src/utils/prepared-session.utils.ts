@@ -7,18 +7,17 @@ import {
   HourPreferenceDataTimePeriod,
   SessionCollectionItemDtoGameMode as GameMode,
 } from '@/api/generated/model';
-
 import {
-  ON_BOARDING_SESSION_DURATIONS,
-  ON_BOARDING_SESSION_LAST_START_HOUR,
-  ON_BOARDING_SESSION_FIRST_START_HOUR,
-  ON_BOARDING_SESSION_SEARCH_DAYS,
-  ON_BOARDING_SESSION_MIN_DELAY_HOURS,
-  ON_BOARDING_SESSION_DEFAULT_GAME_MODES,
-  ON_BOARDING_SESSION_MOMENT_START_TIMES,
-  ON_BOARDING_SESSION_WEEKEND_WINDOW_DAYS,
-  ON_BOARDING_SESSION_DEFAULT_DURATION_MINUTES,
-} from '../constants/on-boarding-sessions.constants';
+  PREPARED_SESSION_DURATIONS,
+  PREPARED_SESSION_SEARCH_DAYS,
+  PREPARED_SESSION_LAST_START_HOUR,
+  PREPARED_SESSION_MIN_DELAY_HOURS,
+  PREPARED_SESSION_FIRST_START_HOUR,
+  PREPARED_SESSION_DEFAULT_GAME_MODES,
+  PREPARED_SESSION_MOMENT_START_TIMES,
+  PREPARED_SESSION_WEEKEND_WINDOW_DAYS,
+  PREPARED_SESSION_DEFAULT_DURATION_MINUTES,
+} from '@/constants/prepared-session.constants';
 
 export type PreparedSessionValues = {
   endDate: Date;
@@ -33,7 +32,7 @@ const SATURDAY = 6;
 const SUNDAY = 0;
 
 const getSlotStart = (day: Dayjs, timePeriod: HourPreferenceDataTimePeriod) => {
-  const { hour, minute } = ON_BOARDING_SESSION_MOMENT_START_TIMES[timePeriod];
+  const { hour, minute } = PREPARED_SESSION_MOMENT_START_TIMES[timePeriod];
   return day.hour(hour).minute(minute).second(0).millisecond(0);
 };
 
@@ -65,7 +64,7 @@ export const getPreparedSessionSport = (sportPreferences: readonly SportPreferen
     firstPreference,
   );
   const gameMode =
-    preference.gameModes[0] ?? ON_BOARDING_SESSION_DEFAULT_GAME_MODES[preference.sport] ?? GameMode.FIVE_V_FIVE;
+    preference.gameModes[0] ?? PREPARED_SESSION_DEFAULT_GAME_MODES[preference.sport] ?? GameMode.FIVE_V_FIVE;
 
   return { gameMode, level: preference.level, sport: preference.sport };
 };
@@ -82,8 +81,8 @@ export const getPreparedSessionStartDate = ({
   availabilities: readonly HourPreferenceData[];
   now: Date;
 }) => {
-  const earliest = dayjs(now).add(ON_BOARDING_SESSION_MIN_DELAY_HOURS, 'hour');
-  const days = Array.from({ length: ON_BOARDING_SESSION_SEARCH_DAYS + 1 }, (_, index) =>
+  const earliest = dayjs(now).add(PREPARED_SESSION_MIN_DELAY_HOURS, 'hour');
+  const days = Array.from({ length: PREPARED_SESSION_SEARCH_DAYS + 1 }, (_, index) =>
     earliest.startOf('day').add(index, 'day'),
   );
   const slots = days
@@ -95,7 +94,7 @@ export const getPreparedSessionStartDate = ({
     .filter(slot => !slot.isBefore(earliest))
     .sort((a, b) => a.valueOf() - b.valueOf());
 
-  const weekendLimit = earliest.add(ON_BOARDING_SESSION_WEEKEND_WINDOW_DAYS, 'day');
+  const weekendLimit = earliest.add(PREPARED_SESSION_WEEKEND_WINDOW_DAYS, 'day');
   const weekendSlot = slots.find(slot => isWeekend(slot) && !slot.isAfter(weekendLimit));
   const slot = weekendSlot ?? slots[0] ?? getNextSaturdayMorning(earliest);
 
@@ -104,9 +103,9 @@ export const getPreparedSessionStartDate = ({
 
 /** The start times offered on the day of the session, every hour. */
 export const getSessionDayStartTimes = (date: Date) =>
-  Array.from({ length: ON_BOARDING_SESSION_LAST_START_HOUR - ON_BOARDING_SESSION_FIRST_START_HOUR + 1 }, (_, index) =>
+  Array.from({ length: PREPARED_SESSION_LAST_START_HOUR - PREPARED_SESSION_FIRST_START_HOUR + 1 }, (_, index) =>
     dayjs(date)
-      .hour(ON_BOARDING_SESSION_FIRST_START_HOUR + index)
+      .hour(PREPARED_SESSION_FIRST_START_HOUR + index)
       .minute(0)
       .second(0)
       .millisecond(0)
@@ -114,7 +113,7 @@ export const getSessionDayStartTimes = (date: Date) =>
   );
 
 export const getPreparedSessionDuration = ({ gameMode, sport }: { gameMode: GameMode; sport: Sport }) =>
-  ON_BOARDING_SESSION_DURATIONS[sport]?.[gameMode] ?? ON_BOARDING_SESSION_DEFAULT_DURATION_MINUTES;
+  PREPARED_SESSION_DURATIONS[sport]?.[gameMode] ?? PREPARED_SESSION_DEFAULT_DURATION_MINUTES;
 
 /**
  * Computes the first session Ludora prepares from the on-boarding answers (decision D7).

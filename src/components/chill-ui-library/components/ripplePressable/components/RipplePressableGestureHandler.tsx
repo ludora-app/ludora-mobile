@@ -1,6 +1,6 @@
 
-import { View } from 'react-native';
 import { withUniwind } from 'uniwind';
+import { ViewInstance } from 'react-native';
 import { Pressable } from 'react-native-gesture-handler';
 import { useState, useRef, PropsWithChildren } from 'react';
 
@@ -55,7 +55,7 @@ function RipplePressable(props: PropsWithChildren<RipplePressableGestureHandlerP
   const [ripples, setRipples] = useState<
     { id: number; x: number; y: number; timestamp: number; width: number; height: number }[]
   >([]);
-  const containerRef = useRef<View>(null);
+  const containerRef = useRef<ViewInstance>(null);
   const rippleIdCounter = useRef(0);
 
   // Extract borderRadius from children

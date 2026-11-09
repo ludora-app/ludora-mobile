@@ -1,6 +1,11 @@
 import { cn } from '@chillui/ui';
 import { RefObject, useCallback, useState } from 'react';
-import { RefreshControl, ScrollView as RNScrollView, ScrollViewProps as RNScrollViewProps } from 'react-native';
+import {
+  RefreshControl,
+  ScrollView as RNScrollView,
+  ScrollViewInstance,
+  ScrollViewProps as RNScrollViewProps,
+} from 'react-native';
 
 import COLORS from '@/constants/colors.contstants';
 import { useSafeArea } from '@/hooks/safe-area.hook';
@@ -10,10 +15,10 @@ export type ScrollViewProps = RNScrollViewProps & {
   hasRefreshControl?: boolean;
   isRefetching?: boolean;
   refetch?: () => Promise<any>;
-  ref?: RefObject<RNScrollView>;
+  ref?: RefObject<ScrollViewInstance | null>;
 };
 
-export default function ScrollView(props: ScrollViewProps) {
+export const ScrollView = (props: ScrollViewProps) => {
   const {
     children,
     contentContainerClassName,
@@ -65,4 +70,4 @@ export default function ScrollView(props: ScrollViewProps) {
       {children}
     </RNScrollView>
   );
-}
+};

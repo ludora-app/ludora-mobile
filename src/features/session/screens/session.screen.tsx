@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { ScrollView as RNScrollView } from 'react-native';
+import { ScrollViewInstance } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { Box, Separator, Wrapper, ScrollView } from '@ludo/ui';
 
@@ -8,8 +8,8 @@ import { useResetStoreOnUnmount } from '@/utils/navigation.utils';
 import { Loading } from '@/components/ui/loading/loading.component';
 import { useGetSessionById } from '@/queries/get-session-by-id.query';
 
-import SessionFooter from '../components/session-footer.component';
 import { useSessionTeamStore } from '../stores/session-team.store';
+import { SessionFooter } from '../components/session-footer.component';
 import { SessionScreenLocalSearchParams } from '../types/session.types';
 import SessionSectionTags from '../components/session-section/session-section-tags.component';
 import SessionSectionDetails from '../components/session-section/session-section-details.component';
@@ -29,8 +29,8 @@ export interface SessionScreenProps {
   maxParticipants: number;
 }
 
-export default function SessionScreen() {
-  const scrollViewRef = useRef<RNScrollView>(null!);
+export const SessionScreen = () => {
+  const scrollViewRef = useRef<ScrollViewInstance>(null);
   const reset = useSessionTeamStore(state => state.reset);
   const { id: sessionUid } = useLocalSearchParams<SessionScreenLocalSearchParams>();
   const {
@@ -94,4 +94,4 @@ export default function SessionScreen() {
       <SessionFooter session={sessionData} scrollViewRef={scrollViewRef} />
     </>
   );
-}
+};

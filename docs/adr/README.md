@@ -17,6 +17,7 @@ directory was created (SCRUM-699). Their **Source** line says so.
 | 0005 | [Search places with IGN first, Google Places as a fallback](0005-place-search-ign-first-google-fallback.md) | Accepted |
 | 0006 | [Render maps natively with expo-maps](0006-native-maps-with-expo-maps.md)                                 | Accepted |
 | 0007 | [Send the play area as coordinates only, never the address](0007-play-area-as-coordinates-only.md)        | Accepted |
+| 0008 | [Pin the Buoy dev tools at 7.0.17](0008-pin-buoy-dev-tools-at-7-0-17.md)                                  | Accepted |
 
 An **Accepted** record can still list open questions: the decision stands, the details it names are
 not settled yet.

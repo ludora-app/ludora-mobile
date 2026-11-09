@@ -1,4 +1,4 @@
-import type { TextInput, TextInputProps, ViewProps } from 'react-native';
+import type { TextInputInstance, TextInputProps, ViewProps } from 'react-native';
 
 import { TIconName } from '../constants';
 import { IconProps } from './icon.types';
@@ -10,7 +10,7 @@ export type InputProps = ViewProps;
 export type InputContainerProps = ViewProps;
 
 export type InputFieldProps = TextInputProps & {
-  ref?: React.Ref<TextInput>;
+  ref?: React.Ref<TextInputInstance>;
   className?: string;
   font?: StringProps['font'];
   allow?: 'all' | 'numbers' | 'letters' | 'lettersWithoutSpecialCharacters';

@@ -37,7 +37,11 @@ function RootLayoutNav() {
 
   useEffect(() => {
     if (!isProd) return;
-    posthog.screen(pathname, params);
+    // Route params can be undefined, PostHog properties must be JSON values
+    const screenProperties = Object.fromEntries(
+      Object.entries(params).filter((entry): entry is [string, string | string[]] => entry[1] !== undefined),
+    );
+    posthog.screen(pathname, screenProperties);
   }, [pathname, params, posthog]);
 
   return (

@@ -1,8 +1,7 @@
 import { list } from 'radash';
 import { cn, LoadingIndicator } from '@chillui/ui';
 import { useCallback, useMemo, useState } from 'react';
-import { useWindowDimensions, ViewStyle } from 'react-native';
-import { RefreshControl } from 'react-native-gesture-handler';
+import { RefreshControl, useWindowDimensions, ViewStyle } from 'react-native';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list/react-native';
 
 import COLORS from '@/constants/colors.contstants';
@@ -43,7 +42,7 @@ function isListItem(item: unknown): item is ListItem {
   return !!item && typeof item === 'object' && 'type' in item && LIST_ITEM_TYPES.has(item.type);
 }
 
-export default function List(props: ListProps) {
+export const List = (props: ListProps) => {
   const {
     contentContainerClassName,
     contentContainerStyle,
@@ -286,4 +285,4 @@ export default function List(props: ListProps) {
       {...rest}
     />
   );
-}
+};

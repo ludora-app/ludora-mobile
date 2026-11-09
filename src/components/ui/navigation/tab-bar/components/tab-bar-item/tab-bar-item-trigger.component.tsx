@@ -2,9 +2,9 @@ import { TabTrigger } from 'expo-router/ui';
 
 import { TabRoutes } from '@/constants/tabs-routes.constants';
 
-import TabBarItem from './tab-bar-item.component';
-import TabBarItemProfil from './tab-bar-item-profil.component';
-import TabBarItemMessages from './tab-bar-item-messages.component';
+import { TabBarItem } from './tab-bar-item.component';
+import { TabBarItemProfil } from './tab-bar-item-profil.component';
+import { TabBarItemMessages } from './tab-bar-item-messages.component';
 
 type TabBarTriggerProps = TabRoutes;
 

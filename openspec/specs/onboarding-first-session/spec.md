@@ -3,7 +3,8 @@
 ## Purpose
 
 Turn the on-boarding answers (sports, play area, availabilities) into a first low-commitment action: join a
-matching session, otherwise publish a session Ludora prepared, and remind the player until they have one.
+matching session, otherwise publish a session Ludora prepared. Once the on-boarding is left, the home screen
+features that first action (`home` capability).
 
 ## Requirements
 
@@ -202,29 +203,3 @@ when n players are selected, otherwise "Terminer".
 #### Scenario: Loading and error
 - **WHEN** the compatible players are loading, or fail to load
 - **THEN** skeletons are shown while loading, and an error message with "Réessayer" on failure
-
-### Requirement: Home reminder card
-
-The home screen SHALL show a "Crée ou rejoins ta première session" card ("Choisis où jouer, on s'occupe du
-reste.") with "Rejoindre une session" and "Créer une session", as long as the player has neither joined nor
-created any session.
-
-#### Scenario: Card shown
-- **WHEN** a player who has never joined nor created a session opens the home screen
-- **THEN** the reminder card is shown
-
-#### Scenario: Card hidden
-- **WHEN** the player has joined or created at least one session
-- **THEN** the reminder card is not shown
-
-#### Scenario: Create from the card
-- **WHEN** the player taps "Créer une session" and has a sport preference
-- **THEN** the prepared session opens, asking for the place if the play area is missing
-
-#### Scenario: Create from the card without a sport
-- **WHEN** the player taps "Créer une session" and has no sport preference
-- **THEN** the create-session flow opens
-
-#### Scenario: Join from the card
-- **WHEN** the player taps "Rejoindre une session"
-- **THEN** "Sessions pour toi" opens with the recommended sessions

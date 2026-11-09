@@ -1,4 +1,4 @@
-import { FlatList, ViewToken } from 'react-native';
+import { FlatList, ListViewToken } from 'react-native';
 import { Children, useCallback, useEffect } from 'react';
 
 import { useCarousel } from './CarouselContext';
@@ -49,7 +49,7 @@ function CarouselContent(props: CarouselContentProps) {
   }, [itemCount, setTotalItems]);
 
   const onViewableItemsChanged = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ListViewToken[] }) => {
       const nextIndex = viewableItems[0]?.index;
       if (nextIndex != null) {
         setCurrentIndex(nextIndex);

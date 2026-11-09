@@ -1,7 +1,7 @@
-import { Pressable, View } from 'react-native';
+import { String } from '@ludo/ui';
+import { Pressable, ViewInstance } from 'react-native';
 import { memo, PropsWithChildren, useCallback, useRef } from 'react';
 
-import { String } from '@/components/ludo-ui';
 import { useHaptics } from '@/hooks/haptics.hook';
 import { MessageCollectionItemDto } from '@/api/generated/model';
 import { useChatRoomSessionTeam } from '@/features/chat-room/utils/chat-room-session-team.utils';
@@ -17,12 +17,12 @@ type ChatRoomMessageListItemWrapperBubbleProps = {
   onBubbleAnchorMeasured?: (rect: MessageActionsAnchorRect) => void;
 };
 
-function ChatRoomMessageListItemWrapperBubble(
+const ChatRoomMessageListItemWrapperBubbleComponent = (
   props: PropsWithChildren<ChatRoomMessageListItemWrapperBubbleProps>,
-) {
+) => {
   const { children, messageData, onBubbleAnchorMeasured } = props;
   const { triggerHaptic } = useHaptics();
-  const bubbleRef = useRef<View>(null);
+  const bubbleRef = useRef<ViewInstance>(null);
   const { globalStatus: messageGlobalStatus, isSender: isMessageFromMe, sender } = messageData || {};
   const { firstname } = sender || {};
   const toggleShowActionsMenu = useChatRoomMessageActionsMenuStore(state => state.toggleShowActionsMenu);
@@ -66,6 +66,6 @@ function ChatRoomMessageListItemWrapperBubble(
       {children}
     </Pressable>
   );
-}
+};
 
-export default memo(ChatRoomMessageListItemWrapperBubble);
+export const ChatRoomMessageListItemWrapperBubble = memo(ChatRoomMessageListItemWrapperBubbleComponent);

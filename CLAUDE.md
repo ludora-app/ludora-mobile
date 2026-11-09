@@ -1,6 +1,6 @@
 # Ludora mobile
 
-Expo SDK 57 / React Native 0.86 app. Stack: Expo Router, `@ludo/ui` (over `@chillui/ui`), Uniwind, TanStack Query via Orval, Zustand, Tolgee, react-hook-form + zod. Package manager: **bun**.
+Expo SDK 58 / React Native 0.88 app. Stack: Expo Router, `@ludo/ui` (over `@chillui/ui`), Uniwind, TanStack Query via Orval, Zustand, Tolgee, react-hook-form + zod. Package manager: **bun**.
 
 ## Before writing any code
 
@@ -26,6 +26,7 @@ These skills override generic advice.
 - Route files in `src/app` only re-export a screen. Sheet and modal options go in **both** `(root)/_layout.tsx` and `_layout.ios.tsx`.
 - Backend calls go only through generated Orval hooks wrapped in `*.query.ts`, with `useInvalidate*` in `onSuccess`.
 - No hard-coded UI strings: use `t('key')` from Tolgee, and list the new keys for the user.
+- Never bump `@buoy-gg/*`: pinned at `7.0.17` (exact versions + `overrides`), newer versions require a buoy.gg sign-in ([ADR 0008](docs/adr/0008-pin-buoy-dev-tools-at-7-0-17.md)).
 - Branches are `<type>/SCRUM-<n>` off `develop`. Commits are `type(SCRUM-<n>): lowercase subject`.
 
 ## Where the truth lives

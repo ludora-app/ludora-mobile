@@ -2,17 +2,15 @@ import { memo } from 'react';
 import { Pellet } from '@chillui/ui';
 import { Pressable } from 'react-native';
 import { useTranslate } from '@tolgee/react';
-import { TabTriggerSlotProps } from 'expo-router/ui';
 import { Icon, String, Box, BoxColumnCenter } from '@ludo/ui';
 
 import COLORS from '@/constants/colors.contstants';
-import { TabRoutes } from '@/constants/tabs-routes.constants';
 import { useNotificationsUnreadCount } from '@/queries/get-notifications_unread_count.query';
 
-export type TabButtonProps = TabTriggerSlotProps & Pick<TabRoutes, 'iconName' | 'iconNameActive' | 'text'>;
+import { TabButtonProps } from './tab-bar-item.component';
 
-function TabBarItemProfil({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) {
-  const { data: unreadCount } = useNotificationsUnreadCount()
+const TabBarItemProfilComponent = ({ iconName, iconNameActive, isFocused, text, ...props }: TabButtonProps) => {
+  const { data: unreadCount } = useNotificationsUnreadCount();
 
   const hasNotification = (unreadCount?.unreadCount ?? 0) > 0;
 
@@ -21,7 +19,7 @@ function TabBarItemProfil({ iconName, iconNameActive, isFocused, text, ...props 
   return (
     <Pressable {...props}>
       <BoxColumnCenter className="grow gap-0.5 pt-6">
-        <Box className='relative'>
+        <Box className="relative">
           {hasNotification && <Pellet className="absolute right-0 top-0 z-50" />}
           <Icon name={isFocused ? iconNameActive : iconName} color={isFocused ? COLORS.primary : '#9DB2CE'} />
         </Box>
@@ -35,6 +33,9 @@ function TabBarItemProfil({ iconName, iconNameActive, isFocused, text, ...props 
       </BoxColumnCenter>
     </Pressable>
   );
-}
+};
 
-export default memo(TabBarItemProfil, (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused);
+export const TabBarItemProfil = memo(
+  TabBarItemProfilComponent,
+  (prevProps, nextProps) => prevProps.isFocused === nextProps.isFocused,
+);

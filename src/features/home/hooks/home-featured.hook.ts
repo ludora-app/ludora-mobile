@@ -17,7 +17,11 @@ const NO_UIDS: ReadonlySet<string> = new Set();
 export const useGetHomeFeatured = () => {
   const dismissedSessionUids = useHomeFeaturedStore(state => state.dismissedSessionUids);
   const { isLoading: isLoadingUpcoming, joinedUids, nextMatch, refetch: refetchUpcoming } = useGetMyUpcomingSessions();
-  const { hasSportPreferences, isSettled: arePreferencesSettled } = useGetMyPreferences();
+  const {
+    hasSportPreferences,
+    isSettled: arePreferencesSettled,
+    refetch: refetchPreferences,
+  } = useGetMyPreferences();
   const {
     isFirstSessionPending,
     isLoading: isLoadingStats,
@@ -49,8 +53,14 @@ export const useGetHomeFeatured = () => {
     suggestionsCount: isRecommendedSettled ? suggestions.length : undefined,
   });
 
+  // The preferences too: a failed query would otherwise stay "no preference" until the next opening
   const refetch = () =>
-    Promise.all([refetchUpcoming(), refetchStats(), ...(hasSportPreferences ? [refetchRecommended()] : [])]);
+    Promise.all([
+      refetchUpcoming(),
+      refetchStats(),
+      refetchPreferences(),
+      ...(hasSportPreferences ? [refetchRecommended()] : []),
+    ]);
 
   return {
     joinedUids,

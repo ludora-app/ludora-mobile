@@ -19,7 +19,10 @@ export const HomeSessionListItemBadge = (props: HomeSessionListItemBadgeProps) =
 
   return (
     <BoxRow
-      className={cn('h-6 items-center gap-1.5 rounded-full px-2.5', isJoined ? 'bg-successSoft' : 'bg-secondarySoft')}
+      className={cn(
+        'h-6 items-center gap-1.5 self-start rounded-full px-2.5',
+        isJoined ? 'bg-successSoft' : 'bg-secondarySoft',
+      )}
     >
       <Icon
         name={isJoined ? 'checked-circle-solid' : 'star-solid'}

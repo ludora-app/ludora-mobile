@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useToast } from '@chillui/ui';
 import { useRouter } from 'expo-router';
 import { useTranslate } from '@tolgee/react';
@@ -29,6 +30,8 @@ export const HomeFeaturedPreparedCard = () => {
   const { trackError, trackEvent } = useAnalytics();
   const { field, isLoading, preparedSession } = useGetHomePreparedSession({ isEnabled: true });
   const { isPending: isPublishing, mutateAsync: createSession } = useCreateSession();
+  // The card only leaves once the player's sessions are refetched: keeps "Publier" locked until then (no duplicate)
+  const [publishedSessionUid, setPublishedSessionUid] = useState<string>();
 
   if (isLoading || !preparedSession) {
     return <Skeleton variant="rectangle" className="h-56 w-full rounded-card" />;
@@ -48,7 +51,7 @@ export const HomeFeaturedPreparedCard = () => {
 
   // The header switches to the next match card on its own: creating invalidates the player's sessions
   const handlePublish = async () => {
-    if (!field) return;
+    if (!field || publishedSessionUid) return;
     try {
       const response = await createSession({
         endDate: endDate.toISOString(),
@@ -59,6 +62,7 @@ export const HomeFeaturedPreparedCard = () => {
         startDate: startDate.toISOString(),
         visibility: CreateSessionFromRequestDtoVisibility.PUBLIC,
       });
+      setPublishedSessionUid(response.data.uid);
       trackEvent({
         data: { session_uid: response.data.uid, sport },
         eventName: ANALYTICS_EVENTS.HOME.FEATURED_PREPARED_PUBLISHED,
@@ -113,7 +117,7 @@ export const HomeFeaturedPreparedCard = () => {
           title={t('home.prepared.publish')}
           colorVariant="secondary"
           size="lg"
-          isLoading={isPublishing}
+          isLoading={isPublishing || !!publishedSessionUid}
           onPress={handlePublish}
         />
       ) : (

@@ -25,9 +25,9 @@ export const useGetMyPreferences = () => {
     hasSportPreferences: sportPreferences.length > 0,
     isError,
     isLoading: sportPreferencesQuery.isLoading || hourPreferencesQuery.isLoading,
-    isSuccess: sportPreferencesQuery.isSuccess && hourPreferencesQuery.isSuccess,
     /** Settled once both queries answered or failed: an error reads as "no preference". */
     isSettled: !sportPreferencesQuery.isLoading && !hourPreferencesQuery.isLoading,
+    refetch: () => Promise.all([sportPreferencesQuery.refetch(), hourPreferencesQuery.refetch()]),
     sportPreferences,
   };
 };

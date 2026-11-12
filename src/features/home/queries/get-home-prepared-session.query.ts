@@ -15,13 +15,14 @@ import { useGetMyPreferences } from './get-my-preferences.query';
  */
 export const useGetHomePreparedSession = ({ isEnabled }: { isEnabled: boolean }) => {
   const { userMe } = useUserMe();
-  const { availabilities, isSuccess, sportPreferences } = useGetMyPreferences();
+  const { availabilities, isSettled, sportPreferences } = useGetMyPreferences();
   // Fixed at mount, so that the prepared values stay the same while the screen is open
   const [now] = useState(() => new Date());
 
+  // A failed availabilities query reads as "no availability", like the featured state does
   const preparedSession = useMemo(
-    () => (isSuccess ? getPreparedSession({ availabilities, now, sportPreferences }) : null),
-    [availabilities, isSuccess, now, sportPreferences],
+    () => (isSettled ? getPreparedSession({ availabilities, now, sportPreferences }) : null),
+    [availabilities, isSettled, now, sportPreferences],
   );
 
   const hasPlayArea = !!userMe?.playArea;

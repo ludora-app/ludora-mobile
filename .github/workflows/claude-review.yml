@@ -49,10 +49,10 @@ jobs:
           classify_inline_comments: false
           show_full_output: false
           claude_args: |
-            --max-turns 40
+            --max-turns 80
             --model claude-opus-5-5
             --effort high
-            --allowedTools "Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*)"
+            --allowedTools "Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*)"
             --json-schema '{"type":"object","properties":{"bugs":{"type":"integer"},"rules":{"type":"integer"},"minor":{"type":"integer"}},"required":["bugs","rules","minor"]}'
           prompt: |
             REPO: ${{ github.repository }}
@@ -70,6 +70,10 @@ jobs:
             4. The diff: `gh pr diff ${{ github.event.pull_request.number }}`, and the PR body:
                `gh pr view ${{ github.event.pull_request.number }}`. Open the changed files when the
                diff alone is not enough to judge.
+
+            Keep the turn budget for the review itself: read a skill or an ADR only when the diff
+            actually touches its area, work from `gh pr diff` rather than opening every changed file,
+            and batch independent reads together.
 
             ## What to look for, in this order
             1. Bugs: wrong logic, unhandled loading/error/empty states, broken navigation,

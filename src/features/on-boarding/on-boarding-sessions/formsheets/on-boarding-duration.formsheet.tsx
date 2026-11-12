@@ -10,13 +10,13 @@ import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { formatSessionStartDate } from '@/utils/sessions.utils';
 import { DurationPicker } from '@/components/ui/duration-picker';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
+import { PREPARED_SESSION_DEFAULT_DURATION_MINUTES } from '@/constants/prepared-session.constants';
 import { FormSheetFooter } from '@/components/ui/form-sheet/components/form-sheet-footer.component';
 import { FormSheetHeader } from '@/components/ui/form-sheet/components/form-sheet-header.component';
 import { FormSheetWrapper } from '@/components/ui/form-sheet/components/form-sheet-wrapper.component';
 import { FormSheetContent } from '@/components/ui/form-sheet/components/form-sheet-content.component';
 
 import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
-import { ON_BOARDING_SESSION_DEFAULT_DURATION_MINUTES } from '../constants/on-boarding-sessions.constants';
 
 export const OnBoardingDurationFormSheet = () => {
   const { t } = useTranslate();
@@ -31,7 +31,7 @@ export const OnBoardingDurationFormSheet = () => {
   const [duration, setDuration] = useState(() =>
     preparedSession
       ? dayjs(preparedSession.endDate).diff(preparedSession.startDate, 'minute')
-      : ON_BOARDING_SESSION_DEFAULT_DURATION_MINUTES,
+      : PREPARED_SESSION_DEFAULT_DURATION_MINUTES,
   );
 
   if (!pendingSlot || !preparedSession) return null;

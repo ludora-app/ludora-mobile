@@ -1,11 +1,9 @@
-import { ScreenLayout } from '@ludo/ui';
+import { Box } from '@ludo/ui';
 
-import HomeSessionList from '../components/home-session-list/home-session-list.component';
+import { HomeSessionList } from '../components/home-session-list/home-session-list.component';
 
-export default function HomeScreen() {
-  return (
-    <ScreenLayout>
-      <HomeSessionList />
-    </ScreenLayout>
-  );
-}
+export const HomeScreen = () => (
+  <Box className="flex-1 bg-background">
+    <HomeSessionList />
+  </Box>
+);

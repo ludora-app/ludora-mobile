@@ -34,10 +34,18 @@ type SessionCardProps = {
   className?: string;
   /** Extra `SessionCardInfoRow`s under the date and the place. */
   extraInfoRows?: ReactNode;
+  /** Under the info rows, e.g. match reasons and actions. */
+  footer?: ReactNode;
   hasJoinButton?: boolean;
   item: FindOneSessionResponseData | SessionCollectionItemDto;
   onJoinSuccess?: (data: JoinSessionResponseData) => void;
   onPress?: () => void;
+  /** Replaces the remaining seats pill. */
+  pill?: ReactNode;
+  /** Replaces the organiser and level line. */
+  subtitle?: string;
+  /** Above the sport row, e.g. a badge. */
+  topContent?: ReactNode;
   variant?: VariantProps<typeof sessionCardTv>['variant'];
 };
 
@@ -45,10 +53,14 @@ const SessionCardComponent = (props: SessionCardProps) => {
   const {
     className,
     extraInfoRows,
+    footer,
     hasJoinButton = false,
     item,
     onJoinSuccess,
     onPress,
+    pill: customPill,
+    subtitle: customSubtitle,
+    topContent,
     variant = 'default',
   } = props;
   const { t } = useTranslate();
@@ -61,9 +73,9 @@ const SessionCardComponent = (props: SessionCardProps) => {
   const remainingSeats = getRemainingSeats(item);
   const organizer = item.creator ? getOrganizerName(item.creator) : undefined;
   const levelLabel = Number(level) === 0 ? t('session-card.all_levels') : t(`common.session_level_${level}`);
-  const subtitle = [organizer && t('session-card.organizer', { name: organizer }), levelLabel]
-    .filter(Boolean)
-    .join(' · ');
+  const subtitle =
+    customSubtitle ??
+    [organizer && t('session-card.organizer', { name: organizer }), levelLabel].filter(Boolean).join(' · ');
   const date = isSuggestion ? formatSessionStartDate(startDate) : formatSessionDateRange({ endDate, startDate });
   const place = userDistance ? `${fieldShortAddress} · ${userDistance} ${t('common.km')}` : fieldShortAddress;
 
@@ -81,6 +93,7 @@ const SessionCardComponent = (props: SessionCardProps) => {
       className={container({ className })}
       style={isSuggestion ? undefined : styles.shadow}
     >
+      {topContent}
       <BoxRow className="items-center gap-3">
         <Box className={sportTile()}>
           <Image source={getSportImage(sport)} contentFit="contain" className={sportImage()} />
@@ -104,11 +117,13 @@ const SessionCardComponent = (props: SessionCardProps) => {
             {subtitle}
           </String>
         </Box>
-        <Box className={pill({ className: cn({ 'bg-darkSoft': remainingSeats === 0 }) })}>
-          <String variant="body-xs" font="primaryExtraBold">
-            {remainingSeats > 0 ? t('session-card.remaining_seats', { count: remainingSeats }) : t('session-card.full')}
-          </String>
-        </Box>
+        {customPill ?? (
+          <Box className={pill({ className: cn({ 'bg-darkSoft': remainingSeats === 0 }) })}>
+            <String variant="body-xs" font="primaryExtraBold">
+              {remainingSeats > 0 ? t('session-card.remaining_seats', { count: remainingSeats }) : t('session-card.full')}
+            </String>
+          </Box>
+        )}
       </BoxRow>
       {!isSuggestion && (
         <Box className="h-1.5 overflow-hidden rounded-full bg-darkSoft">
@@ -124,6 +139,7 @@ const SessionCardComponent = (props: SessionCardProps) => {
         </SessionCardInfoRow>
         {extraInfoRows}
       </Box>
+      {footer}
       {hasJoinButton && (
         <SessionCardJoinButton sessionUid={uid} size={isSuggestion ? 'md' : 'sm'} onJoinSuccess={onJoinSuccess} />
       )}

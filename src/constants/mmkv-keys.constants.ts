@@ -8,6 +8,8 @@ export const MMKV_STORAGE_KEY = {
     GO_BACK_PATH: 'filters_screen_goback_path',
     SOURCE: 'filters_screen_source',
   },
+  /** Zustand persist: Ludo's bubble already shown on the home screen */
+  HOME_WELCOME_STORAGE: 'home-welcome-storage',
   KEYBOARD_STORAGE: 'keyboard-storage',
   /** Zustand persist: list perf diagnostics toggles (Dev Tools) */
   LIST_PERF_DEBUG: 'list-perf-debug-storage',

@@ -11,9 +11,9 @@ import { FieldResponseDto } from '@/api/generated/model';
 import { useAnalytics } from '@/hooks/analytics-trackers.hook';
 import { FooterWrapper } from '@/components/ui/footer-wrapper';
 import { DialogChoice } from '@/components/ui/dialog/dialog-choice';
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
 import { ANALYTICS_EVENTS } from '@/constants/analytics-events.constants';
 
-import { PreparedSessionValues } from '../../utils/prepared-session.utils';
 import { usePublishPreparedSession } from '../../queries/publish-prepared-session.query';
 
 type OnBoardingSessionsPreparedFooterProps = {

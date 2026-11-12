@@ -1,6 +1,7 @@
 import { useSessionInvitationsCreateMany } from '@generatedApi/session-invitations/session-invitations.api';
 
 import { useCreateSession } from '@/queries/create-session.query';
+import { PreparedSessionValues } from '@/utils/prepared-session.utils';
 import { CreateSessionFromRequestDtoVisibility } from '@/api/generated/model';
 import {
   useInvalidateSessionsFindOne,
@@ -8,7 +9,6 @@ import {
   useInvalidateSessionInvitationsFindAllBySessionId,
 } from '@/api/generated/invalidate-queries';
 
-import { PreparedSessionValues } from '../utils/prepared-session.utils';
 import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
 
 /**

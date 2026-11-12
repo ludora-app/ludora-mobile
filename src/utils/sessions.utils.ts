@@ -6,19 +6,21 @@ type SessionCapacity = Pick<
   'maxPlayersPerTeam' | 'sessionTeams' | 'teamsPerGame'
 >;
 
-const getCapacity = ({ maxPlayersPerTeam, sessionTeams, teamsPerGame }: SessionCapacity) =>
+/** Seats of the session, all teams together. */
+export const getSessionCapacity = ({ maxPlayersPerTeam, sessionTeams, teamsPerGame }: SessionCapacity) =>
   maxPlayersPerTeam * (teamsPerGame || sessionTeams.length);
 
-const getNumberOfPlayers = ({ sessionTeams }: SessionCapacity) =>
+/** Players already in the session, all teams together. */
+export const getSessionNumberOfPlayers = ({ sessionTeams }: SessionCapacity) =>
   sessionTeams.reduce((total, team) => total + team.numberOfPlayers, 0);
 
 export const getRemainingSeats = (session: SessionCapacity) =>
-  Math.max(getCapacity(session) - getNumberOfPlayers(session), 0);
+  Math.max(getSessionCapacity(session) - getSessionNumberOfPlayers(session), 0);
 
 /** Share of the seats already taken, between 0 and 1. */
 export const getSessionFillRatio = (session: SessionCapacity) => {
-  const capacity = getCapacity(session);
-  return capacity > 0 ? Math.min(getNumberOfPlayers(session) / capacity, 1) : 0;
+  const capacity = getSessionCapacity(session);
+  return capacity > 0 ? Math.min(getSessionNumberOfPlayers(session) / capacity, 1) : 0;
 };
 
 /** `Samedi 24 oct. · 10:00` */

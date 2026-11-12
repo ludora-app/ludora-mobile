@@ -2,7 +2,9 @@ import { queryClient } from '@/providers/query.provider';
 import { useChatStore } from '@/features/chat/store/chat.store';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 import { useOnBoardingStatusStore } from '@/stores/on-boarding-status.store';
+import { useHomeWelcomeStore } from '@/features/home/stores/home-welcome.store';
 import { useFiltersStore } from '@/features/filters/filters/store/filters.store';
+import { useHomeFeaturedStore } from '@/features/home/stores/home-featured.store';
 import { useSessionTeamStore } from '@/features/session/stores/session-team.store';
 import { usePlayersFiltersStore } from '@/features/players/stores/players-filters.store';
 import { useMyFieldsFilterStore } from '@/features/my-fields/stores/my-fields-filter.store';
@@ -42,4 +44,6 @@ export const resetCaches = () => {
   useSessionTeamStore.getState().reset();
   useUserLocationStore.getState().reset();
   useOnBoardingSessionsStore.getState().reset();
+  useHomeFeaturedStore.getState().reset();
+  useHomeWelcomeStore.getState().reset();
 };

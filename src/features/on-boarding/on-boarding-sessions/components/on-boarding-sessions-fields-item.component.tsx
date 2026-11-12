@@ -5,8 +5,8 @@ import ROUTES from '@/constants/routes.constants';
 import { FieldResponseDto } from '@/api/generated/model';
 import { TimeSlotChips } from '@/components/ui/time-slot-chips';
 import { FieldSlotsCard } from '@/components/ui/field-slots-card';
+import { getSessionDayStartTimes } from '@/utils/prepared-session.utils';
 
-import { getSessionDayStartTimes } from '../utils/prepared-session.utils';
 import { useOnBoardingSessionsStore } from '../../stores/on-boarding-sessions.store';
 
 type OnBoardingSessionsFieldsItemProps = {

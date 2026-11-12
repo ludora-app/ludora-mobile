@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useSessionsFindAllInfinite } from '@generatedApi/sessions/sessions.api';
 
 import { SessionsFindAllParams } from '@/api/generated/model';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
+import { useHomeDate } from '../hooks/home-date.hook';
 import { HOME_SESSIONS_DEFAULT_DISTANCE_KM } from '../constants/home.constants';
 
 /**
@@ -13,17 +14,17 @@ import { HOME_SESSIONS_DEFAULT_DISTANCE_KM } from '../constants/home.constants';
  */
 export const useGetHasSessionsAround = ({ isEnabled }: { isEnabled: boolean }) => {
   const userLocation = useUserLocationStore(state => state.location);
-  // Fixed at mount: a new start date on each render would make a new query
-  const [startDate] = useState(() => new Date().toISOString());
+  // Not a new date on each render: it would make a new query
+  const homeDate = useHomeDate();
 
   const params = useMemo<SessionsFindAllParams>(
     () => ({
       limit: 1,
       maxDistance: HOME_SESSIONS_DEFAULT_DISTANCE_KM,
-      startDate,
+      startDate: homeDate.toISOString(),
       ...(userLocation && { userLat: userLocation.latitude, userLon: userLocation.longitude }),
     }),
-    [startDate, userLocation],
+    [homeDate, userLocation],
   );
 
   const { data, error, isError, isLoading, ...rest } = useSessionsFindAllInfinite(params, {

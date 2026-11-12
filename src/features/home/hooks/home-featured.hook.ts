@@ -16,7 +16,15 @@ const NO_UIDS: ReadonlySet<string> = new Set();
  */
 export const useGetHomeFeatured = () => {
   const dismissedSessionUids = useHomeFeaturedStore(state => state.dismissedSessionUids);
-  const { isLoading: isLoadingUpcoming, joinedUids, nextMatch, refetch: refetchUpcoming } = useGetMyUpcomingSessions();
+  const joinedSessionUid = useHomeFeaturedStore(state => state.joinedSessionUid);
+  const setJoinedSessionUid = useHomeFeaturedStore(state => state.setJoinedSessionUid);
+  const {
+    isFetching: isFetchingUpcoming,
+    isLoading: isLoadingUpcoming,
+    joinedUids,
+    nextMatch,
+    refetch: refetchUpcoming,
+  } = useGetMyUpcomingSessions();
   const {
     hasSportPreferences,
     isSettled: arePreferencesSettled,
@@ -44,9 +52,13 @@ export const useGetHomeFeatured = () => {
     !nextMatch && hasSportPreferences && isFirstSessionPending && isRecommendedSettled && suggestions.length === 0;
   const { hasSessionsAround } = useGetHasSessionsAround({ isEnabled: isWaitingForPrepared });
 
+  // Joined from the featured card, and the player's sessions are being fetched again: the recommendations may come
+  // back first, and the next suggestion must not take the card (a second tap on "Rejoindre" would join it)
+  const isWaitingForJoined = !!joinedSessionUid && !joinedUids.has(joinedSessionUid) && isFetchingUpcoming;
+
   const state = getHomeFeaturedState({
     dismissedCount: dismissedSessionUids.length,
-    hasNextMatch: isLoadingUpcoming ? undefined : !!nextMatch,
+    hasNextMatch: isLoadingUpcoming || isWaitingForJoined ? undefined : !!nextMatch,
     hasSessionsAround,
     hasSportPreferences: arePreferencesSettled ? hasSportPreferences : undefined,
     isFirstSessionPending: isLoadingStats ? undefined : isFirstSessionPending,
@@ -54,13 +66,16 @@ export const useGetHomeFeatured = () => {
   });
 
   // The preferences too: a failed query would otherwise stay "no preference" until the next opening
-  const refetch = () =>
-    Promise.all([
+  const refetch = () => {
+    // Once the joined session is left, refreshing must not wait for it
+    setJoinedSessionUid(null);
+    return Promise.all([
       refetchUpcoming(),
       refetchStats(),
       refetchPreferences(),
       ...(hasSportPreferences ? [refetchRecommended()] : []),
     ]);
+  };
 
   return {
     joinedUids,

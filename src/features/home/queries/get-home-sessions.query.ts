@@ -6,6 +6,7 @@ import { SessionsFindAllParams } from '@/api/generated/model';
 import { useUserLocationStore } from '@/stores/user-geolocalisation.store';
 import { useGetMethodErrorTracking } from '@/hooks/analytics-trackers.hook';
 
+import { useHomeDate } from '../hooks/home-date.hook';
 import { FiltersProps, useHomeSessionFiltersStore } from '../stores/home-sessions-filters.store';
 import {
   HOME_SESSIONS_LIMIT,
@@ -27,18 +28,20 @@ export const useGetHomeSessions = () => {
   const sessionFilter = useHomeSessionFiltersStore(state => state.filters);
   const userLocation = useUserLocationStore(state => state.location);
   const maxDistance = useGetHomeSessionsDistance();
+  const homeDate = useHomeDate();
 
   const params = useMemo<SessionsFindAllParams>(() => {
     const { date: filterDate, ...restFilters } = filterObjectEntries(sessionFilter) as FiltersProps;
 
     return {
       limit: HOME_SESSIONS_LIMIT,
-      ...(filterDate?.date && { startDate: filterDate.date }),
+      // From now unless the filters page sets a date: there is no day carousel any more
+      startDate: filterDate?.source === 'filter' ? filterDate.date : homeDate.toISOString(),
       ...(userLocation && { userLat: userLocation.latitude, userLon: userLocation.longitude }),
       ...restFilters,
       maxDistance,
     };
-  }, [maxDistance, sessionFilter, userLocation]);
+  }, [homeDate, maxDistance, sessionFilter, userLocation]);
 
   const { data, error, isError, ...rest } = useSessionsFindAllInfinite(params, {
     query: { getNextPageParam: lastPage => lastPage?.data?.nextCursor },

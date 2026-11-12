@@ -3,7 +3,10 @@ import { create } from 'zustand';
 interface HomeFeaturedStore {
   reset: () => void;
   dismissedSessionUids: string[];
+  /** Session joined from the featured card, until the player's sessions show it as the next match. */
+  joinedSessionUid: string | null;
   dismissSession: (sessionUid: string) => void;
+  setJoinedSessionUid: (sessionUid: string | null) => void;
 }
 
 /**
@@ -18,5 +21,8 @@ export const useHomeFeaturedStore = create<HomeFeaturedStore>(set => ({
         ? state
         : { dismissedSessionUids: [...state.dismissedSessionUids, sessionUid] },
     ),
-  reset: () => set({ dismissedSessionUids: [] }),
+  joinedSessionUid: null,
+  reset: () => set({ dismissedSessionUids: [], joinedSessionUid: null }),
+  setJoinedSessionUid: sessionUid =>
+    set(state => (state.joinedSessionUid === sessionUid ? state : { joinedSessionUid: sessionUid })),
 }));

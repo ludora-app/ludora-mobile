@@ -26,14 +26,17 @@ export const HomeFeaturedMatchCard = (props: HomeFeaturedMatchCardProps) => {
   const { trackEvent } = useAnalytics();
   const { availabilities, sportPreferences } = useGetMyPreferences();
   const dismissSession = useHomeFeaturedStore(state => state.dismissSession);
+  const setJoinedSessionUid = useHomeFeaturedStore(state => state.setJoinedSessionUid);
 
   const reasons = useMemo(
     () => getMatchReasons({ availabilities, session, sportPreferences }),
     [availabilities, session, sportPreferences],
   );
 
-  // The header switches to the next match card on its own: joining invalidates the player's sessions
+  // The header switches to the next match card on its own: joining invalidates the player's sessions.
+  // Until they are fetched again, the header waits, so that the next suggestion cannot be joined by a second tap
   const handleJoinSuccess = ({ teamUid }: JoinSessionResponseData) => {
+    setJoinedSessionUid(session.uid);
     trackEvent({
       data: { session_uid: session.uid, team_uid: teamUid },
       eventName: ANALYTICS_EVENTS.HOME.FEATURED_SESSION_JOINED,

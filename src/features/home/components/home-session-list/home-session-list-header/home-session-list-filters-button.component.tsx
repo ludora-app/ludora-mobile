@@ -8,7 +8,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { parse } from '@/utils/json.utils';
 import ROUTES from '@/constants/routes.constants';
 import COLORS from '@/constants/colors.contstants';
-import { Filters } from '@/features/filters/filters/store/filters.store';
+import { Filters, useFiltersStore } from '@/features/filters/filters/store/filters.store';
 import { FiltersReturnParams, FiltersScreenParams } from '@/features/filters/filters/types/filters.types';
 
 import { homeFiltersMapper } from '../../../utils/home-filters-mapper.utils';
@@ -30,6 +30,9 @@ export const HomeSessionListFiltersButton = () => {
   const { selectedFilters } = useLocalSearchParams<FiltersReturnParams>();
   const numberOfFilters = useHomeSessionFiltersStore(state => state.numberOfFilters);
   const setFilters = useHomeSessionFiltersStore(state => state.setFilters);
+  const selectedSports = useHomeSessionFiltersStore(state => state.filters.sports);
+  const setFiltersPageSource = useFiltersStore(state => state.setCurrentSource);
+  const setFiltersPageFilters = useFiltersStore(state => state.setFilters);
 
   useEffect(() => {
     const filters = parseSelectedFilters(selectedFilters);
@@ -37,6 +40,10 @@ export const HomeSessionListFiltersButton = () => {
   }, [selectedFilters, setFilters]);
 
   const handlePress = () => {
+    // The sport chips only write the home filters: the filters page starts from the chip, so that applying it
+    // keeps the sport, and its count matches the badge
+    setFiltersPageSource('filter_sessions_all');
+    setFiltersPageFilters({ sports: selectedSports ?? [] });
     const params: FiltersScreenParams = { goBackPath: '/', selectedDayCarouselDate: '', source: 'filter_sessions_all' };
     router.navigate({ params, pathname: ROUTES.FILTERS.FILTER });
   };

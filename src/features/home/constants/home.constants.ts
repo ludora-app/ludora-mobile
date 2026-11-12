@@ -13,5 +13,11 @@ export const HOME_SESSIONS_LIMIT = 10;
 export const HOME_SESSIONS_DEFAULT_DISTANCE_KM = 10;
 export const HOME_SESSIONS_WIDE_DISTANCE_KM = 20;
 
+/**
+ * Minutes in the background after which the home screen takes a new "now" (prepared session, start of the list).
+ * Shorter returns keep the same date: a new one makes new queries.
+ */
+export const HOME_DATE_REFRESH_MINUTES = 30;
+
 /** Avatars shown in the compatible players hint, the others are counted. */
 export const HOME_COMPATIBLE_PLAYERS_AVATARS = 2;
